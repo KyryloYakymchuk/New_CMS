@@ -1,0 +1,10 @@
+body {
+  margin: 0;
+  font-family: "Roboto";
+  font-weight: 300;
+}
+
+/* Users Data luist, delete  */
+.MuiDataGrid-main > div:nth-child(3) {
+  display: none;
+}

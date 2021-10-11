@@ -1,0 +1,17 @@
+{
+  "name": "cms",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start:back": "cd server && npm run start",
+    "start:front:admin": "cd client && npm run start",
+    "app:dev": "cd server && npm run start:app:dev",
+    "update": "npm run client:i && npm run server:i",
+    "client:i": "cd client && npm i",
+    "server:i": "cd server && npm i",
+    "build": "cd client && npm run build"
+  },
+  "dependencies": {},
+  "devDependencies": {
+  }
+}
