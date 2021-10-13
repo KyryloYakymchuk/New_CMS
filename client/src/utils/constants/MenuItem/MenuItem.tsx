@@ -8,18 +8,18 @@ export const MenuItem = [
     name: "Home Page",
     path: "/",
     icon: <HomeIcon fontSize="small" />,
-    itemId: 1,
+    itemid: 1,
   },
   {
     name: "Users",
     path: "/users",
     icon: <PeopleIcon fontSize="small" />,
-    itemId: 2,
+    itemid: 2,
   },
   {
     name: "Todos",
     path: "/todos",
     icon: <ListAltIcon fontSize="small" />,
-    itemId: 3,
+    itemid: 3,
   },
 ];

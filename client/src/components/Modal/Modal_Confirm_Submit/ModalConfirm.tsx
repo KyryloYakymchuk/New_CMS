@@ -11,22 +11,20 @@ import { Text } from "./styled/styled";
 
 interface ModalProps {
   openModal: any;
-  modalType: any;
-  message: any;
+  message: string;
   handleAccept: any;
-  handleClose: any;
+  handleClose?: any;
 }
 
-export const Modal_Confirm_Submit: FC<ModalProps> = ({
+export const ModalConfirm: FC<ModalProps> = ({
   openModal,
-  modalType,
   message,
   handleAccept,
   handleClose,
 }) => {
   const classes = useStyles();
 
-  const buttons = ModalButton(handleAccept, handleClose, modalType);
+  const buttons = ModalButton(handleAccept, handleClose);
 
   return (
     <Modal
@@ -34,7 +32,7 @@ export const Modal_Confirm_Submit: FC<ModalProps> = ({
       aria-describedby="transition-modal-description"
       className={classes.modal}
       open={openModal}
-      onClose={handleClose}
+      onClose={handleClose || handleAccept}
       closeAfterTransition
       BackdropComponent={Backdrop}
       BackdropProps={{

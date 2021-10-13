@@ -6,7 +6,9 @@
       "@interfaces/*": ["./types/*"],
       "@components/*": ["./components/*"],
       "@utils/*": ["./utils/*"],
-      "@modules/*": ["./modules/*"]
+      "@modules/*": ["./modules/*"],
+      "@services/*": ["./services/*"]
+
 
     }
   }

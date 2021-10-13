@@ -8,6 +8,8 @@ import { Register } from "@modules/Auth/Register";
 import { MainLayout } from "@components/MainLayout/MainLayout";
 
 import { titleHeader } from "@utils/constants/titleHeader/titleHeader";
+import { ResetPassword } from "@modules/Auth/ResetPassword";
+import { Reset } from "@modules/Auth/Reset";
 
 const App = () => {
   return (
@@ -19,7 +21,12 @@ const App = () => {
         <Route path={"/auth/register"}>
           <Register />
         </Route>
-
+        <Route path={"/auth/reset"}>
+          <Reset />
+        </Route>
+        <Route path={"/auth/resetPassword"}>
+          <ResetPassword />
+        </Route>
         <MainLayout
           icon={titleHeader.HomeIcon}
           title={titleHeader.HomePage}

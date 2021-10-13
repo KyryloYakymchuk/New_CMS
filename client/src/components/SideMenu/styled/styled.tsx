@@ -2,9 +2,9 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
 interface IMenuProps {
-  statusMenu?: boolean;
-  pickedId?: number;
-  itemId?: number;
+  statusmenu?: boolean;
+  pickedid?: number;
+  itemid?: number;
 }
 
 export const NavbarContainer = styled.div<IMenuProps>`
@@ -14,7 +14,7 @@ export const NavbarContainer = styled.div<IMenuProps>`
   position: sticky;
   display: block;
   overflow-x: hidden;
-  width: ${({ statusMenu }) => (statusMenu ? "0px" : "220px")};
+  width: ${({ statusmenu }) => (statusmenu ? "0px" : "220px")};
   transition-duration: 0.3s;
   top: 0;
 `;
@@ -33,8 +33,8 @@ export const NavbarItem = styled(NavLink)<IMenuProps>`
   color: white;
   font-size: 20px;
   font-weight: 200;
-  background-color: ${({ pickedId, itemId }) =>
-    pickedId === itemId ? "#aaaaaa52" : "transparent"};
+  background-color: ${({ pickedid, itemid }) =>
+    pickedid === itemid ? "#aaaaaa52" : "transparent"};
   &:hover {
     background-color: #ffffff45;
     color: black;

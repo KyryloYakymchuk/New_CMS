@@ -1,44 +1,43 @@
 import { FC } from "react";
-import { Form } from "react-final-form";
 import { useSelector } from "react-redux";
+import { Form } from "react-final-form";
+
+import { errorMessageSelector } from "@redux/selectors/error";
 
 import FormField from "@components/FormField/FormField";
 import { AuthButtonContainer } from "@components/Auth/AuthButtons/AuthButtonsContainer/AuthButtonsContainer";
 
 import {
+  ResetPasswordFields,
   ButtonsData,
-  LoginFields,
-} from "@utils/constants/AuthField/LoginFields/LoginFields";
-import { LoginValidator } from "@utils/validators/Auth/LoginValidator";
+} from "@utils/constants/AuthField/ResetPasswordFields/ResetPasswordFields";
+
+import { ResetPasswordValidator } from "@utils/validators/Auth/ResetPasswordValidator";
 
 import {
   ButtonContainer,
+  ErrorMessage,
   FieldCustom,
   FormContainer,
-  ForgotPassword,
-  ErrorMessage,
 } from "@modules/Auth/styled/styled";
-import { errorMessageSelector } from "@redux/selectors/error";
 
 interface LoginProps {
   onSubmit: any;
 }
 
-export const LoginForm: FC<LoginProps> = ({ onSubmit }) => {
+export const ResetPasswordForm: FC<LoginProps> = ({ onSubmit }) => {
   const { LoginButton, RegisterButton, description, path } = ButtonsData;
 
   const errorMessage = useSelector(errorMessageSelector);
-
   return (
     <Form
       onSubmit={onSubmit}
-      validate={LoginValidator}
+      validate={ResetPasswordValidator}
       render={({ handleSubmit }) => (
         <FormContainer>
           <form onSubmit={handleSubmit}>
             <ErrorMessage>{errorMessage}</ErrorMessage>
-
-            {LoginFields.map(({ type, name, label, icon }, index) => (
+            {ResetPasswordFields.map(({ type, name, label, icon }, index) => (
               <FieldCustom
                 key={index}
                 type={type}
@@ -50,7 +49,6 @@ export const LoginForm: FC<LoginProps> = ({ onSubmit }) => {
                 {icon}
               </FieldCustom>
             ))}
-            <ForgotPassword to="/auth/reset">Forgot Password</ForgotPassword>
             <ButtonContainer>
               <AuthButtonContainer
                 description={description}

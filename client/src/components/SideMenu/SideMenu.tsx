@@ -12,8 +12,8 @@ import { MenuItem } from "@utils/constants/MenuItem/MenuItem";
 import { NavbarContainer, NavbarItem } from "./styled/styled";
 
 export const SideMenu: FC = () => {
-  const statusMenu = useSelector(menuStatusSelector);
-  const pickedId = useSelector(pickedItemIdSelector);
+  const statusmenu = useSelector(menuStatusSelector);
+  const pickedid = useSelector(pickedItemIdSelector);
 
   const dispatch = useDispatch();
 
@@ -22,15 +22,15 @@ export const SideMenu: FC = () => {
   };
 
   return (
-    <NavbarContainer statusMenu={statusMenu}>
-      {MenuItem.map(({ name, path, itemId, icon }) => (
+    <NavbarContainer statusmenu={statusmenu}>
+      {MenuItem.map(({ name, path, itemid, icon }) => (
         <NavbarItem
-          key={itemId}
-          pickedId={pickedId}
-          itemId={itemId}
-          onClick={handleSetItemID(itemId)}
+          key={itemid}
+          pickedid={pickedid}
+          itemid={itemid}
+          onClick={handleSetItemID(itemid)}
           to={path}
-          statusMenu={statusMenu}
+          statusmenu={statusmenu}
         >
           {icon}
           <span>{name}</span>

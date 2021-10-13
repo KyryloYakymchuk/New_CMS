@@ -1,11 +1,4 @@
 import { FC } from "react";
-import UserItem from "@components/UserItem/UserItem";
-import List from "@components/List/List";
+import { List } from "@components/List/List";
 
-export const UserPage: FC = () => {
-  return (
-    <List>
-      <UserItem />
-    </List>
-  );
-};
+export const UserPage: FC = () => <List />;

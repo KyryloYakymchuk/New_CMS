@@ -1,9 +1,7 @@
 import { FC } from "react";
-import { Route } from "react-router";
+import { Route, useHistory } from "react-router";
 import { Header } from "@components/Header/Header";
 import { SideMenu } from "@components/SideMenu/SideMenu";
-
-
 
 import { SideContainer, GlobalContainer, SideChildren } from "./styled/styled";
 
@@ -19,6 +17,11 @@ export const MainLayout: FC<RouteProps> = ({
   icon,
   ...rest
 }) => {
+  const history = useHistory();
+
+  if (!localStorage.getItem("NewCMS_accessToken")) {
+    history.push("/auth/login");
+  }
   return (
     <Route
       exact

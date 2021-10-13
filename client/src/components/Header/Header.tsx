@@ -1,4 +1,5 @@
 import { FC, useState } from "react";
+import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@material-ui/core";
 
@@ -7,6 +8,8 @@ import { menuStatusSelector } from "@redux/selectors/menuStatus";
 
 import LogoutIcon from "@mui/icons-material/Logout";
 
+import { ModalConfirm } from "@components/Modal/Modal_Confirm_Submit/ModalConfirm";
+
 import {
   HeaderContainer,
   HeaderTitle,
@@ -14,8 +17,6 @@ import {
   TitleContainer,
   TitleItem,
 } from "./style/style";
-import { Modal_Confirm_Submit } from "@components/Modal_Confirm_Submit/Modal_Confirm_Submit";
-import { useHistory } from "react-router";
 
 interface Props {
   title: string;
@@ -23,7 +24,6 @@ interface Props {
 }
 
 export const Header: FC<Props> = ({ title, icon }) => {
-  
   const [openMenu, setOpenMenu] = useState<boolean>(false);
 
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -45,6 +45,7 @@ export const Header: FC<Props> = ({ title, icon }) => {
 
   const handleAccept = () => {
     history.push("./auth/login");
+    localStorage.removeItem("NewCMS_accessToken");
     setOpenModal(false);
   };
 
@@ -81,9 +82,8 @@ export const Header: FC<Props> = ({ title, icon }) => {
           </TitleItem>
         </TitleContainer>
       </HeaderContainer>
-      <Modal_Confirm_Submit
+      <ModalConfirm
         openModal={openModal}
-        modalType="confirm"
         message="Are you sure you want to log out? "
         handleAccept={handleAccept}
         handleClose={handleClose}

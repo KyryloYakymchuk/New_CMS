@@ -1,40 +1,32 @@
 import { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
 
 import { AuthLayout } from "@components/Auth/AuthLayout/AuthLayout";
-import { RegisterForm } from "@components/Auth/RegisterForm/RegisterForm";
-
-import { MainText } from "@utils/constants/AuthField/RegisterFields/RegisterFields";
-import { RegisterAction } from "@redux/actions/auth";
-import { ErrorAction } from "@redux/actions/error";
 import { ModalConfirm } from "@components/Modal/Modal_Confirm_Submit/ModalConfirm";
+import { ResetForm } from "@components/Auth/ResetForm/ResetForm";
+
+
+import { MainText } from "@utils/constants/AuthField/ResetPasswordFields/ResetPasswordFields";
+import { ErrorAction } from "@redux/actions/error";
+import { ResetAction } from "@redux/actions/auth";
 
 interface IFormValues {
   email: string;
-  password: string;
-  confirmPassword: string;
-  firstname: string;
-  lastname?: string;
-  phone?: string;
-  birthday?: string;
 }
 
-export const Register: FC = () => {
-  const [openModal, setOpenModal] = useState(false);
-
+export const Reset: FC = () => {
   const { title, description } = MainText;
 
+  const [openModal, setOpenModal] = useState(false);
+
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const onSubmit = (value: IFormValues) => {
-    dispatch(RegisterAction({ value, setOpenModal }));
+    dispatch(ResetAction({ email: value.email, setOpenModal }));
   };
 
   const handleAccept = () => {
     setOpenModal(false);
-    history.push("/auth/login");
   };
 
   useEffect(() => {
@@ -44,7 +36,7 @@ export const Register: FC = () => {
   return (
     <>
       <AuthLayout title={title} description={description}>
-        <RegisterForm onSubmit={onSubmit} />
+        <ResetForm onSubmit={onSubmit} />
       </AuthLayout>
       <ModalConfirm
         openModal={openModal}

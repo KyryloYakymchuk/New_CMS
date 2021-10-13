@@ -14,7 +14,5 @@ export const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2, 4, 3),
     outline: "none",
     borderRadius: "8px",
-    border: "3px solid rgb(96,96,96)",
   },
 }));
- 
