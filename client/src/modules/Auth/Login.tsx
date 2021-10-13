@@ -3,13 +3,15 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
 import { LoginAction } from "@redux/actions/auth";
+import { ErrorAction } from "@redux/actions/error";
+
+import { MainText } from "@utils/constants/AuthField/LoginFields/LoginFields";
 
 import { AuthLayout } from "@components/Auth/AuthLayout/AuthLayout";
 import { LoginForm } from "@components/Auth/LoginForm/LoginForm";
-import { MainText } from "@utils/constants/AuthField/LoginFields/LoginFields";
-import { ErrorAction } from "@redux/actions/error";
 
-interface IFormValues {
+
+export interface IFormValues {
   email: string;
   password: string;
 }

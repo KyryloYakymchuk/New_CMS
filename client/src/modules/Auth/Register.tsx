@@ -2,22 +2,23 @@ import { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
-import { AuthLayout } from "@components/Auth/AuthLayout/AuthLayout";
-import { RegisterForm } from "@components/Auth/RegisterForm/RegisterForm";
-
-import { MainText } from "@utils/constants/AuthField/RegisterFields/RegisterFields";
 import { RegisterAction } from "@redux/actions/auth";
 import { ErrorAction } from "@redux/actions/error";
+
+import { MainText } from "@utils/constants/AuthField/RegisterFields/RegisterFields";
+
+import { AuthLayout } from "@components/Auth/AuthLayout/AuthLayout";
+import { RegisterForm } from "@components/Auth/RegisterForm/RegisterForm";
 import { ModalConfirm } from "@components/Modal/Modal_Confirm_Submit/ModalConfirm";
 
-interface IFormValues {
+export interface IFormValues {
   email: string;
   password: string;
   confirmPassword: string;
   firstname: string;
-  lastname?: string;
-  phone?: string;
-  birthday?: string;
+  lastname: string;
+  phone: string;
+  birthday: string;
 }
 
 export const Register: FC = () => {

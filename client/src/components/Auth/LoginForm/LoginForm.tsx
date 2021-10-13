@@ -2,14 +2,18 @@ import { FC } from "react";
 import { Form } from "react-final-form";
 import { useSelector } from "react-redux";
 
-import FormField from "@components/FormField/FormField";
-import { AuthButtonContainer } from "@components/Auth/AuthButtons/AuthButtonsContainer/AuthButtonsContainer";
+import { errorMessageSelector } from "@redux/selectors/error";
 
+import { LoginValidator } from "@utils/validators/Auth/LoginValidator";
 import {
   ButtonsData,
   LoginFields,
 } from "@utils/constants/AuthField/LoginFields/LoginFields";
-import { LoginValidator } from "@utils/validators/Auth/LoginValidator";
+
+import { IFormValues } from "@modules/Auth/Login";
+
+import FormField from "@components/FormField/FormField";
+import { AuthButtonContainer } from "@components/Auth/AuthButtons/AuthButtonsContainer/AuthButtonsContainer";
 
 import {
   ButtonContainer,
@@ -18,10 +22,9 @@ import {
   ForgotPassword,
   ErrorMessage,
 } from "@modules/Auth/styled/styled";
-import { errorMessageSelector } from "@redux/selectors/error";
 
 interface LoginProps {
-  onSubmit: any;
+  onSubmit: (value: IFormValues) => void;
 }
 
 export const LoginForm: FC<LoginProps> = ({ onSubmit }) => {

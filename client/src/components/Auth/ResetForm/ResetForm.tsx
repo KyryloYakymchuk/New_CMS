@@ -4,15 +4,16 @@ import { Form } from "react-final-form";
 
 import { errorMessageSelector } from "@redux/selectors/error";
 
-import FormField from "@components/FormField/FormField";
-import { AuthButtonContainer } from "@components/Auth/AuthButtons/AuthButtonsContainer/AuthButtonsContainer";
-
 import {
   ResetPasswordFields,
   ButtonsData,
 } from "@utils/constants/AuthField/ResetPasswordFields/ResetPasswordFields";
+import { ResetValidator } from "@utils/validators/Auth/ResetValidator";
 
-import { ResetPasswordValidator } from "@utils/validators/Auth/ResetPasswordValidator";
+import { IFormValues } from "@modules/Auth/Reset";
+
+import FormField from "@components/FormField/FormField";
+import { AuthButtonContainer } from "@components/Auth/AuthButtons/AuthButtonsContainer/AuthButtonsContainer";
 
 import {
   ButtonContainer,
@@ -22,7 +23,7 @@ import {
 } from "@modules/Auth/styled/styled";
 
 interface LoginProps {
-  onSubmit: any;
+  onSubmit: (value: IFormValues) => void;
 }
 
 export const ResetForm: FC<LoginProps> = ({ onSubmit }) => {
@@ -32,7 +33,7 @@ export const ResetForm: FC<LoginProps> = ({ onSubmit }) => {
   return (
     <Form
       onSubmit={onSubmit}
-      validate={ResetPasswordValidator}
+      validate={ResetValidator}
       render={({ handleSubmit }) => (
         <FormContainer>
           <form onSubmit={handleSubmit}>

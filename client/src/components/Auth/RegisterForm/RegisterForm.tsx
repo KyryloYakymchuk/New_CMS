@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { Form } from "react-final-form";
+import { useSelector } from "react-redux";
 
-import FormField from "@components/FormField/FormField";
-import { AuthButtonContainer } from "@components/Auth/AuthButtons/AuthButtonsContainer/AuthButtonsContainer";
+import { errorMessageSelector } from "@redux/selectors/error";
 
 import {
   ButtonsData,
@@ -10,16 +10,20 @@ import {
 } from "@utils/constants/AuthField/RegisterFields/RegisterFields";
 import { RegisterValidator } from "@utils/validators/Auth/RegisterValidator";
 
+import { IFormValues } from "@modules/Auth/Register";
+
+import FormField from "@components/FormField/FormField";
+import { AuthButtonContainer } from "@components/Auth/AuthButtons/AuthButtonsContainer/AuthButtonsContainer";
+
 import {
   ButtonContainer,
+  ErrorMessage,
   FieldCustom,
   FormContainer,
 } from "@modules/Auth/styled/styled";
-import { errorMessageSelector } from "@redux/selectors/error";
-import { useSelector } from "react-redux";
 
 interface RegisterProps {
-  onSubmit: any;
+  onSubmit: (value: IFormValues) => void;
 }
 
 export const RegisterForm: FC<RegisterProps> = ({ onSubmit }) => {
@@ -34,6 +38,8 @@ export const RegisterForm: FC<RegisterProps> = ({ onSubmit }) => {
       render={({ handleSubmit }) => (
         <FormContainer>
           <form onSubmit={handleSubmit}>
+            <ErrorMessage>{errorMessage}</ErrorMessage>
+
             {RegisterFields.map(({ type, name, label, icon }, index) => (
               <FieldCustom
                 key={index}
