@@ -1,3 +1,4 @@
+import { mobileStepperClasses } from "@mui/material";
 import { TypeStatusAction, StatusAction } from "@redux/types/menuStatus";
 
 interface IStatusPayload {
@@ -6,7 +7,8 @@ interface IStatusPayload {
 }
 
 const initialState: IStatusPayload = {
-  status: true,
+  // after create mobile v switch to true
+  status: false,
 };
 
 const menu = (state = initialState, action: StatusAction) => {

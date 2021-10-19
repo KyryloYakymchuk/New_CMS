@@ -13,12 +13,12 @@ export interface IStatusAction {
 }
 
 export interface IItemIdPayload {
-  itemId: number;
+  itemId?: number;
 }
 
 export interface IItemIdAction {
   type: TypeStatusAction.ITEMID;
-  payload: number;
+  payload: IItemIdPayload;
 }
 
 export type StatusAction = IStatusAction | IItemIdAction;

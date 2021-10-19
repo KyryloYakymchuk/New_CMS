@@ -20,10 +20,9 @@ import {
 
 interface Props {
   title: string;
-  icon: any;
 }
 
-export const Header: FC<Props> = ({ title, icon }) => {
+export const Header: FC<Props> = ({ title }) => {
   const [openMenu, setOpenMenu] = useState<boolean>(false);
 
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -56,16 +55,16 @@ export const Header: FC<Props> = ({ title, icon }) => {
   return (
     <>
       <HeaderContainer>
-        <div
+        {/* For mobile  */}
+        {/* <div
           className={`icon-one ${!statusMenu && "active-one"}`}
           onClick={handleClickBurger}
         >
-          <div className="hamburger hamburger-one "></div>
-        </div>
+          <div className="hamburger hamburger-one"></div>
+        </div> */}
 
         <TitleContainer>
           <TitleItem>
-            <HeaderIcon>{icon}</HeaderIcon>
             <HeaderTitle>{title}</HeaderTitle>
           </TitleItem>
           <TitleItem>

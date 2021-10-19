@@ -8,16 +8,10 @@ import { SideContainer, GlobalContainer, SideChildren } from "./styled/styled";
 interface RouteProps {
   path: string;
   title: string;
-  icon: any;
   [x: string]: any;
 }
 
-export const MainLayout: FC<RouteProps> = ({
-  children,
-  title,
-  icon,
-  ...rest
-}) => {
+export const MainLayout: FC<RouteProps> = ({ children, title, ...rest }) => {
   const history = useHistory();
 
   if (!history.location.pathname.includes("/auth")) {
@@ -32,7 +26,7 @@ export const MainLayout: FC<RouteProps> = ({
         <GlobalContainer>
           <SideMenu />
           <SideContainer>
-            <Header icon={icon} title={title} />
+            <Header title={title} />
             <SideChildren>{children}</SideChildren>
           </SideContainer>
         </GlobalContainer>

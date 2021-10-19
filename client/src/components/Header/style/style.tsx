@@ -1,9 +1,7 @@
 import styled from "styled-components";
 
 export const HeaderContainer = styled.div`
-  width: 100%;
-  background-color: rgb(96, 96, 96);
-  color: white;
+  color: black;
   font-size: 25px;
   display: flex;
   align-items: center;
@@ -72,9 +70,9 @@ export const HeaderTitle = styled.div`
 export const TitleContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 5%;
+  margin-left: 22px;
   justify-content: space-between;
-  width: 94%;
+  width: 100%;
 `;
 export const TitleItem = styled.div`
   display: flex;
