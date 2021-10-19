@@ -1,34 +1,36 @@
+import { passwordCyrillicRE, passwordSpacesRE } from "../RegularExpressions";
+
 interface ValidatorProps {
-  password: string;
-  confirmPassword: string;
+  newPassword: string;
+  newPasswordConfirm: string;
 }
 
 interface errorsProps {
-  password?: string;
-  confirmPassword?: string;
+  newPassword?: string;
+  newPasswordConfirm?: string;
 }
 
 export const ResetPasswordValidator = (values: ValidatorProps) => {
   const errors: errorsProps = {};
 
-  const passwordRegSpaces = /(\s)/g.test(values.password);
-  const passwordRegCyrillic = /[^a-zA-Z0-9]/g.test(values.password);
-  
   // PASSWORD
-  (!values.password && (errors.password = "Required")) ||
-    (passwordRegSpaces &&
-      (errors.password = "Password must not contain spaces ")) ||
-    (values?.password?.length < 8 &&
-      (errors.password =
-        "Minimum 8 characters, at least 1 letter and 1 number")) ||
-    (passwordRegCyrillic &&
-      (errors.password = "Password must not contain cyrillic "));
+  if (!values.newPassword) {
+    errors.newPassword = "Required";
+  } else if (passwordSpacesRE.test(values.newPassword)) {
+    errors.newPassword = "Password must not contain spaces";
+  } else if (values?.newPassword?.length < 8) {
+    errors.newPassword = "Minimum 8 characters";
+  } else if (passwordCyrillicRE.test(values.newPassword)) {
+    errors.newPassword = "Password must not contain cyrillic";
+  }
 
   // CONFIRM PASSWORD
-  !values.confirmPassword &&
-    (errors.confirmPassword = "Required") &&
-    values.password !== values.confirmPassword &&
-    (errors.confirmPassword = "Passwords must match");
+
+  if (!values.newPasswordConfirm) {
+    errors.newPasswordConfirm = "Required";
+  } else if (values.newPassword !== values.newPasswordConfirm) {
+    errors.newPasswordConfirm = "Passwords must match";
+  }
 
   return errors;
 };

@@ -2,6 +2,7 @@ export enum AuthActionsTypes {
   LOGIN = "LOGIN",
   REGISTER = "REGISTER",
   RESET = "RESET",
+  RESET_PASSWORD = "RESET_PASSWORD",
 }
 
 //LOGIN
@@ -54,4 +55,26 @@ export interface IResetAction {
   payload: IReset;
 }
 
-export type AuthActions = ILoginAction | IRegisterAction | IResetAction;
+//RESET_PASSWORD
+
+interface IResetPasswordPayload {
+  newPassword: string;
+  newPasswordConfirm: string;
+  token: string;
+}
+
+export interface IResetPassword {
+  val: IResetPasswordPayload;
+  setOpenModal?: any;
+}
+
+export interface IResetPasswordAction {
+  type: AuthActionsTypes.RESET_PASSWORD;
+  payload: IResetPassword;
+}
+
+export type AuthActions =
+  | ILoginAction
+  | IRegisterAction
+  | IResetAction
+  | IResetPasswordAction;

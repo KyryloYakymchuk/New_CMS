@@ -1,27 +1,33 @@
 import { Button } from "@mui/material";
 
-import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
-import EmailIcon from "@mui/icons-material/Email";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
 
 export const ResetPasswordFields = [
   {
-    type: "text",
-    name: "email",
-    label: "Email",
-    icon: <AlternateEmailIcon fontSize="medium" />,
+    type: "password",
+    name: "newPassword",
+    label: "Password",
+    icon: <VpnKeyIcon fontSize="medium" />,
+  },
+  {
+    type: "password",
+    name: "newPasswordConfirm",
+    label: "Confirm Password",
+    icon: <VpnKeyIcon fontSize="medium" />,
   },
 ];
 
 export const ButtonsData = {
   LoginButton: (
     <Button
-      startIcon={<EmailIcon />}
+      startIcon={<RefreshIcon />}
       size="large"
       color="inherit"
       variant="contained"
       type="submit"
     >
-      Send email
+      Reset Password
     </Button>
   ),
 
@@ -32,5 +38,5 @@ export const ButtonsData = {
 
 export const MainText = {
   title: "Reset Password",
-  description: "To reset your password enter your email",
+  description: "To reset your password Enter new password",
 };

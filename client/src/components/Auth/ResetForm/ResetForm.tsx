@@ -3,11 +3,13 @@ import { useSelector } from "react-redux";
 import { Form } from "react-final-form";
 
 import { errorMessageSelector } from "@redux/selectors/error";
+import { loaderStatusSelector } from "@redux/selectors/loader";
 
 import {
-  ResetPasswordFields,
   ButtonsData,
-} from "@utils/constants/AuthField/ResetPasswordFields/ResetPasswordFields";
+  ResetFields,
+} from "@utils/constants/AuthField/ResetFields/ResetFields";
+import { Loader } from "@utils/constants/Loader/Loader";
 import { ResetValidator } from "@utils/validators/Auth/ResetValidator";
 
 import { IFormValues } from "@modules/Auth/Reset";
@@ -28,8 +30,11 @@ interface LoginProps {
 
 export const ResetForm: FC<LoginProps> = ({ onSubmit }) => {
   const { LoginButton, RegisterButton, description, path } = ButtonsData;
+  const { LoaderCircularrButton } = Loader;
 
   const errorMessage = useSelector(errorMessageSelector);
+  const loaderStatus = useSelector(loaderStatusSelector);
+
   return (
     <Form
       onSubmit={onSubmit}
@@ -38,7 +43,7 @@ export const ResetForm: FC<LoginProps> = ({ onSubmit }) => {
         <FormContainer>
           <form onSubmit={handleSubmit}>
             <ErrorMessage>{errorMessage}</ErrorMessage>
-            {ResetPasswordFields.map(({ type, name, label, icon }, index) => (
+            {ResetFields.map(({ type, name, label, icon }, index) => (
               <FieldCustom
                 key={index}
                 type={type}
@@ -54,8 +59,10 @@ export const ResetForm: FC<LoginProps> = ({ onSubmit }) => {
               <AuthButtonContainer
                 description={description}
                 button={LoginButton}
+                Loader={LoaderCircularrButton}
                 secondButton={RegisterButton}
                 path={path}
+                loaderStatus={loaderStatus}
               />
             </ButtonContainer>
           </form>

@@ -10,7 +10,6 @@ import { MainText } from "@utils/constants/AuthField/LoginFields/LoginFields";
 import { AuthLayout } from "@components/Auth/AuthLayout/AuthLayout";
 import { LoginForm } from "@components/Auth/LoginForm/LoginForm";
 
-
 export interface IFormValues {
   email: string;
   password: string;
@@ -26,7 +25,7 @@ export const Login: FC = () => {
 
   useEffect(() => {
     dispatch(ErrorAction());
-  }, []);
+  }, [dispatch]);
 
   const { title, description } = MainText;
   return (

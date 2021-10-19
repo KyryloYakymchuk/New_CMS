@@ -9,6 +9,7 @@ interface RouteProps {
   path: string;
   title: string;
   icon: any;
+  [x: string]: any;
 }
 
 export const MainLayout: FC<RouteProps> = ({
@@ -19,9 +20,10 @@ export const MainLayout: FC<RouteProps> = ({
 }) => {
   const history = useHistory();
 
-  if (!localStorage.getItem("NewCMS_accessToken")) {
-    history.push("/auth/login");
+  if (!history.location.pathname.includes("/auth")) {
+    !localStorage.getItem("NewCMS_accessToken") && history.push("/auth/login");
   }
+
   return (
     <Route
       exact

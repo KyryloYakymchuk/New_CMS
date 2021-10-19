@@ -2,9 +2,10 @@ import { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { ErrorAction } from "@redux/actions/error";
+import { LoaderAction } from "@redux/actions/loader";
 import { ResetAction } from "@redux/actions/auth";
 
-import { MainText } from "@utils/constants/AuthField/ResetPasswordFields/ResetPasswordFields";
+import { MainText } from "@utils/constants/AuthField/ResetFields/ResetFields";
 
 import { AuthLayout } from "@components/Auth/AuthLayout/AuthLayout";
 import { ModalConfirm } from "@components/Modal/Modal_Confirm_Submit/ModalConfirm";
@@ -23,6 +24,7 @@ export const Reset: FC = () => {
 
   const onSubmit = (value: IFormValues) => {
     dispatch(ResetAction({ email: value.email, setOpenModal }));
+    dispatch(LoaderAction(true));
   };
 
   const handleAccept = () => {
@@ -31,7 +33,7 @@ export const Reset: FC = () => {
 
   useEffect(() => {
     dispatch(ErrorAction());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

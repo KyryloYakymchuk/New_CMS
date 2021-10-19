@@ -1,3 +1,9 @@
+import {
+  emailRE,
+  passwordCyrillicRE,
+  passwordSpacesRE,
+} from "../RegularExpressions";
+
 interface ValidatorProps {
   firstname: string;
   lastname?: string;
@@ -20,38 +26,33 @@ interface errorsProps {
 
 export const RegisterValidator = (values: ValidatorProps) => {
   const errors: errorsProps = {};
-
-  const emailReg =
-    !/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/g.test(
-      values.email
-    );
-
-  const passwordRegSpaces = /(\s)/g.test(values.password);
-  const passwordRegCyrillic = /[^a-zA-Z0-9]/g.test(values.password);
+  console.log(values);
 
   // EMAIL
 
   if (!values.email) {
     errors.email = "Required";
-  } else if (emailReg) {
+  } else if (!emailRE.test(values.email)) {
     errors.email = "Invalid email address";
   }
 
   // PASSWORD
-  (!values.password && (errors.password = "Required")) ||
-    (passwordRegSpaces &&
-      (errors.password = "Password must not contain spaces ")) ||
-    (values?.password?.length < 8 &&
-      (errors.password =
-        "Minimum 8 characters, at least 1 letter and 1 number")) ||
-    (passwordRegCyrillic &&
-      (errors.password = "Password must not contain cyrillic "));
+  if (!values.password) {
+    errors.password = "Required";
+  } else if (passwordSpacesRE.test(values.password)) {
+    errors.password = "Password must not contain spaces";
+  } else if (values?.password?.length < 8) {
+    errors.password = "Minimum 8 characters";
+  } else if (passwordCyrillicRE.test(values.password)) {
+    errors.password = "Password must not contain cyrillic";
+  }
 
   // CONFIRM PASSWORD
-  !values.confirmPassword &&
-    (errors.confirmPassword = "Required") &&
-    values.password !== values.confirmPassword &&
-    (errors.confirmPassword = "Passwords must match");
+  if (!values.confirmPassword) {
+    errors.confirmPassword = "Required";
+  } else if (values.password !== values.confirmPassword) {
+    errors.confirmPassword = "Passwords must match";
+  }
 
   // first name
 
@@ -88,5 +89,8 @@ export const RegisterValidator = (values: ValidatorProps) => {
       errors.birthday = "Wrong date";
     }
   }
+
+  console.log(errors);
+
   return errors;
 };

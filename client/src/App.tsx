@@ -12,39 +12,48 @@ import { ResetPassword } from "@modules/Auth/ResetPassword";
 import { Reset } from "@modules/Auth/Reset";
 
 const App = () => {
+  const routes = [
+    { path: "/auth/login", component: Login },
+    { path: "/auth/register", component: Register },
+    { path: "/auth/reset", component: Reset },
+    { path: "/auth/resetPassword/:token", component: ResetPassword },
+  ];
+
+  const ProtectedRoutes = [
+    {
+      path: "/",
+      component: UserPage,
+      icon: titleHeader.HomeIcon,
+      title: titleHeader.HomePage,
+    },
+    {
+      path: "/users",
+      component: UserPage,
+      icon: titleHeader.UsersIcon,
+      title: titleHeader.UsersList,
+    },
+    {
+      path: "/todos",
+      component: UserPage,
+      icon: titleHeader.TodoIcon,
+      title: titleHeader.TodoList,
+    },
+  ];
+
   return (
     <div className="App">
       <BrowserRouter>
-        <Route path={"/auth/login"}>
-          <Login />
-        </Route>
-        <Route path={"/auth/register"}>
-          <Register />
-        </Route>
-        <Route path={"/auth/reset"}>
-          <Reset />
-        </Route>
-        <Route path={"/auth/resetPassword"}>
-          <ResetPassword />
-        </Route>
-        <MainLayout
-          icon={titleHeader.HomeIcon}
-          title={titleHeader.HomePage}
-          path={"/"}
-        />
+        {routes.map(({ path, component: Component }) => (
+          <Route key={path} exact path={path}>
+            <Component />
+          </Route>
+        ))}
 
-        <MainLayout
-          icon={titleHeader.UsersIcon}
-          title={titleHeader.UsersList}
-          path={"/users"}
-        >
-          <UserPage />
-        </MainLayout>
-        <MainLayout
-          icon={titleHeader.TodoIcon}
-          title={titleHeader.TodoList}
-          path={"/todos"}
-        ></MainLayout>
+        {ProtectedRoutes.map(({ path, component: Component, icon, title }) => (
+          <MainLayout key={path} icon={icon} title={title} exact path={path}>
+            <Component />
+          </MainLayout>
+        ))}
       </BrowserRouter>
     </div>
   );

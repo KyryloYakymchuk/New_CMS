@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import test from "./test";
 import menu from "./menuStatus";
 import error from "./error";
+import loader from "./loader";
 
-const rootReducer = combineReducers({ test, menu, error });
+const rootReducer = combineReducers({ menu, error, loader });
 
 export default rootReducer;

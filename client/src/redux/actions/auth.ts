@@ -1,4 +1,10 @@
-import { AuthActionsTypes, ILogin, IRegister, IReset } from "@redux/types/auth";
+import {
+  AuthActionsTypes,
+  ILogin,
+  IRegister,
+  IReset,
+  IResetPassword,
+} from "@redux/types/auth";
 
 export const LoginAction = (payload: ILogin) => ({
   type: AuthActionsTypes.LOGIN,
@@ -12,5 +18,10 @@ export const RegisterAction = (payload: IRegister) => ({
 
 export const ResetAction = (payload: IReset) => ({
   type: AuthActionsTypes.RESET,
+  payload,
+});
+
+export const ResetPasswordAction = (payload: IResetPassword) => ({
+  type: AuthActionsTypes.RESET_PASSWORD,
   payload,
 });

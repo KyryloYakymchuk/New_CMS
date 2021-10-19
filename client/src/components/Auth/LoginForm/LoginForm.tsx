@@ -4,11 +4,11 @@ import { useSelector } from "react-redux";
 
 import { errorMessageSelector } from "@redux/selectors/error";
 
-import { LoginValidator } from "@utils/validators/Auth/LoginValidator";
 import {
   ButtonsData,
   LoginFields,
 } from "@utils/constants/AuthField/LoginFields/LoginFields";
+import { LoginValidator } from "@utils/validators/Auth/LoginValidator";
 
 import { IFormValues } from "@modules/Auth/Login";
 

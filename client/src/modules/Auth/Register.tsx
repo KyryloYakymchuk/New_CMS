@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
 import { RegisterAction } from "@redux/actions/auth";
+import { LoaderAction } from "@redux/actions/loader";
 import { ErrorAction } from "@redux/actions/error";
 
 import { MainText } from "@utils/constants/AuthField/RegisterFields/RegisterFields";
@@ -31,6 +32,7 @@ export const Register: FC = () => {
 
   const onSubmit = (value: IFormValues) => {
     dispatch(RegisterAction({ value, setOpenModal }));
+    dispatch(LoaderAction(true));
   };
 
   const handleAccept = () => {
@@ -40,7 +42,7 @@ export const Register: FC = () => {
 
   useEffect(() => {
     dispatch(ErrorAction());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

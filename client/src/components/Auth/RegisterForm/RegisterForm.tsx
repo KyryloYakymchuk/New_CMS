@@ -9,6 +9,7 @@ import {
   RegisterFields,
 } from "@utils/constants/AuthField/RegisterFields/RegisterFields";
 import { RegisterValidator } from "@utils/validators/Auth/RegisterValidator";
+import { Loader } from "@utils/constants/Loader/Loader";
 
 import { IFormValues } from "@modules/Auth/Register";
 
@@ -21,6 +22,7 @@ import {
   FieldCustom,
   FormContainer,
 } from "@modules/Auth/styled/styled";
+import { loaderStatusSelector } from "@redux/selectors/loader";
 
 interface RegisterProps {
   onSubmit: (value: IFormValues) => void;
@@ -28,8 +30,10 @@ interface RegisterProps {
 
 export const RegisterForm: FC<RegisterProps> = ({ onSubmit }) => {
   const { RegisterButton, LoginButton, description, path } = ButtonsData;
+  const { LoaderCircularrButton } = Loader;
 
   const errorMessage = useSelector(errorMessageSelector);
+  const loaderStatus = useSelector(loaderStatusSelector);
 
   return (
     <Form
@@ -56,8 +60,10 @@ export const RegisterForm: FC<RegisterProps> = ({ onSubmit }) => {
               <AuthButtonContainer
                 description={description}
                 button={RegisterButton}
+                Loader={LoaderCircularrButton}
                 secondButton={LoginButton}
                 path={path}
+                loaderStatus={loaderStatus}
               />
             </ButtonContainer>
           </form>
