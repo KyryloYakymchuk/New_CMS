@@ -7,9 +7,9 @@ import { errorMessageSelector } from "@redux/selectors/error";
 import {
   ButtonsData,
   RegisterFields,
-} from "@utils/constants/AuthField/RegisterFields/RegisterFields";
+} from "@utils/constants/AuthField/RegisterFields";
 import { RegisterValidator } from "@utils/validators/Auth/RegisterValidator";
-import { Loader } from "@utils/constants/Loader/Loader";
+import { Loader } from "@utils/constants/Loader";
 
 import { IFormValues } from "@modules/Auth/Register";
 
@@ -29,7 +29,7 @@ interface RegisterProps {
 }
 
 export const RegisterForm: FC<RegisterProps> = ({ onSubmit }) => {
-  const { RegisterButton, LoginButton, description, path } = ButtonsData;
+  const { buttonIcon, buttonText, linkText, description, path } = ButtonsData;
   const { LoaderCircularrButton } = Loader;
 
   const errorMessage = useSelector(errorMessageSelector);
@@ -59,9 +59,10 @@ export const RegisterForm: FC<RegisterProps> = ({ onSubmit }) => {
             <ButtonContainer>
               <AuthButtonContainer
                 description={description}
-                button={RegisterButton}
+                buttonIcon={buttonIcon}
+                buttonText={buttonText}
                 Loader={LoaderCircularrButton}
-                secondButton={LoginButton}
+                linkText={linkText}
                 path={path}
                 loaderStatus={loaderStatus}
               />

@@ -6,24 +6,23 @@ import { Button } from "@material-ui/core";
 import { statusAction } from "@redux/actions/menuStatus";
 import { menuStatusSelector } from "@redux/selectors/menuStatus";
 
-import LogoutIcon from "@mui/icons-material/Logout";
+import { Icons } from "@utils/constants/MenuItem/icon";
+import { AuthRoutes } from "@utils/enums/routes";
 
 import { ModalConfirm } from "@components/Modal/Modal_Confirm_Submit/ModalConfirm";
 
 import {
   HeaderContainer,
   HeaderTitle,
-  HeaderIcon,
   TitleContainer,
   TitleItem,
 } from "./style/style";
 
 interface Props {
   title: string;
-  icon: any;
 }
 
-export const Header: FC<Props> = ({ title, icon }) => {
+export const Header: FC<Props> = ({ title }) => {
   const [openMenu, setOpenMenu] = useState<boolean>(false);
 
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -44,7 +43,7 @@ export const Header: FC<Props> = ({ title, icon }) => {
   };
 
   const handleAccept = () => {
-    history.push("./auth/login");
+    history.push(AuthRoutes.LOGIN);
     localStorage.removeItem("NewCMS_accessToken");
     setOpenModal(false);
   };
@@ -56,21 +55,21 @@ export const Header: FC<Props> = ({ title, icon }) => {
   return (
     <>
       <HeaderContainer>
-        <div
+        {/* For mobile  */}
+        {/* <div
           className={`icon-one ${!statusMenu && "active-one"}`}
           onClick={handleClickBurger}
         >
-          <div className="hamburger hamburger-one "></div>
-        </div>
+          <div className="hamburger hamburger-one"></div>
+        </div> */}
 
         <TitleContainer>
           <TitleItem>
-            <HeaderIcon>{icon}</HeaderIcon>
             <HeaderTitle>{title}</HeaderTitle>
           </TitleItem>
           <TitleItem>
             <Button
-              endIcon={<LogoutIcon fontSize="large" />}
+              endIcon={Icons.LogoutIcon}
               size="large"
               color="inherit"
               variant="text"

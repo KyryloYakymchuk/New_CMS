@@ -10,7 +10,6 @@ const loader = (state = initialState, action: ILoaderAction) => {
   switch (action.type) {
     case LoaderActionsTypes.LOADER_STATUS:
       return {
-        ...state,
         loaderStatus: action.payload,
       };
 

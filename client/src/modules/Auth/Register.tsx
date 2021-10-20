@@ -2,11 +2,12 @@ import { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
-import { RegisterAction } from "@redux/actions/auth";
-import { LoaderAction } from "@redux/actions/loader";
-import { ErrorAction } from "@redux/actions/error";
+import { registerAction } from "@redux/actions/auth";
+import { loaderAction } from "@redux/actions/loader";
+import { errorAction } from "@redux/actions/error";
 
-import { MainText } from "@utils/constants/AuthField/RegisterFields/RegisterFields";
+import { MainText } from "@utils/constants/AuthField/RegisterFields";
+import { AuthRoutes } from "@utils/enums/routes";
 
 import { AuthLayout } from "@components/Auth/AuthLayout/AuthLayout";
 import { RegisterForm } from "@components/Auth/RegisterForm/RegisterForm";
@@ -31,17 +32,17 @@ export const Register: FC = () => {
   const history = useHistory();
 
   const onSubmit = (value: IFormValues) => {
-    dispatch(RegisterAction({ value, setOpenModal }));
-    dispatch(LoaderAction(true));
+    dispatch(registerAction({ value, setOpenModal }));
+    dispatch(loaderAction(true));
   };
 
   const handleAccept = () => {
     setOpenModal(false);
-    history.push("/auth/login");
+    history.push(AuthRoutes.LOGIN);
   };
 
   useEffect(() => {
-    dispatch(ErrorAction());
+    dispatch(errorAction());
   }, [dispatch]);
 
   return (

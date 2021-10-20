@@ -12,7 +12,6 @@ interface errorsProps {
 
 export const LoginValidator = (values: ValidatorProps) => {
   const errors: errorsProps = {};
-
   // EMAIL
   if (!values.email) {
     errors.email = "Required";

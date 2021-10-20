@@ -11,8 +11,11 @@ interface errorsProps {
 export const ResetValidator = (values: ValidatorProps) => {
   const errors: errorsProps = {};
   // EMAIL
-  (!values.email && (errors.email = "Required")) ||
-    (!emailRE.test(values.email) && (errors.email = "Invalid email address"));
+  if (!values.email) {
+    errors.email = "Required";
+  } else if (!emailRE.test(values.email)) {
+    errors.email = "Invalid email address";
+  }
 
   return errors;
 };

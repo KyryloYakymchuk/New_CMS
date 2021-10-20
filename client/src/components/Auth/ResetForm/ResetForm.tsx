@@ -8,8 +8,8 @@ import { loaderStatusSelector } from "@redux/selectors/loader";
 import {
   ButtonsData,
   ResetFields,
-} from "@utils/constants/AuthField/ResetFields/ResetFields";
-import { Loader } from "@utils/constants/Loader/Loader";
+} from "@utils/constants/AuthField/ResetFields";
+import { Loader } from "@utils/constants/Loader";
 import { ResetValidator } from "@utils/validators/Auth/ResetValidator";
 
 import { IFormValues } from "@modules/Auth/Reset";
@@ -29,7 +29,7 @@ interface LoginProps {
 }
 
 export const ResetForm: FC<LoginProps> = ({ onSubmit }) => {
-  const { LoginButton, RegisterButton, description, path } = ButtonsData;
+  const { buttonIcon, buttonText, linkText, description, path } = ButtonsData;
   const { LoaderCircularrButton } = Loader;
 
   const errorMessage = useSelector(errorMessageSelector);
@@ -58,9 +58,10 @@ export const ResetForm: FC<LoginProps> = ({ onSubmit }) => {
             <ButtonContainer>
               <AuthButtonContainer
                 description={description}
-                button={LoginButton}
+                buttonIcon={buttonIcon}
+                buttonText={buttonText}
                 Loader={LoaderCircularrButton}
-                secondButton={RegisterButton}
+                linkText={linkText}
                 path={path}
                 loaderStatus={loaderStatus}
               />

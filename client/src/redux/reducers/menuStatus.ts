@@ -6,7 +6,7 @@ interface IStatusPayload {
 }
 
 const initialState: IStatusPayload = {
-  status: true,
+  status: false,
 };
 
 const menu = (state = initialState, action: StatusAction) => {

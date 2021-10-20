@@ -2,10 +2,10 @@ import { FC, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
-import { LoginAction } from "@redux/actions/auth";
-import { ErrorAction } from "@redux/actions/error";
+import { loginAction } from "@redux/actions/auth";
+import { errorAction } from "@redux/actions/error";
 
-import { MainText } from "@utils/constants/AuthField/LoginFields/LoginFields";
+import { MainText } from "@utils/constants/AuthField/LoginFields";
 
 import { AuthLayout } from "@components/Auth/AuthLayout/AuthLayout";
 import { LoginForm } from "@components/Auth/LoginForm/LoginForm";
@@ -20,11 +20,11 @@ export const Login: FC = () => {
   const history = useHistory();
 
   const onSubmit = (value: IFormValues) => {
-    dispatch(LoginAction({ value, history }));
+    dispatch(loginAction({ value, history }));
   };
 
   useEffect(() => {
-    dispatch(ErrorAction());
+    dispatch(errorAction());
   }, [dispatch]);
 
   const { title, description } = MainText;

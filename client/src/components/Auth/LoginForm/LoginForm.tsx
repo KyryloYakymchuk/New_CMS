@@ -7,7 +7,7 @@ import { errorMessageSelector } from "@redux/selectors/error";
 import {
   ButtonsData,
   LoginFields,
-} from "@utils/constants/AuthField/LoginFields/LoginFields";
+} from "@utils/constants/AuthField/LoginFields";
 import { LoginValidator } from "@utils/validators/Auth/LoginValidator";
 
 import { IFormValues } from "@modules/Auth/Login";
@@ -28,7 +28,7 @@ interface LoginProps {
 }
 
 export const LoginForm: FC<LoginProps> = ({ onSubmit }) => {
-  const { LoginButton, RegisterButton, description, path } = ButtonsData;
+  const { buttonIcon, buttonText, linkText, description, path } = ButtonsData;
 
   const errorMessage = useSelector(errorMessageSelector);
 
@@ -57,8 +57,9 @@ export const LoginForm: FC<LoginProps> = ({ onSubmit }) => {
             <ButtonContainer>
               <AuthButtonContainer
                 description={description}
-                button={LoginButton}
-                secondButton={RegisterButton}
+                buttonIcon={buttonIcon}
+                buttonText={buttonText}
+                linkText={linkText}
                 path={path}
               />
             </ButtonContainer>

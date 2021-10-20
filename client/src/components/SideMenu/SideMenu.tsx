@@ -7,9 +7,14 @@ import {
   pickedItemIdSelector,
 } from "@redux/selectors/menuStatus";
 
-import { MenuItem } from "@utils/constants/MenuItem/MenuItem";
+import { MenuItem, style } from "@utils/constants/MenuItem/MenuItem";
 
-import { NavbarContainer, NavbarItem } from "./styled/styled";
+import {
+  NavbarContainer,
+  NavbarItem,
+  TitleNavbarSubItem,
+  Title,
+} from "./styled/styled";
 
 export const SideMenu: FC = () => {
   const statusmenu = useSelector(menuStatusSelector);
@@ -18,23 +23,54 @@ export const SideMenu: FC = () => {
   const dispatch = useDispatch();
 
   const handleSetItemID = (itemId: number) => () => {
-    dispatch(itemIdAction(itemId));
+    if (pickedid === itemId) {
+      dispatch(itemIdAction(0));
+    } else {
+      dispatch(itemIdAction(itemId));
+    }
   };
 
   return (
     <NavbarContainer statusmenu={statusmenu}>
-      {MenuItem.map(({ name, path, itemid, icon }) => (
-        <NavbarItem
-          key={itemid}
-          pickedid={pickedid}
-          itemid={itemid}
-          onClick={handleSetItemID(itemid)}
-          to={path}
-          statusmenu={statusmenu}
-        >
-          {icon}
-          <span>{name}</span>
-        </NavbarItem>
+      {MenuItem.map(({ name, path, itemid, icon, subitems, height }) => (
+        <>
+          {path ? (
+            <NavbarItem
+              activeStyle={style}
+              paddingLeft="15px"
+              key={path}
+              onClick={handleSetItemID(itemid)}
+              exact
+              to={path}
+              statusmenu={statusmenu}
+            >
+              {icon}
+              <span>{name}</span>
+            </NavbarItem>
+          ) : (
+            <TitleNavbarSubItem
+              pickedid={pickedid}
+              itemid={itemid}
+              height={height}
+            >
+              <Title onClick={handleSetItemID(itemid)}>
+                {icon}
+                <span>{name}</span>
+              </Title>
+              {subitems?.map(({ name, path }) => (
+                <NavbarItem
+                  activeStyle={style}
+                  paddingLeft="55px"
+                  key={path}
+                  exact
+                  to={path}
+                >
+                  {name}
+                </NavbarItem>
+              ))}
+            </TitleNavbarSubItem>
+          )}
+        </>
       ))}
     </NavbarContainer>
   );
