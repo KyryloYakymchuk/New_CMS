@@ -19,14 +19,20 @@ import {FauthModule} from "./fauth/fauth.module";
 import {ConfigModule} from "@nestjs/config";
 import {OrdersModule} from "./orders/orders.module";
 import {OrderProblemsModule} from "./orders/oderProblems.module";
+import "dotenv/config";
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    ConfigModule.forRoot({ isGlobal: true }),
-    MongooseModule.forRoot(process.env.MONGO_URI, { useNewUrlParser: true }),
+    MongooseModule.forRoot(
+        process.env.MONGO_URI,
+        {
+          useNewUrlParser: true,
+          useUnifiedTopology: true
+          }
+        ),
     MulterModule.register({
       dest: "./uploads",
     }),

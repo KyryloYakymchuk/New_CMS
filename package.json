@@ -11,5 +11,7 @@
     "server:i": "cd server && npm i",
     "build": "cd client && npm run build"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "dependencies": {
+  }
 }

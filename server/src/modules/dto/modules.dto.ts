@@ -99,10 +99,21 @@ export class GetItemsCountDTO {
   variantID: string;
 }
 
-// export class AddVariantDTO {
+export  class AddVariantDTO {
+  itemID: string;
+  moduleName: string;
+}
+// export declare class DeleteVariantDTO {
+//   moduleName: string;
+//   variantID: string;
+//   itemID: string;
+// }
+// export declare class EditVariantDTO {
 //   data: any;
 // }
-
+export  class GetVariantsDTO {
+  itemID: string;
+}
 export class DeleteVariantDTO {
   variantID: string;
   itemID: string;

@@ -34,10 +34,8 @@ import {
   EditVariantDTO,
   PaginationDTO,
 } from "../modules/dto/modules.dto";
-import {
-  AddVariantDTO,
-  GetVariantsDTO,
-} from "../../dist/modules/dto/modules.dto";
+
+import {AddVariantDTO, GetVariantsDTO} from "../modules/dto/modules.dto";
 import { FuserService } from "../shared/fuser/fuser.service";
 import {
   AddCommentDTO,
@@ -49,9 +47,11 @@ import {
   ResponseProductsDTO,
 } from "./dto/products.dto";
 import { ModulesService } from "../modules/modules.service";
+import {ApiTags} from "@nestjs/swagger";
 
 export let module;
 
+@ApiTags('webshop')
 @Controller("webshop")
 export class WebshopController {
   constructor(

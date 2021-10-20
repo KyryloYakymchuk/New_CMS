@@ -24,7 +24,9 @@ import { LoggerGateway } from "../shared/logger/logger.gateway";
 import { AuthGuard } from "@nestjs/passport";
 
 export const module = "groups";
+import {ApiTags} from "@nestjs/swagger";
 
+@ApiTags('groups')
 @Controller("groups")
 export class GroupsController {
   constructor(

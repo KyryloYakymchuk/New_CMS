@@ -37,7 +37,7 @@ import { UploaderService } from "../shared/uploader/uploader.service";
 import { Category } from "src/types/category";
 import { QueryDTO } from "../shared/dto/shared.dto";
 import { FuserService } from "../shared/fuser/fuser.service";
-import { AddVariantDTO } from "../../dist/modules/dto/modules.dto";
+import {AddVariantDTO} from "./dto/modules.dto";
 
 export const options = {
   server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },

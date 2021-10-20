@@ -29,9 +29,11 @@ import { QueryDTO } from "../shared/dto/shared.dto";
 import { Request } from "express";
 import { LoggerGateway } from "../shared/logger/logger.gateway";
 import { join } from "path";
+import {ApiTags} from "@nestjs/swagger";
 
 export const module = "users";
 
+@ApiTags('users')
 @Controller("users")
 export class UsersController {
   constructor(
