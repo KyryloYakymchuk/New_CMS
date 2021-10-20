@@ -5,45 +5,47 @@ import { Reset } from "@modules/Auth/Reset";
 //
 import { UserPage } from "@modules/User/UsersPage";
 
+import { AuthRoutes, ProtectedRoutes } from "@utils/enums/routes";
+
 // Main components
 export const protectedRoutes = [
   {
-    path: "/",
+    path: ProtectedRoutes.DASHBOARD,
     component: UserPage,
     title: "Dashboard",
   },
   {
-    path: "/users/list",
+    path: ProtectedRoutes.USERS,
     component: UserPage,
     title: "Users",
   },
   {
-    path: "/pages/list",
+    path: ProtectedRoutes.PAGES,
     component: UserPage,
     title: "Pages",
   },
   {
-    path: "/modules/list",
+    path: ProtectedRoutes.MODULES,
     component: UserPage,
     title: "Modules",
   },
   {
-    path: "/groups/list",
+    path: ProtectedRoutes.GROUPS,
     component: UserPage,
     title: "Groups",
   },
   {
-    path: "/newsletter/list",
+    path: ProtectedRoutes.NEWSLETTER,
     component: UserPage,
     title: "Newsletter",
   },
   {
-    path: "/webshop/list",
+    path: ProtectedRoutes.WEBSHOP,
     component: UserPage,
     title: "Webshop",
   },
   {
-    path: "/settings/list",
+    path: ProtectedRoutes.SETTINGS,
     component: UserPage,
     title: "Settings",
   },
@@ -51,8 +53,8 @@ export const protectedRoutes = [
 
 // Auth components
 export const routes = [
-  { path: "/auth/login", component: Login },
-  { path: "/auth/register", component: Register },
-  { path: "/auth/reset", component: Reset },
-  { path: "/auth/resetPassword/:token", component: ResetPassword },
+  { path: AuthRoutes.LOGIN, component: Login },
+  { path: AuthRoutes.REGISTER, component: Register },
+  { path: AuthRoutes.RESET, component: Reset },
+  { path: AuthRoutes.RESET_PASSWORD, component: ResetPassword },
 ];

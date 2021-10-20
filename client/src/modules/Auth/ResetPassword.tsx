@@ -2,11 +2,12 @@ import { FC, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { useDispatch } from "react-redux";
 
-import { ErrorAction } from "@redux/actions/error";
-import { LoaderAction } from "@redux/actions/loader";
-import { ResetPasswordAction } from "@redux/actions/auth";
+import { errorAction } from "@redux/actions/error";
+import { loaderAction } from "@redux/actions/loader";
+import { resetPasswordAction } from "@redux/actions/auth";
 
-import { MainText } from "@utils/constants/AuthField/ResetPasswordFields/ResetPasswordFields";
+import { MainText } from "@utils/constants/AuthField/ResetPasswordFields";
+import { AuthRoutes } from "@utils/enums/routes";
 
 import { AuthLayout } from "@components/Auth/AuthLayout/AuthLayout";
 import { ModalConfirm } from "@components/Modal/Modal_Confirm_Submit/ModalConfirm";
@@ -35,17 +36,17 @@ export const ResetPassword: FC = () => {
       token,
     };
 
-    dispatch(ResetPasswordAction({ val, setOpenModal }));
-    dispatch(LoaderAction(true));
+    dispatch(resetPasswordAction({ val, setOpenModal }));
+    dispatch(loaderAction(true));
   };
 
   const handleAccept = () => {
     setOpenModal(false);
-    history.push("/auth/login");
+    history.push(AuthRoutes.LOGIN);
   };
 
   useEffect(() => {
-    dispatch(ErrorAction());
+    dispatch(errorAction());
   }, [dispatch]);
 
   return (

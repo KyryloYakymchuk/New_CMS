@@ -44,7 +44,6 @@ export interface IRegisterAction {
 }
 
 //RESET
-
 export interface IReset {
   email: string;
   setOpenModal?: any;

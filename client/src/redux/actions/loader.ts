@@ -1,6 +1,6 @@
 import { LoaderActionsTypes } from "@redux/types/loader";
 
-export const LoaderAction = (payload: boolean) => ({
+export const loaderAction = (payload: boolean) => ({
   type: LoaderActionsTypes.LOADER_STATUS,
   payload,
 });

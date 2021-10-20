@@ -1,5 +1,5 @@
 import { BrowserRouter, Route } from "react-router-dom";
-import { protectedRoutes, routes } from "@utils/constants/Routes/Routes";
+import { protectedRoutes, routes } from "@utils/constants/Routes";
 
 import { MainLayout } from "@components/MainLayout/MainLayout";
 

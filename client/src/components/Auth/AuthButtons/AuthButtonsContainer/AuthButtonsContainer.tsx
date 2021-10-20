@@ -2,20 +2,23 @@ import { useStyles } from "@utils/styles/button";
 import { FC } from "react";
 import { Link } from "react-router-dom";
 import { HelperText } from "./../styled/styled";
+import { Button } from "@mui/material";
 
 interface ButtonProps {
-  button: any;
-  Loader?: any;
-  secondButton: any;
+  buttonText: string;
+  buttonIcon: JSX.Element;
+  Loader?: JSX.Element;
+  linkText: string;
   description: string;
   path: string;
   loaderStatus?: boolean;
 }
 
 export const AuthButtonContainer: FC<ButtonProps> = ({
-  button,
+  buttonText,
+  buttonIcon,
   Loader,
-  secondButton,
+  linkText,
   description,
   path,
   loaderStatus,
@@ -24,10 +27,24 @@ export const AuthButtonContainer: FC<ButtonProps> = ({
 
   return (
     <>
-      <div className={classes.Button}>{loaderStatus ? Loader : button}</div>
+      <div className={classes.Button}>
+        {loaderStatus ? (
+          Loader
+        ) : (
+          <Button
+            startIcon={buttonIcon}
+            size="large"
+            color="inherit"
+            variant="contained"
+            type="submit"
+          >
+            {buttonText}
+          </Button>
+        )}
+      </div>
       <HelperText>
         {description}
-        <Link to={path}>{secondButton}</Link>
+        <Link to={path}>{linkText}</Link>
       </HelperText>
     </>
   );

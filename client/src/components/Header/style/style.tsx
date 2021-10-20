@@ -78,6 +78,3 @@ export const TitleItem = styled.div`
   display: flex;
   align-items: center;
 `;
-export const HeaderIcon = styled.div`
-  margin-right: 15px;
-`;

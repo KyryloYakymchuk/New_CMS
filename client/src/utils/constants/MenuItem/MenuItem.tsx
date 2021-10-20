@@ -1,22 +1,15 @@
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import PersonIcon from "@mui/icons-material/Person";
-import StickyNote2Icon from "@mui/icons-material/StickyNote2";
-import AccountTreeIcon from "@mui/icons-material/AccountTree";
-import GroupsIcon from "@mui/icons-material/Groups";
-import MenuBookIcon from "@mui/icons-material/MenuBook";
-import StorefrontIcon from "@mui/icons-material/Storefront";
-import SettingsIcon from "@mui/icons-material/Settings";
+import { Icons } from "./icon";
 
 export const MenuItem = [
   {
     name: "Dashboard",
     path: "/",
-    icon: <DashboardIcon fontSize="medium" />,
+    icon: Icons.DashboardIcon,
     itemid: 1,
   },
   {
     name: "Users",
-    icon: <PersonIcon fontSize="medium" />,
+    icon: Icons.UsersIcon,
     itemid: 2,
     height: "130px",
     subitems: [
@@ -26,7 +19,7 @@ export const MenuItem = [
   },
   {
     name: "Pages",
-    icon: <StickyNote2Icon fontSize="medium" />,
+    icon: Icons.PagesIcon,
     itemid: 3,
     height: "180px",
     subitems: [
@@ -37,7 +30,7 @@ export const MenuItem = [
   },
   {
     name: "Modules",
-    icon: <AccountTreeIcon fontSize="medium" />,
+    icon: Icons.ModulesIcon,
     itemid: 4,
     height: "130px",
     subitems: [
@@ -47,7 +40,7 @@ export const MenuItem = [
   },
   {
     name: "Groups",
-    icon: <GroupsIcon fontSize="medium" />,
+    icon: Icons.GroupsIcon,
     itemid: 5,
     height: "130px",
     subitems: [
@@ -57,7 +50,7 @@ export const MenuItem = [
   },
   {
     name: "Newsletter",
-    icon: <MenuBookIcon fontSize="medium" />,
+    icon: Icons.NewsletterIcon,
     itemid: 6,
     height: "225px",
     subitems: [
@@ -69,7 +62,7 @@ export const MenuItem = [
   },
   {
     name: "Webshop",
-    icon: <StorefrontIcon fontSize="medium" />,
+    icon: Icons.WebshopIcon,
     itemid: 7,
     height: "225px",
     subitems: [
@@ -82,7 +75,7 @@ export const MenuItem = [
   {
     name: "Settings",
     path: "/settings",
-    icon: <SettingsIcon fontSize="medium" />,
+    icon: Icons.SettingsIcon,
     itemid: 8,
   },
 ];

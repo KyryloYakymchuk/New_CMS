@@ -1,6 +1,6 @@
 import { put, takeEvery, call } from "@redux-saga/core/effects";
-import { ErrorAction } from "@redux/actions/error";
-import { LoaderAction } from "@redux/actions/loader";
+import { errorAction } from "@redux/actions/error";
+import { loaderAction } from "@redux/actions/loader";
 import {
   AuthActionsTypes,
   ILoginAction,
@@ -8,6 +8,9 @@ import {
   IResetAction,
   IResetPasswordAction,
 } from "@redux/types/auth";
+
+import { ProtectedRoutes } from "@utils/enums/routes";
+
 import { api } from "@services/api";
 
 function* LoginReq(data: ILoginAction): Generator {
@@ -18,10 +21,10 @@ function* LoginReq(data: ILoginAction): Generator {
       "NewCMS_accessToken",
       fieldsResponse.data.accessToken
     );
-    history.push("/");
-    yield put(ErrorAction());
+    history.push(ProtectedRoutes.DASHBOARD);
+    yield put(errorAction());
   } catch (error: any) {
-    yield put(ErrorAction(error.response.data.message));
+    yield put(errorAction(error.response.data.message));
   }
 }
 
@@ -30,10 +33,10 @@ function* RegisterReq(data: IRegisterAction): Generator {
   try {
     yield call(api.post, "/auth/register", value);
     setOpenModal(true);
-    yield put(ErrorAction());
-    yield put(LoaderAction(false));
+    yield put(errorAction());
+    yield put(loaderAction(false));
   } catch (error: any) {
-    yield put(ErrorAction(error.response.data.message));
+    yield put(errorAction(error.response.data.message));
   }
 }
 
@@ -42,10 +45,10 @@ function* ResetReq(data: IResetAction): Generator {
   try {
     yield call(api.post, "/auth/password", { email: email });
     setOpenModal(true);
-    yield put(ErrorAction());
-    yield put(LoaderAction(false));
+    yield put(errorAction());
+    yield put(loaderAction(false));
   } catch (error: any) {
-    yield put(ErrorAction(error.response.data.message));
+    yield put(errorAction(error.response.data.message));
   }
 }
 
@@ -55,10 +58,10 @@ function* ResetPasswordReq(data: IResetPasswordAction): Generator {
   try {
     yield call(api.post, "/auth/password/confirm", { ...val });
     setOpenModal(true);
-    yield put(ErrorAction());
-    yield put(LoaderAction(false));
+    yield put(errorAction());
+    yield put(loaderAction(false));
   } catch (error: any) {
-    yield put(ErrorAction(error.response.data.message));
+    yield put(errorAction(error.response.data.message));
   }
 }
 

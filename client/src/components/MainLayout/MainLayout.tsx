@@ -4,6 +4,7 @@ import { Header } from "@components/Header/Header";
 import { SideMenu } from "@components/SideMenu/SideMenu";
 
 import { SideContainer, GlobalContainer, SideChildren } from "./styled/styled";
+import { AuthRoutes } from "@utils/enums/routes";
 
 interface RouteProps {
   path: string;
@@ -14,8 +15,11 @@ interface RouteProps {
 export const MainLayout: FC<RouteProps> = ({ children, title, ...rest }) => {
   const history = useHistory();
 
-  if (!history.location.pathname.includes("/auth")) {
-    !localStorage.getItem("NewCMS_accessToken") && history.push("/auth/login");
+  if (
+    !history.location.pathname.includes("/auth") &&
+    !localStorage.getItem("NewCMS_accessToken")
+  ) {
+    history.push(AuthRoutes.LOGIN);
   }
 
   return (
