@@ -6,18 +6,18 @@ export const MenuItem = [
     name: "Home Page",
     path: ProtectedRoutes.DASHBOARD,
     icon: Icons.DashboardIcon,
-    itemid: 1,
+    itemId: 1,
   },
   {
     name: "Users",
     icon: Icons.UsersIcon,
-    itemid: 2,
+    itemId: 2,
     path: ProtectedRoutes.USERS,
   },
   {
     name: "Pages",
     icon: Icons.PagesIcon,
-    itemid: 3,
+    itemId: 3,
     height: "180px",
     subitems: [
       { name: "All Pages", path: "/pages/list" },
@@ -28,7 +28,7 @@ export const MenuItem = [
   {
     name: "Modules",
     icon: Icons.ModulesIcon,
-    itemid: 4,
+    itemId: 4,
     height: "130px",
     subitems: [
       { name: "All Modules", path: "/modules/list" },
@@ -38,7 +38,7 @@ export const MenuItem = [
   {
     name: "Groups",
     icon: Icons.GroupsIcon,
-    itemid: 5,
+    itemId: 5,
     height: "130px",
     subitems: [
       { name: "All Groups", path: "/groups/list" },
@@ -48,7 +48,7 @@ export const MenuItem = [
   {
     name: "Newsletter",
     icon: Icons.NewsletterIcon,
-    itemid: 6,
+    itemId: 6,
     height: "225px",
     subitems: [
       { name: "All Letter", path: "/letter/list" },
@@ -60,7 +60,7 @@ export const MenuItem = [
   {
     name: "Webshop",
     icon: Icons.WebshopIcon,
-    itemid: 7,
+    itemId: 7,
     height: "225px",
     subitems: [
       { name: "Categories", path: "/webshop/categories/list" },
@@ -73,7 +73,7 @@ export const MenuItem = [
     name: "Settings",
     path: "/settings",
     icon: Icons.SettingsIcon,
-    itemid: 8,
+    itemId: 8,
   },
 ];
 

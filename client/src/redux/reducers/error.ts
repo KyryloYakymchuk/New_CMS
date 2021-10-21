@@ -1,22 +1,20 @@
-import { IError, ErrorActionsTypes, IErrorAction } from "@redux/types/error";
+import { IError, ErrorActionsTypes, IErrorAction } from '@redux/types/error';
 
 const initialState: IError = {
-  message: "",
+    message: ''
 };
 
 const error = (state = initialState, action: IErrorAction) => {
-  switch (action.type) {
-    case ErrorActionsTypes.ERROR_MASSEGE:
-      return {
-        ...state,
-        message: action.payload,
-      };
+    switch (action.type) {
+        case ErrorActionsTypes.ERROR_MASSEGE:
+            return {
+                ...state,
+                message: action.payload
+            };
 
-    default:
-      return {
-        ...state,
-      };
-  }
+        default:
+            return state;
+    }
 };
 
 export default error;

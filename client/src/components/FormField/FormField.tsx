@@ -13,7 +13,7 @@ const FormField: FC<FormProps> = ({ input, meta, children, ...rest }) => {
 
   return (
     <TextField
-      error={(meta.touched && meta.error) || (errorMessage && Boolean)}
+      error={Boolean((meta.touched && meta.error) || errorMessage)}
       helperText={meta.touched && meta.error && <span> {meta.error} </span>}
       {...rest}
       {...input}

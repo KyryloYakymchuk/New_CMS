@@ -3,10 +3,10 @@ import styled from "styled-components";
 
 interface IMenuProps {
   statusmenu?: boolean;
-  pickedid?: number;
-  itemid?: number;
+  pickedId?: number;
+  itemId?: number;
   height?: string;
-  paddingLeft?: string;
+  padding?: string;
 }
 
 export const NavbarContainer = styled.div<IMenuProps>`
@@ -22,7 +22,7 @@ export const NavbarContainer = styled.div<IMenuProps>`
 export const NavbarItem = styled(NavLink)<IMenuProps>`
   border-right: 1px solid rgba(96, 96, 96, 0.273);
   font-size: 20px;
-  padding-left: ${({ paddingLeft }) => paddingLeft};
+  padding-left: ${({ padding }) => padding};
   cursor: pointer;
   height: 45px;
   display: flex;
@@ -55,8 +55,8 @@ export const TitleNavbarSubItem = styled.div<IMenuProps>`
   font-size: 20px;
   cursor: pointer;
   overflow: hidden;
-  height: ${({ pickedid, itemid, height }) =>
-    pickedid === itemid ? height : "45px"};
+  height: ${({ pickedId, itemId, height }) =>
+    pickedId === itemId ? height : "45px"};
   transition-duration: 0.3s;
   display: block;
   align-items: center;

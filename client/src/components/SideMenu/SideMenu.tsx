@@ -18,12 +18,12 @@ import {
 
 export const SideMenu: FC = () => {
   const statusmenu = useSelector(menuStatusSelector);
-  const pickedid = useSelector(pickedItemIdSelector);
+  const pickedId = useSelector(pickedItemIdSelector);
 
   const dispatch = useDispatch();
 
   const handleSetItemID = (itemId: number) => () => {
-    if (pickedid === itemId) {
+    if (pickedId === itemId) {
       dispatch(itemIdAction(0));
     } else {
       dispatch(itemIdAction(itemId));
@@ -32,46 +32,44 @@ export const SideMenu: FC = () => {
 
   return (
     <NavbarContainer statusmenu={statusmenu}>
-      {MenuItem.map(({ name, path, itemid, icon, subitems, height }) => (
-        <>
-          {path ? (
-            <NavbarItem
-              activeStyle={style}
-              paddingLeft="15px"
-              key={path}
-              onClick={handleSetItemID(itemid)}
-              exact
-              to={path}
-              statusmenu={statusmenu}
-            >
+      {MenuItem.map(({ name, path, itemId, icon, subitems, height }) =>
+        path ? (
+          <NavbarItem
+            activeStyle={style}
+            padding="15px"
+            key={itemId}
+            onClick={handleSetItemID(itemId)}
+            exact
+            to={path}
+            statusmenu={statusmenu}
+          >
+            {icon}
+            <span>{name}</span>
+          </NavbarItem>
+        ) : (
+          <TitleNavbarSubItem
+            pickedId={pickedId}
+            itemId={itemId}
+            height={height}
+          >
+            <Title onClick={handleSetItemID(itemId)}>
               {icon}
               <span>{name}</span>
-            </NavbarItem>
-          ) : (
-            <TitleNavbarSubItem
-              pickedid={pickedid}
-              itemid={itemid}
-              height={height}
-            >
-              <Title onClick={handleSetItemID(itemid)}>
-                {icon}
-                <span>{name}</span>
-              </Title>
-              {subitems?.map(({ name, path }) => (
-                <NavbarItem
-                  activeStyle={style}
-                  paddingLeft="55px"
-                  key={path}
-                  exact
-                  to={path}
-                >
-                  {name}
-                </NavbarItem>
-              ))}
-            </TitleNavbarSubItem>
-          )}
-        </>
-      ))}
+            </Title>
+            {subitems?.map(({ name, path }) => (
+              <NavbarItem
+                activeStyle={style}
+                padding="55px"
+                key={path}
+                exact
+                to={path}
+              >
+                {name}
+              </NavbarItem>
+            ))}
+          </TitleNavbarSubItem>
+        )
+      )}
     </NavbarContainer>
   );
 };

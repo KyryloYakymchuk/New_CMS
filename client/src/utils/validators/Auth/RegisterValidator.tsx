@@ -26,8 +26,6 @@ interface errorsProps {
 
 export const RegisterValidator = (values: ValidatorProps) => {
   const errors: errorsProps = {};
-  console.log(values);
-
   // EMAIL
 
   if (!values.email) {
@@ -89,8 +87,6 @@ export const RegisterValidator = (values: ValidatorProps) => {
       errors.birthday = "Wrong date";
     }
   }
-
-  console.log(errors);
 
   return errors;
 };

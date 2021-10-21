@@ -1,27 +1,26 @@
-import { BrowserRouter, Route } from "react-router-dom";
-import { protectedRoutes, routes } from "@utils/constants/Routes";
+import { BrowserRouter, Route } from 'react-router-dom';
+import { protectedRoutes, routes } from '@utils/constants/Routes';
 
-import { MainLayout } from "@components/MainLayout/MainLayout";
+import { ProtectedRoute } from '@components/ProtectedRoute/ProtectedRoute';
 
-const App = () => {
- 
-  return (
+const App = () => (
     <div className="App">
-      <BrowserRouter>
-        {routes.map(({ path, component: Component }) => (
-          <Route key={path} exact path={path}>
-            <Component />
-          </Route>
-        ))}
+        <BrowserRouter>
+            {routes.map(({ path, component: Component }) => (
+                <Route key={path} exact path={path}>
+                    <Component />
+                </Route>
+            ))}
 
-        {protectedRoutes.map(({ path, component: Component, title }) => (
-          <MainLayout key={path} title={title} exact path={path}>
-            <Component />
-          </MainLayout>
-        ))}
-      </BrowserRouter>
+            {protectedRoutes.map(({ path, component: Component, title }) => (
+                <Route key={path} exact path={path}>
+                    <ProtectedRoute title={title} path={path}>
+                        <Component />
+                    </ProtectedRoute>
+                </Route>
+            ))}
+        </BrowserRouter>
     </div>
-  );
-};
+);
 
 export default App;

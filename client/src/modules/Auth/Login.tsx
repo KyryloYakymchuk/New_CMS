@@ -1,36 +1,36 @@
-import { FC, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
+import { FC, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
 
-import { loginAction } from "@redux/actions/auth";
-import { errorAction } from "@redux/actions/error";
+import { loginAction } from '@redux/actions/auth';
+import { errorAction } from '@redux/actions/error';
 
-import { MainText } from "@utils/constants/AuthField/LoginFields";
+import { MainText } from '@utils/constants/AuthField/LoginFields';
 
-import { AuthLayout } from "@components/Auth/AuthLayout/AuthLayout";
-import { LoginForm } from "@components/Auth/LoginForm/LoginForm";
+import { AuthLayout } from '@components/Auth/AuthLayout/AuthLayout';
+import { LoginForm } from '@components/Auth/LoginForm/LoginForm';
 
 export interface IFormValues {
-  email: string;
-  password: string;
+    email: string;
+    password: string;
 }
 
 export const Login: FC = () => {
-  const dispatch = useDispatch();
-  const history = useHistory();
+    const dispatch = useDispatch();
+    const history = useHistory();
 
-  const onSubmit = (value: IFormValues) => {
-    dispatch(loginAction({ value, history }));
-  };
+    const onSubmit = (value: IFormValues) => {
+        dispatch(loginAction({ value, history }));
+    };
 
-  useEffect(() => {
-    dispatch(errorAction());
-  }, [dispatch]);
+    useEffect(() => {
+        dispatch(errorAction());
+    }, [dispatch]);
 
-  const { title, description } = MainText;
-  return (
-    <AuthLayout title={title} description={description}>
-      <LoginForm onSubmit={onSubmit} />
-    </AuthLayout>
-  );
+    const { title, description } = MainText;
+    return (
+        <AuthLayout title={title} description={description}>
+            <LoginForm onSubmit={onSubmit} />
+        </AuthLayout>
+    );
 };
