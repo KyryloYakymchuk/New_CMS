@@ -9,7 +9,7 @@ const initialState: IStatusPayload = {
     status: false
 };
 
-const menu = (state = initialState, action: StatusAction) => {
+const menuReducer = (state = initialState, action: StatusAction) => {
     switch (action.type) {
         case TypeStatusAction.STATUS:
             return {
@@ -28,4 +28,4 @@ const menu = (state = initialState, action: StatusAction) => {
     }
 };
 
-export default menu;
+export default menuReducer;

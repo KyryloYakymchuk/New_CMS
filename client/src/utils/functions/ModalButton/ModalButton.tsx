@@ -9,16 +9,13 @@ interface ModalProps {
 }
 
 export const ModalButton: FC<ModalProps> = ({ handleAccept, handleClose }) => {
-    return (
-        <>
-            {handleClose ? (
-                <ConfirmModalButton
-                    handleAccept={handleAccept}
-                    handleClose={handleClose}
-                />
-            ) : (
-                <SubmitModalButton handleAccept={handleAccept} />
-            )}
-        </>
+    return  handleClose ? (
+        <ConfirmModalButton
+            handleAccept={handleAccept}
+            handleClose={handleClose}
+        />
+    ) : (
+        <SubmitModalButton handleAccept={handleAccept} />
     );
+   
 };

@@ -1,24 +1,24 @@
 export enum TypeStatusAction {
-  STATUS = "STATUS",
-  ITEMID = "ITEMID",
+    STATUS = 'STATUS',
+    ITEMID = 'ITEMID'
 }
 
 export interface IStatusPayload {
-  status: boolean;
+    status: boolean;
 }
 
 export interface IStatusAction {
-  type: TypeStatusAction.STATUS;
-  payload: boolean;
+    type: TypeStatusAction.STATUS;
+    payload: boolean;
 }
 
 export interface IItemIdPayload {
-  itemId: number;
+    itemId: number;
 }
 
 export interface IItemIdAction {
-  type: TypeStatusAction.ITEMID;
-  payload: number;
+    type: TypeStatusAction.ITEMID;
+    payload: number;
 }
 
 export type StatusAction = IStatusAction | IItemIdAction;

@@ -1,2 +1,2 @@
-export const menuStatusSelector = ({ menu }: any) => menu.status;
-export const pickedItemIdSelector = ({ menu }: any) => menu.itemId;
+export const menuStatusSelector = ({ menuReducer }: any) => menuReducer.status;
+export const pickedItemIdSelector = ({ menuReducer }: any) => menuReducer.itemId;

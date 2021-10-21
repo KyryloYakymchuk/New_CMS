@@ -1,12 +1,11 @@
-import { NavLink } from "react-router-dom";
-import styled from "styled-components";
+import { NavLink } from 'react-router-dom';
+import styled from 'styled-components';
 
 interface IMenuProps {
-  statusmenu?: boolean;
-  pickedId?: number;
-  itemId?: number;
-  height?: string;
-  padding?: string;
+    statusmenu?: boolean;
+    isItemSelected?:boolean;
+    height?: string;
+    padding?: string;
 }
 
 export const NavbarContainer = styled.div<IMenuProps>`
@@ -15,7 +14,7 @@ export const NavbarContainer = styled.div<IMenuProps>`
   position: sticky;
   display: block;
   overflow-x: hidden;
-  width: ${({ statusmenu }) => (statusmenu ? "0px" : "220px")};
+  width: ${({ statusmenu }) => (statusmenu ? '0px' : '220px')};
   transition-duration: 0.3s;
   top: 0;
 `;
@@ -40,6 +39,8 @@ export const NavbarItem = styled(NavLink)<IMenuProps>`
     text-align: start;
     width: 170px;
   }
+
+  
 `;
 
 export const Title = styled.div<IMenuProps>`
@@ -55,8 +56,8 @@ export const TitleNavbarSubItem = styled.div<IMenuProps>`
   font-size: 20px;
   cursor: pointer;
   overflow: hidden;
-  height: ${({ pickedId, itemId, height }) =>
-    pickedId === itemId ? height : "45px"};
+  height: ${({ isItemSelected, height }) =>
+        isItemSelected ? height : '45px'};
   transition-duration: 0.3s;
   display: block;
   align-items: center;
