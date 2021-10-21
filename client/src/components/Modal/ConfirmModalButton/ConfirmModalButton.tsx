@@ -1,25 +1,25 @@
-import { Button } from "@material-ui/core";
-import { FC } from "react";
+import { Button } from '@material-ui/core';
+import { FC } from 'react';
 
-import { CustomButton } from "./styled/ConfirmModalButton.module";
+import { CustomButton } from './styled/ConfirmModalButton.module';
 
 interface ButtonProps {
-  handleClose: any;
-  handleAccept: any;
+    handleAccept: VoidFunction;
+    handleClose?: VoidFunction;
 }
 
 export const ConfirmModalButton: FC<ButtonProps> = ({
-  handleClose,
-  handleAccept,
+    handleClose,
+    handleAccept
 }) => {
-  return (
-    <CustomButton>
-      <Button variant="contained" onClick={handleAccept}>
-        Yes
-      </Button>
-      <Button variant="outlined" onClick={handleClose}>
-        No
-      </Button>
-    </CustomButton>
-  );
+    return (
+        <CustomButton>
+            <Button variant="contained" onClick={handleAccept}>
+            Yes
+            </Button>
+            <Button variant="outlined" onClick={handleClose}>
+            No
+            </Button>
+        </CustomButton>
+    );
 };

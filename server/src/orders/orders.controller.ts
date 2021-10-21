@@ -26,7 +26,9 @@ import {
 import {OrderItemsDTO} from "../modules/dto/modules.dto";
 
 export const module = "orders";
+import {ApiTags} from "@nestjs/swagger";
 
+@ApiTags('order')
 @Controller("order")
 export class OrdersController {
   constructor(

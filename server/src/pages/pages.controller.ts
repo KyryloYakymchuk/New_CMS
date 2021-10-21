@@ -19,7 +19,9 @@ import {
   GetPagesDTO, ResponsePageDto,
 } from "./dto/pages.dto";
 import { PagesService } from "./pages.service";
+import {ApiTags} from "@nestjs/swagger";
 
+@ApiTags('pages')
 @Controller("pages")
 export class PagesController {
   constructor(private pagesService: PagesService) {}

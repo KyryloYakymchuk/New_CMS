@@ -4,8 +4,14 @@ import {
   Body,
   HttpException,
   HttpStatus,
-  HttpCode, Get, Param, Put,
+  HttpCode,
+  Get,
+  Param,
+  Put,
 } from "@nestjs/common";
+import {ApiTags} from "@nestjs/swagger";
+import { InjectModel } from "@nestjs/mongoose";
+
 import {
   NewPasswordDTO,
   EmailDTO,
@@ -13,13 +19,13 @@ import {
   RegisterDTO
 } from "./dto/auth.dto";
 import { FauthService } from "./fauth.service";
-import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { TokenDTO } from "../groups/dto/groups.dto";
 import {Fuser} from "../types/fuser";
 import {FuserService} from "../shared/fuser/fuser.service";
 import {ResponseUserDto} from "../fusers/dto/fusers.dto";
 
+@ApiTags('fauth')
 @Controller("fauth")
 export class FauthController {
   userID;

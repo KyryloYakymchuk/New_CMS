@@ -1,41 +1,74 @@
-import { FC } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { itemIdAction } from "@redux/actions/menuStatus";
+import { FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { itemIdAction } from '@redux/actions/menuStatus';
 
 import {
-  menuStatusSelector,
-  pickedItemIdSelector,
-} from "@redux/selectors/menuStatus";
+    menuStatusSelector,
+    pickedItemIdSelector
+} from '@redux/selectors/menuStatus';
 
-import { MenuItem } from "@utils/constants/MenuItem/MenuItem";
+import { MenuItem, style } from '@utils/constants/MenuItem/MenuItem';
 
-import { NavbarContainer, NavbarItem } from "./styled/styled";
+import {
+    NavbarContainer,
+    NavbarItem,
+    TitleNavbarSubItem,
+    Title
+} from './styled/styled';
 
 export const SideMenu: FC = () => {
-  const statusmenu = useSelector(menuStatusSelector);
-  const pickedid = useSelector(pickedItemIdSelector);
+    const statusmenu = useSelector(menuStatusSelector);
+    const pickedId = useSelector(pickedItemIdSelector);
 
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-  const handleSetItemID = (itemId: number) => () => {
-    dispatch(itemIdAction(itemId));
-  };
+    const handleSetItemID = (itemId: number) => () => {
+        if (pickedId === itemId) {
+            dispatch(itemIdAction(0));
+        } else {
+            dispatch(itemIdAction(itemId));
+        }
+    };
 
-  return (
-    <NavbarContainer statusmenu={statusmenu}>
-      {MenuItem.map(({ name, path, itemid, icon }) => (
-        <NavbarItem
-          key={itemid}
-          pickedid={pickedid}
-          itemid={itemid}
-          onClick={handleSetItemID(itemid)}
-          to={path}
-          statusmenu={statusmenu}
-        >
-          {icon}
-          <span>{name}</span>
-        </NavbarItem>
-      ))}
-    </NavbarContainer>
-  );
+    return (
+        <NavbarContainer statusmenu={statusmenu}>
+            {MenuItem.map(({ name, path, itemId, icon, subitems, height }) =>
+                path ? (
+                    <NavbarItem
+                        exact
+                        to={path}
+                        activeStyle={style}
+                        padding="15px"
+                        key={itemId}
+                        onClick={handleSetItemID(itemId)}
+                        statusmenu={statusmenu}
+                    >
+                        {icon}
+                        <span>{name}</span>
+                    </NavbarItem>
+                ) : (
+                    <TitleNavbarSubItem
+                        isItemSelected={pickedId === itemId}
+                        height={height}
+                    >
+                        <Title onClick={handleSetItemID(itemId)}>
+                            {icon}
+                            <span>{name}</span>
+                        </Title>
+                        {subitems?.map(({ subName, subPath }) => (
+                            <NavbarItem
+                                exact
+                                to={subPath}
+                                activeStyle={style}
+                                padding="55px"
+                                key={subPath}
+                            >
+                                {subName}
+                            </NavbarItem>
+                        ))}
+                    </TitleNavbarSubItem>
+                )
+            )}
+        </NavbarContainer>
+    );
 };

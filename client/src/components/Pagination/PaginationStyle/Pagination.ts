@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const StyledPaginateContainer = styled.div`
 .pagination {
@@ -80,4 +80,4 @@ export const StyledPaginateContainer = styled.div`
     width: 3em;
     height: 3em;
   }
-  `
+  `;

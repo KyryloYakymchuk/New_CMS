@@ -30,7 +30,7 @@ import {
 } from "./dto/products.dto";
 import { Fuser } from "../types/fuser";
 import * as uniqid from "uniqid";
-import { GetVariantsDTO } from "../../dist/modules/dto/modules.dto";
+import {GetVariantsDTO} from "../modules/dto/modules.dto";
 
 export const options = {
   server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },

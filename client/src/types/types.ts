@@ -1,18 +1,28 @@
 export interface IAddress {
-  street: string;
-  city: string;
-  zipcode: string;
+    street: string;
+    city: string;
+    zipcode: string;
 }
-
 export interface IUsers {
-  id: number;
-  name: string;
-  email: string;
-  address: IAddress;
+    id: number;
+    name: string;
+    email: string;
+    address: IAddress;
 }
-
 export interface ITodo {
-  id: number;
+    id: number;
+    title: string;
+    compleeted: boolean;
+}
+export interface IlistColums {
   title: string;
-  compleeted: boolean;
+  name: string;
+}
+export interface IlistColums {
+  title: string;
+  name: string;
+}
+export interface IlistColums {
+  title: string;
+  name: string;
 }

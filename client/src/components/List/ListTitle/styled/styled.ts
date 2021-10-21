@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const ListTitleContainer = styled.div`
   width: 100%;
@@ -7,7 +7,7 @@ export const ListTitleContainer = styled.div`
   display: flex;
   justify-content: space-evenly;
   margin-bottom: 20px;
-  border-bottom: 1px solid red;
+  border-bottom: 1px solid rgba(150, 150, 150,0.3);
   align-items: center;
 
   & > div {
@@ -16,7 +16,7 @@ export const ListTitleContainer = styled.div`
     display: flex;
     justify-content: flex-start;
     :last-child {
-      width: 23%;
+      width: 30%;
     }
   }
 `;

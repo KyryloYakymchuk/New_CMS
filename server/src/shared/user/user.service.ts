@@ -41,7 +41,7 @@ export class UserService {
 
     if (user)
       throw new HttpException("User already exists!", HttpStatus.BAD_REQUEST);
-
+    console.log(userDTO)
     const createdUser = new this.userModel(userDTO);
     await createdUser.save();
 

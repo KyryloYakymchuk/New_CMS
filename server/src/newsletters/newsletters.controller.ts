@@ -20,7 +20,9 @@ import {
   GetJobDTO,
 } from "./dto/newsletters.dto";
 import { Request } from "express";
+import {ApiTags} from "@nestjs/swagger";
 
+@ApiTags('newsletters')
 @Controller("newsletters")
 export class NewslettersController {
   constructor(private newslettersService: NewslettersService) {}

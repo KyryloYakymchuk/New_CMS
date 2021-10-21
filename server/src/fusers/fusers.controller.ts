@@ -12,12 +12,14 @@ import {
   Req,
   UseGuards,
 } from "@nestjs/common";
-import {DeleteFuserDTO, EditFuserDTO, PaginationDTO, ViewedDTO} from "./dto/fusers.dto";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { AuthGuard } from "@nestjs/passport";
-import { QueryDTO } from "../shared/dto/shared.dto";
 import { Request } from "express";
+import {ApiTags} from "@nestjs/swagger";
+
+import {DeleteFuserDTO, EditFuserDTO, PaginationDTO, ViewedDTO} from "./dto/fusers.dto";
+import { QueryDTO } from "../shared/dto/shared.dto";
 import { LoggerGateway } from "../shared/logger/logger.gateway";
 import {Fuser} from "../types/fuser";
 import {FuserService} from "../shared/fuser/fuser.service";
@@ -25,6 +27,7 @@ import {ResponseItemsDTO} from "../modules/dto/modules.dto";
 
 export const module = "fusers";
 
+@ApiTags('fuser')
 @Controller("fuser")
 export class FusersController {
   constructor(

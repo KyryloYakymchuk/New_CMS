@@ -1,34 +1,27 @@
-import { iUser } from "@redux/types/users";
-import { FC, MouseEventHandler } from "react";
-import { JsxElement } from "typescript";
+import { IlistColums } from '@interfaces/types';
+import { FC } from 'react';
+import { IArrButton } from '../List';
+import { Button, ButtonBlock, ListElementContainer } from './styled/styled';
 
-import { ListElementContainer } from "./styled/styled";
-
-export interface IlistColums {
-  title: string;
-  name: string;
-}
- interface IArrButton  {
-  item: any;
-  onclickFunc: (user: React.ChangeEvent<HTMLDivElement>) => MouseEventHandler<HTMLDivElement>;
-}
 interface IProps {
-  listColums: IlistColums[];
-  user?: any;
-  arrButton?: IArrButton[];
+    listColums: IlistColums[];
+    user: any;
+    //cant be fixed because type IUser not accepted by function onclickFunc
+    arrButton?: IArrButton[];
 }
 
 export const ListElement: FC<IProps> = ({ listColums, user, arrButton }) => {
-  //console.log();
-  
-  return (
-    <ListElementContainer>
-      {user ? listColums.map(({ name }) => <div>{user[name]}</div>) : null}
-      <div>
-        {arrButton?.map(({item, onclickFunc }) => (
-          <div onClick={onclickFunc(user)}>{item}</div>
-        ))}{" "}
-      </div>
-    </ListElementContainer>
-  );
+    return (
+        <ListElementContainer>
+            {user
+                ? listColums.map(({ name }) => 
+                    <div key={name}>{user[name]}</div>)
+                : null}
+            <ButtonBlock>
+                {arrButton?.map(({ item, onclickFunc }) => (
+                    <Button onClick={onclickFunc(user)}>{item}</Button>
+                ))}{' '}
+            </ButtonBlock>
+        </ListElementContainer>
+    );
 };

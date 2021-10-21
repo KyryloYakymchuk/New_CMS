@@ -1,18 +1,18 @@
-import { IUserActions, IUsers, UserActionTypes } from "@redux/types/users";
+import { IUserActions, IUsers, UserActionTypes } from '@redux/types/users';
 
 const initialState: IUsers = {};
 
 const users = (state = initialState, action: IUserActions): IUsers => {
-  switch (action.type) {
-    case UserActionTypes.SET_USERS:
-      return {
-        ...state,
-        userListData: action.payload,
-      };
+    switch (action.type) {
+        case UserActionTypes.SET_USERS:
+            return {
+                ...state,
+                userListData: action.payload
+            };
 
-    default:
-      return state;
-  }
+        default:
+            return state;
+    }
 };
 
 export default users;

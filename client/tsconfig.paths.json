@@ -1,6 +1,26 @@
 {
   "compilerOptions": {
+    "target": "es6",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "typeRoots": ["src/typings.d.ts", "node_modules/@types"],
     "baseUrl": "./src",
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noImplicitAny": true,
+    "noEmit": true,
+    "jsx": "react",
     "paths": {
       "@redux/*": ["./redux/*"],
       "@interfaces/*": ["./types/*"],
@@ -8,8 +28,6 @@
       "@utils/*": ["./utils/*"],
       "@modules/*": ["./modules/*"],
       "@services/*": ["./services/*"]
-
-
     }
   }
 }

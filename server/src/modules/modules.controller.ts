@@ -57,7 +57,9 @@ import { QueryDTO } from "../shared/dto/shared.dto";
 import { FuserService } from "../shared/fuser/fuser.service";
 
 export const module = "modules";
+import {ApiTags} from "@nestjs/swagger";
 
+@ApiTags('newsletters')
 @Controller("modules")
 export class ModulesController {
   constructor(
