@@ -1,24 +1,39 @@
-import { FC } from "react";
-import { DataGridPro } from "@mui/x-data-grid-pro";
-import { useDemoData } from "@mui/x-data-grid-generator";
+import { iUser } from "@redux/types/users";
+import { FC, MouseEventHandler } from "react";
+import { JsxElement } from "typescript";
+import { ListElement } from "./ListElement/ListElement";
+import { ListTitle } from "./ListTitle/ListTitle";
+
 import { ListContainer } from "./styled/styled";
 
-export const List: FC = () => {
-  const { data } = useDemoData({
-    dataSet: "Commodity",
-    rowLength: 100,
-    editable: true,
-  });
+interface IArrButton {
+  item: any;
+  onclickFunc: (
+    user: React.ChangeEvent<HTMLDivElement>
+  ) => MouseEventHandler<HTMLDivElement>;
+}
 
+export interface IlistColums {
+  title: string;
+  name: string;
+}
+interface IPrors {
+  listColums: IlistColums[];
+  listData?: any[];
+  arrButton: IArrButton[];
+}
+
+export const List: FC<IPrors> = ({ listColums, listData, arrButton }) => {
   return (
-    <ListContainer style={{ height: 880, width: "100%" }}>
-      <DataGridPro
-        {...data}
-        loading={data.rows.length === 0}
-        rowHeight={60}
-        checkboxSelection
-        disableSelectionOnClick
-      />
+    <ListContainer>
+      <ListTitle listColums={listColums} />
+      {listData?.map((user) => (
+        <ListElement
+          listColums={listColums}
+          user={user}
+          arrButton={arrButton}
+        />
+      ))}
     </ListContainer>
   );
 };

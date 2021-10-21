@@ -1,6 +1,6 @@
 import { BrowserRouter, Route } from "react-router-dom";
 
-import { UserPage } from "@modules/User/UsersPage";
+import {UsersPage } from "@modules/Users/UsersPage";
 
 import { Login } from "@modules/Auth/Login";
 import { Register } from "@modules/Auth/Register";
@@ -10,6 +10,7 @@ import { MainLayout } from "@components/MainLayout/MainLayout";
 import { titleHeader } from "@utils/constants/titleHeader/titleHeader";
 import { ResetPassword } from "@modules/Auth/ResetPassword";
 import { Reset } from "@modules/Auth/Reset";
+
 
 const App = () => {
   return (
@@ -36,9 +37,9 @@ const App = () => {
         <MainLayout
           icon={titleHeader.UsersIcon}
           title={titleHeader.UsersList}
-          path={"/users"}
+          path={"/users/:page"}
         >
-          <UserPage />
+          <UsersPage />
         </MainLayout>
         <MainLayout
           icon={titleHeader.TodoIcon}

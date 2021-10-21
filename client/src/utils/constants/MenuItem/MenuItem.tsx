@@ -12,7 +12,7 @@ export const MenuItem = [
   },
   {
     name: "Users",
-    path: "/users",
+    path: "/users/:page=1",
     icon: <PeopleIcon fontSize="small" />,
     itemid: 2,
   },

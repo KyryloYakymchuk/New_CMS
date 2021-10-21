@@ -12,10 +12,8 @@ const error = (state = initialState, action: IErrorAction) => {
         message: action.payload,
       };
 
-    default:
-      return {
-        ...state,
-      };
+      default:
+        return state;
   }
 };
 

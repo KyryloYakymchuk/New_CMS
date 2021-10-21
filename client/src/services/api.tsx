@@ -8,12 +8,12 @@ export const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("NewCMS_accessToken");
+
     if (token) {
       config.headers = {
         Authorization: token,
       };
-      window.location.href = "/";
-    }
+    } else window.location.href = "/";
     return config;
   },
   (error) => {

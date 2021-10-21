@@ -15,10 +15,8 @@ const test = (state = initialState, action: TestActions) => {
         userInfo: action.payload,
       };
 
-    default:
-      return {
-        ...state,
-      };
+      default:
+        return state;
   }
 };
 

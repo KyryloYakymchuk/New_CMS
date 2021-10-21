@@ -3,6 +3,7 @@ body {
   font-family: "Roboto", sans-serif;
   font-weight: 500;
   background-color: aliceblue;
+  overflow: hidden;
 }
 
 /* Users Data luist, delete  */

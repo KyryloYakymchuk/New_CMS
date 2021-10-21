@@ -18,6 +18,7 @@ import {
   TitleItem,
 } from "./style/style";
 
+
 interface Props {
   title: string;
   icon: any;
@@ -53,6 +54,8 @@ export const Header: FC<Props> = ({ title, icon }) => {
     setOpenModal(false);
   };
 
+ 
+
   return (
     <>
       <HeaderContainer>
@@ -67,6 +70,7 @@ export const Header: FC<Props> = ({ title, icon }) => {
           <TitleItem>
             <HeaderIcon>{icon}</HeaderIcon>
             <HeaderTitle>{title}</HeaderTitle>
+
           </TitleItem>
           <TitleItem>
             <Button
