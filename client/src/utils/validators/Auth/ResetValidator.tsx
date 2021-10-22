@@ -1,19 +1,21 @@
+import { emailRE } from '../RegularExpressions';
+
 interface ValidatorProps {
-  email: string;
+    email: string;
 }
 
-interface errorsProps {
-  email?: string;
+interface IErrors {
+    email?: string;
 }
 
 export const ResetValidator = (values: ValidatorProps) => {
-  const errors: errorsProps = {};
-  // EMAIL
-  (!values.email && (errors.email = "Required")) ||
-    (!/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/g.test(
-      values.email
-    ) &&
-      (errors.email = "Invalid email address"));
+    const errors: IErrors = {};
+    // EMAIL
+    if (!values.email) {
+        errors.email = 'Required';
+    } else if (!emailRE.test(values.email)) {
+        errors.email = 'Invalid email address';
+    }
 
-  return errors;
+    return errors;
 };

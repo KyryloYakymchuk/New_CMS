@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 export const Text = styled.div`
   font-size: 23px;
   font-family: "Roboto";

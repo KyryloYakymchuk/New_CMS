@@ -4,12 +4,13 @@ import { Module } from '@nestjs/common';
 import { MailService } from './mail.service';
 import { join } from 'path';
 import {ConfigModule, ConfigService} from '@nestjs/config';
+import "dotenv/config";
 
 @Module({
   imports: [
     MailerModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (config: ConfigService) => ({
+      useFactory: async (/*config: ConfigService*/) => ({
         transport: {
           host: process.env.MAIL_HOST,
           secure: false,

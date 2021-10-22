@@ -1,48 +1,51 @@
-import { FC, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { FC, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
-import { ErrorAction } from "@redux/actions/error";
-import { ResetAction } from "@redux/actions/auth";
+import { errorAction } from '@redux/actions/error';
+import { loaderAction } from '@redux/actions/loader';
+import { resetAction } from '@redux/actions/auth';
 
-import { MainText } from "@utils/constants/AuthField/ResetPasswordFields/ResetPasswordFields";
+import { MainText } from '@utils/constants/AuthField/ResetFields';
+import { useTypedSelector } from '@utils/hooks/useTypedSelector';
 
-import { AuthLayout } from "@components/Auth/AuthLayout/AuthLayout";
-import { ModalConfirm } from "@components/Modal/Modal_Confirm_Submit/ModalConfirm";
-import { ResetForm } from "@components/Auth/ResetForm/ResetForm";
+import { AuthLayout } from '@components/Auth/AuthLayout/AuthLayout';
+import { ModalConfirm } from '@components/Modal/Modal_Confirm_Submit/ModalConfirm';
+import { ResetForm } from '@components/Auth/ResetForm/ResetForm';
+import { setModalStatusAction } from '@redux/actions/modal';
 
 export interface IFormValues {
-  email: string;
+    email: string;
 }
 
 export const Reset: FC = () => {
-  const { title, description } = MainText;
+    const { title, description } = MainText;
 
-  const [openModal, setOpenModal] = useState(false);
+    const isModalOpen = useTypedSelector(({ modalStatus }) => modalStatus?.modal);
 
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
+    const onSubmit = (value: IFormValues) => {
+        dispatch(resetAction({ email: value.email }));
+        dispatch(loaderAction(true));
+    };
 
-  const onSubmit = (value: IFormValues) => {
-    dispatch(ResetAction({ email: value.email, setOpenModal }));
-  };
+    const handleAccept = () => {
+        dispatch(setModalStatusAction(false));
+    };
 
-  const handleAccept = () => {
-    setOpenModal(false);
-  };
+    useEffect(() => {
+        dispatch(errorAction());
+    }, [dispatch]);
 
-  useEffect(() => {
-    dispatch(ErrorAction());
-  }, []);
-
-  return (
-    <>
-      <AuthLayout title={title} description={description}>
-        <ResetForm onSubmit={onSubmit} />
-      </AuthLayout>
-      <ModalConfirm
-        openModal={openModal}
-        message="A confirmation letter has been sent to the Email !"
-        handleAccept={handleAccept}
-      />
-    </>
-  );
+    return (
+        <>
+            <AuthLayout title={title} description={description}>
+                <ResetForm onSubmit={onSubmit} />
+            </AuthLayout>
+            <ModalConfirm
+                isModalOpen={isModalOpen}
+                message="A confirmation letter has been sent to the Email !"
+                handleAccept={handleAccept}
+            />
+        </>
+    );
 };

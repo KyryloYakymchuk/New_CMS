@@ -1,53 +1,26 @@
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route } from 'react-router-dom';
 
-import { UserPage } from "@modules/User/UsersPage";
+import { routes, protectedRoutes } from '@utils/constants/Routes';
 
-import { Login } from "@modules/Auth/Login";
-import { Register } from "@modules/Auth/Register";
+import { ProtectedRoute } from '@components/ProtectedRoute/ProtectedRoute';
 
-import { MainLayout } from "@components/MainLayout/MainLayout";
-
-import { titleHeader } from "@utils/constants/titleHeader/titleHeader";
-import { ResetPassword } from "@modules/Auth/ResetPassword";
-import { Reset } from "@modules/Auth/Reset";
-
-const App = () => {
-  return (
+const App = () => (
     <div className="App">
-      <BrowserRouter>
-        <Route path={"/auth/login"}>
-          <Login />
-        </Route>
-        <Route path={"/auth/register"}>
-          <Register />
-        </Route>
-        <Route path={"/auth/reset"}>
-          <Reset />
-        </Route>
-        <Route path={"/auth/resetPassword"}>
-          <ResetPassword />
-        </Route>
-        <MainLayout
-          icon={titleHeader.HomeIcon}
-          title={titleHeader.HomePage}
-          path={"/"}
-        />
-
-        <MainLayout
-          icon={titleHeader.UsersIcon}
-          title={titleHeader.UsersList}
-          path={"/users"}
-        >
-          <UserPage />
-        </MainLayout>
-        <MainLayout
-          icon={titleHeader.TodoIcon}
-          title={titleHeader.TodoList}
-          path={"/todos"}
-        ></MainLayout>
-      </BrowserRouter>
+        <BrowserRouter>      
+            {routes.map(({ path, component: Component }) => (
+                <Route key={path} exact path={path}>
+                    <Component />
+                </Route>
+            ))}
+            {protectedRoutes.map(({ path, component: Component, title }) => (
+                <Route key={path} exact path={path}>
+                    <ProtectedRoute title={title} path={path}>
+                        <Component />
+                    </ProtectedRoute>
+                </Route>
+            ))}
+        </BrowserRouter>
     </div>
-  );
-};
+);
 
 export default App;
