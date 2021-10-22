@@ -1,8 +1,5 @@
 import { FC } from 'react';
 import { Form } from 'react-final-form';
-import { useSelector } from 'react-redux';
-
-import { errorMessageSelector } from '@redux/selectors/error';
 
 import {
     ButtonsData,
@@ -22,7 +19,7 @@ import {
     FieldCustom,
     FormContainer
 } from '@modules/Auth/styled/styled';
-import { loaderStatusSelector } from '@redux/selectors/loader';
+import { useTypedSelector } from '@utils/hooks/useTypedSelector';
 
 interface RegisterProps {
     onSubmit: (value: IFormValues) => void;
@@ -32,8 +29,8 @@ export const RegisterForm: FC<RegisterProps> = ({ onSubmit }) => {
     const { buttonIcon, buttonText, linkText, description, path } = ButtonsData;
     const { LoaderCircularrButton } = Loader;
 
-    const errorMessage = useSelector(errorMessageSelector);
-    const loaderStatus = useSelector(loaderStatusSelector);
+    const errorMessage = useTypedSelector(({ error }) => error.message);
+    const loaderStatus = useTypedSelector(({ loader }) => loader.loaderStatus);
 
     return (
         <Form

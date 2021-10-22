@@ -1,11 +1,8 @@
 import { FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { itemIdAction } from '@redux/actions/menuStatus';
 
-import {
-    menuStatusSelector,
-    pickedItemIdSelector
-} from '@redux/selectors/menuStatus';
+
 
 import { MenuItem, style } from '@utils/constants/MenuItem/MenuItem';
 
@@ -15,10 +12,11 @@ import {
     TitleNavbarSubItem,
     Title
 } from './styled/styled';
+import { useTypedSelector } from '@utils/hooks/useTypedSelector';
 
 export const SideMenu: FC = () => {
-    const statusmenu = useSelector(menuStatusSelector);
-    const pickedId = useSelector(pickedItemIdSelector);
+    const statusmenu = useTypedSelector( ({ menuReducer }) => menuReducer.status);
+    const pickedId = useTypedSelector( ({ menuReducer }) => menuReducer.itemId);
 
     const dispatch = useDispatch();
 

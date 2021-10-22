@@ -6,7 +6,7 @@ import {
 
 const initialState: IModalState = { modal: false };
 
-const modalStatus = (state = initialState, action: IModalAction) => {
+const modalStatus = (state = initialState, action: IModalAction):IModalState => {
     switch (action.type) {
         case ModalActionsTypes.MODAL_STATUS:
             return {

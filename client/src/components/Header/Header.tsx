@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useHistory } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Button } from '@material-ui/core';
 
 import { setModalStatusAction } from '@redux/actions/modal';
@@ -9,6 +9,7 @@ import { setModalStatusAction } from '@redux/actions/modal';
 
 import { Icons } from '@utils/constants/MenuItem/icon';
 import { AuthRoutes } from '@utils/enums/routes';
+import { useTypedSelector } from '@utils/hooks/useTypedSelector';
 
 import { ModalConfirm } from '@components/Modal/Modal_Confirm_Submit/ModalConfirm';
 
@@ -18,7 +19,6 @@ import {
     TitleContainer,
     TitleItem
 } from './style/style';
-import { modalStatusSelector } from '@redux/selectors/modal';
 
 
 interface Props {
@@ -29,8 +29,9 @@ export const Header: FC<Props> = ({ title }) => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    // const statusMenu = useSelector(menuStatusSelector);
-    const isModalOpen = useSelector(modalStatusSelector);
+    //     const statusmenu = useTypedSelector( ({ menuReducer }) => menuReducer.status);
+    const isModalOpen = useTypedSelector(({ modalStatus }) => modalStatus?.modal);
+
 
     // const handleClickBurger = () => {
     //     dispatch(setModalStatusAction(true));

@@ -1,12 +1,11 @@
 import { FC, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
 import { registerAction } from '@redux/actions/auth';
 import { loaderAction } from '@redux/actions/loader';
 import { setModalStatusAction } from '@redux/actions/modal';
 import { errorAction } from '@redux/actions/error';
-import { modalStatusSelector } from '@redux/selectors/modal';
 
 import { MainText } from '@utils/constants/AuthField/RegisterFields';
 import { AuthRoutes } from '@utils/enums/routes';
@@ -14,6 +13,7 @@ import { AuthRoutes } from '@utils/enums/routes';
 import { AuthLayout } from '@components/Auth/AuthLayout/AuthLayout';
 import { RegisterForm } from '@components/Auth/RegisterForm/RegisterForm';
 import { ModalConfirm } from '@components/Modal/Modal_Confirm_Submit/ModalConfirm';
+import { useTypedSelector } from '@utils/hooks/useTypedSelector';
 
 export interface IFormValues {
     email: string;
@@ -30,7 +30,7 @@ export const Register: FC = () => {
 
     const dispatch = useDispatch();
     const history = useHistory();
-    const isModalOpen = useSelector(modalStatusSelector);
+    const isModalOpen = useTypedSelector(({ modalStatus }) => modalStatus?.modal);
 
     const onSubmit = (value: IFormValues) => {
         dispatch(registerAction({ value }));

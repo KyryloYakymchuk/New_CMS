@@ -9,7 +9,6 @@ interface IProps {
 }
 export const ListTitle: FC<IProps> = ({ listColums }) =>  {
     
-    
     return (
         <ListTitleContainer>
             {listColums.map(({ title })=>(

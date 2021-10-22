@@ -1,9 +1,5 @@
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 import { Form } from 'react-final-form';
-
-import { errorMessageSelector } from '@redux/selectors/error';
-import { loaderStatusSelector } from '@redux/selectors/loader';
 
 import {
     ButtonsData,
@@ -23,6 +19,7 @@ import {
     FieldCustom,
     FormContainer
 } from '@modules/Auth/styled/styled';
+import { useTypedSelector } from '@utils/hooks/useTypedSelector';
 
 interface LoginProps {
     onSubmit: (value: IFormValues) => void;
@@ -31,8 +28,8 @@ interface LoginProps {
 export const ResetPasswordForm: FC<LoginProps> = ({ onSubmit }) => {
     const { buttonIcon, buttonText, linkText, description, path } = ButtonsData;
     const { LoaderCircularrButton } = Loader;
-    const errorMessage = useSelector(errorMessageSelector);
-    const loaderStatus = useSelector(loaderStatusSelector);
+    const errorMessage = useTypedSelector(({ error }) => error.message);
+    const loaderStatus = useTypedSelector(({ loader }) => loader.loaderStatus);
     return (
         <Form
             onSubmit={onSubmit}

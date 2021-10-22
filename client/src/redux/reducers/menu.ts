@@ -9,7 +9,7 @@ const initialState: IStatusPayload = {
     status: false
 };
 
-const menuReducer = (state = initialState, action: StatusAction) => {
+const menuReducer = (state = initialState, action: StatusAction):IStatusPayload => {
     switch (action.type) {
         case TypeStatusAction.STATUS:
             return {

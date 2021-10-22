@@ -1,8 +1,5 @@
 import { FC } from 'react';
 import { Form } from 'react-final-form';
-import { useSelector } from 'react-redux';
-
-import { errorMessageSelector } from '@redux/selectors/error';
 
 import {
     ButtonsData,
@@ -22,6 +19,7 @@ import {
     ForgotPassword,
     ErrorMessage
 } from '@modules/Auth/styled/styled';
+import { useTypedSelector } from '@utils/hooks/useTypedSelector';
 
 interface LoginProps {
     onSubmit: (value: IFormValues) => void;
@@ -30,7 +28,7 @@ interface LoginProps {
 export const LoginForm: FC<LoginProps> = ({ onSubmit }) => {
     const { buttonIcon, buttonText, linkText, description, path } = ButtonsData;
 
-    const errorMessage = useSelector(errorMessageSelector);
+    const errorMessage = useTypedSelector(({ error }) => error.message);
 
     return (
         <Form

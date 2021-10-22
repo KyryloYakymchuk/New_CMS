@@ -25,6 +25,7 @@ export const ProtectedRoute: FC<RouteProps> = ({ children, title }) => {
                 <Header title={title} />
                 <SideChildren>{children}</SideChildren>
             </SideContainer>
+            
         </GlobalContainer>
     );
 };

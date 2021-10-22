@@ -8,7 +8,7 @@ export interface IError {
 
 export interface IErrorAction {
     type: ErrorActionsTypes.ERROR_MASSEGE;
-    payload: IError;
+    payload: string;
 }
 
 export type ErrorActions = IErrorAction;

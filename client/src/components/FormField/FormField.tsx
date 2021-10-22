@@ -2,14 +2,14 @@ import TextField from '@mui/material/TextField';
 import { FieldRenderProps } from 'react-final-form';
 import { FC } from 'react';
 
+import { useTypedSelector } from '@utils/hooks/useTypedSelector';
+
 import { InputAdornment } from '@mui/material';
-import { errorMessageSelector } from '@redux/selectors/error';
-import { useSelector } from 'react-redux';
 
 type FormProps = FieldRenderProps<string, any>;
 
 const FormField: FC<FormProps> = ({ input, meta, children, ...rest }) => {
-    const errorMessage = useSelector(errorMessageSelector);
+    const errorMessage = useTypedSelector(({ error }) => error.message);
 
     return (
         <TextField

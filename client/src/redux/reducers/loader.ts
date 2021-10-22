@@ -6,7 +6,7 @@ import {
 
 const initialState: ILoaderState = { loaderStatus: false };
 
-const loader = (state = initialState, action: ILoaderAction) => {
+const loader = (state = initialState, action: ILoaderAction):ILoaderState => {
     switch (action.type) {
         case LoaderActionsTypes.LOADER_STATUS:
             return {

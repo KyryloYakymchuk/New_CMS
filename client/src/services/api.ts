@@ -12,9 +12,7 @@ api.interceptors.request.use(
             config.headers = {
                 Authorization: token
             };
-        } else {
-            window.location.href = '/';
-        }
+        } 
         return config;
     },
     (error) => {
