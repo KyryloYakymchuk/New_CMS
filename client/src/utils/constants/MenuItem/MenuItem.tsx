@@ -1,5 +1,5 @@
 import { ProtectedRoutes } from '@utils/enums/routes';
-import { Icons } from './icon';
+import { Icons } from '../icon';
 
 export const MenuItem = [
     {

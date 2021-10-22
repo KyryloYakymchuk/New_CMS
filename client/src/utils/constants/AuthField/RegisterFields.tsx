@@ -1,5 +1,5 @@
 import { AuthRoutes } from '@utils/enums/routes';
-import { Icons } from '../MenuItem/icon';
+import { Icons } from '../icon';
 
 export const RegisterFields = [
     {

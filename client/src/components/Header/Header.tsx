@@ -7,7 +7,7 @@ import { setModalStatusAction } from '@redux/actions/modal';
 // import { statusAction } from '@redux/actions/menuStatus';
 // import { menuStatusSelector } from '@redux/selectors/menuStatus';
 
-import { Icons } from '@utils/constants/MenuItem/icon';
+import { Icons } from '@utils/constants/icon';
 import { AuthRoutes } from '@utils/enums/routes';
 import { useTypedSelector } from '@utils/hooks/useTypedSelector';
 

@@ -1,6 +1,9 @@
 import { BrowserRouter, Route } from 'react-router-dom';
+
 import { routes, protectedRoutes } from '@utils/constants/Routes';
+
 import { ProtectedRoute } from '@components/ProtectedRoute/ProtectedRoute';
+
 const App = () => (
     <div className="App">
         <BrowserRouter>      

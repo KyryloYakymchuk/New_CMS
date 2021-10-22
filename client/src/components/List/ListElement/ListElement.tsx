@@ -1,6 +1,9 @@
-import { IlistColums } from '@interfaces/types';
 import { FC } from 'react';
+
+import { IlistColums } from '@interfaces/types';
+
 import { IArrButton } from '../List';
+
 import { Button, ButtonBlock, ListElementContainer } from './styled/styled';
 
 interface IProps {
@@ -12,11 +15,11 @@ interface IProps {
 
 export const ListElement: FC<IProps> = ({ listColums, user, arrButton }) => {
     return (
+        
         <ListElementContainer>
-            {user
-                ? listColums.map(({ name }) => 
-                    <div key={name}>{user[name]}</div>)
-                : null}
+            {listColums?.map(({ name }) => 
+                <div key={name}>{user[name]}</div>)
+            }
             <ButtonBlock>
                 {arrButton?.map(({ item, onclickFunc }) => (
                     <Button onClick={onclickFunc(user)}>{item}</Button>

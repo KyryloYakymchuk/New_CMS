@@ -1,8 +1,8 @@
 import { FC } from 'react';
+
 import { IlistColums } from '@interfaces/types';
+
 import { ListTitleContainer } from './styled/styled';
-
-
 
 interface IProps {
     listColums: IlistColums[];

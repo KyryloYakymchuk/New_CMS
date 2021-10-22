@@ -2,9 +2,8 @@ import { FC } from 'react';
 import { useDispatch } from 'react-redux';
 import { itemIdAction } from '@redux/actions/menuStatus';
 
-
-
 import { MenuItem, style } from '@utils/constants/MenuItem/MenuItem';
+import { useTypedSelector } from '@utils/hooks/useTypedSelector';
 
 import {
     NavbarContainer,
@@ -12,7 +11,6 @@ import {
     TitleNavbarSubItem,
     Title
 } from './styled/styled';
-import { useTypedSelector } from '@utils/hooks/useTypedSelector';
 
 export const SideMenu: FC = () => {
     const statusmenu = useTypedSelector( ({ menuReducer }) => menuReducer.status);

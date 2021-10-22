@@ -1,8 +1,12 @@
-import { IlistColums } from '@interfaces/types';
-import { IUser } from '@redux/types/users';
 import { FC, MouseEventHandler } from 'react';
+
+import { IUser } from '@redux/types/users';
+
+import { IlistColums } from '@interfaces/types';
+
 import { ListElement } from './ListElement/ListElement';
 import { ListTitle } from './ListTitle/ListTitle';
+
 import { ListContainer } from './styled/styled';
 
 type FuncType = (
@@ -17,7 +21,7 @@ export interface IArrButton {
 interface IPrors {
     listColums: IlistColums[];
     listData?: IUser[];
-    arrButton: IArrButton[];
+    arrButton?: IArrButton[];
 }
 
 export const List: FC<IPrors> = ({ listColums, listData, arrButton }) => {
@@ -26,7 +30,7 @@ export const List: FC<IPrors> = ({ listColums, listData, arrButton }) => {
             <ListTitle listColums={listColums} />
             {listData?.map((user) => (
                 <ListElement
-                    key ={user.userID}
+                    key={user.userID}
                     listColums={listColums}
                     user={user}
                     arrButton={arrButton}
