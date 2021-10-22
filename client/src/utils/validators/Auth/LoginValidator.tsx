@@ -25,13 +25,13 @@ export const LoginValidator = (values: ValidatorProps) => {
         errors.password = 'Required';
     }
     if (/(\s)/g.test(values.password)) {
-        errors.password = 'Password must not contain spaces ';
+        errors.password = 'Password must not contain spaces';
     }
     if (values?.password?.length < 8) {
         errors.password = 'Minimum 8 characters';
     }
     if (/[^a-zA-Z0-9]/g.test(values.password)) {
-        errors.password = 'Password must not contain cyrillic ';
+        errors.password = 'Password must not contain cyrillic';
     }
 
     return errors;

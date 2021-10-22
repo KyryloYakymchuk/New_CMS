@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { Form } from 'react-final-form';
+import { useTranslation } from 'react-i18next';
 
 import {
     ButtonsData,
@@ -29,6 +30,7 @@ export const LoginForm: FC<LoginProps> = ({ onSubmit }) => {
     const { buttonIcon, buttonText, linkText, description, path } = ButtonsData;
 
     const errorMessage = useTypedSelector(({ error }) => error.message);
+    const { t } = useTranslation();
 
     return (
         <Form
@@ -37,7 +39,7 @@ export const LoginForm: FC<LoginProps> = ({ onSubmit }) => {
             render={({ handleSubmit }) => (
                 <FormContainer>
                     <form onSubmit={handleSubmit}>
-                        <ErrorMessage>{errorMessage}</ErrorMessage>
+                        <ErrorMessage>{t( errorMessage || '' )}</ErrorMessage>
 
                         {LoginFields.map(({ type, name, label, icon }, index) => (
                             <FieldCustom
@@ -51,7 +53,7 @@ export const LoginForm: FC<LoginProps> = ({ onSubmit }) => {
                                 {icon}
                             </FieldCustom>
                         ))}
-                        <ForgotPassword to="/auth/reset">Forgot Password</ForgotPassword>
+                        <ForgotPassword to="/auth/reset">{t('Forgot Password')}</ForgotPassword>
                         <ButtonContainer>
                             <AuthButtonContainer
                                 description={description}

@@ -15,14 +15,6 @@ export interface ITodo {
     compleeted: boolean;
 }
 export interface IlistColums {
-  title: string;
-  name: string;
-}
-export interface IlistColums {
-  title: string;
-  name: string;
-}
-export interface IlistColums {
-  title: string;
-  name: string;
+    title: string;
+    name: string;
 }

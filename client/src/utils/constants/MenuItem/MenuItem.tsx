@@ -3,7 +3,7 @@ import { Icons } from '../icon';
 
 export const MenuItem = [
     {
-        name: 'Home Page',
+        name: 'Dashboard',
         path: ProtectedRoutes.DASHBOARD,
         icon: Icons.DashboardIcon,
         itemId: 1
@@ -30,31 +30,25 @@ export const MenuItem = [
         icon: Icons.ModulesIcon,
         itemId: 4,
         height: '130px',
-        subitems: [
-            { subName: 'All Modules', subPath:'/'  },
-            { subName: 'New Module', subPath:'/'  }
-        ]
+        path: ProtectedRoutes.MODULES
+
     },
     {
         name: 'Groups',
         icon: Icons.GroupsIcon,
         itemId: 5,
         height: '130px',
-        subitems: [
-            { subName: 'All Groups', subPath:'/'  },
-            { subName: 'New Group', subPath:'/'  }
-        ]
+        path: ProtectedRoutes.GROUPS
+
     },
     {
         name: 'Newsletter',
         icon: Icons.NewsletterIcon,
         itemId: 6,
-        height: '225px',
+        height: '130px',
         subitems: [
             { subName: 'All Letter', subPath:'/'  },
-            { subName: 'New Letter', subPath:'/'  },
-            { subName: 'New Jobs', subPath:'/'  },
-            { subName: 'New Jobs', subPath:'/'  }
+            { subName: 'All Jobs', subPath:'/'  }
         ]
     },
     {
@@ -71,13 +65,9 @@ export const MenuItem = [
     },
     {
         name: 'Settings',
-        path: '/settings',
+        path: ProtectedRoutes.SETTINGS,
         icon: Icons.SettingsIcon,
         itemId: 8
     }
 ];
 
-export const style = {
-    backgroundColor: '#f03254',
-    color: 'white'
-};

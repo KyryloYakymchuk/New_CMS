@@ -1,8 +1,10 @@
 import { useStyles } from '@utils/styles/button';
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { HelperText } from './../styled/styled';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@mui/material';
+
+import { HelperText } from './../styled/styled';
 
 interface ButtonProps {
     buttonText: string;
@@ -24,7 +26,7 @@ export const AuthButtonContainer: FC<ButtonProps> = ({
     loaderStatus
 }) => {
     const classes = useStyles();
-
+    const { t } = useTranslation();
     return (
         <>
             <div className={classes.Button}>
@@ -38,13 +40,13 @@ export const AuthButtonContainer: FC<ButtonProps> = ({
                         variant="contained"
                         type="submit"
                     >
-                        {buttonText}
+                        {t(buttonText)}
                     </Button>
                 )}
             </div>
             <HelperText>
-                {description}
-                <Link to={path}>{linkText}</Link>
+                {t(description)}
+                <Link to={path}>{t(linkText)}</Link>
             </HelperText>
         </>
     );

@@ -1,5 +1,4 @@
 import { FC } from 'react';
-
 import { IlistColums } from '@interfaces/types';
 
 import { IArrButton } from '../List';

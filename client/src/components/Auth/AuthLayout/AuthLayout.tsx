@@ -1,5 +1,5 @@
 import { FC } from 'react';
-
+import { useTranslation } from 'react-i18next';
 import {
     AuthContainer,
     AuthTitle,
@@ -16,11 +16,11 @@ export const AuthLayout: FC<AuthProps> = ({
     title,
     description
 }) => {
-
+    const { t } = useTranslation();
     return (
         <AuthContainer>
-            <AuthTitle>{title}</AuthTitle>
-            <Description>{description}</Description>
+            <AuthTitle>{t(title)}</AuthTitle>
+            <Description>{t(description)}</Description>
             {children}
         </AuthContainer>
     );

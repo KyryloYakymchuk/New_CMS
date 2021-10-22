@@ -14,7 +14,7 @@ export const NavbarContainer = styled.div<IMenuProps>`
   position: sticky;
   display: block;
   overflow-x: hidden;
-  width: ${({ statusmenu }) => (statusmenu ? '0px' : '220px')};
+  width: ${({ statusmenu }) => (statusmenu && '0px' )};
   transition-duration: 0.3s;
   top: 0;
 `;
@@ -37,7 +37,6 @@ export const NavbarItem = styled(NavLink)<IMenuProps>`
   span {
     padding-left: 15px;
     text-align: start;
-    width: 170px;
   }
 
   
@@ -45,6 +44,8 @@ export const NavbarItem = styled(NavLink)<IMenuProps>`
 
 export const Title = styled.div<IMenuProps>`
   padding: 9px 0 9px 15px;
+  display: flex;
+  align-items: center;
   &:hover {
     background-color: #aaaaaa52;
     color: black;
@@ -57,7 +58,7 @@ export const TitleNavbarSubItem = styled.div<IMenuProps>`
   cursor: pointer;
   overflow: hidden;
   height: ${({ isItemSelected, height }) =>
-        isItemSelected ? height : '45px'};
+        isItemSelected ? height : '42px'};
   transition-duration: 0.3s;
   display: block;
   align-items: center;
@@ -68,7 +69,14 @@ export const TitleNavbarSubItem = styled.div<IMenuProps>`
   background-color: transparent;
   span {
     padding-left: 15px;
-    text-align: start;
-    width: 170px;
+    text-align: start;    
+    width: 250px;
+
   }
 `;
+
+
+export const style = {
+    backgroundColor: '#f03254',
+    color: 'white'
+};
