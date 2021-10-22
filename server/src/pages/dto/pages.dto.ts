@@ -1,5 +1,6 @@
-import { IsNotEmpty } from 'class-validator';
-import {Page} from "../../types/page";
+import { IsNotEmpty } from "class-validator";
+
+import { Page } from "../../types/page";
 
 export class GetPagesDTO {
   alias?: string;

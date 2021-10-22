@@ -1,4 +1,4 @@
-import * as Mongoose from 'mongoose';
+import * as Mongoose from "mongoose";
 
 export const PageSchema = new Mongoose.Schema({
   alias: {

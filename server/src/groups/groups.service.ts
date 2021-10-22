@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
+
 import { Group, Permissions } from "../types/group";
 import { AddGroupDTO, DeleteGroupDTO, EditGroupDTO } from "./dto/groups.dto";
 import { QueryDTO } from "../shared/dto/shared.dto";
@@ -19,7 +20,7 @@ export class GroupsService {
     const group = await this.groupModel.findOne({ groupID });
 
     if (!group)
-    throw new HttpException('Group not found!', HttpStatus.NO_CONTENT)
+      throw new HttpException("Group not found!", HttpStatus.NO_CONTENT);
 
     return group;
   }
@@ -31,52 +32,51 @@ export class GroupsService {
     const allowedNames = ["groups", "pages", "users"];
     const allowedValues = ["add", "edit", "delete", "watch"];
 
-    if (groups || pages || users) {
-      const objNames = Object.keys(permissionsObject);
-      objNames.forEach((name) => {
-        if (!allowedNames.includes(name)) {
-          throw new HttpException(
-            "Wrong format of names of permissions!",
-            HttpStatus.NOT_ACCEPTABLE
-          );
-        }
-        const objValues = Object.keys(permissionsObject[name]);
-        objValues.forEach((value) => {
-          if (!allowedValues.includes(value)) {
-            throw new HttpException(
-              "Wrong format of values of permissions!",
-              HttpStatus.NOT_ACCEPTABLE
-            );
-          }
-        });
-      });
-
-      return {
-        groups: {
-          add: (groups && groups.add) || false,
-          delete: (groups && groups.delete) || false,
-          edit: (groups && groups.edit) || false,
-          watch: (groups && groups.watch) || false,
-        },
-        pages: {
-          add: (pages && pages.add) || false,
-          delete: (pages && pages.delete) || false,
-          edit: (pages && pages.edit) || false,
-          watch: (pages && pages.watch) || false,
-        },
-        users: {
-          add: (users && users.add) || false,
-          delete: (users && users.delete) || false,
-          edit: (users && users.edit) || false,
-          watch: (users && users.watch) || false,
-        },
-      };
-    } else {
+    if (!groups && !pages && !users)
       throw new HttpException(
         "Wrong format of permissions!",
         HttpStatus.NOT_ACCEPTABLE
       );
-    }
+
+    const objNames = Object.keys(permissionsObject);
+    objNames.forEach((name) => {
+      if (!allowedNames.includes(name))
+        throw new HttpException(
+          "Wrong format of names of permissions!",
+          HttpStatus.NOT_ACCEPTABLE
+        );
+
+      const objValues = Object.keys(permissionsObject[name]);
+      objValues.forEach((value) => {
+        if (!allowedValues.includes(value)) {
+          throw new HttpException(
+            "Wrong format of values of permissions!",
+            HttpStatus.NOT_ACCEPTABLE
+          );
+        }
+      });
+    });
+
+    return {
+      groups: {
+        add: (groups && groups.add) || false,
+        delete: (groups && groups.delete) || false,
+        edit: (groups && groups.edit) || false,
+        watch: (groups && groups.watch) || false,
+      },
+      pages: {
+        add: (pages && pages.add) || false,
+        delete: (pages && pages.delete) || false,
+        edit: (pages && pages.edit) || false,
+        watch: (pages && pages.watch) || false,
+      },
+      users: {
+        add: (users && users.add) || false,
+        delete: (users && users.delete) || false,
+        edit: (users && users.edit) || false,
+        watch: (users && users.watch) || false,
+      },
+    };
   }
 
   async getGroups(userDTO: QueryDTO): Promise<Record<string, any>> {
@@ -151,9 +151,9 @@ export class GroupsService {
   ): Promise<Record<string, any>> {
     const { search, limit, offset } = queryDTO;
 
-    const group = await this.findGroupByID(userDTO)
-    
-    await this.groupModel.findOneAndDelete({groupID: group.groupID});
+    const group = await this.findGroupByID(userDTO);
+
+    await this.groupModel.findOneAndDelete({ groupID: group.groupID });
 
     const newGroups = await this.groupModel
       .find(!!search ? { name: { $regex: new RegExp(search, "i") } } : {})

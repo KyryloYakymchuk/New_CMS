@@ -2,13 +2,14 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { verify } from "jsonwebtoken";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
+import mongoose from "mongoose";
+
 import { Log } from "../types/log";
 import { GetLogsDTO, LoggerDTO } from "./dto/logger.dto";
 import { User } from "../types/user";
 import { Group } from "../types/group";
 import { Page } from "../types/page";
 import { Module } from "../types/module";
-import mongoose from "mongoose";
 import { Category } from "../types/category";
 
 @Injectable()

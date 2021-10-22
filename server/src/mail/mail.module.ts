@@ -1,16 +1,16 @@
-import { MailerModule } from '@nestjs-modules/mailer';
-import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
-import { Module } from '@nestjs/common';
-import { MailService } from './mail.service';
-import { join } from 'path';
-import {ConfigModule, ConfigService} from '@nestjs/config';
-import "dotenv/config";
+import { MailerModule } from "@nestjs-modules/mailer";
+import { HandlebarsAdapter } from "@nestjs-modules/mailer/dist/adapters/handlebars.adapter";
+import { Module } from "@nestjs/common";
+import { join } from "path";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+
+import { MailService } from "./mail.service";
 
 @Module({
   imports: [
     MailerModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (/*config: ConfigService*/) => ({
+      useFactory: async (config: ConfigService) => ({
         transport: {
           host: process.env.MAIL_HOST,
           secure: false,
@@ -23,7 +23,7 @@ import "dotenv/config";
           from: `"No Reply" <noreply@example.com>`,
         },
         template: {
-          dir: join(__dirname, 'templates'),
+          dir: join(__dirname, "templates"),
           adapter: new HandlebarsAdapter(),
           options: {
             strict: true,

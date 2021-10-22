@@ -3,6 +3,10 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import * as fs from "fs";
 import * as shortid from "shortid";
+import { join } from "path";
+import * as mongoose from "mongoose";
+import * as uniqid from "uniqid";
+
 import {
   AddCategoryDTO,
   CategoryIDDTO,
@@ -12,8 +16,6 @@ import {
 import { Category } from "../types/category";
 import { CategoryItemsDTO, QueryDTO } from "../shared/dto/shared.dto";
 import { UploaderService } from "../shared/uploader/uploader.service";
-import { join } from "path";
-import * as mongoose from "mongoose";
 import {
   DeleteVariantDTO,
   EditVariantsDTO,
@@ -25,12 +27,10 @@ import {
   AddCommentDTO,
   GetCommentsDTO,
   LikeCommentDTO,
-  ResponseCommentDTO,
   ResponseProductsDTO,
 } from "./dto/products.dto";
 import { Fuser } from "../types/fuser";
-import * as uniqid from "uniqid";
-import {GetVariantsDTO} from "../modules/dto/modules.dto";
+import { GetVariantsDTO } from "../modules/dto/modules.dto";
 
 export const options = {
   server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },

@@ -1,5 +1,5 @@
-import * as mongoose from 'mongoose';
-import * as uniqid from 'uniqid';
+import * as mongoose from "mongoose";
+import * as uniqid from "uniqid";
 
 export const GroupSchema = new mongoose.Schema({
   groupID: {
@@ -39,12 +39,11 @@ export const GroupSchema = new mongoose.Schema({
   },
 });
 
-GroupSchema.pre('save', async function (next: mongoose.HookNextFunction) {
+GroupSchema.pre("save", async function (next: mongoose.HookNextFunction) {
   try {
-    if (this.isModified('groupID')) {
-      return next();
-    }
-    this['groupID'] = uniqid('id-g_');
+    if (!this.isModified("groupID"))
+      this["groupID"] = uniqid("id-g_");
+
     return next();
   } catch (e) {
     return next(e);

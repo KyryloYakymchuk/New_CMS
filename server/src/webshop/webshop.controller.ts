@@ -15,10 +15,14 @@ import {
   UploadedFile,
   UseInterceptors,
 } from "@nestjs/common";
-import { WebshopService } from "./webshop.service";
 import { AnyFilesInterceptor, FileInterceptor } from "@nestjs/platform-express";
 import { diskStorage } from "multer";
 import * as uniqid from "uniqid";
+import { join } from "path";
+import { Request } from "express";
+import { ApiTags } from "@nestjs/swagger";
+
+import { WebshopService } from "./webshop.service";
 import {
   AddCategoryDTO,
   CategoryIDDTO,
@@ -26,16 +30,14 @@ import {
   GetCategoryDTO,
 } from "./dto/categories.dto";
 import { CategoryItemsDTO, QueryDTO } from "../shared/dto/shared.dto";
-import { join } from "path";
 import { LoggerGateway } from "../shared/logger/logger.gateway";
-import { query, Request } from "express";
 import {
   DeleteVariantDTO,
   EditVariantDTO,
   PaginationDTO,
 } from "../modules/dto/modules.dto";
 
-import {AddVariantDTO, GetVariantsDTO} from "../modules/dto/modules.dto";
+import { AddVariantDTO, GetVariantsDTO } from "../modules/dto/modules.dto";
 import { FuserService } from "../shared/fuser/fuser.service";
 import {
   AddCommentDTO,
@@ -46,12 +48,10 @@ import {
   ResponseProductDTO,
   ResponseProductsDTO,
 } from "./dto/products.dto";
-import { ModulesService } from "../modules/modules.service";
-import {ApiTags} from "@nestjs/swagger";
 
 export let module;
 
-@ApiTags('webshop')
+@ApiTags("webshop")
 @Controller("webshop")
 export class WebshopController {
   constructor(
@@ -253,16 +253,13 @@ export class WebshopController {
 
     if (token) {
       verified = await this.userService.verifyToken(token.split(" ")[1]);
-
-      if (!verified) {
+      if (!verified)
         throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
-      }
 
       user = await this.userService.findUserByUserID(verified.userID);
     }
 
     const item = await this.webshopService.getItemByID(itemID.itemID);
-
     const responseProduct = new ResponseProductDTO(item);
 
     if (user) {
@@ -336,20 +333,17 @@ export class WebshopController {
     @Headers("authorization") token: string
   ) {
     const verified = await this.userService.verifyToken(token.split(" ")[1]);
-
     if (!verified) {
       throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
     }
 
     const user = await this.userService.findUserByUserID(verified.userID);
-
     if (!user) {
       throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
     }
     const result = await this.webshopService.addComment(userDTO, user);
 
     let responseComments = result.comments;
-
     const count = responseComments.length;
 
     responseComments = responseComments
@@ -397,13 +391,11 @@ export class WebshopController {
     let verified, user;
     if (token) {
       verified = await this.userService.verifyToken(token.split(" ")[1]);
-
       if (!verified) {
         throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
       }
 
       user = await this.userService.findUserByUserID(verified.userID);
-
       if (!user) {
         throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
       }
@@ -463,13 +455,11 @@ export class WebshopController {
     @Headers("authorization") token: string
   ) {
     const verified = await this.userService.verifyToken(token.split(" ")[1]);
-
     if (!verified) {
       throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
     }
 
     const user = await this.userService.findUserByUserID(verified.userID);
-
     if (!user) {
       throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
     }
@@ -510,13 +500,11 @@ export class WebshopController {
     @Headers("authorization") token: string
   ) {
     const verified = await this.userService.verifyToken(token.split(" ")[1]);
-
     if (!verified) {
       throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
     }
 
     const user = await this.userService.findUserByUserID(verified.userID);
-
     if (!user) {
       throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
     }

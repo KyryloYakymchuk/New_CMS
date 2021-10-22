@@ -1,9 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectConnection, InjectModel } from "@nestjs/mongoose";
 import * as mongoose from "mongoose";
-import { Connection, Model, mongo } from "mongoose";
-import { Module } from "../types/module";
+import { Connection, Model } from "mongoose";
 import * as shortid from "shortid";
+import * as fs from "fs";
+import * as Client from "ssh2-sftp-client";
+import * as uniqid from "uniqid";
+import { join } from "path";
+
+import { Module } from "../types/module";
 import {
   AddFieldsDTO,
   AddItemCategoryDTO,
@@ -29,15 +34,11 @@ import {
   SetVariantStockDTO,
   WishListDTO,
 } from "./dto/modules.dto";
-import * as fs from "fs";
-import * as Client from "ssh2-sftp-client";
-import * as uniqid from "uniqid";
-import { join } from "path";
 import { UploaderService } from "../shared/uploader/uploader.service";
 import { Category } from "src/types/category";
 import { QueryDTO } from "../shared/dto/shared.dto";
 import { FuserService } from "../shared/fuser/fuser.service";
-import {AddVariantDTO} from "./dto/modules.dto";
+import { AddVariantDTO } from "./dto/modules.dto";
 
 export const options = {
   server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
@@ -115,15 +116,19 @@ export class ModulesService {
     await mongoose.connect(process.env.MONGO_URI, options);
     const Item = require(`../../schemas/${moduleName}`);
     const items = await Item.find();
+
     const maxOrderObject =
       items.length > 0 &&
       items.reduce(
         (prev, current) => (prev.order > current.order ? prev : current),
         {}
       );
+
     model.order = items.length === 0 ? 0 : maxOrderObject.order + 1;
+
     const newItem = new Item(model);
     await newItem.save();
+
     await mongoose.connection.close();
     return newItem;
   }
@@ -313,10 +318,12 @@ export class ModulesService {
     const { limit, offset } = paginationDTO;
     await mongoose.connect(process.env.MONGO_URI, options);
     const Item = require(`../../schemas/${moduleName}`);
+
     const items = await Item.find()
       .skip(!!offset ? +offset : "")
       .limit(!!limit ? +limit : "");
     const fullItemsList = await Item.find();
+
     await mongoose.connection.close();
     return { count: fullItemsList.length, items };
   }
@@ -619,7 +626,7 @@ export class ModulesService {
   }
 
   async removeItemCategoryByID(userDTO: DeleteItemCategoryDTO) {
-    const { moduleName: userName, itemID, categoryID } = userDTO;
+    const { moduleName: /*userName,*/ itemID, categoryID } = userDTO;
 
     await mongoose.connect(process.env.MONGO_URI, options);
     const Item = require(`../../schemas/${userDTO.moduleName}`);
@@ -739,12 +746,10 @@ export class ModulesService {
     const { moduleName, itemID } = userDTO;
 
     const module = await this.findModulesByName(moduleName);
-
     if (!module)
       throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
 
     const file = join(__dirname, "..", "schemas", `${moduleName}.js`);
-
     fs.access(file, async (err) => {
       if (err) {
         throw new HttpException("Schema not found!", HttpStatus.NOT_FOUND);
@@ -759,7 +764,6 @@ export class ModulesService {
     const newVariant = {
       variantID: shortid.generate(),
     };
-
     await this.addVariantByItemID(moduleName, itemID, newVariant);
 
     return newVariant.variantID;
@@ -783,8 +787,8 @@ export class ModulesService {
   // }
 
   async editVariant(
-    userDTO: EditVariantDTO,
-    files: Record<any, any>
+    userDTO: EditVariantDTO
+    // files: Record<any, any>
   ): Promise<Record<string, any>> {
     const { moduleName, variantID } = userDTO;
     const module = await this.findModulesByName(moduleName);
@@ -1090,7 +1094,6 @@ export class ModulesService {
     const { moduleName, itemID, categoryID } = userDTO;
 
     const module = await this.findModulesByName(moduleName);
-
     if (!module)
       throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
 
@@ -1112,7 +1115,6 @@ export class ModulesService {
     const { moduleName, itemID, categoryID } = userDTO;
 
     const module = await this.findModulesByName(moduleName);
-
     if (!module)
       throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
 
@@ -1222,13 +1224,11 @@ export class ModulesService {
 
   async addItemToWishList(userId: string, userDTO: WishListDTO) {
     const user = await this.userService.findUserByUserID(userId);
-
     if (!user) {
       throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
     }
 
     const item = await this.getItemByID(userDTO.moduleName, userDTO.itemId);
-
     if (!item) {
       throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
     }
@@ -1236,7 +1236,6 @@ export class ModulesService {
     const sameItem = user.wishlist.find((el) => {
       return el.itemID == item.itemID;
     });
-
     if (sameItem) {
       throw new HttpException(
         "Same product is already exist in wishlist",
@@ -1262,13 +1261,11 @@ export class ModulesService {
 
   async addItemToViewed(userId: string, userDTO: WishListDTO) {
     const user = await this.userService.findUserByUserID(userId);
-
     if (!user) {
       throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
     }
 
     const item = await this.getItemByID(userDTO.moduleName, userDTO.itemId);
-
     if (!item) {
       throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
     }
@@ -1276,7 +1273,6 @@ export class ModulesService {
     const sameItem = user.viewed.find((el) => {
       return el.itemID == item.itemID;
     });
-
     if (sameItem) {
       throw new HttpException("", HttpStatus.BAD_REQUEST);
     }
@@ -1287,13 +1283,11 @@ export class ModulesService {
 
   async removeItemFromWishList(userId: string, userDTO: WishListDTO) {
     const user = await this.userService.findUserByUserID(userId);
-
     if (!user) {
       throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
     }
 
     const item = await this.getItemByID(userDTO.moduleName, userDTO.itemId);
-
     if (!item) {
       throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
     }
@@ -1301,17 +1295,18 @@ export class ModulesService {
     const sameItem = user.wishlist.find((el) => {
       return el.itemID == item.itemID;
     });
-
     if (!sameItem) {
       throw new HttpException(
         "No such product in wishlist",
         HttpStatus.BAD_REQUEST
       );
     }
+
     if (!item.likedUsers) item.likedUsers = [];
-    item.likedUsers = item.likedUsers.filter(function (value, index, arr) {
+    item.likedUsers = item.likedUsers.filter(function (value /*, index, arr*/) {
       return value != userId;
     });
+
     await mongoose.connect(process.env.MONGO_URI, options);
     const Item = require(`../../schemas/webshop`);
     await Item.findOneAndUpdate({ itemID: item.itemID }, item);
@@ -1319,7 +1314,7 @@ export class ModulesService {
     // await item.save();
 
     if (!user.wishlist) user.wishlist = [];
-    const wishlist = user.wishlist.filter(function (value, index, arr) {
+    const wishlist = user.wishlist.filter(function (value /*, index, arr*/) {
       return value.itemID != userDTO.itemId;
     });
 

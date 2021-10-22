@@ -13,20 +13,21 @@ import {
   Req,
   UseGuards,
 } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Request } from "express";
+import { AuthGuard } from "@nestjs/passport";
+import { Model } from "mongoose";
+import { ApiTags } from "@nestjs/swagger";
+
 import { GroupsService } from "./groups.service";
 import { AddGroupDTO, DeleteGroupDTO, EditGroupDTO } from "./dto/groups.dto";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
 import { Group } from "../types/group";
 import { QueryDTO } from "../shared/dto/shared.dto";
-import { Request } from "express";
 import { LoggerGateway } from "../shared/logger/logger.gateway";
-import { AuthGuard } from "@nestjs/passport";
 
 export const module = "groups";
-import {ApiTags} from "@nestjs/swagger";
 
-@ApiTags('groups')
+@ApiTags("groups")
 @Controller("groups")
 export class GroupsController {
   constructor(
@@ -48,18 +49,14 @@ export class GroupsController {
     @Body() userDTO: AddGroupDTO,
     @Req() req: Request
   ): Promise<Record<string, string>> {
-    if (userDTO.permissions) {
+    if (userDTO.permissions)
       userDTO.permissions = await this.groupsService.validatePermissions(
         userDTO.permissions
       );
-      const result = await this.groupsService.addGroup(userDTO);
-      await this.loggerGateway.logAction(req, module);
-      return result;
-    } else {
-      const result = await this.groupsService.addGroup(userDTO);
-      await this.loggerGateway.logAction(req, module);
-      return result;
-    }
+
+    const result = await this.groupsService.addGroup(userDTO);
+    await this.loggerGateway.logAction(req, module);
+    return result;
   }
 
   @Put()
@@ -69,19 +66,14 @@ export class GroupsController {
     @Body() userDTO: EditGroupDTO,
     @Req() req: Request
   ): Promise<Record<string, string>> {
-    if (userDTO.permissions) {
+    if (userDTO.permissions)
       userDTO.permissions = await this.groupsService.validatePermissions(
         userDTO.permissions
       );
 
-      const result = await this.groupsService.editGroup(userDTO);
-      await this.loggerGateway.logAction(req, module);
-      return result;
-    } else {
-      const result = await this.groupsService.editGroup(userDTO);
-      await this.loggerGateway.logAction(req, module);
-      return result;
-    }
+    const result = await this.groupsService.editGroup(userDTO);
+    await this.loggerGateway.logAction(req, module);
+    return result;
   }
 
   @Delete(":groupID")

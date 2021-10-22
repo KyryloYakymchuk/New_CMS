@@ -1,6 +1,6 @@
-import { Document } from 'mongoose';
+import { Document } from "mongoose";
 
 export interface OrderProblem extends Document {
-    orderID: number;
-    problem: string;
+  orderID: number;
+  problem: string;
 }

@@ -13,12 +13,11 @@ import { WebshopModule } from "./webshop/webshop.module";
 import { LoggerModule } from "./logger/logger.module";
 import { ScheduleModule } from "@nestjs/schedule";
 import { loginCheckMiddleware } from "./middleware/loginCheck.middleware";
-// import { NewsletterModule } from './newsletter/newsletter.module';
-import {FusersModule} from "./fusers/fusers.module";
-import {FauthModule} from "./fauth/fauth.module";
-import {ConfigModule} from "@nestjs/config";
-import {OrdersModule} from "./orders/orders.module";
-import {OrderProblemsModule} from "./orders/oderProblems.module";
+import { FusersModule } from "./fusers/fusers.module";
+import { FauthModule } from "./fauth/fauth.module";
+import { ConfigModule } from "@nestjs/config";
+import { OrdersModule } from "./orders/orders.module";
+import { OrderProblemsModule } from "./orders/oderProblems.module";
 import "dotenv/config";
 
 @Module({
@@ -26,13 +25,10 @@ import "dotenv/config";
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    MongooseModule.forRoot(
-        process.env.MONGO_URI,
-        {
-          useNewUrlParser: true,
-          useUnifiedTopology: true
-          }
-        ),
+    MongooseModule.forRoot(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }),
     MulterModule.register({
       dest: "./uploads",
     }),
@@ -49,7 +45,6 @@ import "dotenv/config";
     OrderProblemsModule,
     WebshopModule,
     LoggerModule,
-    // NewsletterModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -63,7 +58,7 @@ export class AppModule implements NestModule {
         GroupsModule,
         PagesModule,
         OrdersModule,
-          OrderProblemsModule,
+        OrderProblemsModule,
         WebshopModule,
         FusersModule,
         LoggerModule

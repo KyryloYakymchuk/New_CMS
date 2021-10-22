@@ -13,16 +13,11 @@ import {
 import { NewslettersService } from "./newsletters.service";
 import { AuthGuard } from "@nestjs/passport";
 import { QueryDTO } from "../shared/dto/shared.dto";
-import {
-  CreateJobDTO,
-  // DeleteJobDTO,
-  // EditJobDTO,
-  GetJobDTO,
-} from "./dto/newsletters.dto";
+import { CreateJobDTO, GetJobDTO } from "./dto/newsletters.dto";
 import { Request } from "express";
-import {ApiTags} from "@nestjs/swagger";
+import { ApiTags } from "@nestjs/swagger";
 
-@ApiTags('newsletters')
+@ApiTags("newsletters")
 @Controller("newsletters")
 export class NewslettersController {
   constructor(private newslettersService: NewslettersService) {}
@@ -45,12 +40,12 @@ export class NewslettersController {
 
   @Put()
   @UseGuards(AuthGuard("jwt"))
-  async editJob(@Body() userDTO/*: EditJobDTO*/, @Req() req: Request) {}
+  async editJob(@Body() userDTO /*: EditJobDTO*/, @Req() req: Request) {}
 
   @Delete(":newsletter")
   @UseGuards(AuthGuard("jwt"))
   async deleteJob(
-    @Param("newsletter") userDTO/*: DeleteJobDTO*/,
+    @Param("newsletter") userDTO /*: DeleteJobDTO*/,
     @Req() req: Request
   ) {}
 }

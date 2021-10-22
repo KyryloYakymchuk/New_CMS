@@ -1,7 +1,8 @@
 import { Module } from "@nestjs/common";
+import { MongooseModule } from "@nestjs/mongoose";
+
 import { ModulesController } from "./modules.controller";
 import { ModulesService } from "./modules.service";
-import { MongooseModule } from "@nestjs/mongoose";
 import { ModuleSchema } from "../models/module.schema";
 import { LoggerModule } from "../logger/logger.module";
 import { SharedModule } from "../shared/shared.module";
@@ -18,10 +19,9 @@ import { FuserSchema } from "../models/fuser.schema";
     LoggerModule,
     SharedModule,
     MongooseModule.forFeature([{ name: "Fuser", schema: FuserSchema }]),
-    // MongooseModule.forFeature([{ name: 'Variant', schema: VariantSchema }]),
   ],
   controllers: [ModulesController],
   providers: [ModulesService, FuserService],
-  exports: [ModulesService]
+  exports: [ModulesService],
 })
 export class ModulesModule {}

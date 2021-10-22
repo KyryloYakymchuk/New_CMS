@@ -17,6 +17,14 @@ import {
   UseGuards,
   UseInterceptors,
 } from "@nestjs/common";
+import { AnyFilesInterceptor } from "@nestjs/platform-express";
+import { diskStorage } from "multer";
+import * as uniqid from "uniqid";
+import { Request } from "express";
+import { AuthGuard } from "@nestjs/passport";
+import { join } from "path";
+import { ApiTags } from "@nestjs/swagger";
+
 import { ModulesService } from "./modules.service";
 import {
   AddFieldsDTO,
@@ -46,20 +54,13 @@ import {
   SetVariantStockDTO,
   WishListDTO,
 } from "./dto/modules.dto";
-import { AnyFilesInterceptor } from "@nestjs/platform-express";
-import { diskStorage } from "multer";
-import * as uniqid from "uniqid";
-import { Request } from "express";
 import { LoggerGateway } from "../shared/logger/logger.gateway";
-import { AuthGuard } from "@nestjs/passport";
-import { join } from "path";
 import { QueryDTO } from "../shared/dto/shared.dto";
 import { FuserService } from "../shared/fuser/fuser.service";
 
 export const module = "modules";
-import {ApiTags} from "@nestjs/swagger";
 
-@ApiTags('newsletters')
+@ApiTags("newsletters")
 @Controller("modules")
 export class ModulesController {
   constructor(
@@ -89,13 +90,8 @@ export class ModulesController {
     }
     if (fields) {
       const validated = await this.moduleService.validateFields(fields);
-      if (validated) {
-        userDTO.fields = validated;
-        const result = await this.moduleService.createModule(userDTO);
-        await this.loggerGateway.logAction(req, module);
-        return result;
-      }
-    } else {
+      if (validated) userDTO.fields = validated;
+
       const result = await this.moduleService.createModule(userDTO);
       await this.loggerGateway.logAction(req, module);
       return result;
@@ -110,13 +106,11 @@ export class ModulesController {
     @Headers("authorization") token: string
   ): Promise<Record<string, any>> {
     const verified = await this.userService.verifyToken(token.split(" ")[1]);
-
     if (!verified) {
       throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
     }
 
     const items = await this.moduleService.getItems(userDTO, paginationDTO);
-
     if (!items)
       throw new HttpException("Items not found!", HttpStatus.NOT_FOUND);
 
@@ -148,7 +142,6 @@ export class ModulesController {
       getItem.moduleName,
       getItem.itemID
     );
-
     if (!item) {
       throw new HttpException("No item by this id", HttpStatus.NOT_FOUND);
     }
@@ -156,17 +149,12 @@ export class ModulesController {
     const variant = item.variants.find((el) => {
       return el.variantID == getItem.variantID;
     });
-
     if (!variant) {
       throw new HttpException("No variant by this id", HttpStatus.NOT_FOUND);
     }
 
-    if (variant.status == "disabled") {
-      return { count: 0 };
-    }
-
     return {
-      count: variant.quantity,
+      count: variant.status === "disabled" ? 0 : variant.quantity,
     };
   }
 
@@ -178,7 +166,6 @@ export class ModulesController {
     @Headers("authorization") token: string
   ) {
     const verified = await this.userService.verifyToken(token.split(" ")[1]);
-
     if (!verified) {
       throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
     }
@@ -199,7 +186,6 @@ export class ModulesController {
     @Headers("authorization") token: string
   ) {
     const verified = await this.userService.verifyToken(token.split(" ")[1]);
-
     if (!verified) {
       throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
     }
@@ -251,7 +237,6 @@ export class ModulesController {
     @Headers("authorization") token: string
   ) {
     const verified = await this.userService.verifyToken(token.split(" ")[1]);
-
     if (!verified) {
       throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
     }
@@ -507,13 +492,8 @@ export class ModulesController {
     }
     if (fields) {
       const validated = await this.moduleService.validateFields(fields);
-      if (validated) {
-        userDTO.fields = validated;
-        const result = await this.moduleService.editModule(userDTO);
-        await this.loggerGateway.logAction(req, module);
-        return result;
-      }
-    } else {
+      if (validated) userDTO.fields = validated;
+
       const result = await this.moduleService.editModule(userDTO);
       await this.loggerGateway.logAction(req, module);
       return result;

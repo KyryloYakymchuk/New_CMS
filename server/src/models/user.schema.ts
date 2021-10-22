@@ -1,6 +1,6 @@
-import * as mongoose from 'mongoose';
-import * as bcrypt from 'bcrypt';
-import * as uniqid from 'uniqid';
+import * as mongoose from "mongoose";
+import * as bcrypt from "bcrypt";
+import * as uniqid from "uniqid";
 
 export const UserSchema = new mongoose.Schema({
   userID: {
@@ -19,7 +19,7 @@ export const UserSchema = new mongoose.Schema({
   },
   group: {
     type: Array,
-    default: ['User'],
+    default: ["User"],
   },
   phone: {
     type: String,
@@ -52,14 +52,12 @@ export const UserSchema = new mongoose.Schema({
   },
 });
 
-UserSchema.pre('save', async function (next: mongoose.HookNextFunction) {
+UserSchema.pre("save", async function (next: mongoose.HookNextFunction) {
   try {
-    if (this.isModified('userID')) {
-      return next();
+    if (!this.isModified("userID")) {
+      this["userID"] = uniqid("id-u_");
+      this["password"] = await bcrypt.hash(this["password"], 10);
     }
-
-    this['userID'] = uniqid('id-u_');
-    this['password'] = await bcrypt.hash(this['password'], 10);
 
     return next();
   } catch (e) {

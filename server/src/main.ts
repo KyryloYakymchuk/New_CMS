@@ -3,7 +3,7 @@ import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { ValidationPipe } from "@nestjs/common";
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 
 import { SocketIoAdapter } from "./socket-io.adapter";
 
@@ -15,16 +15,16 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-      .setTitle('CMS api')
-      .setDescription('The CMS API description')
-      .setVersion('1.0')
-      .addBearerAuth(
-          { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
-          'access-token',
-      )
-      .build();
+    .setTitle("CMS api")
+    .setDescription("The CMS API description")
+    .setVersion("1.0")
+    .addBearerAuth(
+      { type: "http", scheme: "bearer", bearerFormat: "JWT" },
+      "access-token"
+    )
+    .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api-docs', app, document);
+  SwaggerModule.setup("api-docs", app, document);
 
   app.useGlobalPipes(new ValidationPipe());
 

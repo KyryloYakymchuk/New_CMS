@@ -24,10 +24,9 @@ export const JobSchema = new mongoose.Schema({
 
 JobSchema.pre("save", async function (next: mongoose.HookNextFunction) {
   try {
-    if (this.isModified("jobID")) {
-      return next();
-    }
-    this["jobID"] = uniqid("id-l_");
+    if (!this.isModified("jobID"))
+      this["jobID"] = uniqid("id-l_");
+
     return next();
   } catch (e) {
     return next(e);

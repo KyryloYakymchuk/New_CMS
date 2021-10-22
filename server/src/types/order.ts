@@ -1,34 +1,33 @@
-import { Document } from 'mongoose';
+import { Document } from "mongoose";
 
 export interface Order extends Document {
+  createDate: Date;
 
-    createDate: Date;
+  client: {
+    clientId: string;
+    clientFirstName: string;
+    clientLastName: string;
+    clientEmail: string;
+    clientNumber: string;
+  };
 
-    client:{
-        clientId: string;
-        clientFirstName: string;
-        clientLastName: string;
-        clientEmail: string;
-        clientNumber: string;
-    }
+  shipping: {
+    address1: string;
+    address2: string;
+  };
 
-    shipping:{
-        address1: string;
-        address2: string;
-    }
+  discount: {
+    name: string;
+    count: string;
+  };
 
-    discount:{
-        name: string;
-        count: string;
-    }
+  products: Array<any>;
 
-    products: Array<any>;
+  totalPrice: number;
 
-    totalPrice: number;
+  payment: string;
 
-    payment: string;
+  status: string;
 
-    status: string;
-
-    quantity: number;
+  quantity: number;
 }

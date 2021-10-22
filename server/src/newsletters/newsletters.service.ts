@@ -1,11 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
+import { SchedulerRegistry } from "@nestjs/schedule";
+import { CronJob } from "cron";
+
 import { Job } from "../types/job";
 import { QueryDTO } from "../shared/dto/shared.dto";
-import { SchedulerRegistry } from "@nestjs/schedule";
 import { MailerService } from "../shared/mailer/mailer.service";
-import { CronJob } from "cron";
 import { User } from "../types/user";
 import { CreateJobDTO, GetJobDTO } from "./dto/newsletters.dto";
 

@@ -12,24 +12,24 @@ import {
   Query,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
+import { ApiTags } from "@nestjs/swagger";
+
 import {
   AddPageDTO,
   DeletePageDTO,
   EditPageDTO,
-  GetPagesDTO, ResponsePageDto,
+  GetPagesDTO,
+  ResponsePageDto,
 } from "./dto/pages.dto";
 import { PagesService } from "./pages.service";
-import {ApiTags} from "@nestjs/swagger";
 
-@ApiTags('pages')
+@ApiTags("pages")
 @Controller("pages")
 export class PagesController {
   constructor(private pagesService: PagesService) {}
 
   @Get()
-  async getPages(
-    @Query() userDTO: GetPagesDTO
-  ): Promise<Record<string, any>> {
+  async getPages(@Query() userDTO: GetPagesDTO): Promise<Record<string, any>> {
     return this.pagesService.getPages(userDTO);
   }
 
@@ -58,9 +58,9 @@ export class PagesController {
     return this.pagesService.deletePage(page);
   }
 
-  @Get(':id')
+  @Get(":id")
   @UseGuards(AuthGuard("jwt"))
-  async getOne(@Param('id') id: string): Promise<ResponsePageDto> {
+  async getOne(@Param("id") id: string): Promise<ResponsePageDto> {
     const page = await this.pagesService.getById(id);
     return new ResponsePageDto(page);
   }

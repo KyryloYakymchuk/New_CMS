@@ -1,5 +1,4 @@
 import { IsEmail, IsNotEmpty } from "class-validator";
-import exp from "constants";
 import { Transform } from "class-transformer";
 
 export class LoginDTO {
@@ -55,30 +54,24 @@ export class GoogleRegisterDTO {
 }
 
 export class UserDTO {
-
+  @IsNotEmpty()
   password: string;
   userMain?: {
     firstName: string;
     lastName: string;
     birthday: Date;
     sex: string;
-  }
-
+  };
   contacts?: {
     email: string;
     phone: string;
-  }
-
-  shippingAddress?:{
+  };
+  shippingAddress?: {
     address1: string;
     address2: string;
-  }
-
+  };
   orders?: Array<any>;
-
   wishlist?: Array<any>;
-
   viewed?: Array<any>;
-
   comments?: Array<any>;
 }
