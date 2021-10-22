@@ -2,24 +2,19 @@ import { FC } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { Button } from '@material-ui/core';
-
 import { setModalStatusAction } from '@redux/actions/modal';
-// import { statusAction } from '@redux/actions/menuStatus';
-// import { menuStatusSelector } from '@redux/selectors/menuStatus';
-
 import { Icons } from '@utils/constants/icon';
 import { AuthRoutes } from '@utils/enums/routes';
 import { useTypedSelector } from '@utils/hooks/useTypedSelector';
-
-import { ModalConfirm } from '@components/Modal/Modal_Confirm_Submit/ModalConfirm';
-
+import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
+// import { statusAction } from '@redux/actions/menuStatus';
+// import { menuStatusSelector } from '@redux/selectors/menuStatus';
 import {
     HeaderContainer,
     HeaderTitle,
     TitleContainer,
     TitleItem
-} from './style/style';
-
+} from './styled';
 
 interface Props {
     title: string;
@@ -31,7 +26,6 @@ export const Header: FC<Props> = ({ title }) => {
 
     //     const statusmenu = useTypedSelector( ({ menuReducer }) => menuReducer.status);
     const isModalOpen = useTypedSelector(({ modalStatus }) => modalStatus?.modal);
-
 
     // const handleClickBurger = () => {
     //     dispatch(setModalStatusAction(true));
@@ -56,12 +50,12 @@ export const Header: FC<Props> = ({ title }) => {
         <>
             <HeaderContainer>
                 {/* For mobile  */}
-                {/* <div
-          className={`icon-one ${!statusMenu && "active-one"}`}
-          onClick={handleClickBurger}
-        >
-          <div className="hamburger hamburger-one"></div>
-        </div> */}
+                {/*<div*/}
+                {/*    className={`icon-one ${!statusMenu && 'active-one'}`}*/}
+                {/*    onClick={handleClickBurger}*/}
+                {/*>*/}
+                {/*    <div className="hamburger hamburger-one"></div>*/}
+                {/*</div> */}
 
                 <TitleContainer>
                     <TitleItem>
@@ -76,7 +70,7 @@ export const Header: FC<Props> = ({ title }) => {
                             type="button"
                             onClick={handleClickLogout}
                         >
-              Logout   
+                            Logout
                         </Button>
                     </TitleItem>
                 </TitleContainer>

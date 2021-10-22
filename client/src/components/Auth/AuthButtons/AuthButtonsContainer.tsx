@@ -1,7 +1,7 @@
 import { useStyles } from '@utils/styles/button';
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { HelperText } from './../styled/styled';
+import { HelperText } from './styled';
 import { Button } from '@mui/material';
 
 interface ButtonProps {
@@ -28,9 +28,7 @@ export const AuthButtonContainer: FC<ButtonProps> = ({
     return (
         <>
             <div className={classes.Button}>
-                {loaderStatus ? (
-                    Loader
-                ) : (
+                {loaderStatus ? (Loader) : (
                     <Button
                         startIcon={buttonIcon}
                         size="large"

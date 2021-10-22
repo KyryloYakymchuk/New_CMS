@@ -1,7 +1,7 @@
-import { Dispatch, FC } from 'react';
+import React, { Dispatch, FC } from 'react';
 import ReactPaginate from 'react-paginate';
 import { useHistory } from 'react-router';
-import { StyledPaginateContainer } from './PaginationStyle/Pagination';
+import { StyledPaginateContainer } from './styled';
 
 interface IProps {
     count: number;

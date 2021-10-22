@@ -19,7 +19,7 @@ export const MenuItem = [
         icon: Icons.PagesIcon,
         itemId: 3,
         height: '180px',
-        subitems: [
+        subItems: [
             { subName: 'All Pages', subPath:'/'  },
             { subName: 'New Pages', subPath:'/'  },
             { subName: 'Edit Page', subPath:'/' }
@@ -30,7 +30,7 @@ export const MenuItem = [
         icon: Icons.ModulesIcon,
         itemId: 4,
         height: '130px',
-        subitems: [
+        subItems: [
             { subName: 'All Modules', subPath:'/'  },
             { subName: 'New Module', subPath:'/'  }
         ]
@@ -40,7 +40,7 @@ export const MenuItem = [
         icon: Icons.GroupsIcon,
         itemId: 5,
         height: '130px',
-        subitems: [
+        subItems: [
             { subName: 'All Groups', subPath:'/'  },
             { subName: 'New Group', subPath:'/'  }
         ]
@@ -50,7 +50,7 @@ export const MenuItem = [
         icon: Icons.NewsletterIcon,
         itemId: 6,
         height: '225px',
-        subitems: [
+        subItems: [
             { subName: 'All Letter', subPath:'/'  },
             { subName: 'New Letter', subPath:'/'  },
             { subName: 'New Jobs', subPath:'/'  },
@@ -62,7 +62,7 @@ export const MenuItem = [
         icon: Icons.WebshopIcon,
         itemId: 7,
         height: '225px',
-        subitems: [
+        subItems: [
             { subName: 'Categories', subPath:'/'  },
             { subName: 'All Fields', subPath:'/'  },
             { subName: 'All Items', subPath:'/'  },
