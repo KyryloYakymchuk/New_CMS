@@ -2,7 +2,11 @@ import { FC } from 'react';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
+
 import { ModalButton } from '@components/ModalButton';
+import { useTranslation } from 'react-i18next';
+
+
 import { useStyles } from '@utils/styles/modal';
 import { Text } from './styled';
 
@@ -20,7 +24,8 @@ export const ModalConfirm: FC<ModalProps> = ({
     handleClose
 }) => {
     const classes = useStyles();
-
+    const { t } = useTranslation();
+    
     return (
         <Modal
             aria-labelledby="transition-modal-title"
@@ -36,8 +41,8 @@ export const ModalConfirm: FC<ModalProps> = ({
         >
             <Fade in={isModalOpen}>
                 <div className={classes.paper}>
-                    <Text>{message}</Text>
-                    <ModalButton handleAccept={handleAccept} handleClose={handleClose}/>
+                    <Text>{t(message)}</Text>
+                    <ModalButton handleAccept={handleAccept} handleClose={handleClose} />
                 </div>
             </Fade>
         </Modal>

@@ -14,7 +14,7 @@ import {
     ErrorMessage,
     FieldCustom,
     FormContainer
-} from '@modules/Auth/styled/styled';
+} from '@modules/Auth/styled';
 import { useTypedSelector } from '@utils/hooks/useTypedSelector';
 
 interface LoginProps {

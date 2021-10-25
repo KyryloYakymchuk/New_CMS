@@ -1,5 +1,7 @@
 import { FC } from 'react';
 import { Form } from 'react-final-form';
+import { useTranslation } from 'react-i18next';
+
 import {
     ButtonsData,
     RegisterFields
@@ -14,7 +16,7 @@ import {
     ErrorMessage,
     FieldCustom,
     FormContainer
-} from '@modules/Auth/styled/styled';
+} from '@modules/Auth/styled';
 import { useTypedSelector } from '@utils/hooks/useTypedSelector';
 
 interface RegisterProps {
@@ -27,6 +29,8 @@ export const RegisterForm: FC<RegisterProps> = ({ onSubmit }) => {
 
     const errorMessage = useTypedSelector(({ error }) => error.message);
     const loaderStatus = useTypedSelector(({ loader }) => loader.loaderStatus);
+    
+    const { t } = useTranslation();
 
     return (
         <Form
@@ -35,7 +39,7 @@ export const RegisterForm: FC<RegisterProps> = ({ onSubmit }) => {
             render={({ handleSubmit }) => (
                 <FormContainer>
                     <form onSubmit={handleSubmit}>
-                        <ErrorMessage>{errorMessage}</ErrorMessage>
+                        <ErrorMessage>{t(errorMessage || '')}</ErrorMessage>
                         {RegisterFields.map(({ icon, ...field }, index) => (
                             <FieldCustom
                                 key={index}

@@ -6,6 +6,7 @@ import { Reset } from '@modules/Auth/Reset';
 
 import { AuthRoutes, ProtectedRoutes } from '@utils/enums/routes';
 import { Dashboard } from '@components/Dashboard';
+import { Settings } from '@modules/Settings/Settings';
 
 // Main components
 export const protectedRoutes = [
@@ -47,7 +48,7 @@ export const protectedRoutes = [
     },
     {
         path: ProtectedRoutes.SETTINGS,
-        component: Dashboard,
+        component: Settings,
         title: 'Settings'
     }
 ];

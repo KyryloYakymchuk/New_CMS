@@ -1,13 +1,16 @@
 import { FC } from 'react';
 import { useDispatch } from 'react-redux';
 import { itemIdAction } from '@redux/actions/menuStatus';
-import { MenuItem, style } from '@utils/constants/MenuItem/MenuItem';
+import { MenuItem } from '@utils/constants/MenuItem/MenuItem';
+import { useTranslation } from 'react-i18next';
+
 import { useTypedSelector } from '@utils/hooks/useTypedSelector';
 import {
     NavbarContainer,
     NavbarItem,
     TitleNavbarSubItem,
-    Title
+    Title, 
+    style
 } from './styled';
 
 export const SideMenu: FC = () => {
@@ -15,6 +18,8 @@ export const SideMenu: FC = () => {
     const pickedId = useTypedSelector(({ menuReducer }) => menuReducer.itemId);
 
     const dispatch = useDispatch();
+    const { t } = useTranslation();
+
 
     const handleSetItemID = (itemId: number) => () => {
         if (pickedId === itemId) {
@@ -38,7 +43,7 @@ export const SideMenu: FC = () => {
                         statusmenu={statusMenu}
                     >
                         {icon}
-                        <span>{name}</span>
+                        <span>{t(name)}</span>
                     </NavbarItem>
                 ) : (
                     <TitleNavbarSubItem
@@ -47,7 +52,7 @@ export const SideMenu: FC = () => {
                     >
                         <Title onClick={handleSetItemID(itemId)}>
                             {icon}
-                            <span>{name}</span>
+                            <span>{t(name)}</span>
                         </Title>
                         {subItems?.map(({ subName, subPath }) => (
                             <NavbarItem
@@ -57,7 +62,7 @@ export const SideMenu: FC = () => {
                                 padding="55px"
                                 key={subPath}
                             >
-                                {subName}
+                                {t(subName)}
                             </NavbarItem>
                         ))}
                     </TitleNavbarSubItem>
