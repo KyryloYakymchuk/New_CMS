@@ -39,7 +39,7 @@ export const RegisterForm: FC<RegisterProps> = ({ onSubmit }) => {
             render={({ handleSubmit }) => (
                 <FormContainer>
                     <form onSubmit={handleSubmit}>
-                        <ErrorMessage>{t(errorMessage || '')}</ErrorMessage>
+                        <ErrorMessage>{errorMessage && t(errorMessage)}</ErrorMessage>
                         {RegisterFields.map(({ icon, ...field }, index) => (
                             <FieldCustom
                                 key={index}
@@ -52,11 +52,11 @@ export const RegisterForm: FC<RegisterProps> = ({ onSubmit }) => {
                         ))}
                         <ButtonContainer>
                             <AuthButtonContainer
-                                description={description}
+                                description={t(description)}
                                 buttonIcon={buttonIcon}
-                                buttonText={buttonText}
+                                buttonText={t(buttonText)}
                                 Loader={LoaderCircularButton}
-                                linkText={linkText}
+                                linkText={t(linkText)}
                                 path={path}
                                 loaderStatus={loaderStatus}
                             />

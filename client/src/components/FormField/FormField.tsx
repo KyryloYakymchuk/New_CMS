@@ -1,7 +1,6 @@
 import TextField from '@mui/material/TextField';
 import { FieldRenderProps } from 'react-final-form';
 import { FC } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useTypedSelector } from '@utils/hooks/useTypedSelector';
 
 import { InputAdornment } from '@mui/material';
@@ -12,11 +11,10 @@ const FormField: FC<FormProps> = ({ input, meta, children, ...rest }) => {
     const errorMessage = useTypedSelector(({ error }) => error.message);
 
     const { touched, error } = meta;
-    const { t } = useTranslation();
     return (
         <TextField
             error={Boolean((touched && error) || errorMessage)}
-            helperText={touched && error && <span> {t(error)} </span>}
+            helperText={touched && error && <span> {error} </span>}
             {...rest}
             {...input}
             InputProps={{

@@ -1,6 +1,7 @@
 import { FC, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import { registerAction } from '@redux/actions/auth';
 import { loaderAction } from '@redux/actions/loader';
 import { setModalStatusAction } from '@redux/actions/modal';
@@ -27,6 +28,8 @@ export const Register: FC = () => {
 
     const dispatch = useDispatch();
     const history = useHistory();
+    const { t } = useTranslation();
+
     const isModalOpen = useTypedSelector(({ modalStatus }) => modalStatus?.modal);
 
     const onSubmit = (value: IFormValues) => {
@@ -45,12 +48,12 @@ export const Register: FC = () => {
 
     return (
         <>
-            <AuthLayout title={title} description={description}>
+            <AuthLayout title={t(title)} description={t(description)}>
                 <RegisterForm onSubmit={onSubmit}/>
             </AuthLayout>
             <ModalConfirm
                 isModalOpen={isModalOpen}
-                message="A confirmation letter has been sent to the Email !"
+                message={t('A confirmation letter has been sent to the Email !')}
                 handleAccept={handleAccept}
             />
         </>

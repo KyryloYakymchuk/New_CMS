@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { Form } from 'react-final-form';
+import { useTranslation } from 'react-i18next';
 import {
     ButtonsData,
     ResetFields
@@ -27,7 +28,7 @@ export const ResetForm: FC<LoginProps> = ({ onSubmit }) => {
 
     const errorMessage = useTypedSelector(({ error }) => error.message);
     const loaderStatus = useTypedSelector(({ loader }) => loader.loaderStatus);
-
+    const { t } = useTranslation();
     return (
         <Form
             onSubmit={onSubmit}
@@ -35,7 +36,7 @@ export const ResetForm: FC<LoginProps> = ({ onSubmit }) => {
             render={({ handleSubmit }) => (
                 <FormContainer>
                     <form onSubmit={handleSubmit}>
-                        <ErrorMessage>{errorMessage}</ErrorMessage>
+                        <ErrorMessage>{errorMessage && t(errorMessage)}</ErrorMessage>
                         {ResetFields.map(({  icon, ...field }, index) => (
                             <FieldCustom
                                 key={index}
@@ -48,11 +49,11 @@ export const ResetForm: FC<LoginProps> = ({ onSubmit }) => {
                         ))}
                         <ButtonContainer>
                             <AuthButtonContainer
-                                description={description}
+                                description={t(description)}
                                 buttonIcon={buttonIcon}
-                                buttonText={buttonText}
+                                buttonText={t(buttonText)}
                                 Loader={LoaderCircularButton}
-                                linkText={linkText}
+                                linkText={t(linkText)}
                                 path={path}
                                 loaderStatus={loaderStatus}
                             />

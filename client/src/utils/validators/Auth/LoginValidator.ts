@@ -1,3 +1,4 @@
+import i18n from '@utils/helpers/i18n';
 import { emailRE } from '../RegularExpressions';
 
 interface ValidatorProps {
@@ -14,24 +15,25 @@ export const LoginValidator = (values: ValidatorProps) => {
     const errors: IErrors = {};
     // EMAIL
     if (!values.email) {
-        errors.email = 'Required';
+        errors.email = i18n.t('Required');
+        
     }
     if (!emailRE.test(values.email)) {
-        errors.email = 'Invalid email address';
+        errors.email = i18n.t('Invalid email address');
     }
 
     // PASSWORD
     if (!values.password) {
-        errors.password = 'Required';
+        errors.password = i18n.t('Required');
     }
     if (/(\s)/g.test(values.password)) {
-        errors.password = 'Password must not contain spaces';
+        errors.password = i18n.t('Password must not contain spaces');
     }
     if (values?.password?.length < 8) {
-        errors.password = 'Minimum 8 characters';
+        errors.password = i18n.t('Minimum 8 characters');
     }
     if (/[^a-zA-Z0-9]/g.test(values.password)) {
-        errors.password = 'Password must not contain cyrillic';
+        errors.password = i18n.t('Password must not contain cyrillic');
     }
 
     return errors;

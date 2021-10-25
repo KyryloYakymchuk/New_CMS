@@ -1,3 +1,4 @@
+import i18n from '@utils/helpers/i18n';
 import {
     emailRE,
     passwordCyrillicRE,
@@ -29,66 +30,66 @@ export const RegisterValidator = (values: ValidatorProps) => {
     // EMAIL
 
     if (!values.email) {
-        errors.email = 'Required';
+        errors.email = i18n.t('Required');
     } else if (!emailRE.test(values.email)) {
-        errors.email = 'Invalid email address';
+        errors.email = i18n.t('Invalid email address');
     }
 
     // PASSWORD
     if (!values.password) {
-        errors.password = 'Required';
+        errors.password = i18n.t('Required');
     } else if (passwordSpacesRE.test(values.password)) {
-        errors.password = 'Password must not contain spaces';
+        errors.password = i18n.t('Password must not contain spaces');
     } else if (values?.password?.length < 8) {
-        errors.password = 'Minimum 8 characters';
+        errors.password = i18n.t('Minimum 8 characters');
     } else if (passwordCyrillicRE.test(values.password)) {
-        errors.password = 'Password must not contain cyrillic';
+        errors.password = i18n.t('Password must not contain cyrillic');
     }
 
     // CONFIRM PASSWORD
     if (!values.confirmPassword) {
-        errors.confirmPassword = 'Required';
+        errors.confirmPassword = i18n.t('Required');
     } else if (values.password !== values.confirmPassword) {
-        errors.confirmPassword = 'Passwords must match';
+        errors.confirmPassword = i18n.t('Passwords must match');
     }
 
     // first name
 
     if (!values.firstname) {
-        errors.firstname = 'Required';
+        errors.firstname = i18n.t('Required');
     } else if (values?.firstname?.length > 30) {
-        errors.firstname = 'Must have a maximum of 30 characters';
+        errors.firstname = i18n.t('Must have a maximum of 30 characters');
     } else if (!values.firstname.match('^[a-zA-Z]+$')) {
-        errors.firstname = 'The first name must contain only letters';
+        errors.firstname = i18n.t('The first name must contain only letters');
     } else if (!values.firstname.match(/^[A-Z]/)) {
-        errors.firstname = 'First letter must be in upper case';
+        errors.firstname = i18n.t('First letter must be in upper case');
     }
 
     //last name
 
     if (values?.lastname) {
         if (values?.lastname?.length > 30) {
-            errors.lastname = 'Must have a maximum of 30 characters';
+            errors.lastname = i18n.t('Must have a maximum of 30 characters');
         } else if (!values?.lastname?.match('^[a-zA-Z]+$')) {
-            errors.lastname = 'The last name must contain only letters';
+            errors.lastname = i18n.t('The last name must contain only letters');
         } else if (!values?.lastname?.match(/^[A-Z]/)) {
-            errors.lastname = 'First letter must be in upper case';
+            errors.lastname = i18n.t('First letter must be in upper case');
         }
     }
     // Phone
     if (values?.phone) {
         if (values?.phone?.match(/[^0-9]/)) {
-            errors.phone = 'The phone number must contain only numbers';
+            errors.phone = i18n.t('The phone number must contain only numbers');
         } else if (!values?.phone?.match(/^\+?\d[0-9]{9,15}$/)) {
-            errors.phone = 'Invalid Phone!';
+            errors.phone = i18n.t('Invalid Phone!');
         }
     }
     // BirthDay
     if (values?.birthday) {
         if (new Date(values?.birthday) >= new Date(Date.now())) {
-            errors.birthday = 'Wrong date';
+            errors.birthday = i18n.t('Wrong date');
         } else if (new Date(values?.birthday) < new Date('1910-01-01')) {
-            errors.birthday = 'Wrong date';
+            errors.birthday = i18n.t('Wrong date');
         }
     }
 

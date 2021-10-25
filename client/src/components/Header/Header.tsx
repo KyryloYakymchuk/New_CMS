@@ -27,9 +27,10 @@ export const Header: FC<Props> = ({ title }) => {
     const history = useHistory();
     const { t } = useTranslation();
 
-    //     const statusmenu = useTypedSelector( ({ menuReducer }) => menuReducer.status);
     const isModalOpen = useTypedSelector(({ modalStatus }) => modalStatus?.modal);
-
+    
+    /* For future mobile version  */
+    //     const statusmenu = useTypedSelector( ({ menuReducer }) => menuReducer.status);
     // const handleClickBurger = () => {
     //     dispatch(setModalStatusAction(true));
     //     dispatch(statusAction(isModalOpen));
@@ -52,7 +53,7 @@ export const Header: FC<Props> = ({ title }) => {
     return (
         <>
             <HeaderContainer>
-                {/* For mobile  */}
+                {/* For future mobile version  */}
                 {/*<div*/}
                 {/*    className={`icon-one ${!statusMenu && 'active-one'}`}*/}
                 {/*    onClick={handleClickBurger}*/}

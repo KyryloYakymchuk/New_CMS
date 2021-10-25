@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { Form } from 'react-final-form';
+import { useTranslation } from 'react-i18next';
 import {
     ButtonsData,
     ResetPasswordFields
@@ -26,6 +27,7 @@ export const ResetPasswordForm: FC<LoginProps> = ({ onSubmit }) => {
     const { LoaderCircularButton } = Loader;
     const errorMessage = useTypedSelector(({ error }) => error.message);
     const loaderStatus = useTypedSelector(({ loader }) => loader.loaderStatus);
+    const { t } = useTranslation();
     return (
         <Form
             onSubmit={onSubmit}
@@ -33,7 +35,7 @@ export const ResetPasswordForm: FC<LoginProps> = ({ onSubmit }) => {
             render={({ handleSubmit }) => (
                 <FormContainer>
                     <form onSubmit={handleSubmit}>
-                        <ErrorMessage>{errorMessage}</ErrorMessage>
+                        <ErrorMessage>{errorMessage && t(errorMessage)}</ErrorMessage>
                         {ResetPasswordFields.map(({  icon, ...field }, index) => (
                             <FieldCustom
                                 key={index}
@@ -46,11 +48,11 @@ export const ResetPasswordForm: FC<LoginProps> = ({ onSubmit }) => {
                         ))}
                         <ButtonContainer>
                             <AuthButtonContainer
-                                description={description}
+                                description={t(description)}
                                 buttonIcon={buttonIcon}
-                                buttonText={buttonText}
+                                buttonText={t(buttonText)}
                                 Loader={LoaderCircularButton}
-                                linkText={linkText}
+                                linkText={t(linkText)}
                                 path={path}
                                 loaderStatus={loaderStatus}
                             />

@@ -2,7 +2,7 @@
     "root": true,
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-        "project": "../tsconfig.json"
+        "project": "**/tsconfig.json"
       },
     "plugins": ["@typescript-eslint", "import", "jsx-a11y"],
     "extends": ["airbnb-typescript"],

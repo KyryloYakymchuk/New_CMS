@@ -35,7 +35,7 @@ export const LoginForm: FC<LoginProps> = ({ onSubmit }) => {
             render={({ handleSubmit }) => (
                 <FormContainer>
                     <form onSubmit={handleSubmit}>
-                        <ErrorMessage>{t(errorMessage || '')}</ErrorMessage>
+                        <ErrorMessage>{errorMessage && t(errorMessage)}</ErrorMessage>
                         {LoginFields.map(({ icon, ...field }, index) => (
                             <FieldCustom
                                 key={index}
@@ -49,10 +49,10 @@ export const LoginForm: FC<LoginProps> = ({ onSubmit }) => {
                         <ForgotPassword to="/auth/reset">{t('Forgot Password')}</ForgotPassword>
                         <ButtonContainer>
                             <AuthButtonContainer
-                                description={description}
+                                description={t(description)}
                                 buttonIcon={buttonIcon}
-                                buttonText={buttonText}
-                                linkText={linkText}
+                                buttonText={t(buttonText)}
+                                linkText={t(linkText)}
                                 path={path}
                             />
                         </ButtonContainer>
