@@ -3,26 +3,21 @@ export interface IAddress {
     city: string;
     zipcode: string;
 }
+
 export interface IUsers {
     id: number;
     name: string;
     email: string;
     address: IAddress;
 }
+
 export interface ITodo {
     id: number;
     title: string;
-    compleeted: boolean;
+    completed: boolean;
 }
-export interface IlistColums {
-  title: string;
-  name: string;
-}
-export interface IlistColums {
-  title: string;
-  name: string;
-}
-export interface IlistColums {
-  title: string;
-  name: string;
+
+export interface IListColumns {
+    title: string;
+    name: string;
 }

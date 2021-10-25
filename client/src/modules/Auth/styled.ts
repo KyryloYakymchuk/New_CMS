@@ -28,9 +28,10 @@ export const FieldCustom = styled(Field)`
   margin: 10px 0 !important;
 
   .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused
-    .MuiOutlinedInput-notchedOutline {
+  .MuiOutlinedInput-notchedOutline {
     border-color: rgb(122, 122, 122);
   }
+
   .css-1kty9di-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
     color: black;
   }

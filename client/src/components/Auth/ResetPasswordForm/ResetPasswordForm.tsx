@@ -1,18 +1,14 @@
 import { FC } from 'react';
 import { Form } from 'react-final-form';
-
 import {
     ButtonsData,
     ResetPasswordFields
 } from '@utils/constants/AuthField/ResetPasswordFields';
 import { Loader } from '@utils/constants/Loader';
 import { ResetPasswordValidator } from '@utils/validators/Auth/ResetPasswordValidator';
-
 import { IFormValues } from '@modules/Auth/ResetPassword';
-
 import FormField from '@components/FormField/FormField';
-import { AuthButtonContainer } from '@components/Auth/AuthButtons/AuthButtonsContainer/AuthButtonsContainer';
-
+import { AuthButtonContainer } from '@components/Auth/AuthButtons/AuthButtonsContainer';
 import {
     ButtonContainer,
     ErrorMessage,
@@ -27,7 +23,7 @@ interface LoginProps {
 
 export const ResetPasswordForm: FC<LoginProps> = ({ onSubmit }) => {
     const { buttonIcon, buttonText, linkText, description, path } = ButtonsData;
-    const { LoaderCircularrButton } = Loader;
+    const { LoaderCircularButton } = Loader;
     const errorMessage = useTypedSelector(({ error }) => error.message);
     const loaderStatus = useTypedSelector(({ loader }) => loader.loaderStatus);
     return (
@@ -38,12 +34,10 @@ export const ResetPasswordForm: FC<LoginProps> = ({ onSubmit }) => {
                 <FormContainer>
                     <form onSubmit={handleSubmit}>
                         <ErrorMessage>{errorMessage}</ErrorMessage>
-                        {ResetPasswordFields.map(({ type, name, label, icon }, index) => (
+                        {ResetPasswordFields.map(({  icon, ...field }, index) => (
                             <FieldCustom
                                 key={index}
-                                type={type}
-                                name={name}
-                                label={label}
+                                {...field}
                                 variant="outlined"
                                 component={FormField}
                             >
@@ -55,7 +49,7 @@ export const ResetPasswordForm: FC<LoginProps> = ({ onSubmit }) => {
                                 description={description}
                                 buttonIcon={buttonIcon}
                                 buttonText={buttonText}
-                                Loader={LoaderCircularrButton}
+                                Loader={LoaderCircularButton}
                                 linkText={linkText}
                                 path={path}
                                 loaderStatus={loaderStatus}

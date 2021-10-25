@@ -1,7 +1,6 @@
 import { Button } from '@material-ui/core';
 import { FC } from 'react';
-
-import { CustomButton } from './styled/ConfirmModalButton.module';
+import { CustomButton } from './styled';
 
 interface ButtonProps {
     handleAccept: VoidFunction;
@@ -15,10 +14,10 @@ export const ConfirmModalButton: FC<ButtonProps> = ({
     return (
         <CustomButton>
             <Button variant="contained" onClick={handleAccept}>
-            Yes
+                Yes
             </Button>
             <Button variant="outlined" onClick={handleClose}>
-            No
+                No
             </Button>
         </CustomButton>
     );

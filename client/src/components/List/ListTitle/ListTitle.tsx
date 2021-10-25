@@ -1,19 +1,16 @@
 import { FC } from 'react';
-
-import { IlistColums } from '@interfaces/types';
-
-import { ListTitleContainer } from './styled/styled';
+import { IListColumns } from '@interfaces/types';
+import { ListTitleContainer } from './styled';
 
 interface IProps {
-    listColums: IlistColums[];
+    listColumns: IListColumns[];
 }
-export const ListTitle: FC<IProps> = ({ listColums }) =>  {
-    
+
+export const ListTitle: FC<IProps> = ({ listColumns }) => {
+
     return (
         <ListTitleContainer>
-            {listColums.map(({ title })=>(
-                <div>{title}</div>
-            ))}
+            {listColumns.map(({ title }) => (<div>{title}</div>))}
             <div>interact</div>
         </ListTitleContainer>
     );

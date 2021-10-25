@@ -15,7 +15,7 @@ export class MailService {
 
     await this.mailerService.sendMail({
       to: user.contacts.email,
-      from: 'Test <test@gmail.com>',
+      from: 'Dashboard <test@gmail.com>',
       subject: 'Confirm your Email',
       template: './confirmation',
       context: {
@@ -30,7 +30,7 @@ export class MailService {
 
     await this.mailerService.sendMail({
       to: user.contacts.email,
-      from: 'Test <test@gmail.com>',
+      from: 'Dashboard <test@gmail.com>',
       subject: 'Reset your Password',
       template: './changePassword',
       context: {

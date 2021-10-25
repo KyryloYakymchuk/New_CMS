@@ -1,17 +1,13 @@
 import { FC } from 'react';
 import { Form } from 'react-final-form';
-
 import {
     ButtonsData,
     LoginFields
 } from '@utils/constants/AuthField/LoginFields';
 import { LoginValidator } from '@utils/validators/Auth/LoginValidator';
-
 import { IFormValues } from '@modules/Auth/Login';
-
 import FormField from '@components/FormField/FormField';
-import { AuthButtonContainer } from '@components/Auth/AuthButtons/AuthButtonsContainer/AuthButtonsContainer';
-
+import { AuthButtonContainer } from '@components/Auth/AuthButtons/AuthButtonsContainer';
 import {
     ButtonContainer,
     FieldCustom,
@@ -38,13 +34,10 @@ export const LoginForm: FC<LoginProps> = ({ onSubmit }) => {
                 <FormContainer>
                     <form onSubmit={handleSubmit}>
                         <ErrorMessage>{errorMessage}</ErrorMessage>
-
-                        {LoginFields.map(({ type, name, label, icon }, index) => (
+                        {LoginFields.map(({ icon, ...field }, index) => (
                             <FieldCustom
                                 key={index}
-                                type={type}
-                                name={name}
-                                label={label}
+                                {...field}
                                 variant="outlined"
                                 component={FormField}
                             >

@@ -1,5 +1,4 @@
 import { Button } from '@material-ui/core';
-
 import { FC } from 'react';
 
 interface ButtonProps {
@@ -9,7 +8,7 @@ interface ButtonProps {
 export const SubmitModalButton: FC<ButtonProps> = ({ handleAccept }) => {
     return (
         <Button variant="contained" onClick={handleAccept}>
-      Ok
+            Ok
         </Button>
     );
 };
