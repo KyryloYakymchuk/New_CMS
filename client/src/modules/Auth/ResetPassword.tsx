@@ -1,5 +1,6 @@
 import { FC, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { errorAction } from '@redux/actions/error';
 import { loaderAction } from '@redux/actions/loader';
 import { resetPasswordAction } from '@redux/actions/auth';
@@ -26,7 +27,7 @@ export const ResetPassword: FC = () => {
 
     const dispatch = useDispatch();
     const history = useHistory();
-
+    const { t } = useTranslation();
     const isModalOpen = useTypedSelector(({ modalStatus }) => modalStatus?.modal);
 
     const onSubmit = (value: IFormValues) => {
@@ -50,12 +51,12 @@ export const ResetPassword: FC = () => {
 
     return (
         <>
-            <AuthLayout title={title} description={description}>
+            <AuthLayout title={t(title)} description={t(description)}>
                 <ResetPasswordForm onSubmit={onSubmit}/>
             </AuthLayout>
             <ModalConfirm
                 isModalOpen={isModalOpen}
-                message="Password reset successfully !"
+                message={t('Password reset successfully !')}
                 handleAccept={handleAccept}
             />
         </>

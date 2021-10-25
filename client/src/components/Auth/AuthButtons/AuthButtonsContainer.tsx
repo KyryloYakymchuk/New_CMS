@@ -1,8 +1,9 @@
 import { useStyles } from '@utils/styles/button';
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { HelperText } from './styled';
 import { Button } from '@mui/material';
+import { HelperText } from './styled';
+
 
 interface ButtonProps {
     buttonText: string;
@@ -24,7 +25,6 @@ export const AuthButtonContainer: FC<ButtonProps> = ({
     loaderStatus
 }) => {
     const classes = useStyles();
-
     return (
         <>
             <div className={classes.Button}>

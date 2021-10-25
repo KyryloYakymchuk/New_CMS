@@ -1,3 +1,4 @@
+import i18n from '@utils/helpers/i18n';
 import { emailRE } from '../RegularExpressions';
 
 interface ValidatorProps {
@@ -12,9 +13,9 @@ export const ResetValidator = (values: ValidatorProps) => {
     const errors: IErrors = {};
     // EMAIL
     if (!values.email) {
-        errors.email = 'Required';
+        errors.email = i18n.t('Required');
     } else if (!emailRE.test(values.email)) {
-        errors.email = 'Invalid email address';
+        errors.email = i18n.t('Invalid email address');
     }
 
     return errors;

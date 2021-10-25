@@ -14,10 +14,12 @@ export const AuthLayout: FC<AuthProps> = ({
     children,
     title,
     description
-}) => (
-    <AuthContainer>
-        <AuthTitle>{title}</AuthTitle>
-        <Description>{description}</Description>
-        {children}
-    </AuthContainer>
-);
+}) => {
+    return (
+        <AuthContainer>
+            <AuthTitle>{title}</AuthTitle>
+            <Description>{description}</Description>
+            {children}
+        </AuthContainer>
+    );
+};

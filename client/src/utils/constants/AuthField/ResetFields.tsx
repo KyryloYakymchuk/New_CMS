@@ -15,7 +15,7 @@ export const ButtonsData = {
     buttonText: 'Send email',
 
     linkText: 'Log in',
-    description: 'Have an account ? ',
+    description: 'Have an account ?',
     path: AuthRoutes.LOGIN
 };
 

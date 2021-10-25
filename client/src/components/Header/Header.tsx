@@ -2,6 +2,8 @@ import { FC } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { Button } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
+
 import { setModalStatusAction } from '@redux/actions/modal';
 import { Icons } from '@utils/constants/icon';
 import { AuthRoutes } from '@utils/enums/routes';
@@ -23,10 +25,12 @@ interface Props {
 export const Header: FC<Props> = ({ title }) => {
     const dispatch = useDispatch();
     const history = useHistory();
+    const { t } = useTranslation();
 
-    //     const statusmenu = useTypedSelector( ({ menuReducer }) => menuReducer.status);
     const isModalOpen = useTypedSelector(({ modalStatus }) => modalStatus?.modal);
-
+    
+    /* For future mobile version  */
+    //     const statusmenu = useTypedSelector( ({ menuReducer }) => menuReducer.status);
     // const handleClickBurger = () => {
     //     dispatch(setModalStatusAction(true));
     //     dispatch(statusAction(isModalOpen));
@@ -49,7 +53,7 @@ export const Header: FC<Props> = ({ title }) => {
     return (
         <>
             <HeaderContainer>
-                {/* For mobile  */}
+                {/* For future mobile version  */}
                 {/*<div*/}
                 {/*    className={`icon-one ${!statusMenu && 'active-one'}`}*/}
                 {/*    onClick={handleClickBurger}*/}
@@ -59,7 +63,7 @@ export const Header: FC<Props> = ({ title }) => {
 
                 <TitleContainer>
                     <TitleItem>
-                        <HeaderTitle>{title}</HeaderTitle>
+                        <HeaderTitle>{t(title)}</HeaderTitle>
                     </TitleItem>
                     <TitleItem>
                         <Button
@@ -70,14 +74,14 @@ export const Header: FC<Props> = ({ title }) => {
                             type="button"
                             onClick={handleClickLogout}
                         >
-                            Logout
+                            {t('Logout')}      
                         </Button>
                     </TitleItem>
                 </TitleContainer>
             </HeaderContainer>
             <ModalConfirm
                 isModalOpen={isModalOpen}
-                message="Are you sure you want to log out? "
+                message={'Are you sure you want to log out?'}
                 handleAccept={handleAccept}
                 handleClose={handleClose}
             />
