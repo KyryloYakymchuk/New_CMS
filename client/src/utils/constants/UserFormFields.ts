@@ -37,8 +37,8 @@ export const UserFormFields = [
     },
     {
         type: 'date',
-        name: 'date',
-        label: 'Date',
+        name: 'confirmPassword',
+        label: 'Confirm Password',
         icon: null     
     }  
 ];
