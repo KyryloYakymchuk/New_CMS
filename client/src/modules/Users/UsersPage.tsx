@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import { getUsers } from '@redux/actions/users';
 import { useTypedSelector } from '@utils/hooks/useTypedSelector';
 import { userListColumns } from '@utils/constants/ListsData/ListsData';
@@ -19,9 +19,12 @@ const LIMIT = 10;
 
 export const UsersPage: FC = () => {
     const dispatch = useDispatch();
+    const history = useHistory();
     const routerParams = useParams<IRouterParams>();
     const [page, setPage] = useState(1);
     const allUsers = useTypedSelector(({ users }) => users.userListData);
+
+
 
     const deleteClick = (user: React.ChangeEvent<HTMLDivElement>) => () => {
         //future functionality
@@ -32,7 +35,10 @@ export const UsersPage: FC = () => {
         //future functionality
         console.log(user);
     };
-
+    const createUserClick = () => {
+        //future functionality
+        history.push('/pages/createUser');
+    };
     const arrUserListButton = [
         { item: Icons.RegisterIcon, onClickFunc: deleteClick },
         { item: Icons.LoginIcon, onClickFunc: editClick }
@@ -48,8 +54,8 @@ export const UsersPage: FC = () => {
     return (
         <UserPageContainer>
             <PageHeader>
-                <Buttons title="testBtn1" type="pinkButton"/>
-                <Buttons title="testBtn2" type="greyButton"/>
+                <Buttons title="testBtn1" type="pinkButton" onClickFunction ={createUserClick} icon={Icons.FirstNameIcon}/>
+                <Buttons title="testBtn2" type="greyButton" icon={Icons.FilterIcon}/>
             </PageHeader>
             <List
                 listColumns={userListColumns}

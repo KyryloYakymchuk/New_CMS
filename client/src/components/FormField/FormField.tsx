@@ -9,7 +9,8 @@ type FormProps = FieldRenderProps<string, any>;
 
 const FormField: FC<FormProps> = ({ input, meta, children, ...rest }) => {
     const errorMessage = useTypedSelector(({ error }) => error.message);
-
+    console.log({ ...rest });
+    
     const { touched, error } = meta;
     return (
         <TextField

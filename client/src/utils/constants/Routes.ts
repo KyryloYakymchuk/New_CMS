@@ -7,6 +7,7 @@ import { Reset } from '@modules/Auth/Reset';
 import { AuthRoutes, ProtectedRoutes } from '@utils/enums/routes';
 import { Dashboard } from '@components/Dashboard';
 import { Settings } from '@modules/Settings/Settings';
+import { CreateUserPage } from '@components/CreateUserPage/CreateUserPage';
 
 // Main components
 export const protectedRoutes = [
@@ -20,6 +21,16 @@ export const protectedRoutes = [
         path: ProtectedRoutes.USERS,
         component: UsersPage,
         title: 'Users'
+    },
+    {
+        path: ProtectedRoutes.CREATE_FORM,
+        component: CreateUserPage,
+        title: 'Create User'
+    },
+    {
+        path: ProtectedRoutes.EDIT_FORM,
+        component: CreateUserPage,
+        title: 'Edit User'
     },
     {
         path: ProtectedRoutes.PAGES,
