@@ -3,8 +3,8 @@ import { useStyles } from '@utils/styles/button';
 import { FC } from 'react';
 
 interface IProps {
-    title: string;
-    type: string;
+    title:string;
+    type:string;
 }
 
 export const Buttons: FC<IProps> = ({ title, type }) => {

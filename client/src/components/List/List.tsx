@@ -14,16 +14,25 @@ export interface IArrButton {
     onClickFunc: OnClickFuncType;
 }
 
-interface IProps {
-    listColumns: IListColumns[];
-    listData?: IUser[];
-    arrButton?: IArrButton[];
+interface IPrors {
+    sortType?:string;
+    sortHandler:(sortField:string)=> MouseEventHandler<HTMLDivElement>;
+    listColumns:IListColumns[];
+    listData?:IUser[];
+    arrButton?:IArrButton[];
+    sortColumn?:string;
 }
 
-export const List: FC<IProps> = ({ listColumns, listData, arrButton }) => {
+export const List: FC<IPrors> = (
+    { listColumns, listData, arrButton, sortHandler, sortType, sortColumn }) => {
     return (
         <ListContainer>
-            <ListTitle listColumns={listColumns} />
+            <ListTitle
+                sortColumn={sortColumn}
+                sortType={sortType}
+                listColumns={listColumns} 
+                sortHandler={sortHandler}
+            />
             {listData?.map((user) => (
                 <ListElement
                     key={user.userID}

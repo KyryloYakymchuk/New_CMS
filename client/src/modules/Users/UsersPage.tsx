@@ -8,11 +8,19 @@ import { Icons } from '@utils/constants/icon';
 import { Buttons } from '@components/Button/Button';
 import { List } from '@components/List/List';
 import { Pagination } from '@components/Pagination/Pagination';
-
 import { UserPageContainer, PageHeader } from './styled';
+import { handleListSort } from '@utils/functions/handleListSort';
 
 interface IRouterParams {
     page: string;
+}
+interface ISortParams {
+    sortField?:string;
+    sortParameter?:string;
+}
+interface ISortHandlerValue {
+    currentSortParams:ISortParams;
+    currSortingTypeIdx: number;
 }
 
 const LIMIT = 10;
@@ -21,6 +29,9 @@ export const UsersPage: FC = () => {
     const dispatch = useDispatch();
     const routerParams = useParams<IRouterParams>();
     const [page, setPage] = useState(1);
+    const [sortParams, setSortParams] = useState<ISortParams>({ });
+    const [sortingTypeIdx, setSortingTypeIdx] = useState(0);   
+
     const allUsers = useTypedSelector(({ users }) => users.userListData);
 
     const deleteClick = (user: React.ChangeEvent<HTMLDivElement>) => () => {
@@ -30,7 +41,12 @@ export const UsersPage: FC = () => {
     };
     const editClick = (user: React.ChangeEvent<HTMLDivElement>) => () => {
         //future functionality
-        console.log(user);
+        console.log(user);      
+    };
+    const handleSortClick = ( sortField:string) => () => {
+        const temp:ISortHandlerValue  = handleListSort(sortField, sortingTypeIdx, String(sortParams.sortField));
+        setSortingTypeIdx(temp.currSortingTypeIdx);
+        setSortParams(temp.currentSortParams);
     };
 
     const arrUserListButton = [
@@ -41,10 +57,15 @@ export const UsersPage: FC = () => {
     useEffect(() => {
         const currentPage = +routerParams?.page?.split('=')[1] - 1;
         const offset = currentPage * 10;
+        const  queryParam = {
+            ...sortParams,
+            offset: offset,
+            limit : LIMIT
+        };
         setPage(currentPage);
-        dispatch(getUsers({ limit: 10, offset: offset }));
-    }, [dispatch, routerParams]);
-
+        dispatch(getUsers(queryParam));
+    }, [dispatch, routerParams, sortParams]);
+  
     return (
         <UserPageContainer>
             <PageHeader>
@@ -52,6 +73,9 @@ export const UsersPage: FC = () => {
                 <Buttons title="testBtn2" type="greyButton"/>
             </PageHeader>
             <List
+                sortColumn={sortParams.sortField}
+                sortType={sortParams.sortParameter}
+                sortHandler={handleSortClick}
                 listColumns={userListColumns}
                 listData={allUsers?.users}
                 arrButton={arrUserListButton}
