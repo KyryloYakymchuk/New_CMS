@@ -8,22 +8,20 @@ import { Icons } from '@utils/constants/icon';
 import { Buttons } from '@components/Button/Button';
 import { List } from '@components/List/List';
 import { Pagination } from '@components/Pagination/Pagination';
-
 import { UserPageContainer, PageHeader } from './styled';
-
 import { handleListSort } from '@utils/functions/handleListSort';
 
 type IRouterParams  = {
     page: string;
 };
 interface ISortParams {
-    sortField?:string ;
-    sortParameter?:string ;
+    sortField?:string;
+    sortParameter?:string;
 }
 
 interface ISortHandlerValue {
-    currentSortParams:ISortParams ;
-    currentFlag:number ;
+    currentSortParams:ISortParams;
+    currSortingTypeIdx: number;
 }
 
 const LIMIT = 10;
@@ -33,7 +31,7 @@ export const UsersPage: FC = () => {
     const routerParams = useParams<IRouterParams>();
     const [page, setPage] = useState(1);
     const [sortParams, setSortParams] = useState<ISortParams>({ });
-    const [sortFlag, setSortFlag] = useState(0);   
+    const [sortingTypeIdx, setSortingTypeIdx] = useState(0);   
 
     const allUsers = useTypedSelector(({ users }) => users.userListData);
     const limit = 10;
@@ -48,8 +46,8 @@ export const UsersPage: FC = () => {
         console.log(user);      
     };
     const handleSortClick = ( sortField:string) => () => {
-        const temp:ISortHandlerValue  = handleListSort(sortField, sortFlag, String(sortParams.sortField));
-        setSortFlag(temp.currentFlag);
+        const temp:ISortHandlerValue  = handleListSort(sortField, sortingTypeIdx, String(sortParams.sortField));
+        setSortingTypeIdx(temp.currSortingTypeIdx);
         setSortParams(temp.currentSortParams);
     };
 
@@ -77,8 +75,8 @@ export const UsersPage: FC = () => {
                 <Buttons title="testBtn2" type="greyButton"/>
             </PageHeader>
             <List
-                sortParameterName={sortParams.sortField}
-                sortParameter={sortParams.sortParameter}
+                sortColumn={sortParams.sortField}
+                sortType={sortParams.sortParameter}
                 sortHandler={handleSortClick}
                 listColumns={userListColumns}
                 listData={allUsers?.users}

@@ -1,12 +1,11 @@
 import styled from 'styled-components';
 interface ISvgButton {
-    sortParameter?: string | null;
+    sortType?: string | null;
 }
 
 export const ListTitleContainer = styled.div`
   width: 100%;
   height: 50px;
-
   display: flex;
   justify-content: space-evenly;
   margin-bottom: 20px;
@@ -29,6 +28,5 @@ export const ListTitleContainer = styled.div`
 export const SvgButton = styled.div<ISvgButton>`
   display: flex;
   align-items: center;
-  transform: ${({ sortParameter }) => (sortParameter === 'ascending' ? 'rotate(0.5turn)' : 'rotate(0turn)')};
-  
+  transform: ${({ sortType }) => (sortType === 'ascending' ? 'rotate(0.5turn)' : 'rotate(0turn)')};
 `;

@@ -1,19 +1,18 @@
-export const handleListSort = (currentSortField:string, flag:number, sortFildName:string) =>{
-    let currentFlag = flag; 
+export const handleListSort = (currentSortField:string, sortingTypeIdx:number, sortFildName:string) =>{
+    let currSortingTypeIdx = sortingTypeIdx; 
     let currentSortParams = {};
 
     if (currentSortField !== sortFildName ) {
-        currentFlag = 0;
+        currSortingTypeIdx = 0;
     } 
-    
-    if (currentFlag === 2) {
-        currentFlag = 0;
+    if (currSortingTypeIdx === 2) {
+        currSortingTypeIdx = 0;
     } else {
         currentSortParams = { 
-            'sortField':currentSortField, 
-            'sortParameter' : currentFlag ? 'ascending' : 'descending'
+            'sortField': currentSortField, 
+            'sortParameter': currSortingTypeIdx ? 'ascending' : 'descending'
         }; 
-        currentFlag++;
+        currSortingTypeIdx++;
     } 
-    return { currentSortParams, currentFlag };
+    return { currentSortParams, currSortingTypeIdx };
 };

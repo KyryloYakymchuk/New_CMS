@@ -4,21 +4,21 @@ import { ListTitleContainer, SvgButton } from './styled';
 import { Icons } from '@utils/constants/icon';
 
 interface IProps {
-    sortParameter?:string ;
+    sortType?:string;
     sortHandler:(sortField:string)=> MouseEventHandler<HTMLDivElement>;
-    listColumns: IListColumns[];
-    sortParameterName?:string ;
+    listColumns:IListColumns[];
+    sortColumn?:string;
 }
 export const ListTitle: FC<IProps> = (
-    { listColumns, sortHandler, sortParameter, sortParameterName }) =>  {
+    { listColumns, sortHandler, sortType, sortColumn }) =>  {
     
     return (
         <ListTitleContainer>
             {listColumns.map(({ title, name })=>(
                 <div onClick = {sortHandler( name )}>
                     {title}
-                    {sortParameterName === name && 
-                     <SvgButton sortParameter = {sortParameter}>
+                    {sortColumn === name && 
+                     <SvgButton sortType={sortType}>
                          {Icons.ExpandMoreIcon}
                      </SvgButton> }  
                 </div>
