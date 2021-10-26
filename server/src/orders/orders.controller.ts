@@ -12,9 +12,11 @@ import {
   Put,
   Query,
   Req,
+  UseGuards,
 } from "@nestjs/common";
 import { Request } from "express";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { AuthGuard } from "@nestjs/passport";
 
 import { OrdersService } from "./orders.service";
 import {
@@ -32,15 +34,13 @@ import { OrderItemsDTO } from "../modules/dto/modules.dto";
 export const module = "orders";
 
 @ApiTags("order")
+@ApiBearerAuth()
 @Controller("order")
 export class OrdersController {
-  constructor(
-    private ordersService: OrdersService
-  ) // private loggerGateway: LoggerGateway,
-  {}
+  constructor(private ordersService: OrdersService) {}
 
   @Get("all")
-  // @UseGuards(AuthGuard("jwt"))
+  @UseGuards(AuthGuard("jwt"))
   async getAll(
     @Query() paginationDTO: AllOrdersDTO
   ): Promise<Record<string, any>> {
@@ -67,7 +67,7 @@ export class OrdersController {
   }
 
   @Get()
-  // @UseGuards(AuthGuard("jwt"))
+  @UseGuards(AuthGuard("jwt"))
   async getOrders(
     @Headers("authorization") token: string,
     @Query() paginationDTO: PaginationDTO
@@ -82,7 +82,7 @@ export class OrdersController {
   }
 
   @Post()
-  // @UseGuards(AuthGuard("jwt"))
+  @UseGuards(AuthGuard("jwt"))
   @HttpCode(HttpStatus.OK)
   async addOrder(
     @Body() userDTO: AddOrderDTO,
@@ -93,7 +93,7 @@ export class OrdersController {
   }
 
   @Put()
-  // @UseGuards(AuthGuard("jwt"))
+  @UseGuards(AuthGuard("jwt"))
   @HttpCode(HttpStatus.OK)
   async editOrder(
     @Body() userDTO: EditOrderDTO,
@@ -104,17 +104,20 @@ export class OrdersController {
   }
 
   @Delete("/:orderId")
+  @UseGuards(AuthGuard("jwt"))
   async deleteOrder(
     @Param("orderId") userDTO: number,
+    @Query() paginationDTO: AllOrdersDTO,
+    // @Headers('authorization') token: string,
     @Req() req: Request
   ): Promise<any> {
     await this.ordersService.deleteOrder(userDTO);
-    const orders = await this.ordersService.getAllOrders();
-    return { count: orders.length, orders: orders.reverse() };
+    const orders = await this.ordersService.getAll(paginationDTO);
+    return { count: orders.length, orders };
   }
 
   @Put("/cancel")
-  // @UseGuards(AuthGuard("jwt"))
+  @UseGuards(AuthGuard("jwt"))
   @HttpCode(HttpStatus.OK)
   async cancelOrder(
     @Body() userDTO: CancelOrderDTO,
@@ -125,7 +128,7 @@ export class OrdersController {
   }
 
   @Get("completed")
-  // @UseGuards(AuthGuard("jwt"))
+  @UseGuards(AuthGuard("jwt"))
   async getCompleted(
     // @Query() paginationDTO: AllOrdersDTO,
     @Headers("authorization") token: string
@@ -156,7 +159,7 @@ export class OrdersController {
   }
 
   @Post("problem")
-  // @UseGuards(AuthGuard("jwt"))
+  @UseGuards(AuthGuard("jwt"))
   @HttpCode(HttpStatus.CREATED)
   async addProblem(
     @Body() userDTO: AddProblemDTO,

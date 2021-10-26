@@ -1,12 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
+import * as uniqid from "uniqid";
 
 import { Page } from "../types/page";
 import {
   AddPageDTO,
   EditPageDTO,
   GetPagesDTO,
+  PaginationDTO,
   ResponsePageDto,
 } from "./dto/pages.dto";
 
@@ -15,9 +17,9 @@ export class PagesService {
   constructor(@InjectModel("Page") private pageModel: Model<Page>) {}
 
   async getPages(userDTO: GetPagesDTO): Promise<Record<string, any>> {
-    const pages =
+    const filter =
       !!userDTO.name || !!userDTO.alias
-        ? await this.pageModel.find({
+        ? {
             $and: [
               userDTO.name
                 ? { name: { $regex: new RegExp(userDTO.name, "i") } }
@@ -26,17 +28,25 @@ export class PagesService {
                 ? { email: { $regex: new RegExp(userDTO.alias, "i") } }
                 : {},
             ],
-          })
-        : await this.pageModel.find({});
+          }
+        : {};
+
+    const pages = await this.pageModel
+      .find(filter)
+      .skip(+userDTO.offset || 0)
+      .limit(+userDTO.limit || 10);
+
+    const allPages = await this.pageModel.find(filter);
 
     if (!pages.length) {
       throw new HttpException("Pages not found!", HttpStatus.NOT_FOUND);
     }
 
     let newPages = [];
+
     pages.forEach((el) => newPages.push(new ResponsePageDto(el)));
 
-    return newPages;
+    return { count: allPages.length, pages: newPages };
   }
 
   async addPage(userDTO: AddPageDTO): Promise<Record<string, any>> {
@@ -50,36 +60,48 @@ export class PagesService {
     }
 
     const newPage = new this.pageModel(userDTO);
+    newPage.pageID = uniqid();
     await newPage.save();
 
-    return { message: "Page created successfully" };
+    return { pageID: newPage.pageID };
   }
 
   async editPage(userDTO: EditPageDTO): Promise<Record<string, any>> {
-    const page = await this.pageModel.findOne({ name: userDTO.alias });
+    const page = await this.pageModel.findOne({ pageID: userDTO.pageID });
 
     if (!page) {
       throw new HttpException("Page not found", HttpStatus.NOT_FOUND);
     }
 
     await this.pageModel.findOneAndUpdate(
-      { name: page.name },
-      { $set: userDTO },
-      { new: true }
+      { pageID: userDTO.pageID },
+      { $set: userDTO }
     );
 
-    return { message: "Page edited successfully!" };
+    return this.pageModel.find();
   }
 
-  async deletePage(pageName: any): Promise<Record<string, any>> {
-    const page = await this.pageModel.findOne({ name: pageName });
+  async deletePage(
+    pageID: string,
+    paginationParameters: PaginationDTO
+  ): Promise<Record<string, any>> {
+    const page = await this.pageModel.findOne({ pageID });
 
     if (!page) {
       throw new HttpException("Page not found!", HttpStatus.NOT_FOUND);
     }
 
-    await this.pageModel.findOneAndDelete({ name: page.name });
-    return { message: "Page deleted successfully!" };
+    await this.pageModel.findOneAndDelete({ pageID });
+
+    const allItems = await this.pageModel.find();
+
+    return {
+      count: allItems.length,
+      pages: await this.pageModel
+        .find()
+        .skip(+paginationParameters?.offset || 0)
+        .limit(+paginationParameters?.limit || allItems.length),
+    };
   }
 
   async getById(id: string) {

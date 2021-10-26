@@ -13,11 +13,19 @@ import {
 import { NewslettersService } from "./newsletters.service";
 import { AuthGuard } from "@nestjs/passport";
 import { QueryDTO } from "../shared/dto/shared.dto";
-import { CreateJobDTO, GetJobDTO } from "./dto/newsletters.dto";
+import {
+  CreateJobDTO,
+  DeleteJobDTO,
+  EditJobDTO,
+  GetJobDTO,
+} from "./dto/newsletters.dto";
 import { Request } from "express";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+
+export const module = "newsletters";
 
 @ApiTags("newsletters")
+@ApiBearerAuth()
 @Controller("newsletters")
 export class NewslettersController {
   constructor(private newslettersService: NewslettersService) {}
@@ -36,16 +44,29 @@ export class NewslettersController {
 
   @Post()
   @UseGuards(AuthGuard("jwt"))
-  async createJob(@Body() userDTO: CreateJobDTO, @Req() req: Request) {}
+  async createJob(
+    @Body() userDTO: CreateJobDTO,
+    @Req() req: Request
+  ): Promise<string> {
+    return this.newslettersService.createJob(userDTO);
+  }
 
   @Put()
   @UseGuards(AuthGuard("jwt"))
-  async editJob(@Body() userDTO /*: EditJobDTO*/, @Req() req: Request) {}
+  async editJob(
+    @Body() userDTO: EditJobDTO,
+    @Req() req: Request
+  ): Promise<string> {
+    return this.newslettersService.updateJob(userDTO);
+  }
 
   @Delete(":newsletter")
   @UseGuards(AuthGuard("jwt"))
   async deleteJob(
-    @Param("newsletter") userDTO /*: DeleteJobDTO*/,
+    @Param("newsletter") userDTO: DeleteJobDTO,
+    @Query() queryDTO: QueryDTO,
     @Req() req: Request
-  ) {}
+  ): Promise<Record<string, any>> {
+    return this.newslettersService.deleteJob(userDTO, queryDTO);
+  }
 }

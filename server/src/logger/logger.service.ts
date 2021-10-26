@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import { Log } from "../types/log";
 import { GetLogsDTO, LoggerDTO } from "./dto/logger.dto";
 import { User } from "../types/user";
+import { Fuser } from "../types/fuser";
 import { Group } from "../types/group";
 import { Page } from "../types/page";
 import { Module } from "../types/module";
@@ -17,6 +18,7 @@ export class LoggerService {
   constructor(
     @InjectModel("Log") private logModel: Model<Log>,
     @InjectModel("User") private userModel: Model<User>,
+    @InjectModel("Fuser") private fuserModel: Model<Fuser>,
     @InjectModel("Group") private groupModel: Model<Group>,
     @InjectModel("Page") private pageModel: Model<Page>,
     @InjectModel("Module") private moduleModel: Model<Module>,
@@ -94,10 +96,10 @@ export class LoggerService {
       case "pages":
         if (body.name) return body.name;
         else if (body.pageID || params.pageID) {
-          const currentPage = await this.groupModel.findOne({
+          const currentPage = await this.pageModel.findOne({
             pageID: !!body.pageID ? body.pageID : params.pageID,
           });
-          return currentPage.name;
+          return currentPage.pageTitle;
         }
         break;
       case "webshop":
@@ -125,6 +127,21 @@ export class LoggerService {
           return `${module} ${currentCategory.name} in webshop`;
         }
         break;
+      case "variants":
+        if (!body.variantID) return `new variant in webshop`;
+        let variantName = "";
+
+        await mongoose.connect(process.env.MONGO_URI, {
+          useNewUrlParser: true,
+        });
+        const Item = require(`../../schemas/webshop`);
+        const item = await Item.findOne({ "itemData.itemID": body.itemID });
+
+        item.variants.forEach((el) => {
+          if (el.variantID == body.variantID) variantName = el.name;
+        });
+
+        return `variant ${variantName} of item ${item.itemData.name} in module webshop`;
       case "newsletter":
         if (body.name) return body.name;
         break;
@@ -171,8 +188,10 @@ export class LoggerService {
     );
 
     const user = await this.userModel.findOne({ userID: verified.userID });
+    const fuser = await this.fuserModel.findOne({ userID: verified.userID });
 
-    if (!user) throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
+    if (!user && !fuser)
+      throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
 
     const methodAction = {
       POST: "Created",
@@ -186,8 +205,8 @@ export class LoggerService {
 
     return {
       userID: verified.userID,
-      userEmail: user.email,
-      username: user.name,
+      userEmail: user?.email || fuser.contacts.email,
+      username: user?.name || fuser.userMain.firstName,
       module,
       action,
     };

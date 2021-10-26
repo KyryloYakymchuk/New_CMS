@@ -9,6 +9,7 @@ import { LogSchema } from "../models/log.schema";
 import { UploaderService } from "./uploader/uploader.service";
 import { FuserSchema } from "../models/fuser.schema";
 import { FuserService } from "./fuser/fuser.service";
+import { MailerService } from "./mailer/mailer.service";
 
 @Module({
   imports: [
@@ -19,7 +20,13 @@ import { FuserService } from "./fuser/fuser.service";
     ]),
     forwardRef(() => LoggerModule),
   ],
-  providers: [UserService, TasksService, UploaderService, FuserService],
-  exports: [UserService, UploaderService],
+  providers: [
+    UserService,
+    TasksService,
+    UploaderService,
+    FuserService,
+    MailerService,
+  ],
+  exports: [UserService, UploaderService, MailerService],
 })
 export class SharedModule {}

@@ -39,12 +39,12 @@ export class AllOrdersDTO {
   sortParameter?: string;
   search?: string;
   searchId?: number;
-  createDate: {
+  createDate?: {
     before: Date;
     after: Date;
   };
-  from: Date;
-  to: Date;
+  from?: Date;
+  to?: Date;
 }
 
 export class DeleteOrderDTO {

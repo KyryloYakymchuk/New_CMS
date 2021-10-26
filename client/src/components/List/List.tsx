@@ -1,37 +1,33 @@
-import { FC, MouseEventHandler } from 'react';
-
+import React, { FC, MouseEventHandler } from 'react';
 import { IUser } from '@redux/types/users';
-
-import { IlistColums } from '@interfaces/types';
-
+import { IListColumns } from '@interfaces/types';
 import { ListElement } from './ListElement/ListElement';
 import { ListTitle } from './ListTitle/ListTitle';
+import { ListContainer } from './styled';
 
-import { ListContainer } from './styled/styled';
-
-type FuncType = (
+type OnClickFuncType = (
     user: React.ChangeEvent<HTMLDivElement>
 ) => MouseEventHandler<HTMLDivElement>;
 
 export interface IArrButton {
     item: JSX.Element;
-    onclickFunc: FuncType;
+    onClickFunc: OnClickFuncType;
 }
 
-interface IPrors {
-    listColums: IlistColums[];
+interface IProps {
+    listColumns: IListColumns[];
     listData?: IUser[];
     arrButton?: IArrButton[];
 }
 
-export const List: FC<IPrors> = ({ listColums, listData, arrButton }) => {
+export const List: FC<IProps> = ({ listColumns, listData, arrButton }) => {
     return (
         <ListContainer>
-            <ListTitle listColums={listColums} />
+            <ListTitle listColumns={listColumns} />
             {listData?.map((user) => (
                 <ListElement
                     key={user.userID}
-                    listColums={listColums}
+                    listColumns={listColumns}
                     user={user}
                     arrButton={arrButton}
                 />

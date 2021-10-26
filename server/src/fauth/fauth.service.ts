@@ -89,6 +89,20 @@ export class FauthService {
               firstName: "",
               lastName: "",
             },
+            types: {
+              news: true,
+              discounts: false,
+              recommendations: false,
+              offers: true,
+            },
+            connections: {
+              email: true,
+              viber: true,
+              sms: false,
+              "mobile-notifications": false,
+              "web-notifications": true,
+            },
+
             userID: data["user_id"],
             confirmed: true,
           };
@@ -100,8 +114,8 @@ export class FauthService {
           await this.userService.confirmUser(user.userID);
         }
 
-        user.userID = data["user_id"];
-        await user.save({ validateBeforeSave: false });
+        // user.userID = data["user_id"];
+        // await user.save({ validateBeforeSave: false });
         return user;
       });
   }
@@ -132,6 +146,19 @@ export class FauthService {
             userMain: {
               firstName: data.name.split(" ")[0],
               lastName: data.name.split(" ")[1],
+            },
+            types: {
+              news: true,
+              discounts: false,
+              recommendations: false,
+              offers: true,
+            },
+            connections: {
+              email: true,
+              viber: true,
+              sms: false,
+              "mobile-notifications": false,
+              "web-notifications": true,
             },
             userID: data["user_id"] || data["id"],
             confirmed: true,

@@ -1,22 +1,25 @@
 import { FC } from 'react';
 import { useDispatch } from 'react-redux';
 import { itemIdAction } from '@redux/actions/menuStatus';
+import { MenuItem } from '@utils/constants/MenuItem/MenuItem';
+import { useTranslation } from 'react-i18next';
 
-import { MenuItem, style } from '@utils/constants/MenuItem/MenuItem';
 import { useTypedSelector } from '@utils/hooks/useTypedSelector';
-
 import {
     NavbarContainer,
     NavbarItem,
     TitleNavbarSubItem,
-    Title
-} from './styled/styled';
+    Title, 
+    style
+} from './styled';
 
 export const SideMenu: FC = () => {
-    const statusmenu = useTypedSelector( ({ menuReducer }) => menuReducer.status);
-    const pickedId = useTypedSelector( ({ menuReducer }) => menuReducer.itemId);
+    const statusMenu = useTypedSelector(({ menuReducer }) => menuReducer.status);
+    const pickedId = useTypedSelector(({ menuReducer }) => menuReducer.itemId);
 
     const dispatch = useDispatch();
+    const { t } = useTranslation();
+
 
     const handleSetItemID = (itemId: number) => () => {
         if (pickedId === itemId) {
@@ -27,8 +30,8 @@ export const SideMenu: FC = () => {
     };
 
     return (
-        <NavbarContainer statusmenu={statusmenu}>
-            {MenuItem.map(({ name, path, itemId, icon, subitems, height }) =>
+        <NavbarContainer statusmenu={statusMenu}>
+            {MenuItem.map(({ name, path, itemId, icon, subItems, height }) =>
                 path ? (
                     <NavbarItem
                         exact
@@ -37,10 +40,10 @@ export const SideMenu: FC = () => {
                         padding="15px"
                         key={itemId}
                         onClick={handleSetItemID(itemId)}
-                        statusmenu={statusmenu}
+                        statusmenu={statusMenu}
                     >
                         {icon}
-                        <span>{name}</span>
+                        <span>{t(name)}</span>
                     </NavbarItem>
                 ) : (
                     <TitleNavbarSubItem
@@ -49,9 +52,9 @@ export const SideMenu: FC = () => {
                     >
                         <Title onClick={handleSetItemID(itemId)}>
                             {icon}
-                            <span>{name}</span>
+                            <span>{t(name)}</span>
                         </Title>
-                        {subitems?.map(({ subName, subPath }) => (
+                        {subItems?.map(({ subName, subPath }) => (
                             <NavbarItem
                                 exact
                                 to={subPath}
@@ -59,7 +62,7 @@ export const SideMenu: FC = () => {
                                 padding="55px"
                                 key={subPath}
                             >
-                                {subName}
+                                {t(subName)}
                             </NavbarItem>
                         ))}
                     </TitleNavbarSubItem>

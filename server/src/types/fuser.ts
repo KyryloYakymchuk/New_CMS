@@ -28,4 +28,22 @@ export interface Fuser extends Document {
   viewed: Array<any>;
 
   comments: Array<any>;
+
+  mailings: {
+    types: {
+      news: boolean;
+      discounts: boolean;
+      recommendations: false;
+      offers: true;
+    };
+    connections: {
+      email: true;
+      viber: true;
+      sms: false;
+      "mobile-notifications": false;
+      "web-notifications": true;
+    };
+  };
+  likedNews: Array<string>;
+  userID: string;
 }

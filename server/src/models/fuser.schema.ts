@@ -62,6 +62,28 @@ export const FuserSchema = new mongoose.Schema({
       sex: String,
     }),
   },
+  likedNews: Array,
+  mailings: {
+    type: raw({
+      types: {
+        type: raw({
+          news: Boolean,
+          discounts: Boolean,
+          recommendations: Boolean,
+          offers: Boolean,
+        }),
+      },
+      connections: {
+        type: raw({
+          email: Boolean,
+          viber: Boolean,
+          sms: Boolean,
+          mobile: Boolean,
+          web: Boolean,
+        }),
+      },
+    }),
+  },
 });
 
 FuserSchema.pre("save", async function (next: mongoose.HookNextFunction) {

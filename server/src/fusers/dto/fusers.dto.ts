@@ -15,6 +15,11 @@ export class EditFuserDTO {
   orders?: Array<any>;
 }
 
+export class EditFuserMailingsDTO {
+  connections: Array<string>;
+  types: Array<string>;
+}
+
 export class DeleteFuserDTO {
   @IsNotEmpty()
   userID: string;
@@ -48,7 +53,7 @@ export class PaginationDTO {
 
 export class ViewedDTO {
   constructor(item: any) {
-    this.itemID = item.itemID;
+    this.itemID = item.itemData.itemID;
     this.name = item.name;
     this.rating = item.rating;
     this.description = item.description;

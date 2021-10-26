@@ -2,8 +2,10 @@ import { Document } from "mongoose";
 
 export interface Job extends Document {
   jobID: string;
-  title: string;
+  name: string;
   sender: string;
-  recipientUsers: Record<string, any>;
-  recipientGroups: Record<string, any>;
+  letter: string;
+  date: Date;
+  recipientUsers?: Record<string, any>;
+  recipientGroups?: Record<string, any>;
 }

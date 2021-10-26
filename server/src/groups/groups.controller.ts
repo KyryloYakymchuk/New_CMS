@@ -17,7 +17,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Request } from "express";
 import { AuthGuard } from "@nestjs/passport";
 import { Model } from "mongoose";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
 import { GroupsService } from "./groups.service";
 import { AddGroupDTO, DeleteGroupDTO, EditGroupDTO } from "./dto/groups.dto";
@@ -37,12 +37,14 @@ export class GroupsController {
   ) {}
 
   @Get()
+  @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
   async getGroups(@Query() userDTO: QueryDTO): Promise<Record<string, any>> {
     return await this.groupsService.getGroups(userDTO);
   }
 
   @Post()
+  @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
   @HttpCode(HttpStatus.OK)
   async addGroup(
@@ -60,6 +62,7 @@ export class GroupsController {
   }
 
   @Put()
+  @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
   @HttpCode(HttpStatus.OK)
   async editGroup(
@@ -77,6 +80,7 @@ export class GroupsController {
   }
 
   @Delete(":groupID")
+  @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
   @HttpCode(HttpStatus.OK)
   async deleteGroup(
@@ -85,9 +89,8 @@ export class GroupsController {
     @Req() req: Request
   ): Promise<Record<string, string>> {
     const group = await this.groupsService.findGroupByID(req.params.groupID);
-    if (!group) {
+    if (!group)
       throw new HttpException("Group not found!", HttpStatus.NOT_FOUND);
-    }
 
     const result = this.groupsService.deleteGroup(userDTO, queryDTO);
     await this.loggerGateway.logAction(req, module);

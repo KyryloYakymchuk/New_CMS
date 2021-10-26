@@ -62,9 +62,8 @@ export class FauthController {
   async register(@Body() userDTO: RegisterDTO): Promise<Record<string, any>> {
     const candidate = await this.userService.findUser(userDTO.email);
 
-    if (candidate) {
+    if (candidate)
       throw new HttpException(`User is already exists!`, HttpStatus.CONFLICT);
-    }
 
     const newUser = {
       userMain: {
@@ -79,6 +78,19 @@ export class FauthController {
       shippingAddress: {
         address1: userDTO.address1 || "",
         address2: userDTO.address2 || "",
+      },
+      types: {
+        news: true,
+        discounts: false,
+        recommendations: false,
+        offers: true,
+      },
+      connections: {
+        email: true,
+        viber: true,
+        sms: false,
+        mobile: false,
+        web: true,
       },
       password: userDTO.password,
     };
@@ -101,18 +113,16 @@ export class FauthController {
   async confirmUser(@Param("token") token: string): Promise<string> {
     const verified = await this.userService.verifyToken(token);
 
-    if (verified) {
-      const user = await this.userService.findUserByID(verified.userID);
-
-      if (user && !user.confirmed) {
-        await this.userService.setAction(verified.userID);
-        return this.userService.confirmUser(verified.userID);
-      } else {
-        throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
-      }
-    } else {
+    if (!verified)
       throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
-    }
+
+    const user = await this.userService.findUserByID(verified.userID);
+
+    if (!user || user.confirmed)
+      throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
+
+    await this.userService.setAction(verified.userID);
+    return this.userService.confirmUser(verified.userID);
   }
 
   @Post("forgotPassword")
@@ -123,22 +133,21 @@ export class FauthController {
     const { email } = userDTO;
     const candidate = await this.userService.findUser(email);
 
-    if (candidate) {
-      await this.userService.setAction(candidate.userID);
-      const user = await this.userService.findUserByID(candidate.userID);
-
-      const payload = {
-        userID: user.userID,
-        email: user.email,
-        actionDate: user.actionDate,
-      };
-
-      const hash = this.authService.signPayload(payload, "48h");
-
-      return this.authService.sendResetEmail(user.userID, hash);
-    } else {
+    if (!candidate)
       throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
-    }
+
+    await this.userService.setAction(candidate.userID);
+    const user = await this.userService.findUserByID(candidate.userID);
+
+    const payload = {
+      userID: user.userID,
+      email: user.email,
+      actionDate: user.actionDate,
+    };
+
+    const hash = this.authService.signPayload(payload, "48h");
+
+    return this.authService.sendResetEmail(user.userID, hash);
   }
 
   @Put("password/reset")
@@ -148,26 +157,25 @@ export class FauthController {
   ): Promise<Record<string, any>> {
     const { token, newPassword, newPasswordConfirm } = userDTO;
 
-    if (newPassword === newPasswordConfirm) {
-      const verified = await this.userService.verifyToken(token);
-
-      const user = await this.userService.findUserByID(verified.userID);
-
-      if (verified && Date.parse(verified.actionDate) === +user.actionDate) {
-        await this.userService.setAction(verified.userID);
-        return this.authService.changePassword(verified.userID, newPassword);
-      } else {
-        throw new HttpException(
-          { message: "Link expired!" },
-          HttpStatus.BAD_REQUEST
-        );
-      }
-    } else {
+    if (newPassword !== newPasswordConfirm)
       throw new HttpException(
         { message: "Passwords don`t match!" },
         HttpStatus.BAD_REQUEST
       );
+
+    const verified = await this.userService.verifyToken(token);
+
+    const user = await this.userService.findUserByID(verified.userID);
+
+    if (!verified || Date.parse(verified.actionDate) !== +user.actionDate) {
+      throw new HttpException(
+        { message: "Link expired!" },
+        HttpStatus.BAD_REQUEST
+      );
     }
+
+    await this.userService.setAction(verified.userID);
+    return this.authService.changePassword(verified.userID, newPassword);
   }
 
   @Post("googleAuth")

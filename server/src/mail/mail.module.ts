@@ -23,7 +23,7 @@ import { MailService } from "./mail.service";
           from: `"No Reply" <noreply@example.com>`,
         },
         template: {
-          dir: join(__dirname, "templates"),
+          dir: join(__dirname + "/../src/mail", "templates"), //or join(__dirname, 'templates'),
           adapter: new HandlebarsAdapter(),
           options: {
             strict: true,

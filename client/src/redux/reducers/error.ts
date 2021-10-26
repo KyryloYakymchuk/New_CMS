@@ -4,7 +4,7 @@ const initialState: IError = {
     message: ''
 };
 
-const error = (state = initialState, action: IErrorAction):IError => {
+const error = (state = initialState, action: IErrorAction): IError => {
     switch (action.type) {
         case ErrorActionsTypes.ERROR_MASSEGE:
             return {

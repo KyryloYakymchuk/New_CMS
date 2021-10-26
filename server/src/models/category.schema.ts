@@ -22,12 +22,15 @@ export const CategorySchema = new mongoose.Schema({
     type: String,
     default: null,
   },
+  viewed: {
+    type: Number,
+    default: 0,
+  },
 });
 
 CategorySchema.pre("save", async function (next: mongoose.HookNextFunction) {
   try {
-    if (!this.isModified("categoryID"))
-      this["categoryID"] = uniqid("id-c_");
+    if (!this.isModified("categoryID")) this["categoryID"] = uniqid("id-c_");
 
     return next();
   } catch (e) {

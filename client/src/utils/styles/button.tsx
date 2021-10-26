@@ -15,8 +15,7 @@ export const useStyles = makeStyles(() => ({
         '& .css-1qozpde-MuiButtonBase-root-MuiButton-root': {
             backgroundColor: 'rgb(240, 50, 84)',
             color: 'white',
-            width: '100%', 
-
+            width: '100%',
             '&:hover': {
                 backgroundColor: 'white',
                 color: 'rgb(240, 50, 84)'
@@ -27,7 +26,6 @@ export const useStyles = makeStyles(() => ({
         '& .css-1xkosnu-MuiButtonBase-root-MuiButton-root': {
             backgroundColor: 'rgb(240, 50, 84)',
             color: 'white',
-
             padding: '8px 15px',
             '&:hover': {
                 backgroundColor: 'white',
@@ -37,7 +35,6 @@ export const useStyles = makeStyles(() => ({
         '& .css-1qozpde-MuiButtonBase-root-MuiButton-root': {
             backgroundColor: 'rgb(240, 50, 84)',
             color: 'white',
-
             '&:hover': {
                 backgroundColor: 'white',
                 color: 'rgb(240, 50, 84)'
@@ -48,7 +45,6 @@ export const useStyles = makeStyles(() => ({
         '& .css-1xkosnu-MuiButtonBase-root-MuiButton-root': {
             backgroundColor: 'rgb(145, 145, 145)',
             color: 'white',
-
             padding: '8px 15px',
             '&:hover': {
                 backgroundColor: 'white',
@@ -58,7 +54,6 @@ export const useStyles = makeStyles(() => ({
         '& .css-1qozpde-MuiButtonBase-root-MuiButton-root': {
             backgroundColor: 'rgb(145, 145, 145)',
             color: 'white',
-
             '&:hover': {
                 backgroundColor: 'white',
                 color: 'rgb(145, 145, 145)'
@@ -69,20 +64,15 @@ export const useStyles = makeStyles(() => ({
         '& .MuiButton-root': {
             minWidth: '0'
         },
-
         '& .css-1xkosnu-MuiButtonBase-root-MuiButton-root': {
             color: 'black',
-
             padding: '3px 3px',
             '&:hover': {
                 color: 'rgb(240, 50, 84)'
             }
         },
-
         '& .css-1qozpde-MuiButtonBase-root-MuiButton-root': {
-            //backgroundColor: "rgb(240, 50, 84)",
             color: 'white',
-
             '&:hover': {
                 color: 'rgb(240, 50, 84)'
             }

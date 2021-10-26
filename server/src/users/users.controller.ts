@@ -22,7 +22,7 @@ import { AuthGuard } from "@nestjs/passport";
 import { diskStorage } from "multer";
 import * as uniqid from "uniqid";
 import { join } from "path";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { Request } from "express";
 
 import { UserService } from "../shared/user/user.service";
@@ -35,6 +35,7 @@ import { LoggerGateway } from "../shared/logger/logger.gateway";
 export const module = "users";
 
 @ApiTags("users")
+@ApiBearerAuth()
 @Controller("users")
 export class UsersController {
   constructor(

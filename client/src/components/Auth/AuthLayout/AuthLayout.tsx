@@ -1,10 +1,9 @@
 import { FC } from 'react';
-
 import {
     AuthContainer,
     AuthTitle,
     Description
-} from './styled/styled';
+} from './styled';
 
 interface AuthProps {
     title: string;
@@ -16,7 +15,6 @@ export const AuthLayout: FC<AuthProps> = ({
     title,
     description
 }) => {
-
     return (
         <AuthContainer>
             <AuthTitle>{title}</AuthTitle>

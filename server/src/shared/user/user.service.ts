@@ -40,7 +40,7 @@ export class UserService {
     const user = await this.findUser(email);
     if (user)
       throw new HttpException("User already exists!", HttpStatus.BAD_REQUEST);
-    console.log(userDTO)
+
     const createdUser = new this.userModel(userDTO);
     await createdUser.save();
 
@@ -62,6 +62,12 @@ export class UserService {
     if (!user)
       throw new HttpException(
         "User with this email doesnt exists!",
+        HttpStatus.BAD_REQUEST
+      );
+
+    if (!user.confirmed)
+      throw new HttpException(
+        "Your account not confirmed",
         HttpStatus.BAD_REQUEST
       );
 

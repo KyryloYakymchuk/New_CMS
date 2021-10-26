@@ -17,7 +17,7 @@ export class RegisterDTO {
   @Transform((value: string) => value?.replace(" ", ""))
   password: string;
   firstName: string;
-  phone?: string;
+  phone: string;
   lastName: string;
   sex?: string;
   address1?: string;

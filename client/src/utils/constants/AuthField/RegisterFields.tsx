@@ -53,7 +53,7 @@ export const ButtonsData = {
     buttonText: 'Sign Up',
 
     linkText: 'Log in',
-    description: 'Have an account ? ',
+    description: 'Have an account ?',
     path: AuthRoutes.LOGIN
 };
 

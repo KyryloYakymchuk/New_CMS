@@ -2,8 +2,7 @@ import { FC } from 'react';
 import { useHistory } from 'react-router';
 import { Header } from '@components/Header/Header';
 import { SideMenu } from '@components/SideMenu/SideMenu';
-
-import { SideContainer, GlobalContainer, SideChildren } from './styled/styled';
+import { SideContainer, GlobalContainer, SideChildren } from './styled';
 import { AuthRoutes } from '@utils/enums/routes';
 
 interface RouteProps {
@@ -20,12 +19,11 @@ export const ProtectedRoute: FC<RouteProps> = ({ children, title }) => {
 
     return (
         <GlobalContainer>
-            <SideMenu />
+            <SideMenu/>
             <SideContainer>
-                <Header title={title} />
+                <Header title={title}/>
                 <SideChildren>{children}</SideChildren>
             </SideContainer>
-            
         </GlobalContainer>
     );
 };

@@ -30,25 +30,36 @@ export class AuthService {
 
     if (!user) throw new HttpException("User not found", HttpStatus.NOT_FOUND);
 
-    const mail = fs.readFileSync(
-      "./src/mail/templates/mailConfirm.html",
-      "utf8"
-    );
-
-    const newMail = () => {
-      const repOne = mail.replace(
-        /pageUrl/,
-        `${process.env.BASE_URL}auth/register/confirm`
-      );
-      return repOne.replace(/token/, `${hash}`);
-    };
-
+    // const mail = fs.readFileSync(
+    //   "./src/mail/templates/mailConfirm.html",
+    //   "utf8"
+    // );
+    //
+    // const newMail = () => {
+    //   const repOne = mail.replace(
+    //     /pageUrl/,
+    //     `${process.env.BASE_URL}auth/register/confirm`
+    //   );
+    //   return repOne.replace(/token/, `${hash}`);
+    // };
+    //
+    // await this.mailService.sendMail({
+    //   from: '"CMS" <ochkodym@gmail.com>',
+    //   to: user.email,
+    //   subject: "Confirm your account",
+    //   text: `Confirm your account by clicking link below!`,
+    //   html: newMail(),
+    // });
     await this.mailService.sendMail({
       from: '"CMS" <ochkodym@gmail.com>',
       to: user.email,
       subject: "Confirm your account",
       text: `Confirm your account by clicking link below!`,
-      html: newMail(),
+      template: "../server/src/mail/templates/mailConfirm.hbs",
+      context: {
+        token: hash,
+        url: `${process.env.BASE_URL}auth/register/confirm`,
+      },
     });
 
     return { pageToken: hash };
@@ -71,11 +82,21 @@ export class AuthService {
       return repOne.replace(/token/, `${hash}`);
     };
 
+    // await this.mailService.sendMail({
+    //   from: '"CMS" <ochkodym@gmail.com>',
+    //   to: user.email,
+    //   subject: "Reset your password",
+    //   html: newMail(),
+    // });
     await this.mailService.sendMail({
       from: '"CMS" <ochkodym@gmail.com>',
       to: user.email,
       subject: "Reset your password",
-      html: newMail(),
+      template: "../server/src/mail/templates/mailReset.hbs",
+      context: {
+        token: hash,
+        url: `${process.env.BASE_URL}auth/resetPassword`,
+      },
     });
 
     return { pageToken: hash };
@@ -100,5 +121,7 @@ export class AuthService {
       },
       { new: true }
     );
+
+    return { message: "Password changed successfully!" };
   }
 }

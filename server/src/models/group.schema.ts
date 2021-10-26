@@ -41,8 +41,7 @@ export const GroupSchema = new mongoose.Schema({
 
 GroupSchema.pre("save", async function (next: mongoose.HookNextFunction) {
   try {
-    if (!this.isModified("groupID"))
-      this["groupID"] = uniqid("id-g_");
+    if (!this.isModified("groupID")) this["groupID"] = uniqid("id-g_");
 
     return next();
   } catch (e) {

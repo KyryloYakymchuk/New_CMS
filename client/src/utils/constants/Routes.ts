@@ -5,13 +5,14 @@ import { ResetPassword } from '@modules/Auth/ResetPassword';
 import { Reset } from '@modules/Auth/Reset';
 
 import { AuthRoutes, ProtectedRoutes } from '@utils/enums/routes';
-import { Test } from '@components/Test';
+import { Dashboard } from '@components/Dashboard';
+import { Settings } from '@modules/Settings/Settings';
 
 // Main components
 export const protectedRoutes = [
     {
         path: ProtectedRoutes.DASHBOARD,
-        component: Test,
+        component: Dashboard,
         title: 'Dashboard'
 
     },
@@ -22,32 +23,32 @@ export const protectedRoutes = [
     },
     {
         path: ProtectedRoutes.PAGES,
-        component:Test,
+        component: Dashboard,
         title: 'Pages'
     },
     {
         path: ProtectedRoutes.MODULES,
-        component:Test,
+        component: Dashboard,
         title: 'Modules'
     },
     {
         path: ProtectedRoutes.GROUPS,
-        component: Test,
+        component: Dashboard,
         title: 'Groups'
     },
     {
         path: ProtectedRoutes.NEWSLETTER,
-        component: Test,
+        component: Dashboard,
         title: 'Newsletter'
     },
     {
         path: ProtectedRoutes.WEBSHOP,
-        component: Test,
+        component: Dashboard,
         title: 'Webshop'
     },
     {
         path: ProtectedRoutes.SETTINGS,
-        component: Test,
+        component: Settings,
         title: 'Settings'
     }
 ];

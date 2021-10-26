@@ -37,7 +37,7 @@ export class OrdersService {
   }
 
   async getAll(paginationDTO: AllOrdersDTO): Promise<Record<string, any>> {
-    const allowedParameters = ["orderId", "totalPrice"];
+    const allowedParameters = ["orderId", "totalPrice", "createDate"];
 
     let sortParameter = allowedParameters.includes(paginationDTO.sortField)
       ? paginationDTO.sortField
@@ -143,11 +143,16 @@ export class OrdersService {
         el = {
           itemID: el.itemID,
           variantID: variant.variantID,
-          name: product.name + " " + variant.name,
+          name: product.itemData.name + " " + variant.name,
           price: variant.price,
           image: variant.images[0],
-          productQuantity: el.quantity,
         };
+
+        variant.quantity -= el.quantity;
+
+        await Item.findOneAndUpdate({ "itemData.itemID": el.itemID }, product);
+        el.productQuantity = el.quantity;
+
         return el;
       })
     );
@@ -232,10 +237,11 @@ export class OrdersService {
     return { message: "Order edited successfully" };
   }
 
-  async deleteOrder(userDTO: number) {
+  async deleteOrder(userDTO: number): Promise<Record<string, any>> {
     const users = await this.userService.getAllUsers();
 
-    let order, userId;
+    let order,
+      userId = "";
     users.forEach((user) => {
       order = user.orders.find((el) => {
         return el.orderId == userDTO;
@@ -246,12 +252,19 @@ export class OrdersService {
       }
     });
 
+    const user = await this.userService.findUserByUserID(userId);
+
+    if (!user) {
+      await this.orderModel.findOneAndDelete({ orderId: userDTO });
+
+      return { message: "Order deleted successfully" };
+    }
+
     if (!order) {
       throw new HttpException("No order by this id", HttpStatus.NOT_FOUND);
     }
 
-    const user = await this.userService.findUserByUserID(userId);
-    let orders = user.orders.filter(function (value /*, index, arr*/) {
+    let orders = user.orders.filter(function (value) {
       return value.orderId != order.orderId;
     });
     await this.userService.editUser({ userID: userId, orders });

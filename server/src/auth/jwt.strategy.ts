@@ -3,25 +3,30 @@ import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, VerifiedCallback, Strategy } from "passport-jwt";
 
 import { AuthService } from "./auth.service";
+import { FauthService } from "../fauth/fauth.service";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    private fauthService: FauthService
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: "secretKey",
+      secretOrKey: process.env.SECRET_KEY,
     });
   }
 
   async validate(payload: any, done: VerifiedCallback) {
     const user = await this.authService.validateUser(payload);
-    if (!user) {
+    const fuser = await this.fauthService.validateUser(payload);
+
+    if (!user && !fuser) {
       return done(
         new HttpException("Unauthorized!", HttpStatus.UNAUTHORIZED),
         false
       );
     }
-
-    return done(null, user, payload.iat);
+    return done(null, !!user ? user : fuser, payload.iat);
   }
 }

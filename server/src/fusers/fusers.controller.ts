@@ -17,11 +17,12 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { AuthGuard } from "@nestjs/passport";
 import { Request } from "express";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
 import {
   DeleteFuserDTO,
   EditFuserDTO,
+  EditFuserMailingsDTO,
   PaginationDTO,
   ViewedDTO,
 } from "./dto/fusers.dto";
@@ -55,7 +56,8 @@ export class FusersController {
   // }
 
   @Put()
-  // @UseGuards(AuthGuard("jwt"))
+  @UseGuards(AuthGuard("jwt"))
+  @ApiBearerAuth()
   @HttpCode(HttpStatus.OK)
   async editUser(
     @Headers("authorization") token: string,
@@ -69,7 +71,7 @@ export class FusersController {
     }
 
     const phoneRegs = /^[0-9\-\+]{9,15}$/;
-    const allowedSex = ["male", "female"];
+    const allowedSex = ["Male", "Female"];
 
     if (userDTO.phone && !phoneRegs.test(userDTO.phone)) {
       throw new HttpException(
@@ -104,7 +106,8 @@ export class FusersController {
   }
 
   @Delete(":userID")
-  // @UseGuards(AuthGuard("jwt"))
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   @HttpCode(HttpStatus.OK)
   async deleteUser(
     @Param("userID") userID: DeleteFuserDTO,
@@ -119,6 +122,8 @@ export class FusersController {
   }
 
   @Get()
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   async getUserMainInfo(
     @Headers("authorization") token: string
   ): Promise<Record<string, any>> {
@@ -141,7 +146,8 @@ export class FusersController {
   }
 
   @Get("wishlist")
-  // @UseGuards(AuthGuard("jwt"))
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   async getUserWishlist(
     @Headers("authorization") token: string,
     @Query() userDTO: PaginationDTO
@@ -191,7 +197,8 @@ export class FusersController {
   }
 
   @Get("viewed")
-  // @UseGuards(AuthGuard("jwt"))
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   async getUserViewed(
     @Headers("authorization") token: string,
     @Query() userDTO: PaginationDTO
@@ -205,14 +212,13 @@ export class FusersController {
     if (!user) {
       throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
     }
+    // const viewedId = await Promise.all(
+    //   user.viewed.map(
+    //     async (el) => await this.userService.getItemByID("webshop", el.itemID)
+    //   )
+    // );
 
-    const viewedId = await Promise.all(
-      user.viewed.map(
-        async (el) => await this.userService.getItemByID("webshop", el.itemID)
-      )
-    );
-
-    const viewed = viewedId.map((el) => {
+    const viewed = user.viewed.map((el) => {
       const item = new ViewedDTO(el);
       item.isLiked = el["likedUsers"]
         ? el["likedUsers"].includes(verified.userID)
@@ -249,5 +255,46 @@ export class FusersController {
         userDTO.offset > 0 ? userDTO.offset + userDTO.limit + 1 : userDTO.limit
       ),
     };
+  }
+
+  @Get("mailings")
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
+  async getUserMailings(
+    @Headers("authorization") token: string
+  ): Promise<Record<string, any>> {
+    const verified = await this.userService.verifyToken(token.split(" ")[1]);
+    if (!verified) {
+      throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
+    }
+
+    const user = await this.userService.findUserByUserID(verified.userID);
+    if (!user) {
+      throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
+    }
+
+    return user.toObject().mailings;
+  }
+
+  @Put("mailings")
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
+  @HttpCode(HttpStatus.OK)
+  async editUserMailings(
+    @Headers("authorization") token: string,
+    @Body() userDTO: EditFuserMailingsDTO,
+    @Req() req: Request
+  ): Promise<Record<string, any>> {
+    const verified = await this.userService.verifyToken(token.split(" ")[1]);
+    if (!verified) {
+      throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
+    }
+
+    const user = await this.userService.findUserByUserID(verified.userID);
+    if (!user) {
+      throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
+    }
+
+    return this.userService.editUserMailings(userDTO, user);
   }
 }

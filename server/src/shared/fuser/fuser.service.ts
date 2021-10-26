@@ -11,14 +11,14 @@ import { DeleteUserDTO } from "../../users/dto/users.dto";
 import { QueryDTO } from "../dto/shared.dto";
 // import {UploaderService} from "../uploader/uploader.service";
 import { Fuser } from "../../types/fuser";
-import { EditFuserDTO } from "../../fusers/dto/fusers.dto";
+import {
+  EditFuserDTO,
+  EditFuserMailingsDTO,
+} from "../../fusers/dto/fusers.dto";
 
 @Injectable()
 export class FuserService {
-  constructor(
-    @InjectModel("Fuser") private userModel: Model<Fuser>
-  ) // private uploaderService: UploaderService
-  {}
+  constructor(@InjectModel("Fuser") private userModel: Model<Fuser>) {}
 
   private static sanitizeUser(user: Fuser): Record<any, any> {
     return user.depopulate("password");
@@ -54,7 +54,7 @@ export class FuserService {
     const containsNumbers = /^.*\d+.*$/;
     const containsLetters = /^.*[a-zA-Z]+.*$/;
     const phoneRegs = /^[0-9\-\+]{9,15}$/;
-    const allowedSex = ["male", "female"];
+    const allowedSex = ["Male", "Female"];
 
     if (
       !containsNumbers.test(userDTO.password) ||
@@ -135,11 +135,19 @@ export class FuserService {
       },
       contacts: {
         email: userDTO.email || user.contacts.email,
-        phone: userDTO.phone || user.contacts.phone,
+        phone: userDTO.phone || user.contacts.phone || "No phone",
       },
       shippingAddress: {
-        address1: userDTO.address1 || user.shippingAddress.address1,
-        address2: userDTO.address2 || user.shippingAddress.address2,
+        address1: userDTO.address1
+          ? userDTO.address1
+          : user.shippingAddress
+          ? user.shippingAddress.address1
+          : "No address",
+        address2: userDTO.address2
+          ? userDTO.address2
+          : user.shippingAddress
+          ? user.shippingAddress.address2
+          : "No address",
       },
       wishlist: userDTO.wishlist || user.wishlist,
       viewed: userDTO.viewed || user.viewed,
@@ -202,6 +210,26 @@ export class FuserService {
     await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
     const Item = require(`../../../schemas/${moduleName}`);
 
-    return Item.findOne({ itemID });
+    return Item.findOne({ "itemData.itemID": itemID });
+  }
+
+  async editUserMailings(
+    userDTO: EditFuserMailingsDTO,
+    user: Fuser
+  ): Promise<Record<string, any>> {
+    const { userID, mailings } = user;
+    for (const mailing in mailings) {
+      for (const el in mailings[mailing]) {
+        mailings[mailing].el = userDTO[mailing].includes(el);
+      }
+    }
+
+    await this.userModel.findOneAndUpdate({ userID }, { mailings });
+
+    return mailings;
+  }
+
+  async updateUser(user: Fuser): Promise<void> {
+    await this.userModel.findOneAndUpdate({ userID: user.userID }, user);
   }
 }

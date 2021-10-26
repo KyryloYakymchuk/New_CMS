@@ -2,9 +2,9 @@ import { IsNotEmpty } from "class-validator";
 
 export class ResponseProductsDTO {
   constructor(item: any, variantNumber?: number) {
-    this.itemID = item.itemID;
-    this.name = item.name;
-    this.rating = item.rating;
+    this.itemID = item.itemData.itemID;
+    this.name = item.itemData.name;
+    this.rating = item.itemData.rating;
     this.discount =
       item.variants && item.variants[variantNumber || 0]
         ? item.variants[variantNumber || 0].discount
@@ -31,6 +31,27 @@ export class ResponseProductsDTO {
   isLiked: boolean;
 }
 
+export class ResponseAdminProductsDTO {
+  constructor(item: any, variantNumber?: number) {
+    this.itemID = item.itemData.itemID;
+    this.name = item.itemData.name;
+    this.variants = item.variants.map((el) => {
+      el.stockCount = el.quantity;
+      el.quantity = undefined;
+      return el;
+    });
+  }
+
+  itemID: string;
+  name: number;
+  rating: number;
+  price: number;
+  discount: string;
+  image: string;
+  isLiked: boolean;
+  variants: Array<any>;
+}
+
 export class GetItemDTO {
   @IsNotEmpty()
   itemID: string;
@@ -38,15 +59,15 @@ export class GetItemDTO {
 
 export class ResponseProductDTO {
   constructor(item: any) {
-    this.itemID = item.itemID;
-    this.name = item.name;
-    this.rating = item.rating;
-    this.description = item.description;
+    this.itemID = item.itemData.itemID;
+    this.name = item.itemData.name;
+    this.rating = item.itemData.rating;
+    this.description = item.itemData.description;
     this.variants = item.variants.map(
       (el) => new ResponseProductVariantsDTO(el)
     );
     this.mayLike = item.mayLike;
-    this.comments = item.comments;
+    this.comments = item.itemData.comments;
     this.isAlreadyBought = false;
   }
 
@@ -127,4 +148,15 @@ export class ResponseCommentDTO {
   avatar: string;
   isLiked: boolean;
   isDisliked: boolean;
+}
+
+export class ResponseTypeDTO {
+  responseType: string;
+}
+
+export class GetItemsDTO {
+  limit?: number;
+  offset?: number;
+  name: string;
+  category: string;
 }

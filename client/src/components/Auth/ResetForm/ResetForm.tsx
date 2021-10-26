@@ -1,25 +1,21 @@
 import { FC } from 'react';
 import { Form } from 'react-final-form';
-
-
+import { useTranslation } from 'react-i18next';
 import {
     ButtonsData,
     ResetFields
 } from '@utils/constants/AuthField/ResetFields';
 import { Loader } from '@utils/constants/Loader';
 import { ResetValidator } from '@utils/validators/Auth/ResetValidator';
-
 import { IFormValues } from '@modules/Auth/Reset';
-
 import FormField from '@components/FormField/FormField';
-import { AuthButtonContainer } from '@components/Auth/AuthButtons/AuthButtonsContainer/AuthButtonsContainer';
-
+import { AuthButtonContainer } from '@components/Auth/AuthButtons/AuthButtonsContainer';
 import {
     ButtonContainer,
     ErrorMessage,
     FieldCustom,
     FormContainer
-} from '@modules/Auth/styled/styled';
+} from '@modules/Auth/styled';
 import { useTypedSelector } from '@utils/hooks/useTypedSelector';
 
 interface LoginProps {
@@ -28,11 +24,11 @@ interface LoginProps {
 
 export const ResetForm: FC<LoginProps> = ({ onSubmit }) => {
     const { buttonIcon, buttonText, linkText, description, path } = ButtonsData;
-    const { LoaderCircularrButton } = Loader;
+    const { LoaderCircularButton } = Loader;
 
     const errorMessage = useTypedSelector(({ error }) => error.message);
     const loaderStatus = useTypedSelector(({ loader }) => loader.loaderStatus);
-
+    const { t } = useTranslation();
     return (
         <Form
             onSubmit={onSubmit}
@@ -40,13 +36,11 @@ export const ResetForm: FC<LoginProps> = ({ onSubmit }) => {
             render={({ handleSubmit }) => (
                 <FormContainer>
                     <form onSubmit={handleSubmit}>
-                        <ErrorMessage>{errorMessage}</ErrorMessage>
-                        {ResetFields.map(({ type, name, label, icon }, index) => (
+                        <ErrorMessage>{errorMessage && t(errorMessage)}</ErrorMessage>
+                        {ResetFields.map(({  icon, ...field }, index) => (
                             <FieldCustom
                                 key={index}
-                                type={type}
-                                name={name}
-                                label={label}
+                                {...field}
                                 variant="outlined"
                                 component={FormField}
                             >
@@ -55,11 +49,11 @@ export const ResetForm: FC<LoginProps> = ({ onSubmit }) => {
                         ))}
                         <ButtonContainer>
                             <AuthButtonContainer
-                                description={description}
+                                description={t(description)}
                                 buttonIcon={buttonIcon}
-                                buttonText={buttonText}
-                                Loader={LoaderCircularrButton}
-                                linkText={linkText}
+                                buttonText={t(buttonText)}
+                                Loader={LoaderCircularButton}
+                                linkText={t(linkText)}
                                 path={path}
                                 loaderStatus={loaderStatus}
                             />

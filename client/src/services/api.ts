@@ -12,7 +12,7 @@ api.interceptors.request.use(
             config.headers = {
                 Authorization: token
             };
-        } 
+        }
         return config;
     },
     (error) => {

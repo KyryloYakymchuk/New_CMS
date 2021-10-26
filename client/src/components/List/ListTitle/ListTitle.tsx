@@ -1,19 +1,19 @@
 import { FC } from 'react';
+import { ListTitleContainer } from './styled';
+import { IListColumns } from '@interfaces/types';
+import { useTranslation } from 'react-i18next';
 
-import { IlistColums } from '@interfaces/types';
-
-import { ListTitleContainer } from './styled/styled';
 
 interface IProps {
-    listColums: IlistColums[];
+    listColumns: IListColumns[];
 }
-export const ListTitle: FC<IProps> = ({ listColums }) =>  {
-    
+
+export const ListTitle: FC<IProps> = ({ listColumns }) => {
+    const { t } = useTranslation();
+
     return (
         <ListTitleContainer>
-            {listColums.map(({ title })=>(
-                <div>{title}</div>
-            ))}
+            {listColumns.map(({ title }) => (<div>{t(title)}</div>))}
             <div>interact</div>
         </ListTitleContainer>
     );

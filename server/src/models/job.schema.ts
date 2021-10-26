@@ -7,12 +7,16 @@ export const JobSchema = new mongoose.Schema({
     readonly: true,
     unique: true,
   },
-  title: {
+  name: {
     type: String,
     required: true,
   },
-  sender: {
+  letter: {
     type: String,
+    required: true,
+  },
+  date: {
+    type: Date,
   },
   recipientUsers: {
     type: Array,
@@ -24,8 +28,7 @@ export const JobSchema = new mongoose.Schema({
 
 JobSchema.pre("save", async function (next: mongoose.HookNextFunction) {
   try {
-    if (!this.isModified("jobID"))
-      this["jobID"] = uniqid("id-l_");
+    if (!this.isModified("jobID")) this["jobID"] = uniqid("id-l_");
 
     return next();
   } catch (e) {

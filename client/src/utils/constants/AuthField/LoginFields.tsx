@@ -27,5 +27,5 @@ export const ButtonsData = {
 export const MainText = {
     title: 'Hello ! Welcome back.',
     description:
-    'Log in with your data that you entered during Your registrarion'
+        'Log in with your data that you entered during Your registrarion'
 };

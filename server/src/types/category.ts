@@ -6,4 +6,5 @@ export class Category extends Document {
   description: string;
   subcategories: Record<any, any>;
   categoryImage: string;
+  viewed: number;
 }

@@ -1,7 +1,7 @@
 import { Button } from '@material-ui/core';
 import { FC } from 'react';
-
-import { CustomButton } from './styled/ConfirmModalButton.module';
+import { CustomButton } from './styled';
+import { useTranslation } from 'react-i18next';
 
 interface ButtonProps {
     handleAccept: VoidFunction;
@@ -12,13 +12,14 @@ export const ConfirmModalButton: FC<ButtonProps> = ({
     handleClose,
     handleAccept
 }) => {
+    const { t } = useTranslation();
     return (
         <CustomButton>
             <Button variant="contained" onClick={handleAccept}>
-            Yes
+                {t('Yes')}    
             </Button>
             <Button variant="outlined" onClick={handleClose}>
-            No
+                {t('No')}
             </Button>
         </CustomButton>
     );
