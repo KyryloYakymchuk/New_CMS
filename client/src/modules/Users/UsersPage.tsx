@@ -11,14 +11,13 @@ import { Pagination } from '@components/Pagination/Pagination';
 import { UserPageContainer, PageHeader } from './styled';
 import { handleListSort } from '@utils/functions/handleListSort';
 
-type IRouterParams  = {
+interface IRouterParams {
     page: string;
-};
+}
 interface ISortParams {
     sortField?:string;
     sortParameter?:string;
 }
-
 interface ISortHandlerValue {
     currentSortParams:ISortParams;
     currSortingTypeIdx: number;
@@ -34,7 +33,6 @@ export const UsersPage: FC = () => {
     const [sortingTypeIdx, setSortingTypeIdx] = useState(0);   
 
     const allUsers = useTypedSelector(({ users }) => users.userListData);
-    const limit = 10;
 
     const deleteClick = (user: React.ChangeEvent<HTMLDivElement>) => () => {
         //future functionality
@@ -62,7 +60,7 @@ export const UsersPage: FC = () => {
         const  queryParam = {
             ...sortParams,
             offset: offset,
-            limit : limit
+            limit : LIMIT
         };
         setPage(currentPage);
         dispatch(getUsers(queryParam));
