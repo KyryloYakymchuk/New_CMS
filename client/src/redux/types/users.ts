@@ -25,11 +25,17 @@ export interface IUserListData {
 export interface IGetUsersData {
     limit: number;
     offset: number;
+    search?:string;
+    sortField?: string | null ;
+    sortParameter?: string | null ;
 }
 
+interface IQueryParams {
+    queryParams : IGetUsersData;
+}
 export interface IGetUsersAction {
     type: UserActionTypes.GET_USERS;
-    payload: IGetUsersData;
+    payload: IQueryParams;
 }
 export interface ISetUsersAction {
     type: UserActionTypes.SET_USERS;

@@ -8,11 +8,11 @@ import {
 import { api } from '@services/api';
 
 function* getUsers(data: IGetUsersAction): Generator {
-    const { limit, offset } = data.payload;
-
+    const queryParams = data.payload;
+    
     try {
         const userResponce: any = yield call(api.get, '/users/', {
-            params: { limit: limit, offset: offset }
+            params: queryParams
         });
         //cant be typed
         yield put(setUsers(userResponce?.data));
