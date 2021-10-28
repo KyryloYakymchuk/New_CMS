@@ -7,7 +7,8 @@ import {
   HttpCode,
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import {ApiTags} from "@nestjs/swagger";
+import { ApiTags } from "@nestjs/swagger";
+import { Model } from "mongoose";
 
 import { UserService } from "../shared/user/user.service";
 import {
@@ -17,11 +18,10 @@ import {
   RegisterDTO,
 } from "./dto/auth.dto";
 import { AuthService } from "./auth.service";
-import { Model } from "mongoose";
 import { User } from "../types/user";
 import { TokenDTO } from "../groups/dto/groups.dto";
 
-@ApiTags('auth')
+@ApiTags("auth")
 @Controller("auth")
 export class AuthController {
   userID;
@@ -39,7 +39,7 @@ export class AuthController {
       userID: user.userID,
     };
 
-    const token = await this.authService.signPayload(payload, "24h");
+    const token = this.authService.signPayload(payload, "24h");
     return { accessToken: `Bearer ${token}`, confirmed: user.confirmed };
   }
 
@@ -48,9 +48,8 @@ export class AuthController {
   async checkEmail(@Body() userDTO: EmailDTO): Promise<Record<string, any>> {
     const candidate = await this.userModel.findOne({ email: userDTO.email });
 
-    if (!candidate) {
+    if (!candidate)
       throw new HttpException({ status: false }, HttpStatus.NOT_FOUND);
-    }
 
     return { status: true };
   }
@@ -59,10 +58,9 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   async register(@Body() userDTO: RegisterDTO): Promise<Record<string, any>> {
     const candidate = await this.userService.findUser(userDTO.email);
-    
-    if (candidate) {
+
+    if (candidate)
       throw new HttpException(`User is already exists!`, HttpStatus.CONFLICT);
-    }
 
     const user = await this.userService.register(userDTO);
     const payload = {
@@ -81,17 +79,15 @@ export class AuthController {
     const { token } = userDTO;
     const verified = await this.userService.verifyToken(token);
 
-    if (verified) {
-      const user = await this.userService.findUserByID(verified.userID);
-      if (user && !user.confirmed) {
-        await this.userService.setAction(verified.userID);
-        return this.userService.confirmUser(verified.userID);
-      } else {
-        throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
-      }
-    } else {
+    if (!verified)
       throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
-    }
+
+    const user = await this.userService.findUserByID(verified.userID);
+    if (!user || user.confirmed)
+      throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
+
+    await this.userService.setAction(verified.userID);
+    return this.userService.confirmUser(verified.userID);
   }
 
   @Post("password")
@@ -102,22 +98,20 @@ export class AuthController {
     const { email } = userDTO;
     const candidate = await this.userService.findUser(email);
 
-    if (candidate) {
-      await this.userService.setAction(candidate.userID);
-      const user = await this.userService.findUserByID(candidate.userID);
-
-      const payload = {
-        userID: user.userID,
-        email: user.email,
-        actionDate: user.actionDate,
-      };
-
-      const hash = await this.authService.signPayload(payload, "48h");
-
-      return this.authService.sendResetEmail(user.userID, hash);
-    } else {
+    if (!candidate)
       throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
-    }
+    await this.userService.setAction(candidate.userID);
+    const user = await this.userService.findUserByID(candidate.userID);
+
+    const payload = {
+      userID: user.userID,
+      email: user.email,
+      actionDate: user.actionDate,
+    };
+
+    const hash = this.authService.signPayload(payload, "48h");
+
+    return this.authService.sendResetEmail(user.userID, hash);
   }
 
   @Post("password/confirm")
@@ -127,25 +121,23 @@ export class AuthController {
   ): Promise<Record<string, any>> {
     const { token, newPassword, newPasswordConfirm } = userDTO;
 
-    if (newPassword === newPasswordConfirm) {
-      const verified = await this.userService.verifyToken(token);
-      const user = await this.userService.findUserByID(verified.userID);
-
-      if (verified && Date.parse(verified.actionDate) === +user.actionDate) {
-        await this.userService.setAction(verified.userID);
-        return this.authService.changePassword(verified.userID, newPassword);
-      } else {
-        throw new HttpException(
-          { message: "Link expired!" },
-          HttpStatus.BAD_REQUEST
-        );
-      }
-    } else {
+    if (newPassword !== newPasswordConfirm)
       throw new HttpException(
         { message: "Passwords don`t match!" },
         HttpStatus.BAD_REQUEST
       );
-    }
+
+    const verified = await this.userService.verifyToken(token);
+    const user = await this.userService.findUserByID(verified.userID);
+
+    if (!verified || Date.parse(verified.actionDate) !== +user.actionDate)
+      throw new HttpException(
+        { message: "Link expired!" },
+        HttpStatus.BAD_REQUEST
+      );
+
+    await this.userService.setAction(verified.userID);
+    return this.authService.changePassword(verified.userID, newPassword);
   }
 
   // @Post("googleAuth")

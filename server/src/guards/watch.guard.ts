@@ -1,5 +1,5 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
-import { GuardsService } from './guards.service';
+import { Injectable, CanActivate, ExecutionContext } from "@nestjs/common";
+import { GuardsService } from "./guards.service";
 
 @Injectable()
 export class WatchPagesGuard implements CanActivate {
@@ -12,12 +12,9 @@ export class WatchPagesGuard implements CanActivate {
 
     const userGroup = await this.guardService.pagesWatch(user);
 
-    if (userGroup === true) {
-      return true;
-    } else {
-      response.redirect('/guard');
-      return false;
-    }
+    if (!userGroup) response.redirect("/guard");
+
+    return !!userGroup;
   }
 }
 
@@ -32,12 +29,9 @@ export class WatchUsersGuard implements CanActivate {
 
     const userGroup = await this.guardService.usersWatch(user);
 
-    if (userGroup === true) {
-      return true;
-    } else {
-      response.redirect('/guard');
-      return false;
-    }
+    if (!userGroup) response.redirect("/guard");
+
+    return !!userGroup;
   }
 }
 
@@ -52,11 +46,8 @@ export class WatchGroupsGuard implements CanActivate {
 
     const userGroup = await this.guardService.groupsWatch(user);
 
-    if (userGroup === true) {
-      return true;
-    } else {
-      response.redirect('/guard');
-      return false;
-    }
+    if (!userGroup) response.redirect("/guard");
+
+    return !!userGroup;
   }
 }

@@ -1,14 +1,6 @@
-import {
-  Injectable,
-  CanActivate,
-  ExecutionContext,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Group } from '../types/group';
-import { Model } from 'mongoose';
-import { GuardsService } from './guards.service';
+import { Injectable, CanActivate, ExecutionContext } from "@nestjs/common";
+
+import { GuardsService } from "./guards.service";
 
 @Injectable()
 export class DeletePagesGuard implements CanActivate {
@@ -21,12 +13,9 @@ export class DeletePagesGuard implements CanActivate {
 
     const userGroup = await this.guardService.pagesDelete(user);
 
-    if (userGroup === true) {
-      return true;
-    } else {
-      response.redirect('/guard');
-      return false;
-    }
+    if (!userGroup) response.redirect("/guard");
+
+    return !!userGroup;
   }
 }
 
@@ -41,12 +30,9 @@ export class DeleteUsersGuard implements CanActivate {
 
     const userGroup = await this.guardService.usersDelete(user);
 
-    if (userGroup === true) {
-      return true;
-    } else {
-      response.redirect('/guard');
-      return false;
-    }
+    if (!userGroup) response.redirect("/guard");
+
+    return !!userGroup;
   }
 }
 
@@ -61,11 +47,8 @@ export class DeleteGroupsGuard implements CanActivate {
 
     const userGroup = await this.guardService.groupsDelete(user);
 
-    if (userGroup === true) {
-      return true;
-    } else {
-      response.redirect('/guard');
-      return false;
-    }
+    if (!userGroup) response.redirect("/guard");
+
+    return !!userGroup;
   }
 }

@@ -51,8 +51,8 @@ export class SocialNetworkRegisterDTO {
     email: string;
   };
   userMain: {
-    firstName: string,
-    lastName: string,
+    firstName: string;
+    lastName: string;
   };
 
   birthday?: Date;

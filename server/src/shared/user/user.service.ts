@@ -3,12 +3,13 @@ import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import * as bcrypt from "bcryptjs";
 import * as cron from "node-cron";
+import { verify } from "jsonwebtoken";
+import { join } from "path";
+
 import { User } from "../../types/user";
 import { LoginDTO, RegisterDTO, UserIDDTO } from "../../auth/dto/auth.dto";
-import { verify } from "jsonwebtoken";
 import { DeleteUserDTO, EditUserDTO } from "../../users/dto/users.dto";
 import { QueryDTO } from "../dto/shared.dto";
-import { join } from "path";
 import { UploaderService } from "../uploader/uploader.service";
 
 @Injectable()
@@ -28,7 +29,6 @@ export class UserService {
 
   async findUserByID(userID: any): Promise<any> {
     const user = await this.userModel.findOne({ userID });
-
     if (!user)
       throw new HttpException("User not found!", HttpStatus.BAD_REQUEST);
 
@@ -38,10 +38,9 @@ export class UserService {
   async register(userDTO: RegisterDTO): Promise<Record<string, any>> {
     const { email } = userDTO;
     const user = await this.findUser(email);
-
     if (user)
       throw new HttpException("User already exists!", HttpStatus.BAD_REQUEST);
-    console.log(userDTO)
+
     const createdUser = new this.userModel(userDTO);
     await createdUser.save();
 
@@ -60,15 +59,22 @@ export class UserService {
     const { email, password } = userDTO;
 
     const user = await this.findUser(email);
-
     if (!user)
-      throw new HttpException("User with this email doesnt exists!", HttpStatus.BAD_REQUEST)
+      throw new HttpException(
+        "User with this email doesnt exists!",
+        HttpStatus.BAD_REQUEST
+      );
 
-    if (await bcrypt.compare(password, user.password)) {
-      return UserService.sanitizeUser(user);
-    } else {
+    if (!user.confirmed)
+      throw new HttpException(
+        "Your account not confirmed",
+        HttpStatus.BAD_REQUEST
+      );
+
+    if (!(await bcrypt.compare(password, user.password)))
       throw new HttpException("Wrong password!", HttpStatus.UNAUTHORIZED);
-    }
+
+    return UserService.sanitizeUser(user);
   }
 
   async verifyToken(token: string): Promise<any> {
@@ -142,9 +148,6 @@ export class UserService {
         "profileImages",
         `${userID + "_" + user.profileImg}`
       );
-
-      console.log(path);
-
       this.uploaderService.deleteFile(path);
     }
 

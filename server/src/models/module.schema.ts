@@ -17,14 +17,15 @@ export const ModuleSchema = new mongoose.Schema({
   icon: {
     type: String,
   },
+  categories: {
+    type: Boolean,
+  },
 });
 
 ModuleSchema.pre("save", async function (next: mongoose.HookNextFunction) {
   try {
-    if (this.isModified("moduleID")) {
-      return next();
-    }
-    this["moduleID"] = uniqid("id-m_");
+    if (!this.isModified("moduleID")) this["moduleID"] = uniqid("id-m_");
+
     return next();
   } catch (e) {
     return next(e);

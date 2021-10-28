@@ -30,10 +30,8 @@ export const LogSchema = new mongoose.Schema({
 
 LogSchema.pre("save", async function (next: mongoose.HookNextFunction) {
   try {
-    if (this.isModified("logID")) {
-      return next();
-    }
-    this["logID"] = uniqid("id-l_");
+    if (!this.isModified("logID")) this["logID"] = uniqid("id-l_");
+
     return next();
   } catch (e) {
     return next(e);

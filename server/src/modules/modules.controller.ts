@@ -17,6 +17,14 @@ import {
   UseGuards,
   UseInterceptors,
 } from "@nestjs/common";
+import { AnyFilesInterceptor } from "@nestjs/platform-express";
+import { diskStorage } from "multer";
+import * as uniqid from "uniqid";
+import { Request } from "express";
+import { AuthGuard } from "@nestjs/passport";
+import { join } from "path";
+import { ApiBearerAuth, ApiExcludeEndpoint, ApiTags } from "@nestjs/swagger";
+
 import { ModulesService } from "./modules.service";
 import {
   AddFieldsDTO,
@@ -35,31 +43,26 @@ import {
   EditItemsOrderDTO,
   EditModuleDTO,
   EditVariantsOrderDTO,
+  FieldsDTO,
   GetItemCategoriesDTO,
   GetItemsCountDTO,
+  GetItemsDTO,
   GetItemVariantsDTO,
+  MarkNewsDTO,
   ModuleIDDTO,
   ModuleNameDTO,
   PaginationDTO,
-  ResponseItemDto,
   ResponseItemsDTO,
   SetVariantStockDTO,
   WishListDTO,
 } from "./dto/modules.dto";
-import { AnyFilesInterceptor } from "@nestjs/platform-express";
-import { diskStorage } from "multer";
-import * as uniqid from "uniqid";
-import { Request } from "express";
 import { LoggerGateway } from "../shared/logger/logger.gateway";
-import { AuthGuard } from "@nestjs/passport";
-import { join } from "path";
 import { QueryDTO } from "../shared/dto/shared.dto";
 import { FuserService } from "../shared/fuser/fuser.service";
 
 export const module = "modules";
-import {ApiTags} from "@nestjs/swagger";
 
-@ApiTags('newsletters')
+@ApiTags("modules")
 @Controller("modules")
 export class ModulesController {
   constructor(
@@ -69,12 +72,14 @@ export class ModulesController {
   ) {}
 
   @Get()
+  @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
   async getModules(@Query() userDTO: QueryDTO): Promise<Record<string, any>> {
     return this.moduleService.getModules(userDTO);
   }
 
   @Post()
+  @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
   async addModule(
     @Body() userDTO: AddModuleDTO,
@@ -103,28 +108,56 @@ export class ModulesController {
   }
 
   @Get("/items/:name")
-  // @UseGuards(AuthGuard("jwt"))
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   async getItems(
     @Param("name") userDTO: ModuleNameDTO,
-    @Query() paginationDTO: PaginationDTO,
+    @Query() paginationDTO: GetItemsDTO,
+    responseFields: FieldsDTO,
     @Headers("authorization") token: string
   ): Promise<Record<string, any>> {
     const verified = await this.userService.verifyToken(token.split(" ")[1]);
-
     if (!verified) {
       throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
     }
+    const user = await this.userService.findUserByUserID(verified.userID);
 
     const items = await this.moduleService.getItems(userDTO, paginationDTO);
-
     if (!items)
       throw new HttpException("Items not found!", HttpStatus.NOT_FOUND);
 
-    return items;
+    if (!responseFields.fields) return items;
+
+    const fields = responseFields?.fields.split(",");
+
+    return {
+      count: items.count,
+      items: items.items.map((el) => {
+        const responseItem = {};
+
+        el = el.toObject();
+
+        fields.forEach((field) => {
+          responseItem[field] = el[field];
+        });
+
+        if (el.canLike) {
+          responseItem["isLiked"] = !!user
+            .toObject()
+            .likedNews?.includes(el.itemID);
+          responseItem["isDisliked"] = !!user
+            .toObject()
+            .dislikedNews?.includes(el.itemID);
+        }
+
+        return responseItem;
+      }),
+    };
   }
 
   @Get("/item")
-  // @UseGuards(AuthGuard("jwt"))
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   async getOne(
     @Body() getItem: GetItemCategoriesDTO
   ): Promise<Record<string, any>> {
@@ -136,11 +169,12 @@ export class ModulesController {
       throw new HttpException("No item by this id", HttpStatus.NOT_FOUND);
     }
 
-    return new ResponseItemDto(item);
+    return item;
   }
 
   @Get("/items/count")
-  // @UseGuards(AuthGuard("jwt"))
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   async getCount(
     @Query() getItem: GetItemsCountDTO
   ): Promise<Record<string, any>> {
@@ -148,7 +182,6 @@ export class ModulesController {
       getItem.moduleName,
       getItem.itemID
     );
-
     if (!item) {
       throw new HttpException("No item by this id", HttpStatus.NOT_FOUND);
     }
@@ -156,29 +189,24 @@ export class ModulesController {
     const variant = item.variants.find((el) => {
       return el.variantID == getItem.variantID;
     });
-
     if (!variant) {
       throw new HttpException("No variant by this id", HttpStatus.NOT_FOUND);
     }
 
-    if (variant.status == "disabled") {
-      return { count: 0 };
-    }
-
     return {
-      count: variant.quantity,
+      count: variant.status === "disabled" ? 0 : variant.quantity,
     };
   }
 
   @Put("/item/wishlist")
-  // @UseGuards(AuthGuard("jwt"))
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   async addItemToWishList(
     @Body() userDTO: WishListDTO,
     @Req() req: Request,
     @Headers("authorization") token: string
   ) {
     const verified = await this.userService.verifyToken(token.split(" ")[1]);
-
     if (!verified) {
       throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
     }
@@ -192,14 +220,14 @@ export class ModulesController {
   }
 
   @Delete("/item/wishlist")
-  // @UseGuards(AuthGuard("jwt"))
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   async removeItemFromWishList(
     @Body() userDTO: DeleteItemFromWishListDTO,
     @Req() req: Request,
     @Headers("authorization") token: string
   ) {
     const verified = await this.userService.verifyToken(token.split(" ")[1]);
-
     if (!verified) {
       throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
     }
@@ -243,7 +271,8 @@ export class ModulesController {
   }
 
   @Put("/item/viewed")
-  // @UseGuards(AuthGuard("jwt"))
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   @HttpCode(HttpStatus.OK)
   async addItemToViewed(
     @Body() userDTO: WishListDTO,
@@ -251,7 +280,6 @@ export class ModulesController {
     @Headers("authorization") token: string
   ) {
     const verified = await this.userService.verifyToken(token.split(" ")[1]);
-
     if (!verified) {
       throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
     }
@@ -260,6 +288,7 @@ export class ModulesController {
   }
 
   @Delete("/item")
+  @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
   async deleteItem(
     @Body() userDTO: DeleteItemDTO,
@@ -272,6 +301,7 @@ export class ModulesController {
   }
 
   @Post("/item")
+  @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
   @UseInterceptors(
     AnyFilesInterceptor({
@@ -311,7 +341,8 @@ export class ModulesController {
   }
 
   @Put("/item")
-  // @UseGuards(AuthGuard("jwt"))
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   // @UseInterceptors(
   //   AnyFilesInterceptor({
   //     storage: diskStorage({
@@ -339,6 +370,7 @@ export class ModulesController {
   }
 
   @Put("/item/order")
+  @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
   async editItemsOrder(
     @Body() userDTO: EditItemsOrderDTO,
@@ -350,6 +382,7 @@ export class ModulesController {
   }
 
   @Get("/item/categories/:moduleName/:itemID")
+  @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
   async getItemCategories(
     @Param() userDTO: GetItemCategoriesDTO
@@ -358,6 +391,7 @@ export class ModulesController {
   }
 
   @Put("/item/categories")
+  @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
   async addItemCategory(
     @Body() userDTO: AddItemCategoryDTO
@@ -366,6 +400,7 @@ export class ModulesController {
   }
 
   @Delete("/item/categories")
+  @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
   async deleteItemCategory(@Body() userDTO: DeleteItemCategoryDTO) {
     return this.moduleService.deleteItemCategory(userDTO);
@@ -437,6 +472,7 @@ export class ModulesController {
   // }
 
   @Put("/item/variants/order")
+  @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
   async editVariantsOrder(
     @Body() userDTO: EditVariantsOrderDTO,
@@ -507,13 +543,8 @@ export class ModulesController {
     }
     if (fields) {
       const validated = await this.moduleService.validateFields(fields);
-      if (validated) {
-        userDTO.fields = validated;
-        const result = await this.moduleService.editModule(userDTO);
-        await this.loggerGateway.logAction(req, module);
-        return result;
-      }
-    } else {
+      if (validated) userDTO.fields = validated;
+
       const result = await this.moduleService.editModule(userDTO);
       await this.loggerGateway.logAction(req, module);
       return result;
@@ -579,5 +610,22 @@ export class ModulesController {
       throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
     await this.loggerGateway.logAction(req, module);
     return await this.moduleService.deleteModule(userDTO);
+  }
+
+  @Put("/news/mark")
+  @ApiBearerAuth()
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard("jwt"))
+  async markNews(
+    @Headers("authorization") token: string,
+    @Body() userDTO: MarkNewsDTO
+  ): Promise<Record<string, any>> {
+    const verified = await this.userService.verifyToken(token.split(" ")[1]);
+
+    if (!verified) {
+      throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
+    }
+
+    return this.moduleService.markNews(verified.userID, userDTO);
   }
 }

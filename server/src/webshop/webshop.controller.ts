@@ -13,45 +13,50 @@ import {
   Query,
   Req,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from "@nestjs/common";
-import { WebshopService } from "./webshop.service";
 import { AnyFilesInterceptor, FileInterceptor } from "@nestjs/platform-express";
 import { diskStorage } from "multer";
 import * as uniqid from "uniqid";
+import { join } from "path";
+import { Request } from "express";
+import { ApiBearerAuth, ApiExcludeEndpoint, ApiTags } from "@nestjs/swagger";
+
+import { WebshopService } from "./webshop.service";
 import {
   AddCategoryDTO,
   CategoryIDDTO,
   EditCategoryDTO,
   GetCategoryDTO,
+  PopularCategoriesDTO,
 } from "./dto/categories.dto";
-import { CategoryItemsDTO, QueryDTO } from "../shared/dto/shared.dto";
-import { join } from "path";
+import { CategoryItemsDTO, QueryDTO } from "./dto/categories.dto";
 import { LoggerGateway } from "../shared/logger/logger.gateway";
-import { query, Request } from "express";
 import {
   DeleteVariantDTO,
-  EditVariantDTO,
-  PaginationDTO,
+  EditWebshopVariantDTO,
+  GetItemCategoriesDTO,
 } from "../modules/dto/modules.dto";
 
-import {AddVariantDTO, GetVariantsDTO} from "../modules/dto/modules.dto";
+import { AddVariantDTO, GetVariantsDTO } from "../modules/dto/modules.dto";
 import { FuserService } from "../shared/fuser/fuser.service";
 import {
   AddCommentDTO,
   GetCommentsDTO,
   GetItemDTO,
+  GetItemsDTO,
   LikeCommentDTO,
+  ResponseAdminProductsDTO,
   ResponseCommentDTO,
   ResponseProductDTO,
   ResponseProductsDTO,
+  ResponseTypeDTO,
 } from "./dto/products.dto";
-import { ModulesService } from "../modules/modules.service";
-import {ApiTags} from "@nestjs/swagger";
+import { AuthGuard } from "@nestjs/passport";
 
 export let module;
-
-@ApiTags('webshop')
+@ApiTags("webshop")
 @Controller("webshop")
 export class WebshopController {
   constructor(
@@ -60,13 +65,7 @@ export class WebshopController {
     private userService: FuserService
   ) {}
 
-  // @Get("/categories")
-  // async getCategories(
-  //   @Query() userDTO: QueryDTO
-  // ): Promise<Record<string, any>> {
-  //   return this.webshopService.getCategories(userDTO);
-  // }
-
+  @ApiExcludeEndpoint()
   @Get("/categories")
   async getCategories(
     @Query() userDTO: QueryDTO
@@ -103,9 +102,8 @@ export class WebshopController {
     @UploadedFile() file: Express.Multer.File[]
   ): Promise<Record<string, any>> {
     module = "category";
-    const result = this.webshopService.addCategory(userDTO, file);
-    // await this.loggerGateway.logAction(req, module);
-    return result;
+    await this.loggerGateway.logAction(req, module);
+    return this.webshopService.addCategory(userDTO, file);
   }
 
   @Put("/categories")
@@ -131,9 +129,8 @@ export class WebshopController {
     @Req() req: Request
   ): Promise<Record<string, any>> {
     module = "category";
-    const result = this.webshopService.editCategory(userDTO, queryDTO, file);
-    // await this.loggerGateway.logAction(req, module);
-    return result;
+    await this.loggerGateway.logAction(req, module);
+    return this.webshopService.editCategory(userDTO, queryDTO, file);
   }
 
   @Delete("/categories/:categoryID")
@@ -149,35 +146,43 @@ export class WebshopController {
   }
 
   @Delete("/item/variants")
-  // @UseGuards(AuthGuard("jwt"))
-  async deleteVariant(@Body() userDTO: DeleteVariantDTO, @Req() req: Request) {
-    const result = await this.webshopService.deleteVariant(userDTO);
-    // await this.loggerGateway.logAction(req, module);
-    return result;
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
+  async deleteVariant(
+    @Body() userDTO: DeleteVariantDTO,
+    @Req() req: Request
+  ): Promise<Record<string, any>> {
+    module = "variants";
+    await this.loggerGateway.logAction(req, module);
+    return await this.webshopService.deleteVariant(userDTO);
   }
 
   @Get("/item/variants")
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   async getVariant(@Query() userDTO: GetVariantsDTO) {
     const result = await this.webshopService.getVariants(userDTO);
-    // await this.loggerGateway.logAction(req, module);
 
     return result.variants;
   }
 
   @Post("/item/variants")
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   async addVariant(
     @Body() userDTO: AddVariantDTO,
     @Req() req: Request
-    // @UploadedFile() files: Express.Multer.File[]
-  ) {
+  ): Promise<Record<string, any>> {
+    module = "variants";
+    await this.loggerGateway.logAction(req, module);
     const result = await this.webshopService.addVariant(userDTO);
-    // await this.loggerGateway.logAction(req, module);
 
     return { variantID: result };
   }
 
   @Put("/item/variants")
-  // @UseGuards(AuthGuard("jwt"))
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   @UseInterceptors(
     AnyFilesInterceptor({
       storage: diskStorage({
@@ -189,15 +194,13 @@ export class WebshopController {
     })
   )
   async editVariant(
-    @Body() userDTO: EditVariantDTO,
-    @Req() req: Request,
-    @UploadedFile() files: Express.Multer.File[]
+    @UploadedFile() file: Express.Multer.File[],
+    @Body() userDTO: EditWebshopVariantDTO,
+    @Req() req: Request
   ): Promise<Record<string, any>> {
-    const newfiles = [files];
-
-    const result = await this.webshopService.editVariant(userDTO, newfiles);
-    // await this.loggerGateway.logAction(req, module);
-    return result;
+    module = "variants";
+    await this.loggerGateway.logAction(req, module);
+    return await this.webshopService.editVariant(userDTO, req.files);
   }
 
   // @Get('/item')
@@ -212,38 +215,37 @@ export class WebshopController {
   // }
 
   @Get("/items")
-  // @UseGuards(AuthGuard("jwt"))
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   async getItems(
     // @Param("name") userDTO: ModuleNameDTO,
-    @Query() paginationDTO: PaginationDTO,
+    @Query() paginationDTO: GetItemsDTO,
+    @Query() type: ResponseTypeDTO,
     @Headers("authorization") token?: string
   ): Promise<Record<string, any>> {
-    let verified;
-
-    if (token) {
-      verified = await this.userService.verifyToken(token.split(" ")[1]);
-
-      if (!verified)
-        throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
-    }
-
     const itemsObj = await this.webshopService.getItems(paginationDTO);
-
-    return {
-      count: itemsObj.count,
-      items: itemsObj.items.map((el) => {
-        const item = new ResponseProductsDTO(el);
-        item.isLiked =
-          el.likedUsers && token
-            ? el.likedUsers.includes(verified.userID)
-            : false;
-        return item;
-      }),
-    };
+    switch (type.responseType) {
+      case "1":
+        return {
+          count: itemsObj.count,
+          items: itemsObj.items.map((el) => new ResponseAdminProductsDTO(el)),
+        };
+      case "2":
+        return {
+          count: itemsObj.count,
+          items: itemsObj.items,
+        };
+      default:
+        return {
+          count: itemsObj.count,
+          items: itemsObj.items,
+        };
+    }
   }
 
   @Get("/item")
-  // @UseGuards(AuthGuard("jwt"))
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   async getItem(
     @Query() itemID: GetItemDTO,
     // @Query() paginationDTO: PaginationDTO,
@@ -253,19 +255,21 @@ export class WebshopController {
 
     if (token) {
       verified = await this.userService.verifyToken(token.split(" ")[1]);
-
       if (!verified) {
         throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
       }
-
       user = await this.userService.findUserByUserID(verified.userID);
     }
 
-    const item = await this.webshopService.getItemByID(itemID.itemID);
+    let item = await this.webshopService.getItemByID(itemID.itemID);
 
-    const responseProduct = new ResponseProductDTO(item);
+    if (!item) {
+      throw new HttpException("No item by this id", HttpStatus.NOT_FOUND);
+    }
+    // item = item.toObject();
+    const responseProduct = new ResponseProductDTO(item.toObject());
 
-    if (user) {
+    if (user?.orders) {
       user.orders.forEach((el) => {
         if (
           el.status == "Completed" &&
@@ -276,7 +280,7 @@ export class WebshopController {
     }
 
     const mayLike = await this.webshopService.getCategoriesItems(
-      { categoryID: item.toObject().categoryID },
+      { categoryID: item.toObject().categoryID, limit: 4 },
       token
     );
 
@@ -286,16 +290,24 @@ export class WebshopController {
       const anotherItems = await this.webshopService.getItems({
         limit: 4 - responseProduct.mayLike.length,
       });
+
       responseProduct.mayLike = responseProduct.mayLike.concat(
-        anotherItems.map((el) => new ResponseProductsDTO(el))
+        anotherItems.items.map((el) => {
+          let item = new ResponseProductsDTO(el);
+          item.isLiked =
+            el?.itemData.likedUsers && token
+              ? el.itemData.likedUsers.includes(verified.userID)
+              : false;
+          return item;
+        })
       );
     }
 
-    const count = responseProduct.comments.length;
+    const totalCount = responseProduct.comments.length;
     responseProduct.comments = responseProduct.comments.reverse().slice(0, 3);
 
     responseProduct.comments = {
-      count,
+      totalCount,
       items: responseProduct.comments.map((el) => {
         el.isLiked =
           !!token &&
@@ -304,6 +316,7 @@ export class WebshopController {
           !!token &&
           !!(el.dislikedUsers && el.dislikedUsers.includes(verified.userID));
         const dateNow = new Date();
+
         const elDate = el.date;
         el.date =
           Math.floor(
@@ -336,20 +349,17 @@ export class WebshopController {
     @Headers("authorization") token: string
   ) {
     const verified = await this.userService.verifyToken(token.split(" ")[1]);
-
     if (!verified) {
       throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
     }
 
     const user = await this.userService.findUserByUserID(verified.userID);
-
     if (!user) {
       throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
     }
     const result = await this.webshopService.addComment(userDTO, user);
 
     let responseComments = result.comments;
-
     const count = responseComments.length;
 
     responseComments = responseComments
@@ -358,7 +368,10 @@ export class WebshopController {
 
     return {
       count,
-      items: responseComments.map((el) => {
+      items: this.webshopService.createResponseComments(
+        responseComments,
+        verified?.userID
+      ) /*responseComments.map((el) => {
         el.isLiked =
           !!token &&
           !!(el.likedUsers && el.likedUsers.includes(verified.userID));
@@ -385,7 +398,7 @@ export class WebshopController {
             " minutes ago";
 
         return new ResponseCommentDTO(el);
-      }),
+      }),*/,
     };
   }
 
@@ -393,7 +406,7 @@ export class WebshopController {
   async getComments(
     @Query() userDTO: GetCommentsDTO,
     @Headers("authorization") token?: string
-  ) {
+  ): Promise<Record<string, any>> {
     let verified, user;
     if (token) {
       verified = await this.userService.verifyToken(token.split(" ")[1]);
@@ -411,8 +424,8 @@ export class WebshopController {
 
     const result = await this.webshopService.getComments(userDTO);
 
-    let responseComments = result.comments;
-    const count = responseComments.length;
+    let responseComments = result.itemData.comments;
+    const totalCount = responseComments.length;
 
     responseComments = responseComments
       .reverse()
@@ -424,7 +437,7 @@ export class WebshopController {
       );
 
     return {
-      count,
+      totalCount,
       items: responseComments.map((el) => {
         el.isLiked =
           !!token &&
@@ -457,11 +470,13 @@ export class WebshopController {
   }
 
   @Post("/item/comment/dislike")
+  @ApiBearerAuth()
   @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard("jwt"))
   async dislikeComment(
     @Body() userDTO: LikeCommentDTO,
     @Headers("authorization") token: string
-  ) {
+  ): Promise<Record<string, any>> {
     const verified = await this.userService.verifyToken(token.split(" ")[1]);
 
     if (!verified) {
@@ -504,11 +519,13 @@ export class WebshopController {
   }
 
   @Post("/item/comment/like")
+  @ApiBearerAuth()
   @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard("jwt"))
   async likeComment(
     @Body() userDTO: LikeCommentDTO,
     @Headers("authorization") token: string
-  ) {
+  ): Promise<Record<string, any>> {
     const verified = await this.userService.verifyToken(token.split(" ")[1]);
 
     if (!verified) {
@@ -550,11 +567,114 @@ export class WebshopController {
     return new ResponseCommentDTO(comment);
   }
 
-  @Get("/categories/items")
+  @Post("/categories/items")
   async getCategoriesItems(
-    @Query() userDTO: CategoryItemsDTO,
+    @Body() userDTO: CategoryItemsDTO,
     @Headers("authorization") token: string
   ): Promise<Record<string, any>> {
     return this.webshopService.getCategoriesItems(userDTO, token);
+  }
+
+  @Get("popular")
+  async getMostPopular(
+    @Headers("authorization") token?: string
+  ): Promise<Record<string, any>> {
+    let verified;
+
+    if (token) {
+      verified = await this.userService.verifyToken(token.split(" ")[1]);
+
+      if (!verified) {
+        throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
+      }
+    }
+    const items = await this.webshopService.getMostPopular();
+    return items.map((el) => {
+      const item = new ResponseProductsDTO(el);
+      item.isLiked =
+        el?.itemData.likedUsers && token
+          ? el.itemData.likedUsers.includes(verified.userID)
+          : false;
+      return item;
+    });
+  }
+
+  @Get("/item/categories/:moduleName/:itemID")
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
+  async getItemCategories(
+    @Param() userDTO: GetItemCategoriesDTO
+  ): Promise<Record<string, any>> {
+    return this.webshopService.getItemCategories(userDTO);
+  }
+  // //log
+  //   @Put("/item/categories")
+  //   @UseGuards(AuthGuard("jwt"))
+  //   async addItemCategory(
+  //       @Body() userDTO: AddItemCategoryDTO
+  //   ): Promise<Record<string, any>> {
+  //     return this.webshopService.addItemCategory(userDTO);
+  //   }
+  //
+  // //log
+  //   @Delete("/item/categories")
+  //   @UseGuards(AuthGuard("jwt"))
+  //   async deleteItemCategory(@Body() userDTO: DeleteItemCategoryDTO) {
+  //     return this.webshopService.deleteItemCategory(userDTO);
+  //   }
+
+  @Get("foryou")
+  async getForYou(
+    @Headers("authorization") token?: string
+  ): Promise<Record<string, any>> {
+    let user,
+      forYou = [];
+
+    if (token) {
+      const verified = await this.userService.verifyToken(token.split(" ")[1]);
+
+      if (!verified) {
+        throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
+      }
+      user = await this.userService.findUserByUserID(verified.userID);
+
+      if (!user) {
+        throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
+      }
+      for (let item of user.viewed) {
+        if (forYou?.length >= 5) break;
+        const newItems = await this.webshopService.getCategoriesItems(
+          {
+            categoryID: item["itemData"]?.categoryID,
+            limit: 5 - forYou?.length || 0,
+            excludedItemID: item["itemData"]?.itemID,
+          },
+          token
+        );
+        forYou = (forYou || []).concat(newItems.products);
+      }
+    }
+
+    if (forYou?.length < 5) {
+      const anotherItems = await this.webshopService.getItems({
+        limit: 5 - forYou.length,
+      });
+      forYou = forYou.concat(
+        anotherItems.items.map((el) => new ResponseProductsDTO(el))
+      );
+    }
+    return forYou;
+  }
+
+  @Get("/categories/popular")
+  async getPopularCategories(): Promise<Record<string, any>> {
+    const categories = await this.webshopService.getPopularCategories();
+    return categories.map((el) => new PopularCategoriesDTO(el));
+  }
+
+  @Put("/category/viewed")
+  @HttpCode(HttpStatus.OK)
+  async viewCategory(@Body() userDTO: CategoryIDDTO): Promise<void> {
+    await this.webshopService.viewCategory(userDTO);
   }
 }

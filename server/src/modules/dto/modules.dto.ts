@@ -1,11 +1,11 @@
 import { IsNotEmpty } from "class-validator";
-import { Exclude } from "class-transformer";
 
 export class AddModuleDTO {
   @IsNotEmpty()
   name: string;
-  fields?: Record<any, any>;
+  fields?: Array<any>;
   icon?: string;
+  categories: boolean;
 }
 
 export class AddItemDTO {
@@ -25,7 +25,7 @@ export class EditModuleDTO {
   @IsNotEmpty()
   moduleID: string;
   name?: string;
-  fields?: Record<any, any>;
+  fields?: Array<any>;
   icon?: string;
 }
 
@@ -37,7 +37,7 @@ export class AddFieldsDTO {
   @IsNotEmpty()
   type: string;
   @IsNotEmpty()
-  settings: Record<any, any>;
+  settings: Array<any>;
 }
 
 export class EditFieldsDTO {
@@ -45,14 +45,14 @@ export class EditFieldsDTO {
   id: string;
   name?: string;
   type?: string;
-  settings?: Record<any, any>;
+  settings?: Array<any>;
 }
 
 export class EditFieldsOrderDTO {
   @IsNotEmpty()
   moduleID: string;
   @IsNotEmpty()
-  fields: Record<string, any>;
+  fields: Array<any>;
 }
 
 export class DeleteFieldsDTO {
@@ -99,7 +99,7 @@ export class GetItemsCountDTO {
   variantID: string;
 }
 
-export  class AddVariantDTO {
+export class AddVariantDTO {
   itemID: string;
   moduleName: string;
 }
@@ -111,7 +111,7 @@ export  class AddVariantDTO {
 // export declare class EditVariantDTO {
 //   data: any;
 // }
-export  class GetVariantsDTO {
+export class GetVariantsDTO {
   itemID: string;
 }
 export class DeleteVariantDTO {
@@ -145,7 +145,7 @@ export class SetVariantStockDTO {
   moduleName: string;
   itemID: string;
   variantID: string;
-  storage: Record<string, any>;
+  storage: Array<any>;
 }
 
 export class DeleteItemCategoryDTO {
@@ -210,6 +210,13 @@ export class PaginationDTO {
   limit?: number;
 }
 
+export class GetItemsDTO {
+  offset?: number;
+  limit?: number;
+  name?: string;
+  category?: string;
+}
+
 export class OrderItemsDTO {
   constructor(item: any) {
     this.itemID = item.itemID;
@@ -257,4 +264,22 @@ export class DeleteItemFromWishListDTO {
   moduleName: string;
   offset?: number;
   limit?: number;
+}
+
+export class ItemsFiltration {
+  name: string;
+  category: string;
+}
+
+export declare class FieldsDTO {
+  fields: string;
+}
+
+export class MarkNewsDTO {
+  itemID: string;
+  type: string;
+}
+
+export interface EditWebshopVariantDTO {
+  data: any;
 }

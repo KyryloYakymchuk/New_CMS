@@ -1,9 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectConnection, InjectModel } from "@nestjs/mongoose";
 import * as mongoose from "mongoose";
-import { Connection, Model, mongo } from "mongoose";
-import { Module } from "../types/module";
+import { Connection, Model } from "mongoose";
 import * as shortid from "shortid";
+import * as fs from "fs";
+import * as Client from "ssh2-sftp-client";
+import * as uniqid from "uniqid";
+import { join } from "path";
+
+import { Module } from "../types/module";
 import {
   AddFieldsDTO,
   AddItemCategoryDTO,
@@ -19,7 +24,7 @@ import {
   EditItemsDTO,
   EditItemsOrderDTO,
   EditModuleDTO,
-  EditVariantDTO,
+  MarkNewsDTO,
   EditVariantsOrderDTO,
   GetItemCategoriesDTO,
   GetItemVariantsDTO,
@@ -29,20 +34,18 @@ import {
   SetVariantStockDTO,
   WishListDTO,
 } from "./dto/modules.dto";
-import * as fs from "fs";
-import * as Client from "ssh2-sftp-client";
-import * as uniqid from "uniqid";
-import { join } from "path";
 import { UploaderService } from "../shared/uploader/uploader.service";
 import { Category } from "src/types/category";
 import { QueryDTO } from "../shared/dto/shared.dto";
 import { FuserService } from "../shared/fuser/fuser.service";
-import {AddVariantDTO} from "./dto/modules.dto";
+import { AddVariantDTO } from "./dto/modules.dto";
 
 export const options = {
-  server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
-  replset: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
   useNewUrlParser: true,
+  server: {
+    reconnectTries: Number.MAX_VALUE,
+    reconnectInterval: 1000,
+  },
 };
 
 @Injectable()
@@ -66,22 +69,22 @@ export class ModulesService {
   }
 
   private generateSchema(
-    fields: Record<any, any>,
+    // fields: Record<any, any>,
     module: Record<any, any>
   ): string {
-    const typeForSchema = {
-      string: `String,`,
-      number: `Number,`,
-      boolean: `Boolean,`,
-      array: `Array,`,
-      date: `Date,`,
-    };
-
-    let typesStr = ``;
-    Object.keys(fields).forEach((field) => {
-      typesStr += `
-            ${field}: ${typeForSchema[fields[field]]}`;
-    });
+    // const typeForSchema = {
+    //   string: `String,`,
+    //   number: `Number,`,
+    //   boolean: `Boolean,`,
+    //   array: `Array,`,
+    //   date: `Date,`,
+    // };
+    //
+    // let typesStr = ``;
+    // Object.keys(fields).forEach((field) => {
+    //   typesStr += `
+    //         ${field}: ${typeForSchema[fields[field]]}`;
+    // });
 
     const editedName =
       module.name.charAt(0).toUpperCase() + module.name.slice(1) + "Schema";
@@ -89,9 +92,20 @@ export class ModulesService {
     return `
         const mongoose = require('mongoose')
         const ${editedName} = new mongoose.Schema(
-          {${typesStr}
-          order: Number,
-          variants: Array
+          {
+            order: {
+              type: Number,
+            },
+            category: {
+              type: String,
+            },
+            itemData: {
+              type: Object,
+              required: true
+            },
+            variants: {
+              type: Array,
+            },
           },
           { collection: '${module.name}' }
         );
@@ -115,15 +129,19 @@ export class ModulesService {
     await mongoose.connect(process.env.MONGO_URI, options);
     const Item = require(`../../schemas/${moduleName}`);
     const items = await Item.find();
+
     const maxOrderObject =
       items.length > 0 &&
       items.reduce(
         (prev, current) => (prev.order > current.order ? prev : current),
         {}
       );
+
     model.order = items.length === 0 ? 0 : maxOrderObject.order + 1;
+
     const newItem = new Item(model);
     await newItem.save();
+
     await mongoose.connection.close();
     return newItem;
   }
@@ -244,7 +262,7 @@ export class ModulesService {
   }
 
   async createModule(userDTO: AddModuleDTO): Promise<Record<string, string>> {
-    const { name, fields = [], icon } = userDTO;
+    const { name, fields = [], icon, categories } = userDTO;
     const module = await this.findModulesByName(name);
 
     if (module) {
@@ -299,6 +317,7 @@ export class ModulesService {
       name,
       fields,
       icon,
+      categories,
     });
 
     await newModule.save();
@@ -313,10 +332,12 @@ export class ModulesService {
     const { limit, offset } = paginationDTO;
     await mongoose.connect(process.env.MONGO_URI, options);
     const Item = require(`../../schemas/${moduleName}`);
+
     const items = await Item.find()
       .skip(!!offset ? +offset : "")
       .limit(!!limit ? +limit : "");
     const fullItemsList = await Item.find();
+
     await mongoose.connection.close();
     return { count: fullItemsList.length, items };
   }
@@ -327,9 +348,11 @@ export class ModulesService {
   ): Promise<Record<any, any>> {
     await mongoose.connect(process.env.MONGO_URI, options);
     const Item = require(`../../schemas/${moduleName}`);
-    const currentItem = await Item.findOne({ itemID });
-    await mongoose.connection.close();
-    return currentItem;
+
+    return (
+      (await Item.findOne({ "itemData.itemID": itemID })) ||
+      (await Item.findOne({ itemID }))
+    );
   }
 
   async removeItemByID(
@@ -338,29 +361,45 @@ export class ModulesService {
   ): Promise<Record<any, any>> {
     await mongoose.connect(process.env.MONGO_URI, options);
     const Item = require(`../../schemas/${moduleName}`);
-    const currentItem = await Item.findOneAndDelete({ itemID });
+    let currentItem = await Item.findOneAndDelete({
+      "itemData.itemID": itemID,
+    });
+    if (!currentItem) {
+      currentItem = await Item.findOneAndDelete({ itemID });
+    }
     await mongoose.connection.close();
     return currentItem;
   }
 
-  async editItemByID(moduleName: string, itemID: string, items: object) {
+  async editItemByID(
+    moduleName: string,
+    itemID: string,
+    items: object
+  ): Promise<void> {
     await mongoose.connect(process.env.MONGO_URI, options);
     const Item = require(`../../schemas/${moduleName}`);
     for (let item in items) {
       if (items.hasOwnProperty(item)) {
+        await Item.findOneAndUpdate(
+          { "itemData.itemID": itemID },
+          { [`${item}`]: items[item] }
+        );
         await Item.findOneAndUpdate({ itemID }, { [`${item}`]: items[item] });
       }
     }
     await mongoose.connection.close();
   }
 
-  async changeItemsOrder(name: string, items: object) {
+  async changeItemsOrder(name: string, items: object): Promise<void> {
     await mongoose.connect(process.env.MONGO_URI, options);
     const Item = require(`../../schemas/${name}`);
 
     for (let key in items) {
       if (items.hasOwnProperty(key)) {
-        await Item.findOneAndUpdate({ itemID: key }, { order: items[key] });
+        await Item.findOneAndUpdate(
+          { "itemData.itemID": key },
+          { order: items[key] }
+        );
       }
     }
     await mongoose.connection.close();
@@ -395,27 +434,36 @@ export class ModulesService {
     name: string,
     itemID: string,
     variant: Record<any, any>
-  ) {
+  ): Promise<void> {
     await mongoose.connect(process.env.MONGO_URI, options);
+
     const Item = require(`../../schemas/${name}`);
-    const { variants: prevVariants } = await Item.findOne({ itemID }).select(
-      "variants"
-    );
+    const { variants: prevVariants } = await Item.findOne({
+      "itemData.itemID": itemID,
+    }).select("variants");
+
     const maxObject =
       prevVariants.length > 0 &&
       prevVariants.reduce(
         (prev, current) => (prev.b > current.b ? prev : current),
         {}
       );
+
     variant.order = prevVariants.length === 0 ? 0 : maxObject.order + 1;
+
     await Item.findOneAndUpdate(
-      { itemID },
+      { "itemData.itemID": itemID },
       { variants: [...prevVariants, variant] }
     );
+
     await mongoose.connection.close();
   }
 
-  async deleteVariantByID(name: string, itemID: string, variantID: string) {
+  async deleteVariantByID(
+    name: string,
+    itemID: string,
+    variantID: string
+  ): Promise<void> {
     await mongoose.connect(process.env.MONGO_URI, options);
     const Item = require(`../../schemas/${name}`);
     const variant = await Item.findOne({ "variants.variantID": variantID });
@@ -499,7 +547,7 @@ export class ModulesService {
     const modelFile = join(__dirname, "..", "schemas", `${module.name}.js`);
 
     const newItemID = uniqid("i_");
-    const model = { itemID: newItemID };
+    const model = { itemData: { "itemData.itemID": newItemID } };
 
     const generateModel = () => {
       module.fields.forEach((field) => {
@@ -529,14 +577,8 @@ export class ModulesService {
           fields[field.settings.textPrompt] = ModulesService.validateType(
             field.type
           );
-          parsedData.fields.forEach((input) => {
-            if (input.id === field.id) {
-              model[field.settings.textPrompt] = input.value;
-            }
-          });
         });
-
-        await this.saveSchema(this.generateSchema(fields, module), modelFile);
+        await this.saveSchema(this.generateSchema(module), modelFile);
         await saveItem();
       } else await saveItem();
     });
@@ -545,7 +587,7 @@ export class ModulesService {
     const newItem = await this.getItemByID(module.name, newItemID);
 
     itemsList.items.push(newItem);
-    return itemsList;
+    return { count: itemsList.length, items: itemsList };
   }
 
   async changeVariantStock(
@@ -571,7 +613,10 @@ export class ModulesService {
         item.variants[currentVariantIndex].PriceBands.stock[key] = storage[key];
       }
     }
-    await Item.findOneAndUpdate({ itemID }, { variants: item.variants });
+    await Item.findOneAndUpdate(
+      { "itemData.itemID": itemID },
+      { variants: item.variants }
+    );
     await mongoose.connection.close();
   }
 
@@ -588,7 +633,7 @@ export class ModulesService {
       throw new HttpException("Module not found!", HttpStatus.CONFLICT);
     }
     categories.push(categoryID);
-    await Item.findOneAndUpdate({ itemID }, { categories });
+    await Item.findOneAndUpdate({ "itemData.itemID": itemID }, { categories });
     await mongoose.connection.close();
   }
 
@@ -599,7 +644,7 @@ export class ModulesService {
 
     await mongoose.connect(process.env.MONGO_URI, options);
     const Item = require(`../../schemas/${name}`);
-    const currentItem = await Item.findOne({ itemID });
+    const currentItem = await Item.findOne({ "itemData.itemID": itemID });
 
     const categories = await this.categoryModel.find({});
     await mongoose.connection.close();
@@ -619,15 +664,18 @@ export class ModulesService {
   }
 
   async removeItemCategoryByID(userDTO: DeleteItemCategoryDTO) {
-    const { moduleName: userName, itemID, categoryID } = userDTO;
+    const { moduleName: /*userName,*/ itemID, categoryID } = userDTO;
 
     await mongoose.connect(process.env.MONGO_URI, options);
     const Item = require(`../../schemas/${userDTO.moduleName}`);
-    const currentItem = await Item.findOne({ itemID });
+    const currentItem = await Item.findOne({ "itemData.itemID": itemID });
     const newCategories =
       currentItem?.categories?.length &&
       currentItem.categories.filter((i) => i !== categoryID);
-    await Item.findOneAndUpdate({ itemID }, { categories: newCategories });
+    await Item.findOneAndUpdate(
+      { "itemData.itemID": itemID },
+      { categories: newCategories }
+    );
     await mongoose.connection.close();
   }
 
@@ -672,7 +720,8 @@ export class ModulesService {
     files: Record<any, any>
   ): Promise<Record<string, any>> {
     const { data } = userDTO;
-    const parsedData = JSON.parse(data);
+    let parsedData;
+    if (data) parsedData = JSON.parse(data);
     const { moduleName, itemID, items } = parsedData;
 
     const module = await this.findModulesByName(moduleName);
@@ -732,19 +781,14 @@ export class ModulesService {
     return this.getItemsList(moduleName);
   }
 
-  async addVariant(
-    userDTO: AddVariantDTO
-    // files: Record<any, any>
-  ): Promise<Record<string, any>> {
+  async addVariant(userDTO: AddVariantDTO): Promise<Record<string, any>> {
     const { moduleName, itemID } = userDTO;
 
     const module = await this.findModulesByName(moduleName);
-
     if (!module)
       throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
 
     const file = join(__dirname, "..", "schemas", `${moduleName}.js`);
-
     fs.access(file, async (err) => {
       if (err) {
         throw new HttpException("Schema not found!", HttpStatus.NOT_FOUND);
@@ -759,7 +803,6 @@ export class ModulesService {
     const newVariant = {
       variantID: shortid.generate(),
     };
-
     await this.addVariantByItemID(moduleName, itemID, newVariant);
 
     return newVariant.variantID;
@@ -782,42 +825,42 @@ export class ModulesService {
   //   return item.variants;
   // }
 
-  async editVariant(
-    userDTO: EditVariantDTO,
-    files: Record<any, any>
-  ): Promise<Record<string, any>> {
-    const { moduleName, variantID } = userDTO;
-    const module = await this.findModulesByName(moduleName);
-
-    if (!module)
-      throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
-
-    const file = join(__dirname, "..", "schemas", `${moduleName}.js`);
-
-    fs.access(file, async (err) => {
-      if (err) {
-        throw new HttpException("Schema not found!", HttpStatus.NOT_FOUND);
-      }
-    });
-
-    const editVariant = {
-      variantID,
-      name: userDTO.name,
-      quantity: userDTO.quantity,
-      werehouse: userDTO.werehouse,
-      price: userDTO.price,
-      discount: userDTO.discount,
-      tax: userDTO.tax,
-    };
-
-    await this.editVariantByID(moduleName, variantID, editVariant);
-
-    // const filesObj = await this.putFilesInObj(files, module);
-    // if (!!Object.keys(filesObj).length)
-    //   await this.saveImgInDB(module.name, variantID, filesObj);
-
-    return this.getItemsList(moduleName);
-  }
+  // async editVariant(
+  //   userDTO: EditVariantDTO
+  //   // files: Record<any, any>
+  // ): Promise<Record<string, any>> {
+  //   const { moduleName, variantID } = userDTO;
+  //   const module = await this.findModulesByName(moduleName);
+  //
+  //   if (!module)
+  //     throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
+  //
+  //   const file = join(__dirname, "..", "schemas", `${moduleName}.js`);
+  //
+  //   fs.access(file, async (err) => {
+  //     if (err) {
+  //       throw new HttpException("Schema not found!", HttpStatus.NOT_FOUND);
+  //     }
+  //   });
+  //
+  //   const editVariant = {
+  //     variantID,
+  //     name: userDTO.name,
+  //     quantity: userDTO.quantity,
+  //     werehouse: userDTO.werehouse,
+  //     price: userDTO.price,
+  //     discount: userDTO.discount,
+  //     tax: userDTO.tax,
+  //   };
+  //
+  //   await this.editVariantByID(moduleName, variantID, editVariant);
+  //
+  //   // const filesObj = await this.putFilesInObj(files, module);
+  //   // if (!!Object.keys(filesObj).length)
+  //   //   await this.saveImgInDB(module.name, variantID, filesObj);
+  //
+  //   return this.getItemsList(moduleName);
+  // }
 
   async editVariantsOrder(
     userDTO: EditVariantsOrderDTO
@@ -839,7 +882,6 @@ export class ModulesService {
 
     let itemID = await this.changeVariantsOrder(moduleName, variants);
     if (itemID) {
-      // return this.getItemsList(moduleName)
       return this.getItemByID(moduleName, itemID);
     }
   }
@@ -853,7 +895,11 @@ export class ModulesService {
     await mongoose.connect(process.env.MONGO_URI, options);
     const Item = require(`../../schemas/${userDTO.moduleName}`);
 
-    await Item.findOneAndUpdate({ itemID }, { $set: newItem }, { new: true });
+    await Item.findOneAndUpdate(
+      { "itemData.itemID": itemID },
+      { $set: { itemData: newItem } },
+      { new: true }
+    );
 
     const newItems = await this.getItemsList(moduleName, paginationDTO);
     await mongoose.connection.close();
@@ -928,54 +974,54 @@ export class ModulesService {
     );
   }
 
-  public updateFields(module: Record<any, any>): void {
-    const modelFile = join(__dirname, "..", "schemas", `${module.name}.js`);
-    const fields = { itemID: "string" };
+  // public updateFields(module: Record<any, any>): void {
+  //   const modelFile = join(__dirname, "..", "schemas", `${module.name}.js`);
+  //   const fields = { itemID: "string" };
+  //
+  //   const addFields = () => {
+  //     module.fields.forEach((field) => {
+  //       fields[field.settings.textPrompt] = ModulesService.validateType(
+  //         field.type
+  //       );
+  //     });
+  //   };
+  //
+  //   fs.stat(modelFile, async (err) => {
+  //     if (err) {
+  //       addFields();
+  //       await this.saveSchema(this.generateSchema(fields, module), modelFile);
+  //     } else {
+  //       fs.unlinkSync(modelFile);
+  //       addFields();
+  //       await this.saveSchema(this.generateSchema(fields, module), modelFile);
+  //     }
+  //   });
+  // }
 
-    const addFields = () => {
-      module.fields.forEach((field) => {
-        fields[field.settings.textPrompt] = ModulesService.validateType(
-          field.type
-        );
-      });
-    };
-
-    fs.stat(modelFile, async (err) => {
-      if (err) {
-        addFields();
-        await this.saveSchema(this.generateSchema(fields, module), modelFile);
-      } else {
-        fs.unlinkSync(modelFile);
-        addFields();
-        await this.saveSchema(this.generateSchema(fields, module), modelFile);
-      }
-    });
-  }
-
-  private async copyData(moduleName: string): Promise<Record<string, any>> {
-    await mongoose.connect(process.env.MONGO_URI, options);
-    const Item = require(`../../schemas/${moduleName}`);
-
-    const items = await Item.find();
-    await mongoose.connection.close();
-    return items;
-  }
-
-  private async pasteData(
-    moduleName: string,
-    items: Record<string, any>
-  ): Promise<void> {
-    await mongoose.connect(process.env.MONGO_URI, options);
-    const Item = require(`../../schemas/${moduleName}`);
-
-    for (let item in items)
-      if (items.hasOwnProperty(item)) {
-        const newItem = new Item(item);
-        await newItem.save();
-      }
-
-    await mongoose.connection.close();
-  }
+  // private async copyData(moduleName: string): Promise<Record<string, any>> {
+  //   await mongoose.connect(process.env.MONGO_URI, options);
+  //   const Item = require(`../../schemas/${moduleName}`);
+  //
+  //   const items = await Item.find();
+  //   await mongoose.connection.close();
+  //   return items;
+  // }
+  //
+  // private async pasteData(
+  //   moduleName: string,
+  //   items: Record<string, any>
+  // ): Promise<void> {
+  //   await mongoose.connect(process.env.MONGO_URI, options);
+  //   const Item = require(`../../schemas/${moduleName}`);
+  //
+  //   for (let item in items)
+  //     if (items.hasOwnProperty(item)) {
+  //       const newItem = new Item(item);
+  //       await newItem.save();
+  //     }
+  //
+  //   await mongoose.connection.close();
+  // }
 
   async getFields(userDTO: ModuleNameDTO): Promise<Record<any, any>> {
     const module = await this.findModulesByName(userDTO);
@@ -1020,8 +1066,8 @@ export class ModulesService {
       { new: true }
     );
 
-    const updatedModule = await this.moduleModel.findOne({ moduleID });
-    this.updateFields(updatedModule);
+    // const updatedModule = await this.moduleModel.findOne({ moduleID });
+    // this.updateFields(updatedModule);
 
     // await mongoose.connect(process.env.MONGO_URI, options);
     // await mongoose.connection.db.dropCollection(module.name);
@@ -1066,10 +1112,10 @@ export class ModulesService {
       { new: true }
     );
 
-    const updatedModule = await this.moduleModel.findOne({
-      moduleID: module.moduleID,
-    });
-    this.updateFields(updatedModule);
+    // const updatedModule = await this.moduleModel.findOne({
+    //   moduleID: module.moduleID,
+    // });
+    // this.updateFields(updatedModule);
 
     return { count: fields.length, fields: validatedFields };
   }
@@ -1090,7 +1136,6 @@ export class ModulesService {
     const { moduleName, itemID, categoryID } = userDTO;
 
     const module = await this.findModulesByName(moduleName);
-
     if (!module)
       throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
 
@@ -1112,7 +1157,6 @@ export class ModulesService {
     const { moduleName, itemID, categoryID } = userDTO;
 
     const module = await this.findModulesByName(moduleName);
-
     if (!module)
       throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
 
@@ -1148,10 +1192,10 @@ export class ModulesService {
       { new: true }
     );
 
-    const updatedModule = await this.moduleModel.findOne({
-      moduleID: module.moduleID,
-    });
-    this.updateFields(updatedModule);
+    // const updatedModule = await this.moduleModel.findOne({
+    //   moduleID: module.moduleID,
+    // });
+    // this.updateFields(updatedModule);
 
     return { count: fields.length, fields };
   }
@@ -1161,8 +1205,6 @@ export class ModulesService {
     file: any
   ): Promise<Record<string, string>> {
     const { moduleID } = userDTO;
-
-    const module = await this.findModulesByID(moduleID);
 
     const imgTypes = [
       "png",
@@ -1222,21 +1264,18 @@ export class ModulesService {
 
   async addItemToWishList(userId: string, userDTO: WishListDTO) {
     const user = await this.userService.findUserByUserID(userId);
-
     if (!user) {
       throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
     }
 
     const item = await this.getItemByID(userDTO.moduleName, userDTO.itemId);
-
     if (!item) {
       throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
     }
 
     const sameItem = user.wishlist.find((el) => {
-      return el.itemID == item.itemID;
+      return el.itemData.itemID == item.itemData.itemID;
     });
-
     if (sameItem) {
       throw new HttpException(
         "Same product is already exist in wishlist",
@@ -1248,11 +1287,14 @@ export class ModulesService {
     }
     user.wishlist.push(item);
 
-    if (!item.likedUsers) {
-      item.likedUsers = [];
+    if (!item.itemData.likedUsers) {
+      item.itemData.likedUsers = [];
     }
-    item.likedUsers.push(user.userID);
-    item.save();
+    item.itemData.likedUsers.push(user.userID);
+
+    await mongoose.connect(process.env.MONGO_URI, options);
+    const Item = require(`../../schemas/${userDTO.moduleName}`);
+    await Item.findOneAndUpdate({ "itemData.itemID": userDTO.itemId }, item);
 
     const wishlist = user.wishlist;
     await this.userService.editUser({ userID: userId, wishlist });
@@ -1262,21 +1304,18 @@ export class ModulesService {
 
   async addItemToViewed(userId: string, userDTO: WishListDTO) {
     const user = await this.userService.findUserByUserID(userId);
-
     if (!user) {
       throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
     }
 
     const item = await this.getItemByID(userDTO.moduleName, userDTO.itemId);
-
     if (!item) {
       throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
     }
 
     const sameItem = user.viewed.find((el) => {
-      return el.itemID == item.itemID;
+      return el.itemData.itemID == item.itemData.itemID;
     });
-
     if (sameItem) {
       throw new HttpException("", HttpStatus.BAD_REQUEST);
     }
@@ -1287,31 +1326,32 @@ export class ModulesService {
 
   async removeItemFromWishList(userId: string, userDTO: WishListDTO) {
     const user = await this.userService.findUserByUserID(userId);
-
     if (!user) {
       throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
     }
 
     const item = await this.getItemByID(userDTO.moduleName, userDTO.itemId);
-
     if (!item) {
       throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
     }
 
     const sameItem = user.wishlist.find((el) => {
-      return el.itemID == item.itemID;
+      return el.itemData.itemID == item.itemData.itemID;
     });
-
     if (!sameItem) {
       throw new HttpException(
         "No such product in wishlist",
         HttpStatus.BAD_REQUEST
       );
     }
-    if (!item.likedUsers) item.likedUsers = [];
-    item.likedUsers = item.likedUsers.filter(function (value, index, arr) {
+
+    if (!item.itemData.likedUsers) item.itemData.likedUsers = [];
+    item.itemData.likedUsers = item.itemData.likedUsers.filter(function (
+      value
+    ) {
       return value != userId;
     });
+
     await mongoose.connect(process.env.MONGO_URI, options);
     const Item = require(`../../schemas/webshop`);
     await Item.findOneAndUpdate({ itemID: item.itemID }, item);
@@ -1319,12 +1359,62 @@ export class ModulesService {
     // await item.save();
 
     if (!user.wishlist) user.wishlist = [];
-    const wishlist = user.wishlist.filter(function (value, index, arr) {
-      return value.itemID != userDTO.itemId;
+    const wishlist = user.wishlist.filter(function (value) {
+      return value.itemData.itemID != userDTO.itemId;
     });
 
     await this.userService.editUser({ userID: userId, wishlist });
     await mongoose.connection.close();
     return wishlist;
+  }
+
+  async markNews(userId: string, userDTO: MarkNewsDTO) {
+    let user = await this.userService.findUserByUserID(userId);
+
+    if (!user) {
+      throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
+    }
+
+    const { itemID, type } = userDTO;
+    let item = await this.getItemByID("news", itemID);
+
+    if (!item) {
+      throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
+    }
+
+    user = user.toObject();
+    item = item.toObject();
+
+    if (type == "like") {
+      user.likedNews?.includes(itemID)
+        ? (user.likedNews = user.likedNews.filter((el) => el !== itemID))
+        : user.likedNews.push(itemID);
+      user.dislikedNews = user.dislikedNews.filter((el) => el !== itemID);
+
+      item.like += Number(user.likedNews?.includes(itemID));
+
+      await this.userService.updateUser(user);
+
+      await this.editItemByID("news", itemID, [item]);
+
+      return { isLiked: user.likedNews?.includes(itemID), likes: item.like };
+    }
+    if (type == "dislike") {
+      user.dislikedNews?.includes(itemID)
+        ? (user.dislikedNews = user.dislikedNews.filter((el) => el !== itemID))
+        : user.dislikedNews.push(itemID);
+      user.likedNews = user.likedNews.filter((el) => el !== itemID);
+
+      item.dislike += Number(user.dislikedNews?.includes(itemID));
+
+      await this.userService.updateUser(user);
+
+      await this.editItemByID("news", itemID, [item]);
+
+      return {
+        isDisliked: user.dislikedNews?.includes(itemID),
+        dislikes: item.dislike,
+      };
+    }
   }
 }

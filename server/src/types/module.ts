@@ -5,4 +5,5 @@ export interface Module extends Document {
   name: string;
   fields: Record<any, any>;
   icon: string;
+  categories: boolean;
 }

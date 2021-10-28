@@ -1,4 +1,4 @@
-import {IsEmail, IsNotEmpty} from "class-validator";
+import { IsEmail, IsNotEmpty } from "class-validator";
 
 export class EditFuserDTO {
   userID?: string;
@@ -15,6 +15,11 @@ export class EditFuserDTO {
   orders?: Array<any>;
 }
 
+export class EditFuserMailingsDTO {
+  connections: Array<string>;
+  types: Array<string>;
+}
+
 export class DeleteFuserDTO {
   @IsNotEmpty()
   userID: string;
@@ -24,12 +29,12 @@ export class DeleteFuserDTO {
   lastName?: string;
 }
 
-export class ResponseUserDto{
+export class ResponseUserDto {
   constructor(user) {
     this.userID = user.userID;
     this.firstName = user.userMain.firstName;
     this.lastName = user.userMain.lastName;
-    this.email =  user.contacts.email;
+    this.email = user.contacts.email;
     return this;
   }
   @IsNotEmpty()
@@ -41,21 +46,28 @@ export class ResponseUserDto{
   lastName?: string;
 }
 
-export class PaginationDTO{
+export class PaginationDTO {
   offset?: number;
   limit?: number;
 }
 
 export class ViewedDTO {
   constructor(item: any) {
-    this.itemID = item.itemID;
+    this.itemID = item.itemData.itemID;
     this.name = item.name;
     this.rating = item.rating;
     this.description = item.description;
     this.total = item.total;
-    this.image = item.variants[0] && item.variants[0].images && item.variants[0].images[0]?item.variants[0].images[0]: "";
-    this.price = item.variants[0] && item.variants[0].price?+item.variants[0].price: 0;
-    this.discount = item.variants[0] && item.variants[0].discount?+item.variants[0].discount: 0;
+    this.image =
+      item.variants[0] && item.variants[0].images && item.variants[0].images[0]
+        ? item.variants[0].images[0]
+        : "";
+    this.price =
+      item.variants[0] && item.variants[0].price ? +item.variants[0].price : 0;
+    this.discount =
+      item.variants[0] && item.variants[0].discount
+        ? +item.variants[0].discount
+        : 0;
     this.publishDate = item.publishDate || new Date(0);
     this.status = item.status || "";
   }

@@ -1,4 +1,4 @@
-import { Document } from 'mongoose';
+import { Document } from "mongoose";
 
 export class Category extends Document {
   categoryID: string;
@@ -6,4 +6,5 @@ export class Category extends Document {
   description: string;
   subcategories: Record<any, any>;
   categoryImage: string;
+  viewed: number;
 }

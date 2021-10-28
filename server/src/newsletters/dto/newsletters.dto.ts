@@ -2,9 +2,11 @@ import { IsNotEmpty } from "class-validator";
 
 export class CreateJobDTO {
   @IsNotEmpty()
-  title: string;
-  recipientUsers: Record<string, any>;
-  recipientGroups: Record<string, any>;
+  name: string;
+  date: Date;
+  letter: string;
+  recipientUsers?: Array<any>;
+  recipientGroups?: Array<any>;
 }
 
 export class GetJobDTO {
@@ -12,7 +14,13 @@ export class GetJobDTO {
 }
 
 export class EditJobDTO {
+  @IsNotEmpty()
   jobID: string;
+  name?: string;
+  date?: Date;
+  letter?: string;
+  recipientUsers?: Array<any>;
+  recipientGroups?: Array<any>;
 }
 
 export class DeleteJobDTO {

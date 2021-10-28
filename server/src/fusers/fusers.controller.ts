@@ -2,7 +2,8 @@ import {
   Body,
   Controller,
   Delete,
-  Get, Headers,
+  Get,
+  Headers,
   HttpCode,
   HttpException,
   HttpStatus,
@@ -16,18 +17,24 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { AuthGuard } from "@nestjs/passport";
 import { Request } from "express";
-import {ApiTags} from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
-import {DeleteFuserDTO, EditFuserDTO, PaginationDTO, ViewedDTO} from "./dto/fusers.dto";
+import {
+  DeleteFuserDTO,
+  EditFuserDTO,
+  EditFuserMailingsDTO,
+  PaginationDTO,
+  ViewedDTO,
+} from "./dto/fusers.dto";
 import { QueryDTO } from "../shared/dto/shared.dto";
 import { LoggerGateway } from "../shared/logger/logger.gateway";
-import {Fuser} from "../types/fuser";
-import {FuserService} from "../shared/fuser/fuser.service";
-import {ResponseItemsDTO} from "../modules/dto/modules.dto";
+import { Fuser } from "../types/fuser";
+import { FuserService } from "../shared/fuser/fuser.service";
+import { ResponseItemsDTO } from "../modules/dto/modules.dto";
 
 export const module = "fusers";
 
-@ApiTags('fuser')
+@ApiTags("fuser")
 @Controller("fuser")
 export class FusersController {
   constructor(
@@ -49,12 +56,13 @@ export class FusersController {
   // }
 
   @Put()
-  // @UseGuards(AuthGuard("jwt"))
+  @UseGuards(AuthGuard("jwt"))
+  @ApiBearerAuth()
   @HttpCode(HttpStatus.OK)
   async editUser(
-      @Headers('authorization') token: string,
-      @Body() userDTO: EditFuserDTO,
-      @Req() req: Request
+    @Headers("authorization") token: string,
+    @Body() userDTO: EditFuserDTO,
+    @Req() req: Request
   ): Promise<Record<string, any>> {
     const verified = await this.userService.verifyToken(token.split(" ")[1]);
 
@@ -63,41 +71,42 @@ export class FusersController {
     }
 
     const phoneRegs = /^[0-9\-\+]{9,15}$/;
-    const allowedSex = ['male', 'female'];
+    const allowedSex = ["Male", "Female"];
 
     if (userDTO.phone && !phoneRegs.test(userDTO.phone)) {
       throw new HttpException(
-          'Phone number must be correct',
-          HttpStatus.BAD_REQUEST,
+        "Phone number must be correct",
+        HttpStatus.BAD_REQUEST
       );
     }
 
-    if (userDTO.sex && !allowedSex.includes( userDTO.sex )) {
-      throw new HttpException(
-          'Sex is invalid',
-          HttpStatus.BAD_REQUEST,
-      );
+    if (userDTO.sex && !allowedSex.includes(userDTO.sex)) {
+      throw new HttpException("Sex is invalid", HttpStatus.BAD_REQUEST);
     }
 
     const user = await this.userService.findUserByUserID(verified.userID);
     // const networkUser = await this.networkUserService.findUserByUserID(verified.userID);
 
-
-    if (!user /*&& !networkUser*/){
+    if (!user /*&& !networkUser*/) {
       throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
     }
 
     userDTO.userID = verified.userID;
+    const result = await this.userService.editUser(userDTO);
 
-    let result = {};
-
-      result = await this.userService.editUser(userDTO);
-
-    return { user: { userID: result['userID'], main: result['userMain'], contacts: result['contacts'], address: result['shippingAddress'] }, message: "User edited successfully!" };
-
+    return {
+      user: {
+        userID: result["userID"],
+        main: result["userMain"],
+        contacts: result["contacts"],
+        address: result["shippingAddress"],
+      },
+      message: "User edited successfully!",
+    };
   }
 
   @Delete(":userID")
+  @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
   @HttpCode(HttpStatus.OK)
   async deleteUser(
@@ -107,44 +116,49 @@ export class FusersController {
   ): Promise<Record<string, string>> {
     const user = await this.userService.findUserByID(userID);
     if (!user) throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
+
     await this.loggerGateway.logAction(req, module);
     return await this.userService.deleteUser(userID, userDTO);
   }
 
   @Get()
-  async getUserMainInfo(@Headers('authorization') token: string): Promise<Record<string, any>> {
-
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
+  async getUserMainInfo(
+    @Headers("authorization") token: string
+  ): Promise<Record<string, any>> {
     const verified = await this.userService.verifyToken(token.split(" ")[1]);
-
-
     if (!verified) {
       throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
     }
 
-    const user = await this.userService.findUserByUserID(verified.userID)
-
-    if (!user){
+    const user = await this.userService.findUserByUserID(verified.userID);
+    if (!user) {
       throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
     }
 
-    return { userID: user.userID, main: user.userMain, contacts: user.contacts, address: user.shippingAddress };
-
+    return {
+      userID: user.userID,
+      main: user.userMain,
+      contacts: user.contacts,
+      address: user.shippingAddress,
+    };
   }
 
-  @Get('wishlist')
-  // @UseGuards(AuthGuard("jwt"))
-  async getUserWishlist(@Headers('authorization') token: string,
-                        @Query() userDTO: PaginationDTO): Promise<Record<string, any>> {
-
+  @Get("wishlist")
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
+  async getUserWishlist(
+    @Headers("authorization") token: string,
+    @Query() userDTO: PaginationDTO
+  ): Promise<Record<string, any>> {
     const verified = await this.userService.verifyToken(token.split(" ")[1]);
-
     if (!verified) {
       throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
     }
 
-    const user = await this.userService.findUserByUserID(verified.userID)
-
-    if (!user){
+    const user = await this.userService.findUserByUserID(verified.userID);
+    if (!user) {
       throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
     }
 
@@ -156,83 +170,131 @@ export class FusersController {
 
     const totalCount = wishlist.length;
 
-    if (!userDTO.limit && !userDTO.offset){
-      return { totalCount, items: wishlist }
+    if (!userDTO.limit && !userDTO.offset) {
+      return { totalCount, items: wishlist };
     }
 
-    if (!userDTO.limit){
-      return { totalCount,
-        items: wishlist.slice( userDTO.offset > 0? userDTO.offset: user.wishlist.length)
+    if (!userDTO.limit) {
+      return {
+        totalCount,
+        items: wishlist.slice(
+          userDTO.offset > 0 ? userDTO.offset : user.wishlist.length
+        ),
       };
     }
 
-    if (!userDTO.offset){
-      return { totalCount,
-        items: wishlist.slice(0, userDTO.limit)
-      };
+    if (!userDTO.offset) {
+      return { totalCount, items: wishlist.slice(0, userDTO.limit) };
     }
 
-    return { totalCount,
-      items: wishlist.slice( userDTO.offset,
-          userDTO.offset > 0? userDTO.offset + userDTO.limit + 1: userDTO.limit)
+    return {
+      totalCount,
+      items: wishlist.slice(
+        userDTO.offset,
+        userDTO.offset > 0 ? userDTO.offset + userDTO.limit + 1 : userDTO.limit
+      ),
     };
   }
 
-  @Get('viewed')
-  // @UseGuards(AuthGuard("jwt"))
+  @Get("viewed")
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   async getUserViewed(
-      @Headers('authorization') token: string,
-      @Query() userDTO: PaginationDTO): Promise<Record<string, any>> {
-
+    @Headers("authorization") token: string,
+    @Query() userDTO: PaginationDTO
+  ): Promise<Record<string, any>> {
     const verified = await this.userService.verifyToken(token.split(" ")[1]);
-
     if (!verified) {
       throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
     }
 
-    const user = await this.userService.findUserByUserID(verified.userID)
-
+    const user = await this.userService.findUserByUserID(verified.userID);
     if (!user) {
       throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
     }
+    // const viewedId = await Promise.all(
+    //   user.viewed.map(
+    //     async (el) => await this.userService.getItemByID("webshop", el.itemID)
+    //   )
+    // );
 
-    const viewedId = await Promise.all(
-        user.viewed.map(
-            async (el) => await this.userService.getItemByID('webshop', el.itemID)
-        )
-    )
-
-    const viewed = viewedId.map((el) => {
+    const viewed = user.viewed.map((el) => {
       const item = new ViewedDTO(el);
-      item.isLiked = el['likedUsers']? el['likedUsers'].includes(verified.userID): false;
+      item.isLiked = el["likedUsers"]
+        ? el["likedUsers"].includes(verified.userID)
+        : false;
       return item;
     });
 
     const totalCount = viewed.length;
 
     if (!userDTO.limit && !userDTO.offset) {
-      return {totalCount, items: viewed}
+      return { totalCount, items: viewed };
     }
 
     if (!userDTO.limit) {
       return {
         totalCount,
-        items: viewed.slice(userDTO.offset > 0 ? userDTO.offset : user.viewed.length)
+        items: viewed.slice(
+          userDTO.offset > 0 ? userDTO.offset : user.viewed.length
+        ),
       };
     }
 
     if (!userDTO.offset) {
       return {
         totalCount,
-        items: viewed.slice(0, userDTO.limit)
+        items: viewed.slice(0, userDTO.limit),
       };
     }
 
     return {
       totalCount,
-      items: viewed.slice(userDTO.offset,
-          userDTO.offset > 0 ? userDTO.offset + userDTO.limit + 1 : userDTO.limit)
+      items: viewed.slice(
+        userDTO.offset,
+        userDTO.offset > 0 ? userDTO.offset + userDTO.limit + 1 : userDTO.limit
+      ),
     };
+  }
 
+  @Get("mailings")
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
+  async getUserMailings(
+    @Headers("authorization") token: string
+  ): Promise<Record<string, any>> {
+    const verified = await this.userService.verifyToken(token.split(" ")[1]);
+    if (!verified) {
+      throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
+    }
+
+    const user = await this.userService.findUserByUserID(verified.userID);
+    if (!user) {
+      throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
+    }
+
+    return user.toObject().mailings;
+  }
+
+  @Put("mailings")
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
+  @HttpCode(HttpStatus.OK)
+  async editUserMailings(
+    @Headers("authorization") token: string,
+    @Body() userDTO: EditFuserMailingsDTO,
+    @Req() req: Request
+  ): Promise<Record<string, any>> {
+    const verified = await this.userService.verifyToken(token.split(" ")[1]);
+    if (!verified) {
+      throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
+    }
+
+    const user = await this.userService.findUserByUserID(verified.userID);
+    if (!user) {
+      throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
+    }
+
+    return this.userService.editUserMailings(userDTO, user);
   }
 }

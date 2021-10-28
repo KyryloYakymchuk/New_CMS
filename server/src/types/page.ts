@@ -1,7 +1,12 @@
-import { Document } from 'mongoose';
+import { Document } from "mongoose";
 
 export interface Page extends Document {
+  pageID: string;
   alias: string;
-  name: string;
   content: string;
+  pageTitle: string;
+  seoTitle: string;
+  seoDescription: string;
+  seoKeywords: string;
+  menuTitle: string;
 }

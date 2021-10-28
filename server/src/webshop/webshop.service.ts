@@ -3,6 +3,10 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import * as fs from "fs";
 import * as shortid from "shortid";
+import { join } from "path";
+import * as mongoose from "mongoose";
+import * as uniqid from "uniqid";
+
 import {
   AddCategoryDTO,
   CategoryIDDTO,
@@ -12,14 +16,16 @@ import {
 import { Category } from "../types/category";
 import { CategoryItemsDTO, QueryDTO } from "../shared/dto/shared.dto";
 import { UploaderService } from "../shared/uploader/uploader.service";
-import { join } from "path";
-import * as mongoose from "mongoose";
 import {
   DeleteVariantDTO,
   EditVariantsDTO,
   AddVariantDTO,
 } from "./dto/variants.dto";
-import { PaginationDTO } from "../modules/dto/modules.dto";
+import {
+  EditWebshopVariantDTO,
+  GetItemCategoriesDTO,
+  PaginationDTO,
+} from "../modules/dto/modules.dto";
 import { FuserService } from "../shared/fuser/fuser.service";
 import {
   AddCommentDTO,
@@ -29,14 +35,7 @@ import {
   ResponseProductsDTO,
 } from "./dto/products.dto";
 import { Fuser } from "../types/fuser";
-import * as uniqid from "uniqid";
-import {GetVariantsDTO} from "../modules/dto/modules.dto";
-
-export const options = {
-  server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
-  replset: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
-  useNewUrlParser: true,
-};
+import { GetVariantsDTO } from "../modules/dto/modules.dto";
 
 @Injectable()
 export class WebshopService {
@@ -122,6 +121,7 @@ export class WebshopService {
     const newCategory = new this.categoryModel({
       name,
       description,
+      viewed: 0,
     });
 
     if (file) this.uploaderService.validateImgType(file);
@@ -338,16 +338,17 @@ export class WebshopService {
       throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
     }
 
-    await mongoose.connect(process.env.MONGO_URI, options);
+    await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
     const Item = require("../../schemas/webshop");
-    return Item.findOne({ itemID }).select("variants");
+    return Item.findOne({ "itemData.itemID": itemID }).select("variants");
   }
 
   async editVariant(
-    userDTO: EditVariantsDTO,
+    userDTO: EditWebshopVariantDTO,
     files: Record<any, any>
   ): Promise<Record<string, any>> {
-    const { variantID } = userDTO;
+    const data = JSON.parse(userDTO.data);
+    const { variantID } = data;
     const moduleName = "webshop";
 
     if (!module)
@@ -361,14 +362,37 @@ export class WebshopService {
       }
     });
 
+    // await mongoose.connect(process.env.MONGO_URI, {
+    //   useNewUrlParser: true,
+    //   autoReconnect: true,
+    //   reconnectTries: Number.MAX_VALUE,
+    //   reconnectInterval: 1000,
+    //   poolSize: 10,
+    // });
+    // const Item = require(`../../schemas/webshop`);
+    // const item = await Item.findOne({
+    //   "variants.variantID": variantID,
+    // });
+    // const variant = item.variants.filter((el) => el.variantID == variantID)[0];
+    let newImages = data.images || [];
+    if (files) {
+      for (let file in files) {
+        if (files.hasOwnProperty(file)) {
+          newImages.push(files[file].filename);
+        }
+      }
+    }
+
     const editVariant = {
       variantID,
-      name: userDTO.name,
-      quantity: +userDTO.quantity,
-      werehouse: +userDTO.werehouse,
-      price: +userDTO.price,
-      discount: +userDTO.discount,
-      tax: +userDTO.tax,
+      name: data.name,
+      quantity: +data.quantity,
+      werehouse: data.werehouse,
+      images: newImages,
+      price: +data.price,
+      discount: +data.discount || 0,
+      tax: +data.tax || 0,
+      code: data.code,
       status: "enabled",
     };
 
@@ -383,22 +407,28 @@ export class WebshopService {
 
   async getItemByID(itemID: string): Promise<Record<any, any>> {
     const moduleName = "webshop";
-    await mongoose.connect(process.env.MONGO_URI, options);
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      autoReconnect: true,
+      reconnectTries: Number.MAX_VALUE,
+      reconnectInterval: 1000,
+      poolSize: 10,
+    });
     const Item = require(`../../schemas/${moduleName}`);
 
-    return Item.findOne({ itemID });
+    return Item.findOne({ "itemData.itemID": itemID });
   }
 
   async addVariantByItemID(
     name: string,
     itemID: string,
     variant: Record<any, any>
-  ) {
-    await mongoose.connect(process.env.MONGO_URI, options);
+  ): Promise<void> {
+    await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
     const Item = require(`../../schemas/${name}`);
-    const { variants: prevVariants } = await Item.findOne({ itemID }).select(
-      "variants"
-    );
+    const { variants: prevVariants } = await Item.findOne({
+      "itemData.itemID": itemID,
+    }).select("variants");
     const maxObject =
       prevVariants.length > 0 &&
       prevVariants.reduce(
@@ -407,13 +437,17 @@ export class WebshopService {
       );
     variant.order = prevVariants.length === 0 ? 0 : maxObject.order + 1;
     await Item.findOneAndUpdate(
-      { itemID },
+      { "itemData.itemID": itemID },
       { variants: [...prevVariants, variant] }
     );
   }
 
-  async deleteVariantByID(name: string, itemID: string, variantID: string) {
-    await mongoose.connect(process.env.MONGO_URI, options);
+  async deleteVariantByID(
+    name: string,
+    itemID: string,
+    variantID: string
+  ): Promise<void> {
+    await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
     const Item = require(`../../schemas/${name}`);
     const variant = await Item.findOne({ "variants.variantID": variantID });
     if (variant)
@@ -427,8 +461,8 @@ export class WebshopService {
     name: string,
     variantID: string,
     variant: Record<string, any>
-  ) {
-    await mongoose.connect(process.env.MONGO_URI, options);
+  ): Promise<void> {
+    await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
     const Item = require(`../../schemas/${name}`);
     const isVariantExist = await Item.findOne({
       "variants.variantID": variantID,
@@ -454,25 +488,66 @@ export class WebshopService {
     moduleName: string,
     paginationDTO?: PaginationDTO
   ): Promise<Record<any, any>> {
-    await mongoose.connect(process.env.MONGO_URI, options);
+    await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
     const Item = require(`../../schemas/${moduleName}`);
-    return await Item.find(/*!!search ? { name: { $regex: new RegExp(search, "i") } } : {}*/)
+    return Item.find(/*!!search ? { name: { $regex: new RegExp(search, "i") } } : {}*/)
       .skip(paginationDTO ? +paginationDTO.offset : "")
-      .limit(paginationDTO ? Number(paginationDTO.limit) : "");
+      .limit(paginationDTO ? +paginationDTO.limit : "");
   }
 
   async getItems(paginationDTO?: PaginationDTO): Promise<Record<string, any>> {
-    const { limit, offset } = paginationDTO;
-    const Item = require(`../../schemas/webshop`);
-    await mongoose.connect(process.env.MONGO_URI, options);
+    let limit, offset;
+    if (paginationDTO) {
+      limit = paginationDTO.limit;
+      offset = paginationDTO.offset;
+    }
 
-    const items = await Item.find()
+    const allowedFilters = ["name", "category"];
+
+    let filter = {};
+
+    for (let option in paginationDTO) {
+      if (paginationDTO.hasOwnProperty(option)) {
+        if (allowedFilters.includes(option)) {
+          if (!paginationDTO[option]) {
+            continue;
+          }
+          if (option === "category") {
+            const category = await this.categoryModel.findOne({
+              name: paginationDTO[option],
+            });
+            if (!category) {
+              throw new HttpException("No such category", HttpStatus.NOT_FOUND);
+            }
+            filter["itemData.categoryID"] = category.categoryID;
+
+            continue;
+          }
+          if (option === "name") {
+            filter[`itemData.name`] = new RegExp(paginationDTO[option], "i");
+            continue;
+          }
+          filter[`itemData.${option}`] = paginationDTO[option];
+        }
+      }
+    }
+
+    const Item = require(`../../schemas/webshop`);
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      autoReconnect: true,
+      reconnectTries: Number.MAX_VALUE,
+      reconnectInterval: 1000,
+      poolSize: 10,
+    });
+
+    const items = await Item.find(filter)
       .limit(!!limit ? +limit : 0)
       .skip(!!offset ? +offset : 0);
 
-    const fullItemsList = await Item.find();
+    const fullItemsList = await Item.find(filter);
 
-    await mongoose.connection.close();
+    // await mongoose.connection.close();
     return { count: fullItemsList.length, items };
   }
 
@@ -513,7 +588,7 @@ export class WebshopService {
   private async findCategories(
     queryDTO: QueryDTO
   ): Promise<Record<string, any>> {
-    const { search, limit, offset } = queryDTO;
+    const { search } = queryDTO;
 
     const categories = await this.categoryModel.find(
       !!search ? { name: { $regex: new RegExp(search, "i") } } : {}
@@ -536,7 +611,6 @@ export class WebshopService {
   async addComment(
     userDTO: AddCommentDTO,
     user: Fuser
-    // files: Record<any, any>
   ): Promise<Record<string, any>> {
     const { itemID, rating, description, title } = userDTO;
     const moduleName = "webshop";
@@ -585,24 +659,25 @@ export class WebshopService {
       date: new Date(),
     };
 
-    await mongoose.connect(process.env.MONGO_URI, options);
+    await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
     const Item = require(`../../schemas/${moduleName}`);
-    const { comments: prevComments } = await Item.findOne({ itemID }).select(
-      "comments"
+    let prevComments = await Item.findOne({ "itemData.itemID": itemID }).select(
+      "itemData.comments"
     );
+
+    if (!prevComments) prevComments = [];
 
     await Item.findOneAndUpdate(
-      { itemID },
-      { comments: [...prevComments, newComment] }
+      { "itemData.itemID": itemID },
+      { "itemData.comments": [...prevComments.itemData.comments, newComment] }
     );
 
-    return Item.findOne({ itemID }).select("comments");
+    return Item.findOne({ "itemData.itemID": itemID }).select(
+      "itemData.comments"
+    );
   }
 
-  async getComments(
-    userDTO: GetCommentsDTO
-    // files: Record<any, any>
-  ): Promise<Record<string, any>> {
+  async getComments(userDTO: GetCommentsDTO): Promise<Record<string, any>> {
     const { itemID } = userDTO;
     const moduleName = "webshop";
 
@@ -622,13 +697,12 @@ export class WebshopService {
       throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
     }
 
-    await mongoose.connect(process.env.MONGO_URI, options);
+    await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
     const Item = require(`../../schemas/${moduleName}`);
-    const { comments: prevComments } = await Item.findOne({ itemID }).select(
-      "comments"
-    );
 
-    return Item.findOne({ itemID }).select("comments");
+    return Item.findOne({ "itemData.itemID": itemID }).select(
+      "itemData.comments"
+    );
   }
 
   async likeComment(
@@ -651,13 +725,15 @@ export class WebshopService {
       throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
     }
 
-    await mongoose.connect(process.env.MONGO_URI, options);
+    await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
     const Item = require(`../../schemas/${moduleName}`);
-    const { comments: prevComments } = await Item.findOne({ itemID }).select(
-      "comments"
-    );
+    const prevComments = await Item.findOne({
+      "itemData.itemID": itemID,
+    }).select("itemData.comments");
 
-    const comments = prevComments.filter((el) => el.id == commentID);
+    const comments = prevComments.itemData.comments.filter(
+      (el) => el.id == commentID
+    );
     if (comments.length == 0)
       throw new HttpException("No comment by this id", HttpStatus.NOT_FOUND);
 
@@ -684,8 +760,8 @@ export class WebshopService {
     }
 
     await Item.findOneAndUpdate(
-      { itemID },
-      { comments: [...prevComments] },
+      { "itemData.itemID": itemID },
+      { "itemData.comments": [...prevComments.itemData.comments] },
       {
         new: true,
       }
@@ -714,13 +790,15 @@ export class WebshopService {
       throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
     }
 
-    await mongoose.connect(process.env.MONGO_URI, options);
+    await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
     const Item = require(`../../schemas/${moduleName}`);
-    const { comments: prevComments } = await Item.findOne({ itemID }).select(
-      "comments"
-    );
+    const prevComments = await Item.findOne({
+      "itemData.itemID": itemID,
+    }).select("itemData.comments");
 
-    const comments = prevComments.filter((el) => el.id == commentID);
+    const comments = prevComments.itemData.comments.filter(
+      (el) => el.id == commentID
+    );
     if (comments.length == 0)
       throw new HttpException("No comment by this id", HttpStatus.NOT_FOUND);
 
@@ -744,8 +822,8 @@ export class WebshopService {
     }
 
     await Item.findOneAndUpdate(
-      { itemID },
-      { comments: [...prevComments] },
+      { "itemData.itemID": itemID },
+      { "itemData.comments": [...prevComments.itemData.comments] },
       {
         new: true,
       }
@@ -767,76 +845,78 @@ export class WebshopService {
       }
     }
 
-    const { categoryID } = userDTO;
     const priceFrom =
-      userDTO.search && userDTO.search.price && userDTO.search.price.from
-        ? +userDTO.search.price.from
-        : 0;
+      userDTO.price && userDTO.price.from ? +userDTO.price.from : 0;
     const priceTo =
-      userDTO.search && userDTO.search.price && userDTO.search.price.to
-        ? +userDTO.search.price.to
-        : 1000000;
+      userDTO.price && userDTO.price.to ? +userDTO.price.to : 1000000;
+    const allowedFilters = ["search", "categoryID", "price", "excludedItemID"];
 
-    // if (!categoryID) {
-    //   throw new HttpException('Category ID is required', HttpStatus.BAD_REQUEST)
-    // }
+    let filter = {};
 
-    await mongoose.connect(process.env.MONGO_URI, options);
-    const Item = require(`../../schemas/webshop`);
-    let filter,
-      allowedItems = [];
-
-    const allItems = await this.getItemsList("webshop");
-
-    allItems.forEach((el) => {
-      el.variants.forEach((variant) => {
-        if (variant.price <= priceTo && variant.price >= priceFrom) {
-          allowedItems.push(el.itemID);
-        }
-      });
-    });
-
-    if (!categoryID)
-      filter = userDTO.search
-        ? {
-            $or: [
-              {
-                color: userDTO.search.color
-                  ? { $in: userDTO.search.color.toString().split(",") }
-                  : {},
-              },
-              {
-                shape: userDTO.search.shape
-                  ? { $in: userDTO.search.shape.toString().split(",") }
-                  : {},
-              },
-              { itemID: { $in: allowedItems } },
-            ],
-          }
-        : {};
-    else
-      filter = userDTO.search
-        ? {
-            $and: [
-              { categoryID },
-              {
+    for (let option in userDTO) {
+      if (userDTO.hasOwnProperty(option)) {
+        if (allowedFilters.includes(option)) {
+          if (option === "price") {
+            filter["variants"] = {
+              $elemMatch: {
                 $or: [
                   {
-                    color: userDTO.search.color
-                      ? { $in: userDTO.search.color.toString().split(",") }
-                      : {},
+                    $and: [
+                      {
+                        price: {
+                          $gte: userDTO[option].from ? userDTO[option].from : 0,
+                          $lte: userDTO[option].to
+                            ? userDTO[option].to
+                            : 10000000,
+                        },
+                      },
+                      {
+                        discount: {
+                          $not: { $gt: 0 },
+                        },
+                      },
+                    ],
                   },
                   {
-                    shape: userDTO.search.shape
-                      ? { $in: userDTO.search.shape.toString().split(",") }
-                      : {},
+                    discount: {
+                      $gte: userDTO[option].from ? userDTO[option].from : 0,
+                      $lte: userDTO[option].to ? userDTO[option].to : 10000000,
+                    },
                   },
-                  { itemID: { $in: allowedItems } },
                 ],
               },
-            ],
+            };
+            continue;
           }
-        : { categoryID };
+          if (option === "search") {
+            if (userDTO[option].color)
+              filter["itemData.color"] = {
+                $in: userDTO.search.color.toString().split(","),
+              };
+            if (userDTO[option].shape)
+              filter["itemData.shape"] = {
+                $in: userDTO.search.shape.toString().split(","),
+              };
+            continue;
+          }
+
+          if (option === "excludedItemID") {
+            filter[`itemData.itemID`] = { $ne: userDTO[option] };
+          }
+
+          filter[`itemData.${option}`] = userDTO[option];
+        }
+      }
+    }
+
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      autoReconnect: true,
+      reconnectTries: Number.MAX_VALUE,
+      reconnectInterval: 1000,
+      poolSize: 10,
+    });
+    const Item = require(`../../schemas/webshop`);
 
     const totalItems = await Item.find(filter);
 
@@ -849,17 +929,22 @@ export class WebshopService {
       products: items.map((el) => {
         let i = 0,
           variantNumber = 0;
-        el.variants.forEach((variant) => {
-          if (variant.price <= priceTo && variant.price >= priceFrom) {
-            variantNumber = i;
-          }
-          i++;
-        });
-
+        if (userDTO.price?.from || userDTO.price?.to)
+          el.variants.forEach((variant) => {
+            if (
+              (variant.discount <= priceTo && variant.discount >= priceFrom) ||
+              (!variant.discount &&
+                variant.price <= priceTo &&
+                variant.price >= priceFrom)
+            ) {
+              variantNumber = i;
+            }
+            i++;
+          });
         const item = new ResponseProductsDTO(el, variantNumber);
         item.isLiked =
-          el.likedUsers && token
-            ? el.likedUsers.includes(verified.userID)
+          el.itemData.likedUsers && token
+            ? el.itemData.likedUsers.includes(verified.userID)
             : false;
 
         return item;
@@ -872,12 +957,158 @@ export class WebshopService {
   ): Promise<number> {
     const { categoryID } = userDTO;
 
-    await mongoose.connect(process.env.MONGO_URI, options);
+    await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
     const Item = require(`../../schemas/webshop`);
     let items;
     if (!categoryID) items = await Item.find();
-    else items = await Item.find({ categoryID });
+    else items = await Item.find({ "itemData.categoryID": categoryID });
 
     return items.length;
+  }
+
+  async getAllItems(
+    paginationDTO?: PaginationDTO
+  ): Promise<Record<string, any>> {
+    await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
+    const Item = require(`../../schemas/webshop`);
+    return Item.find()
+      .skip(paginationDTO.offset ? paginationDTO.offset : 0)
+      .limit(paginationDTO.limit ? paginationDTO.limit : 10);
+  }
+
+  async getItemCategories(
+    userDTO: GetItemCategoriesDTO
+  ): Promise<Record<string, any>> {
+    const { moduleName: name, itemID } = userDTO;
+
+    await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
+    const Item = require(`../../schemas/${name}`);
+    const currentItem = await Item.findOne({ itemID });
+
+    const categories = await this.categoryModel.find({});
+
+    return (
+      currentItem?.categories &&
+      currentItem.categories.map((item) => {
+        const category = categories.find((i) => i.categoryID === item);
+        if (category) {
+          return {
+            categoryID: category.categoryID,
+            name: category.name,
+          };
+        } else return [];
+      })
+    );
+  }
+  //
+  // async addItemCategory(
+  //     userDTO: AddItemCategoryDTO
+  // ): Promise<Record<string, any>> {
+  //   const { moduleName, itemID, categoryID } = userDTO;
+  //
+  //   const module = await this.modulesService.findModulesByName(moduleName);
+  //
+  //   if (!module)
+  //     throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
+  //
+  //   const file = join(__dirname, "..", "schemas", `${moduleName}.js`);
+  //
+  //   fs.access(file, (err) => {
+  //     if (err) {
+  //       throw new HttpException("Schema not found!", HttpStatus.NOT_FOUND);
+  //     }
+  //   });
+  //
+  //   await this.changeItemCategories(moduleName, itemID, categoryID);
+  //   return this.getItemCategories({ moduleName, itemID });
+  // }
+
+  // async removeItemCategoryByID(userDTO: DeleteItemCategoryDTO) {
+  //   const { moduleName: userName, itemID, categoryID } = userDTO;
+  //
+  //   await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
+  //   const Item = require(`../../schemas/${userDTO.moduleName}`);
+  //   const currentItem = await Item.findOne({ itemID });
+  //   const newCategories =
+  //       currentItem?.categories?.length &&
+  //       currentItem.categories.filter((i) => i !== categoryID);
+  //   await Item.findOneAndUpdate({ itemID }, { categories: newCategories });
+  // }
+  //
+  // async changeItemCategories(name: string, itemID: string, categoryID: string) {
+  //   await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
+  //   const Item = require(`../../schemas/${name}`);
+  //
+  //   const currentItem = await Item.findOne({ itemID });
+  //   const { categories } = currentItem;
+  //
+  //   const isCategoryAlreadyExist = categories.includes(categoryID);
+  //
+  //   if (isCategoryAlreadyExist) {
+  //     throw new HttpException("Module not found!", HttpStatus.CONFLICT);
+  //   }
+  //   categories.push(categoryID);
+  //   await Item.findOneAndUpdate({ itemID }, { categories });
+  // }
+
+  async getMostPopular(): Promise<Record<string, any>> {
+    await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
+    const Item = require(`../../schemas/webshop`);
+    return Item.find().sort({ "itemData.rating": -1 }).limit(4);
+  }
+
+  async getTotalCountItems(): Promise<Record<any, any>> {
+    await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
+    const Item = require(`../../schemas/webshop.js`);
+    const items = await Item.find();
+    return items.length;
+  }
+
+  async getPopularCategories(): Promise<Record<any, any>> {
+    return this.categoryModel.find().sort({ viewed: -1 }).limit(3);
+  }
+
+  async viewCategory(userDTO: CategoryIDDTO): Promise<void> {
+    let category = await this.categoryModel.findOne(userDTO);
+
+    if (!category) {
+      throw new HttpException("Category not found", HttpStatus.NOT_FOUND);
+    }
+    let newCategory = category.toObject();
+    newCategory.viewed++;
+    await this.categoryModel.findOneAndUpdate(
+      { categoryID: newCategory.categoryID },
+      newCategory,
+      { new: true }
+    );
+  }
+
+  createResponseComments(comments: Array<any>, userID: string): Array<any> {
+    return comments.map((el) => {
+      el.isLiked =
+        !!userID && !!(el.likedUsers && el.likedUsers.includes(userID));
+      el.isDisliked =
+        !!userID && !!(el.dislikedUsers && el.dislikedUsers.includes(userID));
+
+      const dateNow = new Date();
+      const elDate = el.date;
+      el.date =
+        Math.floor(
+          (dateNow.getTime() - el.date.getTime()) / (1000 * 60 * 60 * 24)
+        ) + " days ago";
+
+      if (el.date == "0 days ago")
+        el.date =
+          Math.floor(
+            (dateNow.getTime() - elDate.getTime()) / (1000 * 60 * 60)
+          ) + " hours ago";
+
+      if (el.date == "0 hours ago")
+        el.date =
+          Math.floor((dateNow.getTime() - elDate.getTime()) / (1000 * 60)) +
+          " minutes ago";
+
+      return new ResponseCommentDTO(el);
+    });
   }
 }
