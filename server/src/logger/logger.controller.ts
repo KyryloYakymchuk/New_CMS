@@ -1,8 +1,9 @@
 import { Controller, Get, Query, UseGuards } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
+
 import { LoggerService } from "./logger.service";
 import { GetLogsDTO } from "./dto/logger.dto";
-import { LoggerGateway } from "../shared/logger/logger.gateway";
-import { AuthGuard } from "@nestjs/passport";
+import { ApiBearerAuth } from "@nestjs/swagger";
 
 @Controller("logger")
 export class LoggerController {
@@ -10,7 +11,8 @@ export class LoggerController {
 
   @Get()
   @UseGuards(AuthGuard("jwt"))
-  async getLogs(@Query() userDTO: GetLogsDTO) {
+  @ApiBearerAuth()
+  async getLogs(@Query() userDTO: GetLogsDTO): Promise<Record<string, any>> {
     return this.loggerService.getLogs(userDTO);
   }
 }

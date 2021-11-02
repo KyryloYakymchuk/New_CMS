@@ -9,36 +9,36 @@ export const UserFormFields = [
         type: 'text',
         name: 'email',
         label: 'Email',
-        icon: null        
+        icon: null
     },
     {
         type: 'text',
-        name: 'lastName',
+        name: 'lastname',
         label: 'Last name',
-        icon: null      
+        icon: null
     },
     {
         type: 'password',
         name: 'password',
         label: 'Password',
-        icon: null     
+        icon: null
     },
     {
         type: 'text',
         name: 'phone',
         label: 'Phone',
-        icon: null      
+        icon: null
     },
     {
         type: 'password',
         name: 'confirmPassword',
         label: 'Confirm Password',
-        icon: null     
+        icon: null
     },
     {
         type: 'date',
-        name: 'confirmPassword',
-        label: 'Confirm Password',
-        icon: null     
-    }  
+        name: 'birthday',
+        label: 'Date',
+        icon: null
+    }
 ];

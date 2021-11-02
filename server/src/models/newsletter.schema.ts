@@ -26,10 +26,9 @@ export const NewsletterSchema = new mongoose.Schema({
 
 NewsletterSchema.pre("save", async function (next: mongoose.HookNextFunction) {
   try {
-    if (this.isModified("newsletterID")) {
-      return next();
-    }
-    this["newsletterID"] = uniqid("id-n_");
+    if (!this.isModified("newsletterID"))
+      this["newsletterID"] = uniqid("id-n_");
+
     return next();
   } catch (e) {
     return next(e);

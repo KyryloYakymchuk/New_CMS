@@ -2,21 +2,20 @@ import { FC } from 'react';
 import { Form } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
 
-import {
-    ButtonsData,
-    LoginFields
-} from '@utils/constants/AuthField/LoginFields';
+import { ButtonsData, LoginFields } from '@utils/constants/AuthField/LoginFields';
 import { LoginValidator } from '@utils/validators/Auth/LoginValidator';
 import { IFormValues } from '@modules/Auth/Login';
 import FormField from '@components/FormField/FormField';
 import { AuthButtonContainer } from '@components/Auth/AuthButtons/AuthButtonsContainer';
 
-import { useTypedSelector } from '@utils/hooks/useTypedSelector';
-import {   ButtonContainer,
+import { useAppSelector } from '@utils/hooks/useAppSelector';
+import {
+    ButtonContainer,
     FieldCustom,
     FormContainer,
     ForgotPassword,
-    ErrorMessage } from '@modules/Auth/styled';
+    ErrorMessage
+} from '@modules/Auth/styled';
 
 interface LoginProps {
     onSubmit: (value: IFormValues) => void;
@@ -25,7 +24,7 @@ interface LoginProps {
 export const LoginForm: FC<LoginProps> = ({ onSubmit }) => {
     const { buttonIcon, buttonText, linkText, description, path } = ButtonsData;
 
-    const errorMessage = useTypedSelector(({ error }) => error.message);
+    const errorMessage = useAppSelector(({ error }) => error.message);
     const { t } = useTranslation();
 
     return (
@@ -43,6 +42,7 @@ export const LoginForm: FC<LoginProps> = ({ onSubmit }) => {
                                 variant="outlined"
                                 component={FormField}
                             >
+                                {console.log(field)}
                                 {icon}
                             </FieldCustom>
                         ))}

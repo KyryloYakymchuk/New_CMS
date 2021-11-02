@@ -1,22 +1,14 @@
 import { FC } from 'react';
 import { Form } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
-import {
-    ButtonsData,
-    ResetPasswordFields
-} from '@utils/constants/AuthField/ResetPasswordFields';
+import { ButtonsData, ResetPasswordFields } from '@utils/constants/AuthField/ResetPasswordFields';
 import { Loader } from '@utils/constants/Loader';
 import { ResetPasswordValidator } from '@utils/validators/Auth/ResetPasswordValidator';
 import { IFormValues } from '@modules/Auth/ResetPassword';
 import FormField from '@components/FormField/FormField';
 import { AuthButtonContainer } from '@components/Auth/AuthButtons/AuthButtonsContainer';
-import {
-    ButtonContainer,
-    ErrorMessage,
-    FieldCustom,
-    FormContainer
-} from '@modules/Auth/styled';
-import { useTypedSelector } from '@utils/hooks/useTypedSelector';
+import { ButtonContainer, ErrorMessage, FieldCustom, FormContainer } from '@modules/Auth/styled';
+import { useAppSelector } from '@utils/hooks/useAppSelector';
 
 interface LoginProps {
     onSubmit: (value: IFormValues) => void;
@@ -25,8 +17,8 @@ interface LoginProps {
 export const ResetPasswordForm: FC<LoginProps> = ({ onSubmit }) => {
     const { buttonIcon, buttonText, linkText, description, path } = ButtonsData;
     const { LoaderCircularButton } = Loader;
-    const errorMessage = useTypedSelector(({ error }) => error.message);
-    const loaderStatus = useTypedSelector(({ loader }) => loader.loaderStatus);
+    const errorMessage = useAppSelector(({ error }) => error.message);
+    const loaderStatus = useAppSelector(({ loader }) => loader.loaderStatus);
     const { t } = useTranslation();
     return (
         <Form
@@ -36,7 +28,7 @@ export const ResetPasswordForm: FC<LoginProps> = ({ onSubmit }) => {
                 <FormContainer>
                     <form onSubmit={handleSubmit}>
                         <ErrorMessage>{errorMessage && t(errorMessage)}</ErrorMessage>
-                        {ResetPasswordFields.map(({  icon, ...field }, index) => (
+                        {ResetPasswordFields.map(({ icon, ...field }, index) => (
                             <FieldCustom
                                 key={index}
                                 {...field}

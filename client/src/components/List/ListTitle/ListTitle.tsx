@@ -1,19 +1,28 @@
-import { FC } from 'react';
-import { ListTitleContainer } from './styled';
+import { FC, MouseEventHandler } from 'react';
 import { IListColumns } from '@interfaces/types';
-import { useTranslation } from 'react-i18next';
-
+import { ListTitleContainer, SvgButton } from './styled';
+import { Icons } from '@utils/constants/icon';
 
 interface IProps {
-    listColumns: IListColumns[];
+    sortType?:string;
+    sortHandler:(sortField:string)=> MouseEventHandler<HTMLDivElement>;
+    listColumns:IListColumns[];
+    sortColumn?:string;
 }
-
-export const ListTitle: FC<IProps> = ({ listColumns }) => {
-    const { t } = useTranslation();
-
+export const ListTitle: FC<IProps> = (
+    { listColumns, sortHandler, sortType, sortColumn }) =>  {
+    
     return (
         <ListTitleContainer>
-            {listColumns.map(({ title }) => (<div>{t(title)}</div>))}
+            {listColumns.map(({ title, name })=>(
+                <div onClick = {sortHandler( name )}>
+                    {title}
+                    {sortColumn === name && 
+                     <SvgButton sortType={sortType}>
+                         {Icons.ExpandMoreIcon}
+                     </SvgButton> }  
+                </div>
+            ))}
             <div>interact</div>
         </ListTitleContainer>
     );

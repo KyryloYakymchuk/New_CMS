@@ -1,3 +1,4 @@
+import { InputActionMeta, MultiValue } from 'react-select';
 export interface IAddress {
     street: string;
     city: string;
@@ -21,3 +22,13 @@ export interface IListColumns {
     title: string;
     name: string;
 }
+
+export interface IOption {
+    value: string;
+    label: string;
+}
+export type GetSelectDataType = (newValue: string, actionMeta?: InputActionMeta) => void;
+export type OnChangeMultiValueType = (
+    newValue: MultiValue<{ label: string; value: string }>
+) => void;
+export type MultiValueType = MultiValue<{ label: string; value: string }>;

@@ -9,15 +9,16 @@ export class QueryDTO {
 export class CategoryItemsDTO {
   categoryID: string;
   search?: {
-    color: Array<string>;
-    shape: Array<string>;
-    price: {
-      from: number;
-      to: number;
-    };
+    color: string[];
+    shape: string[];
+  };
+  price?: {
+    from?: number;
+    to?: number;
   };
   limit?: number;
   offset?: number;
   sortField?: string;
   sortParameter?: string;
+  excludedItemID?: string;
 }

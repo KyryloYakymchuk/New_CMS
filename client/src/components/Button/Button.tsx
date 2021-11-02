@@ -5,22 +5,23 @@ import { FC } from 'react';
 interface IProps {
     title: string;
     type: string;
-    onClickFunction?:VoidFunction;
-    icon?: any;
+    style: string;
+    onClickFunction?: VoidFunction;
+    icon?: JSX.Element;
 }
 
-export const Buttons: FC<IProps> = ({ title, type, onClickFunction, icon }) => {
+export const Buttons: FC<IProps> = ({ title, type, onClickFunction, icon, style }) => {
     const styles = useStyles();
 
     return (
-        <div className={styles[type as keyof typeof styles]}>
-            <Button 
+        <div className={styles[style as keyof typeof styles]}>
+            <Button
                 onClick={onClickFunction}
-                startIcon = {icon}
-                size="large" 
-                color="inherit" 
+                startIcon={icon}
+                size="large"
+                color="inherit"
                 variant="contained"
-                type="button"
+                type={type === 'submit' ? 'submit' : 'button'}
             >
                 {title}
             </Button>

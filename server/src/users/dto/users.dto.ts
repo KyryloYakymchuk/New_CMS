@@ -1,6 +1,4 @@
 import { IsNotEmpty } from "class-validator";
-import { QueryDTO } from "../../shared/dto/shared.dto";
-import { Transform } from "class-transformer";
 
 export class EditUserDTO {
   @IsNotEmpty()

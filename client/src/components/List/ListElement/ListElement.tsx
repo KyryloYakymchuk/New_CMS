@@ -13,7 +13,9 @@ interface IProps {
 export const ListElement: FC<IProps> = ({ listColumns, user, arrButton }) => {
     return (
         <ListElementContainer>
-            {listColumns?.map(({ name }) => <div key={name}>{user[name]}</div>)}
+            {listColumns?.map(({ name }) => (
+                <div key={name}>{user[name]}</div>
+            ))}
             <ButtonBlock>
                 {arrButton?.map(({ item, onClickFunc }) => (
                     <Button onClick={onClickFunc(user)}>{item}</Button>

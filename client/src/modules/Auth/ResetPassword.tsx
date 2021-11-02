@@ -7,7 +7,7 @@ import { resetPasswordAction } from '@redux/actions/auth';
 import { setModalStatusAction } from '@redux/actions/modal';
 import { MainText } from '@utils/constants/AuthField/ResetPasswordFields';
 import { AuthRoutes } from '@utils/enums/routes';
-import { useTypedSelector } from '@utils/hooks/useTypedSelector';
+import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { AuthLayout } from '@components/Auth/AuthLayout/AuthLayout';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
 import { ResetPasswordForm } from '@components/Auth/ResetPasswordForm/ResetPasswordForm';
@@ -21,14 +21,12 @@ export interface IFormValues {
 export const ResetPassword: FC = () => {
     const { title, description } = MainText;
 
-    const token = window.location.pathname.slice(
-        window.location.pathname.lastIndexOf('/') + 1
-    );
+    const token = window.location.pathname.slice(window.location.pathname.lastIndexOf('/') + 1);
 
     const dispatch = useDispatch();
     const history = useHistory();
     const { t } = useTranslation();
-    const isModalOpen = useTypedSelector(({ modalStatus }) => modalStatus?.modal);
+    const isModalOpen = useAppSelector(({ modalStatus }) => modalStatus?.modal);
 
     const onSubmit = (value: IFormValues) => {
         const val = {
@@ -52,7 +50,7 @@ export const ResetPassword: FC = () => {
     return (
         <>
             <AuthLayout title={t(title)} description={t(description)}>
-                <ResetPasswordForm onSubmit={onSubmit}/>
+                <ResetPasswordForm onSubmit={onSubmit} />
             </AuthLayout>
             <ModalConfirm
                 isModalOpen={isModalOpen}

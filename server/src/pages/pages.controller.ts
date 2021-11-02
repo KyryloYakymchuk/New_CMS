@@ -10,57 +10,84 @@ import {
   Param,
   Get,
   Query,
+  Req,
+  Headers,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { Request } from "express";
+
 import {
   AddPageDTO,
-  DeletePageDTO,
   EditPageDTO,
-  GetPagesDTO, ResponsePageDto,
+  GetPagesDTO,
+  PaginationDTO,
+  ResponsePageDto,
 } from "./dto/pages.dto";
 import { PagesService } from "./pages.service";
-import {ApiTags} from "@nestjs/swagger";
+import { LoggerGateway } from "../shared/logger/logger.gateway";
 
-@ApiTags('pages')
+const module = "pages";
+
+@ApiTags("pages")
 @Controller("pages")
 export class PagesController {
-  constructor(private pagesService: PagesService) {}
+  constructor(
+    private pagesService: PagesService,
+    private loggerGateway: LoggerGateway
+  ) {}
 
   @Get()
-  async getPages(
-    @Query() userDTO: GetPagesDTO
-  ): Promise<Record<string, any>> {
+  async getPages(@Query() userDTO: GetPagesDTO): Promise<Record<string, any>> {
     return this.pagesService.getPages(userDTO);
   }
 
   @Post()
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   @HttpCode(HttpStatus.OK)
   async apiAddPage(
-    @Body() userDTO: AddPageDTO
+    @Body() userDTO: AddPageDTO,
+    @Req() req: Request,
+    @Headers("authorization") token
   ): Promise<Record<string, string>> {
+    await this.loggerGateway.logAction(req, module);
     return this.pagesService.addPage(userDTO);
   }
 
   @Put()
+  @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
   @HttpCode(HttpStatus.OK)
   async editPage(
-    @Body() userDTO: EditPageDTO
+    @Body() userDTO: EditPageDTO,
+    @Req() req: Request,
+    @Headers("authorization") token: string
   ): Promise<Record<string, string>> {
-    return this.pagesService.editPage(userDTO);
+    await this.loggerGateway.logAction(req, module);
+    const pages = await this.pagesService.editPage(userDTO);
+    return pages.map((el) => new ResponsePageDto(el));
   }
 
-  @Delete(":page")
+  @Delete(":pageID")
+  @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
   async deletePage(
-    @Param("pageID") page: DeletePageDTO
+    @Param("pageID") page: string,
+    @Req() req: Request,
+    @Query() paginationParameters: PaginationDTO
   ): Promise<Record<string, string>> {
-    return this.pagesService.deletePage(page);
+    await this.loggerGateway.logAction(req, module);
+    return this.pagesService.deletePage(page, paginationParameters);
   }
 
-  @Get(':id')
+  @Get(":id")
+  @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
-  async getOne(@Param('id') id: string): Promise<ResponsePageDto> {
+  async getOne(
+    @Param("id") id: string,
+    @Headers("authorization") token: string
+  ): Promise<ResponsePageDto> {
     const page = await this.pagesService.getById(id);
     return new ResponsePageDto(page);
   }

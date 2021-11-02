@@ -1,19 +1,15 @@
 import {
-  SubscribeMessage,
   WebSocketGateway,
   OnGatewayInit,
   WebSocketServer,
   OnGatewayConnection,
   OnGatewayDisconnect,
-  MessageBody,
-  ConnectedSocket,
-  WsResponse,
 } from "@nestjs/websockets";
 import { Injectable, Logger } from "@nestjs/common";
 import { Server, Socket } from "socket.io";
-import { LoggerDTO } from "../../logger/dto/logger.dto";
-import { LoggerService } from "../../logger/logger.service";
 import { Request } from "express";
+
+import { LoggerService } from "../../logger/logger.service";
 
 @Injectable()
 @WebSocketGateway()

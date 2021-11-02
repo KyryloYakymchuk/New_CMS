@@ -1,4 +1,4 @@
-import { forwardRef, Global, Logger, Module } from "@nestjs/common";
+import { forwardRef, Global, Module } from "@nestjs/common";
 import { LoggerController } from "./logger.controller";
 import { LoggerService } from "./logger.service";
 import { MongooseModule } from "@nestjs/mongoose";
@@ -10,6 +10,7 @@ import { ModuleSchema } from "../models/module.schema";
 import { LoggerGateway } from "../shared/logger/logger.gateway";
 import { SharedModule } from "../shared/shared.module";
 import { CategorySchema } from "../models/category.schema";
+import { FuserSchema } from "../models/fuser.schema";
 
 @Global()
 @Module({
@@ -17,6 +18,7 @@ import { CategorySchema } from "../models/category.schema";
     MongooseModule.forFeature([
       { name: "Log", schema: LogSchema },
       { name: "User", schema: UserSchema },
+      { name: "Fuser", schema: FuserSchema },
       { name: "Group", schema: GroupSchema },
       { name: "Page", schema: PageSchema },
       { name: "Module", schema: ModuleSchema },

@@ -9,6 +9,15 @@ const users = (state = initialState, action: IUserActions): IUsers => {
                 ...state,
                 userListData: action.payload
             };
+        case UserActionTypes.SET_CURRENT_USERS:
+            return {
+                ...state,
+                currentUserData: action.payload
+            };
+        case UserActionTypes.CLEAR_CURRENT_USERS:
+            return {
+                ...initialState
+            };
 
         default:
             return state;
