@@ -47,7 +47,6 @@ function* addNewUser(data: IAddUserAction): Generator {
 }
 function* editUser(data: IEditUserAction): Generator {
     const body = data.payload;
-    console.log(body);
 
     try {
         yield call(api.put, '/users', body);

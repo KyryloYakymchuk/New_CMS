@@ -42,7 +42,6 @@ export const LoginForm: FC<LoginProps> = ({ onSubmit }) => {
                                 variant="outlined"
                                 component={FormField}
                             >
-                                {console.log(field)}
                                 {icon}
                             </FieldCustom>
                         ))}

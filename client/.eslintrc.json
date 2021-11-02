@@ -2,13 +2,8 @@
     "root": true,
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-<<<<<<< Updated upstream
-        "project": "**/tsconfig.json" 
-      },
-=======
         "project": "**/tsconfig.json"
     },
->>>>>>> Stashed changes
     "plugins": ["@typescript-eslint", "import", "jsx-a11y"],
     "extends": ["airbnb-typescript"],
     "env": {

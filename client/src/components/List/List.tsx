@@ -31,8 +31,6 @@ export const List: FC<IPrors> = ({
     sortType,
     sortColumn
 }) => {
-    console.log(listData);
-
     return (
         <ListContainer>
             <ListTitle

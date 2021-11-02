@@ -45,9 +45,6 @@ export const CreateUserPage: FC = () => {
             limit: 10,
             search: debouncedSelectGroupName
         };
-        if (currentUser) {
-            console.log('red');
-        }
         dispatch(getGroupNames(queryParams));
     }, [dispatch, debouncedSelectGroupName]);
 
