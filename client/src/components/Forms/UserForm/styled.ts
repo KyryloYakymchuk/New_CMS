@@ -24,10 +24,7 @@ export const FieldCustom = styled(Field)`
         color: gray;
     }
 `;
-export const SelectFieldCustom = styled(Field)`
-    //display: inline-flex;
-    //margin: 16px 10px;
-`;
+export const SelectFieldCustom = styled(Field)``;
 export const ButtonContainer = styled.div`
     margin-top: 10px;
     margin-left: 10px;
