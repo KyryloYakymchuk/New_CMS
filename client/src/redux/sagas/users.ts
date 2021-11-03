@@ -11,12 +11,11 @@ import {
 import { api } from '@services/api';
 
 function* getUsers(data: IGetUsersAction): Generator {
-    const queryParams = data.payload;
     try {
         const userResponce: any = yield call(api.get, '/users/', {
-            params: queryParams
+            params: data.payload
         });
-        //cant be typed
+        //cant be typed because AxiosResponce not working
         yield put(setUsers(userResponce?.data));
     } catch (error) {
         return error;
@@ -29,7 +28,7 @@ function* deleteUser(data: IDeleteUserDataAction): Generator {
         const userResponce: any = yield call(api.delete, '/users/' + userID, {
             params: queryParams
         });
-        //cant be typed
+        //cant be typed because AxiosResponce not working
 
         yield put(setUsers(userResponce?.data));
     } catch (error) {
@@ -37,19 +36,15 @@ function* deleteUser(data: IDeleteUserDataAction): Generator {
     }
 }
 function* addNewUser(data: IAddUserAction): Generator {
-    const body = data.payload;
-
     try {
-        yield call(api.post, '/users', body);
+        yield call(api.post, '/users', data.payload);
     } catch (error) {
         return error;
     }
 }
 function* editUser(data: IEditUserAction): Generator {
-    const body = data.payload;
-
     try {
-        yield call(api.put, '/users', body);
+        yield call(api.put, '/users', data.payload);
     } catch (error) {
         return error;
     }

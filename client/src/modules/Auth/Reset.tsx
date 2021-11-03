@@ -10,6 +10,7 @@ import { AuthLayout } from '@components/Auth/AuthLayout/AuthLayout';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
 import { ResetForm } from '@components/Auth/ResetForm/ResetForm';
 import { setModalStatusAction } from '@redux/actions/modal';
+import { modalStatusSelector } from '@redux/selectors/modal';
 
 export interface IFormValues {
     email: string;
@@ -18,7 +19,7 @@ export interface IFormValues {
 export const Reset: FC = () => {
     const { title, description } = MainText;
 
-    const isModalOpen = useAppSelector(({ modalStatus }) => modalStatus?.modal);
+    const isModalOpen = useAppSelector(modalStatusSelector);
 
     const dispatch = useDispatch();
     const { t } = useTranslation();

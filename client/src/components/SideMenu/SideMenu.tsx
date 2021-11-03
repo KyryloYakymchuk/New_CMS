@@ -5,10 +5,11 @@ import { MenuItem } from '@utils/constants/MenuItem/MenuItem';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { NavbarContainer, NavbarItem, TitleNavbarSubItem, Title, style } from './styled';
+import { menuItemIdSelector, menuStatusSelector } from '@redux/selectors/menu';
 
 export const SideMenu: FC = () => {
-    const statusMenu = useAppSelector(({ menuReducer }) => menuReducer.status);
-    const pickedId = useAppSelector(({ menuReducer }) => menuReducer.itemId);
+    const statusMenu = useAppSelector(menuStatusSelector);
+    const pickedId = useAppSelector(menuItemIdSelector);
 
     const dispatch = useDispatch();
     const { t } = useTranslation();

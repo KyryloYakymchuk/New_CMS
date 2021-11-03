@@ -30,7 +30,7 @@ export const Pagination: FC<IProps> = ({ count, limit, page, setPage }) => {
         <StyledPaginateContainer>
             {count < 10 ? null : (
                 <ReactPaginate
-                    initialPage={currentPage ? currentPage : 0}
+                    initialPage={currentPage || 0}
                     pageCount={count / limit}
                     marginPagesDisplayed={1.2}
                     pageRangeDisplayed={3}

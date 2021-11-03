@@ -20,10 +20,7 @@ function* loginReq(data: ILoginAction): Generator {
     const { value, history } = data.payload;
     try {
         const fieldsResponse: any = yield call(api.post, '/auth/login', value);
-        window.localStorage.setItem(
-            'NewCMS_accessToken',
-            fieldsResponse.data.accessToken
-        );
+        window.localStorage.setItem('NewCMS_accessToken', fieldsResponse.data.accessToken);
         history.push(ProtectedRoutes.DASHBOARD);
         yield put(errorAction());
     } catch (error: any) {

@@ -10,6 +10,7 @@ import { List } from '@components/List/List';
 import { Pagination } from '@components/Pagination/Pagination';
 import { UserPageContainer, PageHeader } from './styled';
 import { handleListSort } from '@utils/functions/handleListSort';
+import { userListDataSelector } from '@redux/selectors/users';
 
 export interface IRouterParams {
     page: string;
@@ -35,7 +36,7 @@ export const UsersPage: FC = () => {
     const [userID, setUserID] = useState<string>();
     const [sortingTypeIdx, setSortingTypeIdx] = useState(0);
 
-    const allUsers = useAppSelector(({ users }) => users.userListData);
+    const allUsers = useAppSelector(userListDataSelector);
 
     const deleteUserClick = (user: React.ChangeEvent<HTMLDivElement>) => () => {
         const temp: any = user;

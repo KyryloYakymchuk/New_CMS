@@ -12,6 +12,7 @@ import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm'
 // import { statusAction } from '@redux/actions/menuStatus';
 // import { menuStatusSelector } from '@redux/selectors/menuStatus';
 import { HeaderContainer, HeaderTitle, TitleContainer, TitleItem } from './styled';
+import { modalStatusSelector } from '@redux/selectors/modal';
 
 interface Props {
     title: string;
@@ -22,7 +23,7 @@ export const Header: FC<Props> = ({ title }) => {
     const history = useHistory();
     const { t } = useTranslation();
 
-    const isModalOpen = useAppSelector(({ modalStatus }) => modalStatus?.modal);
+    const isModalOpen = useAppSelector(modalStatusSelector);
 
     /* For future mobile version  */
     //     const statusmenu = useTypedSelector( ({ menuReducer }) => menuReducer.status);

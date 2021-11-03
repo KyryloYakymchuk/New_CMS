@@ -12,6 +12,7 @@ import { AuthLayout } from '@components/Auth/AuthLayout/AuthLayout';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
 import { ResetPasswordForm } from '@components/Auth/ResetPasswordForm/ResetPasswordForm';
 import { useHistory } from 'react-router';
+import { modalStatusSelector } from '@redux/selectors/modal';
 
 export interface IFormValues {
     newPassword: string;
@@ -26,7 +27,7 @@ export const ResetPassword: FC = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const { t } = useTranslation();
-    const isModalOpen = useAppSelector(({ modalStatus }) => modalStatus?.modal);
+    const isModalOpen = useAppSelector(modalStatusSelector);
 
     const onSubmit = (value: IFormValues) => {
         const val = {

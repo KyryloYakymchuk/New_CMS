@@ -16,6 +16,7 @@ import {
     ForgotPassword,
     ErrorMessage
 } from '@modules/Auth/styled';
+import { errorMessageSelector } from '@redux/selectors/error';
 
 interface LoginProps {
     onSubmit: (value: IFormValues) => void;
@@ -24,7 +25,7 @@ interface LoginProps {
 export const LoginForm: FC<LoginProps> = ({ onSubmit }) => {
     const { buttonIcon, buttonText, linkText, description, path } = ButtonsData;
 
-    const errorMessage = useAppSelector(({ error }) => error.message);
+    const errorMessage = useAppSelector(errorMessageSelector);
     const { t } = useTranslation();
 
     return (

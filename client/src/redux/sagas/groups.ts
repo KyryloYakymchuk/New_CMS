@@ -7,26 +7,22 @@ import { api } from '@services/api';
 import { parserGroupNames } from '@utils/functions/parserGroupNames';
 
 function* getGroups(data: IGetGroupsDataAction): Generator {
-    const queryParams = data?.payload;
-
     try {
         const groupResponce: any = yield call(api.get, '/groups/', {
-            params: queryParams
+            params: data?.payload
         });
-        //cant be typed
+        //cant be typed because AxiosResponce not working
         yield put(setGroups(groupResponce?.data));
     } catch (error) {
         return error;
     }
 }
 function* getGroupNames(data: IGetGroupsDataAction): Generator {
-    const queryParams = data?.payload;
-
     try {
         const groupResponce: any = yield call(api.get, '/groups/', {
-            params: queryParams
+            params: data?.payload
         });
-        //cant be typed
+        //cant be typed because AxiosResponce not working
         yield put(setGroupNames(parserGroupNames(groupResponce?.data)));
     } catch (error) {
         return error;

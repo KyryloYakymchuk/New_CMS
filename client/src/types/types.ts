@@ -28,7 +28,5 @@ export interface IOption {
     label: string;
 }
 export type GetSelectDataType = (newValue: string, actionMeta?: InputActionMeta) => void;
-export type OnChangeMultiValueType = (
-    newValue: MultiValue<{ label: string; value: string }>
-) => void;
-export type MultiValueType = MultiValue<{ label: string; value: string }>;
+export type MultiValueType = MultiValue<IOption>;
+export type OnChangeMultiValueType = (newValue: MultiValueType) => void;

@@ -9,6 +9,8 @@ import FormField from '@components/FormField/FormField';
 import { AuthButtonContainer } from '@components/Auth/AuthButtons/AuthButtonsContainer';
 import { ButtonContainer, ErrorMessage, FieldCustom, FormContainer } from '@modules/Auth/styled';
 import { useAppSelector } from '@utils/hooks/useAppSelector';
+import { errorMessageSelector } from '@redux/selectors/error';
+import { loaderStatusSelector } from '@redux/selectors/loader';
 
 interface LoginProps {
     onSubmit: (value: IFormValues) => void;
@@ -18,8 +20,8 @@ export const ResetForm: FC<LoginProps> = ({ onSubmit }) => {
     const { buttonIcon, buttonText, linkText, description, path } = ButtonsData;
     const { LoaderCircularButton } = Loader;
 
-    const errorMessage = useAppSelector(({ error }) => error.message);
-    const loaderStatus = useAppSelector(({ loader }) => loader.loaderStatus);
+    const errorMessage = useAppSelector(errorMessageSelector);
+    const loaderStatus = useAppSelector(loaderStatusSelector);
     const { t } = useTranslation();
     return (
         <Form

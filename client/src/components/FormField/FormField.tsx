@@ -4,11 +4,12 @@ import { FC } from 'react';
 import { useAppSelector } from '@utils/hooks/useAppSelector';
 
 import { InputAdornment } from '@mui/material';
+import { errorMessageSelector } from '@redux/selectors/error';
 
 type FormProps = FieldRenderProps<string, any>;
 
 const FormField: FC<FormProps> = ({ input, meta, children, ...rest }) => {
-    const errorMessage = useAppSelector(({ error }) => error.message);
+    const errorMessage = useAppSelector(errorMessageSelector);
     const { touched, error } = meta;
     return (
         <TextField

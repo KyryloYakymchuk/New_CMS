@@ -41,7 +41,6 @@ export const UserForm: FC<IProps> = ({
     return (
         <Form
             onSubmit={onSubmitForm}
-            // validate={RegisterValidator}
             initialValues={formInitialValues}
             render={({ handleSubmit }) => (
                 <FormContainer>
