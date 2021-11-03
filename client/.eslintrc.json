@@ -2,8 +2,8 @@
     "root": true,
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-        "project": "**/tsconfig.json" 
-      },
+        "project": "**/tsconfig.json"
+    },
     "plugins": ["@typescript-eslint", "import", "jsx-a11y"],
     "extends": ["airbnb-typescript"],
     "env": {
@@ -12,7 +12,7 @@
     "rules": {
         "react/jsx-filename-extension": "off",
         "@typescript-eslint/comma-dangle": ["error", "never"],
-        "@typescript-eslint/indent": ["error",4],
+        "@typescript-eslint/indent": ["error", 4],
         "@typescript-eslint/no-redeclare": "off",
         "@typescript-eslint/member-delimiter-style": [
             "error",
@@ -34,9 +34,9 @@
         "jsx-a11y/label-has-associated-control": "off",
         "jsx-a11y/click-events-have-key-events": "off",
         "jsx-a11y/no-static-element-interactions": "off",
-        "jsx-a11y/aria-role": [2, {"ignoreNonDOM": true}],
+        "jsx-a11y/aria-role": [2, { "ignoreNonDOM": true }],
         "import/prefer-default-export": "off",
-        "max-len": [2, {"code": 140, "ignoreUrls": true}],
+        "max-len": [2, { "code": 100, "ignoreUrls": true }],
         "function-paren-newline": "off",
         "no-param-reassign": "off",
         "curly": ["error", "all"],
@@ -46,12 +46,12 @@
             "error",
             "ignorePackages",
             {
-              "js": "never",
-              "jsx": "never",
-              "ts": "never",
-              "tsx": "never",
-              "css": "always"
+                "js": "never",
+                "jsx": "never",
+                "ts": "never",
+                "tsx": "never",
+                "css": "always"
             }
-         ]
+        ]
     }
 }

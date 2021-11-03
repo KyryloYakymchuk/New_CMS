@@ -3,23 +3,16 @@ import { useDispatch } from 'react-redux';
 import { itemIdAction } from '@redux/actions/menuStatus';
 import { MenuItem } from '@utils/constants/MenuItem/MenuItem';
 import { useTranslation } from 'react-i18next';
-
-import { useTypedSelector } from '@utils/hooks/useTypedSelector';
-import {
-    NavbarContainer,
-    NavbarItem,
-    TitleNavbarSubItem,
-    Title, 
-    style
-} from './styled';
+import { useAppSelector } from '@utils/hooks/useAppSelector';
+import { NavbarContainer, NavbarItem, TitleNavbarSubItem, Title, style } from './styled';
+import { menuItemIdSelector, menuStatusSelector } from '@redux/selectors/menu';
 
 export const SideMenu: FC = () => {
-    const statusMenu = useTypedSelector(({ menuReducer }) => menuReducer.status);
-    const pickedId = useTypedSelector(({ menuReducer }) => menuReducer.itemId);
+    const statusMenu = useAppSelector(menuStatusSelector);
+    const pickedId = useAppSelector(menuItemIdSelector);
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
-
 
     const handleSetItemID = (itemId: number) => () => {
         if (pickedId === itemId) {
@@ -46,10 +39,7 @@ export const SideMenu: FC = () => {
                         <span>{t(name)}</span>
                     </NavbarItem>
                 ) : (
-                    <TitleNavbarSubItem
-                        isItemSelected={pickedId === itemId}
-                        height={height}
-                    >
+                    <TitleNavbarSubItem isItemSelected={pickedId === itemId} height={height}>
                         <Title onClick={handleSetItemID(itemId)}>
                             {icon}
                             <span>{t(name)}</span>

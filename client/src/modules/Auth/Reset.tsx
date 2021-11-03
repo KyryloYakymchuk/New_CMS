@@ -5,11 +5,12 @@ import { errorAction } from '@redux/actions/error';
 import { loaderAction } from '@redux/actions/loader';
 import { resetAction } from '@redux/actions/auth';
 import { MainText } from '@utils/constants/AuthField/ResetFields';
-import { useTypedSelector } from '@utils/hooks/useTypedSelector';
+import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { AuthLayout } from '@components/Auth/AuthLayout/AuthLayout';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
 import { ResetForm } from '@components/Auth/ResetForm/ResetForm';
 import { setModalStatusAction } from '@redux/actions/modal';
+import { modalStatusSelector } from '@redux/selectors/modal';
 
 export interface IFormValues {
     email: string;
@@ -18,11 +19,11 @@ export interface IFormValues {
 export const Reset: FC = () => {
     const { title, description } = MainText;
 
-    const isModalOpen = useTypedSelector(({ modalStatus }) => modalStatus?.modal);
+    const isModalOpen = useAppSelector(modalStatusSelector);
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
-    
+
     const onSubmit = (value: IFormValues) => {
         dispatch(resetAction({ email: value.email }));
         dispatch(loaderAction(true));
@@ -39,7 +40,7 @@ export const Reset: FC = () => {
     return (
         <>
             <AuthLayout title={t(title)} description={t(description)}>
-                <ResetForm onSubmit={onSubmit}/>
+                <ResetForm onSubmit={onSubmit} />
             </AuthLayout>
             <ModalConfirm
                 isModalOpen={isModalOpen}

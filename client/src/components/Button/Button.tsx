@@ -3,16 +3,26 @@ import { useStyles } from '@utils/styles/button';
 import { FC } from 'react';
 
 interface IProps {
-    title:string;
-    type:string;
+    title: string;
+    type: string;
+    style: string;
+    onClickFunction?: VoidFunction;
+    icon?: JSX.Element;
 }
 
-export const Buttons: FC<IProps> = ({ title, type }) => {
+export const Buttons: FC<IProps> = ({ title, type, onClickFunction, icon, style }) => {
     const styles = useStyles();
 
     return (
-        <div className={styles[type as keyof typeof styles]}>
-            <Button size="large" color="inherit" variant="contained" type="button">
+        <div className={styles[style as keyof typeof styles]}>
+            <Button
+                onClick={onClickFunction}
+                startIcon={icon}
+                size="large"
+                color="inherit"
+                variant="contained"
+                type={type === 'submit' ? 'submit' : 'button'}
+            >
                 {title}
             </Button>
         </div>

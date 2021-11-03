@@ -4,13 +4,15 @@ import loader from './loader';
 import modalStatus from './modal';
 import menuReducer from './menu';
 import users from './users';
+import groups from './groups';
 
 const rootReducer = combineReducers({
     menuReducer,
     error,
     loader,
     modalStatus,
-    users
+    users,
+    groups
 });
 
 export default rootReducer;

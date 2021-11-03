@@ -1,15 +1,15 @@
 import TextField from '@mui/material/TextField';
 import { FieldRenderProps } from 'react-final-form';
 import { FC } from 'react';
-import { useTypedSelector } from '@utils/hooks/useTypedSelector';
+import { useAppSelector } from '@utils/hooks/useAppSelector';
 
 import { InputAdornment } from '@mui/material';
+import { errorMessageSelector } from '@redux/selectors/error';
 
 type FormProps = FieldRenderProps<string, any>;
 
 const FormField: FC<FormProps> = ({ input, meta, children, ...rest }) => {
-    const errorMessage = useTypedSelector(({ error }) => error.message);
-
+    const errorMessage = useAppSelector(errorMessageSelector);
     const { touched, error } = meta;
     return (
         <TextField
@@ -18,9 +18,7 @@ const FormField: FC<FormProps> = ({ input, meta, children, ...rest }) => {
             {...rest}
             {...input}
             InputProps={{
-                startAdornment: (
-                    <InputAdornment position="start">{children}</InputAdornment>
-                )
+                startAdornment: <InputAdornment position="start">{children}</InputAdornment>
             }}
         />
     );

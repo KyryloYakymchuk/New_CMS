@@ -11,7 +11,8 @@ import { AuthRoutes } from '@utils/enums/routes';
 import { AuthLayout } from '@components/Auth/AuthLayout/AuthLayout';
 import { RegisterForm } from '@components/Auth/RegisterForm/RegisterForm';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
-import { useTypedSelector } from '@utils/hooks/useTypedSelector';
+import { useAppSelector } from '@utils/hooks/useAppSelector';
+import { modalStatusSelector } from '@redux/selectors/modal';
 
 export interface IFormValues {
     email: string;
@@ -30,7 +31,7 @@ export const Register: FC = () => {
     const history = useHistory();
     const { t } = useTranslation();
 
-    const isModalOpen = useTypedSelector(({ modalStatus }) => modalStatus?.modal);
+    const isModalOpen = useAppSelector(modalStatusSelector);
 
     const onSubmit = (value: IFormValues) => {
         dispatch(registerAction({ value }));
@@ -49,7 +50,7 @@ export const Register: FC = () => {
     return (
         <>
             <AuthLayout title={t(title)} description={t(description)}>
-                <RegisterForm onSubmit={onSubmit}/>
+                <RegisterForm onSubmit={onSubmit} />
             </AuthLayout>
             <ModalConfirm
                 isModalOpen={isModalOpen}

@@ -2,6 +2,8 @@ export enum ProtectedRoutes {
     DASHBOARD = '/',
     USERS = '/users/:page',
     PAGES = '/pages',
+    CREATE_FORM = '/pages/createUser',
+    EDIT_FORM = '/pages/editUser',
     MODULES = '/modules',
     GROUPS = '/groups',
     NEWSLETTER = '/newsletter',

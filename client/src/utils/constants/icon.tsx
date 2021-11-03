@@ -16,6 +16,7 @@ import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
 import TodayIcon from '@mui/icons-material/Today';
 import EmailIcon from '@mui/icons-material/Email';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -43,5 +44,7 @@ export const Icons = {
     RefreshIcon: <RefreshIcon />,
     // Header Icon
     LogoutIcon: <LogoutIcon fontSize="large" />,
-    ExpandMoreIcon: <ExpandMoreIcon/>
+    //List
+    FilterIcon: <ManageSearchIcon fontSize="large" />,
+    ExpandMoreIcon: <ExpandMoreIcon />
 };

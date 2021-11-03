@@ -1,6 +1,7 @@
+import { IRouterParams } from '@modules/Users/UsersPage';
 import React, { Dispatch, FC } from 'react';
 import ReactPaginate from 'react-paginate';
-import { useHistory } from 'react-router';
+import { generatePath, useHistory, useParams } from 'react-router';
 import { StyledPaginateContainer } from './styled';
 
 interface IProps {
@@ -16,14 +17,20 @@ export const Pagination: FC<IProps> = ({ count, limit, page, setPage }) => {
     const history = useHistory();
     const handlePageClick = (data: IData) => {
         setPage(data.selected);
-        history.push(`/users/page=${data.selected + 1}`);
+        history.push(
+            generatePath('/users/:page', {
+                page: `page=${data.selected + 1}`
+            })
+        );
     };
+    const routerParams = useParams<IRouterParams>();
+    const currentPage = +routerParams?.page?.split('=')[1] - 1;
 
     return (
         <StyledPaginateContainer>
             {count < 10 ? null : (
                 <ReactPaginate
-                    initialPage={0}
+                    initialPage={currentPage || 0}
                     pageCount={count / limit}
                     marginPagesDisplayed={1.2}
                     pageRangeDisplayed={3}

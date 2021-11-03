@@ -15,22 +15,28 @@ export interface IArrButton {
 }
 
 interface IPrors {
-    sortType?:string;
-    sortHandler:(sortField:string)=> MouseEventHandler<HTMLDivElement>;
-    listColumns:IListColumns[];
-    listData?:IUser[];
-    arrButton?:IArrButton[];
-    sortColumn?:string;
+    sortType?: string;
+    sortHandler: (sortField: string) => MouseEventHandler<HTMLDivElement>;
+    listColumns: IListColumns[];
+    listData?: IUser[];
+    arrButton?: IArrButton[];
+    sortColumn?: string;
 }
 
-export const List: FC<IPrors> = (
-    { listColumns, listData, arrButton, sortHandler, sortType, sortColumn }) => {
+export const List: FC<IPrors> = ({
+    listColumns,
+    listData,
+    arrButton,
+    sortHandler,
+    sortType,
+    sortColumn
+}) => {
     return (
         <ListContainer>
             <ListTitle
                 sortColumn={sortColumn}
                 sortType={sortType}
-                listColumns={listColumns} 
+                listColumns={listColumns}
                 sortHandler={sortHandler}
             />
             {listData?.map((user) => (

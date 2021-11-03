@@ -7,16 +7,10 @@ import { useTranslation } from 'react-i18next';
 import { setModalStatusAction } from '@redux/actions/modal';
 import { Icons } from '@utils/constants/icon';
 import { AuthRoutes } from '@utils/enums/routes';
-import { useTypedSelector } from '@utils/hooks/useTypedSelector';
+import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
-// import { statusAction } from '@redux/actions/menuStatus';
-// import { menuStatusSelector } from '@redux/selectors/menuStatus';
-import {
-    HeaderContainer,
-    HeaderTitle,
-    TitleContainer,
-    TitleItem
-} from './styled';
+import { HeaderContainer, HeaderTitle, TitleContainer, TitleItem } from './styled';
+import { modalStatusSelector } from '@redux/selectors/modal';
 
 interface Props {
     title: string;
@@ -27,8 +21,8 @@ export const Header: FC<Props> = ({ title }) => {
     const history = useHistory();
     const { t } = useTranslation();
 
-    const isModalOpen = useTypedSelector(({ modalStatus }) => modalStatus?.modal);
-    
+    const isModalOpen = useAppSelector(modalStatusSelector);
+
     /* For future mobile version  */
     //     const statusmenu = useTypedSelector( ({ menuReducer }) => menuReducer.status);
     // const handleClickBurger = () => {
@@ -74,7 +68,7 @@ export const Header: FC<Props> = ({ title }) => {
                             type="button"
                             onClick={handleClickLogout}
                         >
-                            {t('Logout')}      
+                            {t('Logout')}
                         </Button>
                     </TitleItem>
                 </TitleContainer>
