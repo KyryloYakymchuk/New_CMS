@@ -9,8 +9,6 @@ import { Icons } from '@utils/constants/icon';
 import { AuthRoutes } from '@utils/enums/routes';
 import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
-// import { statusAction } from '@redux/actions/menuStatus';
-// import { menuStatusSelector } from '@redux/selectors/menuStatus';
 import { HeaderContainer, HeaderTitle, TitleContainer, TitleItem } from './styled';
 import { modalStatusSelector } from '@redux/selectors/modal';
 
