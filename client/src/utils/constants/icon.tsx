@@ -18,8 +18,9 @@ import EmailIcon from '@mui/icons-material/Email';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
+import ClearIcon from '@mui/icons-material/Clear';
 import LogoutIcon from '@mui/icons-material/Logout';
+import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 
 export const Icons = {
     // Sidebar icons
@@ -46,5 +47,7 @@ export const Icons = {
     LogoutIcon: <LogoutIcon fontSize="large" />,
     //List
     FilterIcon: <ManageSearchIcon fontSize="large" />,
-    ExpandMoreIcon: <ExpandMoreIcon />
+    ExpandMoreIcon: <ExpandMoreIcon />,
+    CloseIcon: <ClearIcon />,
+    DriveFolderUploadIcon: <DriveFolderUploadIcon fontSize="large" />
 };

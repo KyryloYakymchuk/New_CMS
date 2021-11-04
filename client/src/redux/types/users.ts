@@ -5,7 +5,8 @@ export enum UserActionTypes {
     CLEAR_CURRENT_USERS = 'CLEAR_CURRENT_USERS',
     DELETE_USER = 'DELETE_USER',
     ADD_NEW_USER = 'ADD_NEW_USER',
-    EDIT_USER = 'EDIT_USER'
+    EDIT_USER = 'EDIT_USER',
+    EDIT_USER_IMG = 'EDIT_USER_IMG'
 }
 
 export interface IUser {

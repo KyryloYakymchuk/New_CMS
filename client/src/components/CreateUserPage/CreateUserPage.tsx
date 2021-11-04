@@ -1,8 +1,7 @@
 import { UserForm } from '@components/Forms/UserForm/UserForm';
 import { MultiValueType } from '@interfaces/types';
 import { getGroupNames } from '@redux/actions/groups';
-import { addNewUser, editUser } from '@redux/actions/users';
-import { IUser } from '@redux/types/users';
+import { addNewUser, editUser, editUserImg } from '@redux/actions/users';
 import { parceOption, reduceOption } from '@utils/functions/userFormData/parseOption';
 import useDebounce from '@utils/hooks/useDebounce';
 import { useAppSelector } from '@utils/hooks/useAppSelector';
@@ -30,15 +29,22 @@ export const CreateUserPage: FC = () => {
     const onChangeMultiValue = (newValue: MultiValueType) => {
         setSelectGroupArr(newValue);
     };
-    const onSubmitForm = (value: IUser) => {
+    const onSubmitForm = (value: any) => {
+        //different data cant typed
         const requestBody = {
             ...value,
             group: reduceOption(selectGroupArr),
             confirmedPassword: null
         };
-
+        delete requestBody.confirmedPassword;
+        delete requestBody.profileImg;
         if (currentUser) {
+            const payload = new FormData();
+            payload.append('img', value?.profileImg?.[0]);
+            payload.append('userID', value?.userID);
+
             dispatch(editUser(requestBody));
+            dispatch(editUserImg(payload));
         } else {
             dispatch(addNewUser(requestBody));
         }

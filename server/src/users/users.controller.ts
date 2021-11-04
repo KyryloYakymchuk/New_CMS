@@ -71,7 +71,7 @@ export class UsersController {
         destination: ({ body: { userID } }, file: Express.Multer.File, cb) =>
           cb(null, join(__dirname, "..", "uploads", "profileImages")),
         filename: ({ body: { userID } }, file, cb) =>
-          cb(null, `${userID}${uniqid("_")}.${file.mimetype.split("/")[1]}`),
+          cb(null, `${userID}${uniqid("_")}.${file.mimetype.split("/")[1]}`),   
       }),
     })
   )
