@@ -49,6 +49,14 @@ function* editUser(data: IEditUserAction): Generator {
         return error;
     }
 }
+function* editUserImg(data: any): Generator {
+    //hard code request, problem in back
+    try {
+        yield call(api.post, '/users/img', data.payload);
+    } catch (error) {
+        return error;
+    }
+}
 
 export function* usersWatcher() {
     yield takeEvery(UserActionTypes.GET_USERS, getUsers);
@@ -56,4 +64,5 @@ export function* usersWatcher() {
     yield takeEvery(UserActionTypes.DELETE_USER, deleteUser);
     yield takeEvery(UserActionTypes.ADD_NEW_USER, addNewUser);
     yield takeEvery(UserActionTypes.EDIT_USER, editUser);
+    yield takeEvery(UserActionTypes.EDIT_USER_IMG, editUserImg);
 }

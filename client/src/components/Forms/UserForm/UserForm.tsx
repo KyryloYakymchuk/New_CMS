@@ -1,5 +1,6 @@
 import { Buttons } from '@components/Button/Button';
 import FormField from '@components/FormField/FormField';
+import { ImageUploader } from '@components/imageUploader/imageUploader';
 import { MultiSelect } from '@components/MultiSelect/MultiSelect';
 import {
     GetSelectDataType,
@@ -64,6 +65,8 @@ export const UserForm: FC<IProps> = ({
                             getSelectData={getSelectData}
                             options={options}
                         />
+                        {currentUser ? <ImageUploader name="profileImg" /> : null}
+
                         <ButtonContainer>
                             <Buttons title="Apply" type="submit" style="pinkButton" />
                             <Buttons title="Acept" type="submit" style="grayButton" />
