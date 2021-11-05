@@ -1,6 +1,6 @@
 import { Buttons } from '@components/Button/Button';
 import ControlledFormField from '@components/FormField/ControlledFormField';
-import { OnChangeFieldValueType } from '@interfaces/types';
+import { ISingleFilterFormValue, OnChangeFieldValueType } from '@interfaces/types';
 import { Icons } from '@utils/constants/icon';
 import { FC } from 'react';
 import { Form } from 'react-final-form';
@@ -8,7 +8,7 @@ import { ButtonBlock, FieldCustom } from './styled';
 
 interface IProps {
     filterFormValue: string;
-    onSubmitSingleFilterForm: (value: { search: string }) => void;
+    onSubmitSingleFilterForm: (value: ISingleFilterFormValue) => void;
     clearSingleFilterFormValue: VoidFunction;
     onChangeFieldValue: OnChangeFieldValueType;
 }

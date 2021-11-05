@@ -14,7 +14,7 @@ import { handleListSort } from '@utils/functions/handleListSort';
 import { userListDataSelector } from '@redux/selectors/users';
 import { DrawerFilterMenu } from '@components/DrawerFilterMenu/DrawerFilterMenu';
 import { SingleFilterForm } from '@components/Forms/SingleFilterForm/SingleFilterForm';
-import { EventChangeType } from '@interfaces/types';
+import { EventChangeType, ISingleFilterFormValue } from '@interfaces/types';
 import { IGetUsersData } from '@redux/types/users';
 
 export interface IRouterParams {
@@ -72,7 +72,7 @@ export const UsersPage: FC = () => {
     const toggleDrawerMenu = () => {
         setDrawerMenuOpenStatus(!drawerMenuOpenStatus);
     };
-    const onSubmitSingleFilterForm = (value: { search: string }) => {
+    const onSubmitSingleFilterForm = (value: ISingleFilterFormValue) => {
         setFilterFormValue(value.search);
         setFilterFormSearchStatus(!filterFormSearchStatus);
         setDrawerMenuOpenStatus(!drawerMenuOpenStatus);

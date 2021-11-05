@@ -27,6 +27,10 @@ export interface IOption {
     value: string;
     label: string;
 }
+export interface ISingleFilterFormValue {
+    search: string;
+}
+
 export type GetSelectDataType = (newValue: string, actionMeta?: InputActionMeta) => void;
 export type MultiValueType = MultiValue<IOption>;
 export type OnChangeMultiValueType = (newValue: MultiValueType) => void;

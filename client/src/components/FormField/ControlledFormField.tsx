@@ -1,13 +1,17 @@
 import TextField from '@mui/material/TextField';
 import { FC } from 'react';
 import { useAppSelector } from '@utils/hooks/useAppSelector';
-
 import { InputAdornment } from '@mui/material';
 import { errorMessageSelector } from '@redux/selectors/error';
+import { FieldRenderProps } from 'react-final-form';
+import { OnChangeFieldValueType } from '@interfaces/types';
 
-type FormProps = any;
+interface IProps extends FieldRenderProps<string, HTMLElement> {
+    filterFormValue: string;
+    onChangeFieldValue: OnChangeFieldValueType;
+}
 
-const ControlledFormField: FC<FormProps> = ({
+const ControlledFormField: FC<IProps> = ({
     input,
     meta,
     children,
