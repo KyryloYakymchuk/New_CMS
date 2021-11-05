@@ -30,3 +30,5 @@ export interface IOption {
 export type GetSelectDataType = (newValue: string, actionMeta?: InputActionMeta) => void;
 export type MultiValueType = MultiValue<IOption>;
 export type OnChangeMultiValueType = (newValue: MultiValueType) => void;
+export type EventChangeType = React.ChangeEvent<HTMLInputElement>;
+export type OnChangeFieldValueType = (e: EventChangeType) => void;

@@ -27,7 +27,7 @@ export const useStyles = makeStyles(() => ({
             backgroundColor: 'rgb(240, 50, 84)',
             color: 'white',
             padding: '8px 15px',
-            width: '100%',
+            // width: '100%',
             '&:hover': {
                 backgroundColor: 'white',
                 color: 'rgb(240, 50, 84)'
@@ -47,7 +47,7 @@ export const useStyles = makeStyles(() => ({
             backgroundColor: 'rgb(145, 145, 145)',
             color: 'white',
             padding: '8px 15px',
-            width: '100%',
+            //width: '100%',
             '&:hover': {
                 backgroundColor: 'white',
                 color: 'rgb(145, 145, 145)'

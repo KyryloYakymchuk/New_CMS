@@ -28,6 +28,8 @@ export const ua = {
     Logout: 'Вийти',
     Yes: 'Так',
     No: 'Нi',
+    Filter: 'Фiльтр',
+    'Create user': 'Створити користувача',
     //List
     Name: 'Iм`я',
     Email: 'Пошта',
