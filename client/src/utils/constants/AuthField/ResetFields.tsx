@@ -6,12 +6,12 @@ export const ResetFields = [
         type: 'text',
         name: 'email',
         label: 'Email',
-        icon: Icons.EmailIcon
+        icon: <Icons.AlternateEmailIcon />
     }
 ];
 
 export const ButtonsData = {
-    buttonIcon: Icons.MailIcon,
+    buttonIcon: <Icons.EmailIcon />,
     buttonText: 'Send email',
 
     linkText: 'Log in',

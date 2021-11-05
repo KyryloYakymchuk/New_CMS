@@ -98,8 +98,8 @@ export const UsersPage: FC = () => {
     };
 
     const arrUserListButton = [
-        { item: Icons.RegisterIcon, onClickFunc: editUserClick },
-        { item: Icons.LoginIcon, onClickFunc: deleteUserClick }
+        { item: <Icons.AddIcon />, onClickFunc: editUserClick },
+        { item: <Icons.PersonIcon />, onClickFunc: deleteUserClick }
     ];
 
     useEffect(() => {
@@ -132,7 +132,7 @@ export const UsersPage: FC = () => {
                     type="button"
                     style="pinkButton"
                     onClickFunction={createUserClick}
-                    icon={Icons.FirstNameIcon}
+                    icon={<Icons.PersonIcon />}
                 />
                 <DrawerFilterMenu
                     toggleDrawerMenu={toggleDrawerMenu}

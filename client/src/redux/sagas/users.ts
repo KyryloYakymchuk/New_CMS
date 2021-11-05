@@ -18,11 +18,10 @@ function* getUsers(data: IGetUsersAction): Generator {
         });
         //cant be typed because AxiosResponce not working
         yield put(setUsers(userResponce?.data));
-        yield put(loaderAction(false));
     } catch (error) {
-        yield put(loaderAction(false));
         return error;
     }
+    yield put(loaderAction(false));
 }
 function* deleteUser(data: IDeleteUserDataAction): Generator {
     const { queryParams, userID } = data.payload;

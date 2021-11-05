@@ -35,7 +35,7 @@ export const SingleFilterForm: FC<IProps> = ({
                             component={ControlledFormField}
                             onChangeFieldValue={onChangeFieldValue}
                         >
-                            {Icons.SearchIcon}
+                            <Icons.SearchIcon />
                         </FieldCustom>
 
                         <ButtonBlock>
