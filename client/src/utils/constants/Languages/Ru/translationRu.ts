@@ -28,7 +28,8 @@ export const ru = {
     Logout: 'Выйти',
     Yes: 'Да',
     No: 'Нет',
-
+    Filter: 'Фильтр',
+    'Create user': 'Создать пользователя',
     //List
     Name: 'Имя',
     Email: 'Почта',

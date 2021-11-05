@@ -28,7 +28,8 @@ export const en = {
     Logout: 'Logout',
     Yes: 'Yes',
     No: 'No',
-
+    Filter: 'Filter',
+    'Create user': 'Create user',
     //List
     Name: 'Name',
     Email: 'Email',
