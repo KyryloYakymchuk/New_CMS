@@ -16,6 +16,7 @@ import { DrawerFilterMenu } from '@components/DrawerFilterMenu/DrawerFilterMenu'
 import { SingleFilterForm } from '@components/Forms/SingleFilterForm/SingleFilterForm';
 import { EventChangeType, ISingleFilterFormValue } from '@interfaces/types';
 import { IGetUsersData } from '@redux/types/users';
+import { loaderAction } from '@redux/actions/loader';
 
 export interface IRouterParams {
     page: string;
@@ -73,9 +74,9 @@ export const UsersPage: FC = () => {
         setDrawerMenuOpenStatus(!drawerMenuOpenStatus);
     };
     const onSubmitSingleFilterForm = (value: ISingleFilterFormValue) => {
-        setFilterFormValue(value.search);
         setFilterFormSearchStatus(!filterFormSearchStatus);
         setDrawerMenuOpenStatus(!drawerMenuOpenStatus);
+        setFilterFormValue(value.search);
         history.push(
             generatePath('/users/:page', {
                 page: 'page=1'
@@ -102,6 +103,7 @@ export const UsersPage: FC = () => {
     ];
 
     useEffect(() => {
+        dispatch(loaderAction(true));
         const currentPage = +routerParams?.page?.split('=')[1] - 1;
         const offset = currentPage * 10;
         const queryParams: IGetUsersData = {

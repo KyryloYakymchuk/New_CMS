@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 import { Field } from 'react-final-form';
 
+export const FilterBlock = styled.div`
+    padding: 5px;
+`;
 export const FormContainer = styled.div`
     width: 99%;
     text-decoration: none;

@@ -57,12 +57,10 @@ export const multiSelectStyles = {
             backgroundColor: 'transparent'
         };
     },
-    groupHeading: (styles: any) => {
+    loadingIndicator: (styles: any) => {
         return {
             ...styles,
-            margin: '10px',
-            padding: 0,
-            backgroundColor: 'transparent'
+            display: 'none'
         };
     }
 };

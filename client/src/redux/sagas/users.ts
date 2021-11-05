@@ -1,5 +1,6 @@
 import { put, takeEvery } from '@redux-saga/core/effects';
 import { call } from '@redux-saga/core/effects';
+import { loaderAction } from '@redux/actions/loader';
 import { setUsers } from '@redux/actions/users';
 import {
     IAddUserAction,
@@ -17,7 +18,9 @@ function* getUsers(data: IGetUsersAction): Generator {
         });
         //cant be typed because AxiosResponce not working
         yield put(setUsers(userResponce?.data));
+        yield put(loaderAction(false));
     } catch (error) {
+        yield put(loaderAction(false));
         return error;
     }
 }

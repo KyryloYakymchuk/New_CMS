@@ -2,6 +2,9 @@ import { FC } from 'react';
 import { IListColumns } from '@interfaces/types';
 import { IArrButton } from '../List';
 import { Button, ButtonBlock, ListElementContainer } from './styled';
+import { useAppSelector } from '@utils/hooks/useAppSelector';
+import { loaderStatusSelector } from '@redux/selectors/loader';
+import { SkeletonLoader } from '@components/SkeletonLoader/SkeletonLoader';
 
 interface IProps {
     listColumns: IListColumns[];
@@ -11,15 +14,24 @@ interface IProps {
 }
 
 export const ListElement: FC<IProps> = ({ listColumns, user, arrButton }) => {
+    const loaderStatus = useAppSelector(loaderStatusSelector);
     return (
         <ListElementContainer>
-            {listColumns?.map(({ name }) => (
-                <div key={name}>{user[name]}</div>
-            ))}
+            {loaderStatus
+                ? listColumns?.map(() => (
+                      <div>
+                          <SkeletonLoader width="60%" height="25px" />
+                      </div>
+                  ))
+                : listColumns?.map(({ name }) => <div key={name}>{user[name]}</div>)}
             <ButtonBlock>
-                {arrButton?.map(({ item, onClickFunc }) => (
-                    <Button onClick={onClickFunc(user)}>{item}</Button>
-                ))}
+                {loaderStatus ? (
+                    <SkeletonLoader width="50%" height="25px" />
+                ) : (
+                    arrButton?.map(({ item, onClickFunc }) => (
+                        <Button onClick={onClickFunc(user)}>{item}</Button>
+                    ))
+                )}
             </ButtonBlock>
         </ListElementContainer>
     );
