@@ -19,9 +19,9 @@ export const ProtectedRoute: FC<RouteProps> = ({ children, title }) => {
 
     return (
         <GlobalContainer>
-            <SideMenu/>
+            <SideMenu />
             <SideContainer>
-                <Header title={title}/>
+                <Header title={title} />
                 <SideChildren>{children}</SideChildren>
             </SideContainer>
         </GlobalContainer>
