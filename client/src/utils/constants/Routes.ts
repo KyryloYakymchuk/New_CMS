@@ -15,7 +15,6 @@ export const protectedRoutes = [
         path: ProtectedRoutes.DASHBOARD,
         component: Dashboard,
         title: 'Dashboard'
-
     },
     {
         path: ProtectedRoutes.USERS,

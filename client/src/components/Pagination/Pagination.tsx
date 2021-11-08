@@ -1,40 +1,34 @@
-import { IRouterParams } from '@modules/Users/UsersPage';
-import React, { Dispatch, FC } from 'react';
+import { redirectHandler } from '@utils/functions/redirectHandler';
+import { FC } from 'react';
 import ReactPaginate from 'react-paginate';
-import { generatePath, useHistory, useParams } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import { StyledPaginateContainer } from './styled';
 
 interface IProps {
     count: number;
     limit: number;
-    page: number;
-    setPage: Dispatch<React.SetStateAction<number>>;
 }
 interface IData {
     selected: number;
 }
-export const Pagination: FC<IProps> = ({ count, limit, page, setPage }) => {
+export const Pagination: FC<IProps> = ({ count, limit }) => {
+    let { search, pathname } = useLocation();
     const history = useHistory();
+    const query = new URLSearchParams(search);
+    const page = Number(query.get('page'));
+
     const handlePageClick = (data: IData) => {
-        setPage(data.selected);
-        history.push(
-            generatePath('/users/:page', {
-                page: `page=${data.selected + 1}`
-            })
-        );
+        redirectHandler(data?.selected, pathname, search, history);
     };
-    const routerParams = useParams<IRouterParams>();
-    const currentPage = +routerParams?.page?.split('=')[1] - 1;
 
     return (
         <StyledPaginateContainer>
             {count < 10 ? null : (
                 <ReactPaginate
-                    initialPage={currentPage || 0}
                     pageCount={count / limit}
                     marginPagesDisplayed={1.2}
                     pageRangeDisplayed={3}
-                    forcePage={page}
+                    forcePage={page === 0 ? 0 : page - 1}
                     containerClassName="pagination"
                     pageClassName="pagination-page"
                     pageLinkClassName="pagination-link"

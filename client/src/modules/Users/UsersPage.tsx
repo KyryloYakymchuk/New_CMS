@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { generatePath, useHistory, useParams } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import { setCurrentUser, getUsers, clearCurrentUser, deleteUsers } from '@redux/actions/users';
 import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { userListColumns } from '@utils/constants/ListsData/ListsData';
@@ -17,6 +17,7 @@ import { SingleFilterForm } from '@components/Forms/SingleFilterForm/SingleFilte
 import { EventChangeType, ISingleFilterFormValue } from '@interfaces/types';
 import { IGetUsersData } from '@redux/types/users';
 import { loaderAction } from '@redux/actions/loader';
+import { redirectHandler } from '@utils/functions/redirectHandler';
 
 export interface IRouterParams {
     page: string;
@@ -36,8 +37,10 @@ export const UsersPage: FC = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const { t } = useTranslation();
-    let routerParams = useParams<IRouterParams>();
-    const [page, setPage] = useState(1);
+    let { search, pathname } = useLocation();
+    const query = new URLSearchParams(search);
+    const currentPage = Number(query.get('page'));
+
     const [sortParams, setSortParams] = useState<ISortParams>({});
     const [deleteRequestStatus, setDeleteRequestStatus] = useState(false);
     const [userID, setUserID] = useState<string>();
@@ -77,21 +80,13 @@ export const UsersPage: FC = () => {
         setFilterFormSearchStatus(!filterFormSearchStatus);
         setDrawerMenuOpenStatus(!drawerMenuOpenStatus);
         setFilterFormValue(value.search);
-        history.push(
-            generatePath('/users/:page', {
-                page: 'page=1'
-            })
-        );
+        redirectHandler(0, pathname, search, history);
     };
     const clearSingleFilterFormValue = () => {
         setFilterFormValue('');
         setFilterFormSearchStatus(!filterFormSearchStatus);
         setDrawerMenuOpenStatus(!drawerMenuOpenStatus);
-        history.push(
-            generatePath('/users/:page', {
-                page: 'page=1'
-            })
-        );
+        redirectHandler(0, pathname, search, history);
     };
     const onChangeFieldValue = (e: EventChangeType) => {
         setFilterFormValue(e.target.value);
@@ -104,8 +99,9 @@ export const UsersPage: FC = () => {
 
     useEffect(() => {
         dispatch(loaderAction(true));
-        const currentPage = +routerParams?.page?.split('=')[1] - 1;
-        const offset = currentPage * 10;
+
+        const offset = query ? currentPage * 10 : 0;
+
         const queryParams: IGetUsersData = {
             ...sortParams,
             offset: offset,
@@ -115,14 +111,13 @@ export const UsersPage: FC = () => {
             queryParams.search = filterFormValue;
         }
 
-        setPage(currentPage);
         if (deleteRequestStatus) {
             dispatch(deleteUsers({ queryParams, userID }));
             setDeleteRequestStatus(false);
         } else {
             dispatch(getUsers(queryParams));
         }
-    }, [dispatch, userID, routerParams, sortParams, filterFormSearchStatus]);
+    }, [dispatch, userID, currentPage, sortParams, filterFormSearchStatus]);
 
     return (
         <UserPageContainer>
@@ -154,13 +149,7 @@ export const UsersPage: FC = () => {
                 listData={allUsers?.users}
                 arrButton={arrUserListButton}
             />
-
-            <Pagination
-                count={Number(allUsers?.count)}
-                limit={LIMIT}
-                page={page}
-                setPage={setPage}
-            />
+            <Pagination count={Number(allUsers?.count)} limit={LIMIT} />
         </UserPageContainer>
     );
 };

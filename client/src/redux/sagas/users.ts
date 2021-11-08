@@ -36,6 +36,7 @@ function* deleteUser(data: IDeleteUserDataAction): Generator {
     } catch (error) {
         return error;
     }
+    yield put(loaderAction(false));
 }
 function* addNewUser(data: IAddUserAction): Generator {
     try {
@@ -43,6 +44,7 @@ function* addNewUser(data: IAddUserAction): Generator {
     } catch (error) {
         return error;
     }
+    yield put(loaderAction(false));
 }
 function* editUser(data: IEditUserAction): Generator {
     try {
@@ -50,6 +52,7 @@ function* editUser(data: IEditUserAction): Generator {
     } catch (error) {
         return error;
     }
+    yield put(loaderAction(false));
 }
 function* editUserImg(data: any): Generator {
     //hard code request, problem in back
