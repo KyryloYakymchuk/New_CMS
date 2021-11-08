@@ -1,5 +1,6 @@
 import { put, takeEvery } from '@redux-saga/core/effects';
 import { call } from '@redux-saga/core/effects';
+import { loaderAction } from '@redux/actions/loader';
 import { setUsers } from '@redux/actions/users';
 import {
     IAddUserAction,
@@ -20,6 +21,7 @@ function* getUsers(data: IGetUsersAction): Generator {
     } catch (error) {
         return error;
     }
+    yield put(loaderAction(false));
 }
 function* deleteUser(data: IDeleteUserDataAction): Generator {
     const { queryParams, userID } = data.payload;

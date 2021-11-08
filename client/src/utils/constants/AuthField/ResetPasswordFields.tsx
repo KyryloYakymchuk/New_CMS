@@ -6,18 +6,18 @@ export const ResetPasswordFields = [
         type: 'password',
         name: 'newPassword',
         label: 'Password',
-        icon: Icons.PasswordIcon
+        icon: <Icons.VpnKeyIcon />
     },
     {
         type: 'password',
         name: 'newPasswordConfirm',
         label: 'Confirm Password',
-        icon: Icons.PasswordIcon
+        icon: <Icons.VpnKeyIcon />
     }
 ];
 
 export const ButtonsData = {
-    buttonIcon: Icons.RefreshIcon,
+    buttonIcon: <Icons.RefreshIcon />,
     buttonText: 'Reset Password',
 
     linkText: 'Log in',

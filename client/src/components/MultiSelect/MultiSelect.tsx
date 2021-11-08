@@ -29,6 +29,7 @@ export const MultiSelect: FC<IMultiSelect> = ({
                 {...rest}
                 {...input}
                 onChange={onChangeMultiValue}
+                isLoading={true}
                 onInputChange={getSelectData}
                 styles={multiSelectStyles}
                 value={selectGroupArr}

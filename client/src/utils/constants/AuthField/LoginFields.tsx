@@ -6,18 +6,18 @@ export const LoginFields = [
         type: 'text',
         name: 'email',
         label: 'Email',
-        icon: Icons.EmailIcon
+        icon: <Icons.AlternateEmailIcon />
     },
     {
         type: 'password',
         name: 'password',
         label: 'Password',
-        icon: Icons.PasswordIcon
+        icon: <Icons.VpnKeyIcon />
     }
 ];
 
 export const ButtonsData = {
-    buttonIcon: Icons.LoginIcon,
+    buttonIcon: <Icons.LockOpenIcon />,
     buttonText: 'Sign In',
     linkText: 'Register',
     description: 'Don`t have an account ?',
@@ -26,6 +26,5 @@ export const ButtonsData = {
 
 export const MainText = {
     title: 'Hello ! Welcome back.',
-    description:
-        'Log in with your data that you entered during Your registrarion'
+    description: 'Log in with your data that you entered during Your registrarion'
 };

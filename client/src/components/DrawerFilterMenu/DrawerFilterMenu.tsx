@@ -24,7 +24,7 @@ export const DrawerFilterMenu: FC<IProps> = ({
                 title={t('Filter')}
                 type="button"
                 style="greyButton"
-                icon={Icons.FilterIcon}
+                icon={<Icons.ManageSearchIcon />}
                 onClickFunction={toggleDrawerMenu}
             />
             <SwipeableDrawer
@@ -36,7 +36,9 @@ export const DrawerFilterMenu: FC<IProps> = ({
                 <FilterLayout>
                     <FilterLayoutHeader>
                         <HeaderTitle>{t('Filter')}</HeaderTitle>
-                        <CloseButton onClick={toggleDrawerMenu}>{Icons.LargeCloseIcon}</CloseButton>
+                        <CloseButton onClick={toggleDrawerMenu}>
+                            <Icons.ClearIcon fontSize="large" />
+                        </CloseButton>
                     </FilterLayoutHeader>
                     {children}
                 </FilterLayout>

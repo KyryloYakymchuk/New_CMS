@@ -61,7 +61,7 @@ export const Header: FC<Props> = ({ title }) => {
                     </TitleItem>
                     <TitleItem>
                         <Button
-                            endIcon={Icons.LogoutIcon}
+                            endIcon={<Icons.LogoutIcon />}
                             size="large"
                             color="inherit"
                             variant="text"
