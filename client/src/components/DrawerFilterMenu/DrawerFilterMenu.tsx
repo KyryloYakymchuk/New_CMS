@@ -37,7 +37,7 @@ export const DrawerFilterMenu: FC<IProps> = ({
                     <FilterLayoutHeader>
                         <HeaderTitle>{t('Filter')}</HeaderTitle>
                         <CloseButton onClick={toggleDrawerMenu}>
-                            {<Icons.ClearIcon fontSize="large" />}
+                            <Icons.ClearIcon fontSize="large" />
                         </CloseButton>
                     </FilterLayoutHeader>
                     {children}

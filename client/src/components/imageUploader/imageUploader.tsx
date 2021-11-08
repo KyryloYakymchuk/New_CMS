@@ -43,7 +43,7 @@ export const ImageUploader: FC<IProps> = ({ name, ...props }) => {
                             </ImgBlock>
                         ) : (
                             <LayoutImg>
-                                {<Icons.DriveFolderUploadIcon fontSize="large" />}
+                                <Icons.DriveFolderUploadIcon fontSize="large" />
                                 <div>Upload img</div>
                             </LayoutImg>
                         )}
@@ -59,7 +59,9 @@ export const ImageUploader: FC<IProps> = ({ name, ...props }) => {
                         }}
                         {...props}
                     />
-                    <CloseButton onClick={closeFunction}>{<Icons.ClearIcon />}</CloseButton>
+                    <CloseButton onClick={closeFunction}>
+                        <Icons.ClearIcon />
+                    </CloseButton>
                     <ErrorBlock>
                         {Boolean(touched && error)}
                         {touched && error && <span> {error} </span>}
