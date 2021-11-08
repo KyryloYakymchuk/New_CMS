@@ -15,12 +15,13 @@ import {
 import { ProtectedRoutes } from '@utils/enums/routes';
 
 import { api } from '@services/api';
+import { tokenServise } from '@services/tokenServise';
 
 function* loginReq(data: ILoginAction): Generator {
     const { value, history } = data.payload;
     try {
         const fieldsResponse: any = yield call(api.post, '/auth/login', value);
-        window.localStorage.setItem('NewCMS_accessToken', fieldsResponse.data.accessToken);
+        tokenServise.setToken(fieldsResponse.data.accessToken);
         history.push(ProtectedRoutes.DASHBOARD);
         yield put(errorAction());
     } catch (error: any) {

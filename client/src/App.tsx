@@ -9,11 +9,9 @@ const App = () => (
                 <Route key={path} exact path={path} component={Component} />
             ))}
             {protectedRoutes.map(({ path, component: Component, title }) => (
-                <Route key={path} exact path={path}>
-                    <ProtectedRoute title={title} path={path}>
-                        <Component />
-                    </ProtectedRoute>
-                </Route>
+                <ProtectedRoute title={title} path={path}>
+                    <Component />
+                </ProtectedRoute>
             ))}
         </BrowserRouter>
     </div>
