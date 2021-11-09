@@ -15,6 +15,7 @@ interface IProps {
 
 export const ListElement: FC<IProps> = ({ listColumns, user, arrButton }) => {
     const loaderStatus = useAppSelector(loaderStatusSelector);
+
     return (
         <ListElementContainer>
             {loaderStatus

@@ -36,8 +36,9 @@ export const Header: FC<Props> = ({ title }) => {
     };
 
     const handleAccept = () => {
-        history.push(AuthRoutes.LOGIN);
         tokenServise.removeToken();
+
+        history.push(AuthRoutes.LOGIN);
         dispatch(setModalStatusAction(false));
     };
 

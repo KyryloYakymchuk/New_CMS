@@ -12,18 +12,19 @@ import {
     IResetPasswordAction
 } from '@redux/types/auth';
 
-import { ProtectedRoutes } from '@utils/enums/routes';
-
 import { api } from '@services/api';
 import { tokenServise } from '@services/tokenServise';
+import { ProtectedRoutes } from '@utils/enums/routes';
 
 function* loginReq(data: ILoginAction): Generator {
     const { value, history } = data.payload;
     try {
         const fieldsResponse: any = yield call(api.post, '/auth/login', value);
-        tokenServise.setToken(fieldsResponse.data.accessToken);
-        history.push(ProtectedRoutes.DASHBOARD);
+        //tokenServise.setToken(fieldsResponse.data.accessToken);
+        //localStorage.setItem('NewCMS_accessToken', fieldsResponse.data.accessToken);
+        yield tokenServise.setToken(fieldsResponse.data.accessToken);
         yield put(errorAction());
+        history.push(ProtectedRoutes.DASHBOARD);
     } catch (error: any) {
         yield put(errorAction(error.response.data.message));
     }

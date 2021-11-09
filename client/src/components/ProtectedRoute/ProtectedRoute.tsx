@@ -1,31 +1,17 @@
 import { FC } from 'react';
-import { Redirect, Route } from 'react-router';
-import { Header } from '@components/Header/Header';
-import { SideMenu } from '@components/SideMenu/SideMenu';
-import { SideContainer, GlobalContainer, SideChildren } from './styled';
-import { AuthRoutes } from '@utils/enums/routes';
-import { tokenServise } from '@services/tokenServise';
+import { Route } from 'react-router-dom';
+import { PageLayout } from './PageLayout';
+
 interface RouteProps {
     path: string;
     title: string;
+    exact?: boolean;
 }
 
-export const ProtectedRoute: FC<RouteProps> = ({ children, title, path }) => {
-    const isAuthenticated = tokenServise.token;
-
+export const ProtectedRoute: FC<RouteProps> = ({ children, title, ...rest }) => {
     return (
-        <Route key={path} exact path={path}>
-            {isAuthenticated ? (
-                <GlobalContainer>
-                    <SideMenu />
-                    <SideContainer>
-                        <Header title={title} />
-                        <SideChildren>{children}</SideChildren>
-                    </SideContainer>
-                </GlobalContainer>
-            ) : (
-                <Redirect to={AuthRoutes.LOGIN} />
-            )}
+        <Route {...rest}>
+            <PageLayout title={title} children={children} />
         </Route>
     );
 };

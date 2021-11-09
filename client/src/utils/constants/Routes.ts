@@ -14,52 +14,62 @@ export const protectedRoutes = [
     {
         path: ProtectedRoutes.DASHBOARD,
         component: Dashboard,
-        title: 'Dashboard'
+        title: 'Dashboard',
+        exact: true
     },
     {
         path: ProtectedRoutes.USERS,
         component: UsersPage,
-        title: 'Users'
+        title: 'Users',
+        exact: true
     },
     {
         path: ProtectedRoutes.CREATE_FORM,
         component: CreateUserPage,
-        title: 'Create User'
+        title: 'Create User',
+        exact: true
     },
     {
         path: ProtectedRoutes.EDIT_FORM,
         component: CreateUserPage,
-        title: 'Edit User'
+        title: 'Edit User',
+        exact: true
     },
     {
         path: ProtectedRoutes.PAGES,
         component: Dashboard,
-        title: 'Pages'
+        title: 'Pages',
+        exact: true
     },
     {
         path: ProtectedRoutes.MODULES,
         component: Dashboard,
-        title: 'Modules'
+        title: 'Modules',
+        exact: true
     },
     {
         path: ProtectedRoutes.GROUPS,
         component: Dashboard,
-        title: 'Groups'
+        title: 'Groups',
+        exact: true
     },
     {
         path: ProtectedRoutes.NEWSLETTER,
         component: Dashboard,
-        title: 'Newsletter'
+        title: 'Newsletter',
+        exact: true
     },
     {
         path: ProtectedRoutes.WEBSHOP,
         component: Dashboard,
-        title: 'Webshop'
+        title: 'Webshop',
+        exact: true
     },
     {
         path: ProtectedRoutes.SETTINGS,
         component: Settings,
-        title: 'Settings'
+        title: 'Settings',
+        exact: true
     }
 ];
 
