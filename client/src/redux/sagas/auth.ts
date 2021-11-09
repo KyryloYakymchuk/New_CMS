@@ -20,8 +20,6 @@ function* loginReq(data: ILoginAction): Generator {
     const { value, history } = data.payload;
     try {
         const fieldsResponse: any = yield call(api.post, '/auth/login', value);
-        //tokenServise.setToken(fieldsResponse.data.accessToken);
-        //localStorage.setItem('NewCMS_accessToken', fieldsResponse.data.accessToken);
         yield tokenServise.setToken(fieldsResponse.data.accessToken);
         yield put(errorAction());
         history.push(ProtectedRoutes.DASHBOARD);
