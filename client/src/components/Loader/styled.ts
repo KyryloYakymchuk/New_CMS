@@ -5,7 +5,6 @@ export const LoaderBlock = styled.div`
     position: absolute;
     top: 50%;
     left: 55%;
-    // right: 0;
     margin: -30px auto 0;
     text-align: center;
     & > div {
@@ -15,9 +14,9 @@ export const LoaderBlock = styled.div`
         width: 6px;
         display: inline-block;
 
-        animation: loader-3 1.2s infinite ease-in-out;
+        animation: loader 1.2s infinite ease-in-out;
     }
-    @keyframes loader-3 {
+    @keyframes loader {
         0%,
         40%,
         100% {
@@ -27,17 +26,16 @@ export const LoaderBlock = styled.div`
             transform: scaleY(1);
         }
     }
-`;
-
-export const LoaderItem2 = styled.div`
-    animation-delay: -1.1s !important;
-`;
-export const LoaderItem3 = styled.div`
-    animation-delay: -1s !important;
-`;
-export const LoaderItem4 = styled.div`
-    animation-delay: -0.9s !important;
-`;
-export const LoaderItem5 = styled.div`
-    animation-delay: -0.8s !important;
+    & :nth-child(2) {
+        animation-delay: -1.1s;
+    }
+    & :nth-child(3) {
+        animation-delay: -1s;
+    }
+    & :nth-child(4) {
+        animation-delay: -0.9s;
+    }
+    & :nth-child(5) {
+        animation-delay: -0.8s;
+    }
 `;
