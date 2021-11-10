@@ -20,8 +20,7 @@ export const protectedRoutes = [
     {
         path: ProtectedRoutes.USERS,
         component: UsersPage,
-        title: 'Users',
-        exact: true
+        title: 'Users'
     },
     {
         path: ProtectedRoutes.CREATE_FORM,
@@ -38,38 +37,32 @@ export const protectedRoutes = [
     {
         path: ProtectedRoutes.PAGES,
         component: Dashboard,
-        title: 'Pages',
-        exact: true
+        title: 'Pages'
     },
     {
         path: ProtectedRoutes.MODULES,
         component: Dashboard,
-        title: 'Modules',
-        exact: true
+        title: 'Modules'
     },
     {
         path: ProtectedRoutes.GROUPS,
         component: Dashboard,
-        title: 'Groups',
-        exact: true
+        title: 'Groups'
     },
     {
         path: ProtectedRoutes.NEWSLETTER,
         component: Dashboard,
-        title: 'Newsletter',
-        exact: true
+        title: 'Newsletter'
     },
     {
         path: ProtectedRoutes.WEBSHOP,
         component: Dashboard,
-        title: 'Webshop',
-        exact: true
+        title: 'Webshop'
     },
     {
         path: ProtectedRoutes.SETTINGS,
         component: Settings,
-        title: 'Settings',
-        exact: true
+        title: 'Settings'
     }
 ];
 

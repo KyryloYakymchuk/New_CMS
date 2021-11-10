@@ -9,8 +9,8 @@ class TokenServise {
         localStorage.setItem('NewCMS_accessToken', token);
     }
 
-    async setToken(token: string) {
-        await this.updateInLocalStore(token);
+    setToken(token: string) {
+        this.updateInLocalStore(token);
         this.token = token;
     }
 
