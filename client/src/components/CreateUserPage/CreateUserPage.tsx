@@ -30,8 +30,6 @@ export const CreateUserPage: FC = () => {
         setSelectGroupArr(newValue);
     };
     const onSubmitForm = (value: any) => {
-        console.log(value);
-
         //different data cant typed
         const requestBody = {
             ...value,
