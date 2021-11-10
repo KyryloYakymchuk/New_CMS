@@ -14,7 +14,8 @@ export const protectedRoutes = [
     {
         path: ProtectedRoutes.DASHBOARD,
         component: Dashboard,
-        title: 'Dashboard'
+        title: 'Dashboard',
+        exact: true
     },
     {
         path: ProtectedRoutes.USERS,
@@ -24,12 +25,14 @@ export const protectedRoutes = [
     {
         path: ProtectedRoutes.CREATE_FORM,
         component: CreateUserPage,
-        title: 'Create User'
+        title: 'Create User',
+        exact: true
     },
     {
         path: ProtectedRoutes.EDIT_FORM,
         component: CreateUserPage,
-        title: 'Edit User'
+        title: 'Edit User',
+        exact: true
     },
     {
         path: ProtectedRoutes.PAGES,

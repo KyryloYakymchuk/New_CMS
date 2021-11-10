@@ -11,6 +11,7 @@ import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
 import { HeaderContainer, HeaderTitle, TitleContainer, TitleItem } from './styled';
 import { modalStatusSelector } from '@redux/selectors/modal';
+import { tokenServise } from '@services/tokenServise';
 
 interface Props {
     title: string;
@@ -35,8 +36,9 @@ export const Header: FC<Props> = ({ title }) => {
     };
 
     const handleAccept = () => {
+        tokenServise.removeToken();
+
         history.push(AuthRoutes.LOGIN);
-        localStorage.removeItem('NewCMS_accessToken');
         dispatch(setModalStatusAction(false));
     };
 
