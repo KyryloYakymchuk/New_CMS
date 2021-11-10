@@ -17,6 +17,7 @@ function* getUsers(data: IGetUsersAction): Generator {
             params: data.payload
         });
         //cant be typed because AxiosResponce not working
+
         yield put(setUsers(userResponce?.data));
     } catch (error) {
         return error;

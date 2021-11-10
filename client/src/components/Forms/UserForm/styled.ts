@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Field } from 'react-final-form';
 
 export const FormContainer = styled.div`
-    width: 45%;
+    width: 700px;
     text-decoration: none;
     display: flex;
     flex-wrap: wrap;
@@ -28,11 +28,10 @@ export const SelectFieldCustom = styled(Field)``;
 export const ButtonContainer = styled.div`
     margin-top: 10px;
     margin-left: 10px;
-    width: 40%;
+
     display: flex;
     & > div {
-        margin-right: 10px;
-        width: 30%;
+        margin-right: 40px;
         & button {
             min-width: 10px;
             font-size: 13px;

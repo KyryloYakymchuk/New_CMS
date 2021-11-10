@@ -4,6 +4,7 @@ import { IListColumns } from '@interfaces/types';
 import { ListElement } from './ListElement/ListElement';
 import { ListTitle } from './ListTitle/ListTitle';
 import { ListContainer } from './styled';
+import { Loader } from '@components/Loader/Loader';
 
 type OnClickFuncType = (
     user: React.ChangeEvent<HTMLDivElement>
@@ -39,14 +40,18 @@ export const List: FC<IPrors> = ({
                 listColumns={listColumns}
                 sortHandler={sortHandler}
             />
-            {listData?.map((user) => (
-                <ListElement
-                    key={user.userID}
-                    listColumns={listColumns}
-                    user={user}
-                    arrButton={arrButton}
-                />
-            ))}
+            {listData ? (
+                listData.map((user) => (
+                    <ListElement
+                        key={user.userID}
+                        listColumns={listColumns}
+                        user={user}
+                        arrButton={arrButton}
+                    />
+                ))
+            ) : (
+                <Loader />
+            )}
         </ListContainer>
     );
 };

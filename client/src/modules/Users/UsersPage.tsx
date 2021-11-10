@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { Buttons } from '@components/Button/Button';
 import { List } from '@components/List/List';
 import { Pagination } from '@components/Pagination/Pagination';
-import { UserPageContainer, PageHeader } from './styled';
+import { UserPageContainer, PageHeader, ListBlock } from './styled';
 import { handleListSort } from '@utils/functions/handleListSort';
 import { userListDataSelector } from '@redux/selectors/users';
 import { DrawerFilterMenu } from '@components/DrawerFilterMenu/DrawerFilterMenu';
@@ -77,14 +77,18 @@ export const UsersPage: FC = () => {
         setDrawerMenuOpenStatus(!drawerMenuOpenStatus);
     };
     const onSubmitSingleFilterForm = (value: ISingleFilterFormValue) => {
-        setFilterFormSearchStatus(!filterFormSearchStatus);
+        if (filterFormValue !== '') {
+            setFilterFormSearchStatus(!filterFormSearchStatus);
+        }
         setDrawerMenuOpenStatus(!drawerMenuOpenStatus);
         setFilterFormValue(value.search);
         redirectHandler(0, pathname, search, history);
     };
     const clearSingleFilterFormValue = () => {
+        if (filterFormValue !== '') {
+            setFilterFormSearchStatus(!filterFormSearchStatus);
+        }
         setFilterFormValue('');
-        setFilterFormSearchStatus(!filterFormSearchStatus);
         setDrawerMenuOpenStatus(!drawerMenuOpenStatus);
         redirectHandler(0, pathname, search, history);
     };
@@ -141,15 +145,17 @@ export const UsersPage: FC = () => {
                     />
                 </DrawerFilterMenu>
             </PageHeader>
-            <List
-                sortColumn={sortParams.sortField}
-                sortType={sortParams.sortParameter}
-                sortHandler={handleSortClick}
-                listColumns={userListColumns}
-                listData={allUsers?.users}
-                arrButton={arrUserListButton}
-            />
-            <Pagination count={Number(allUsers?.count)} limit={LIMIT} />
+            <ListBlock>
+                <List
+                    sortColumn={sortParams.sortField}
+                    sortType={sortParams.sortParameter}
+                    sortHandler={handleSortClick}
+                    listColumns={userListColumns}
+                    listData={allUsers?.users}
+                    arrButton={arrUserListButton}
+                />
+                <Pagination count={Number(allUsers?.count)} limit={LIMIT} />
+            </ListBlock>
         </UserPageContainer>
     );
 };
