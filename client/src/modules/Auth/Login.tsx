@@ -29,7 +29,7 @@ export const Login: FC = () => {
     const { title, description } = MainText;
     return (
         <AuthLayout title={t(title)} description={t(description)}>
-            <LoginForm onSubmit={onSubmit}/>
+            <LoginForm onSubmit={onSubmit} />
         </AuthLayout>
     );
 };

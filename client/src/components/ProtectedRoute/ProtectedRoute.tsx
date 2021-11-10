@@ -1,29 +1,17 @@
 import { FC } from 'react';
-import { useHistory } from 'react-router';
-import { Header } from '@components/Header/Header';
-import { SideMenu } from '@components/SideMenu/SideMenu';
-import { SideContainer, GlobalContainer, SideChildren } from './styled';
-import { AuthRoutes } from '@utils/enums/routes';
+import { Route } from 'react-router-dom';
+import { PageLayout } from './PageLayout';
 
 interface RouteProps {
     path: string;
     title: string;
+    exact?: boolean;
 }
 
-export const ProtectedRoute: FC<RouteProps> = ({ children, title }) => {
-    const history = useHistory();
-
-    if (!localStorage.getItem('NewCMS_accessToken')) {
-        history.push(AuthRoutes.LOGIN);
-    }
-
+export const ProtectedRoute: FC<RouteProps> = ({ children, title, ...rest }) => {
     return (
-        <GlobalContainer>
-            <SideMenu />
-            <SideContainer>
-                <Header title={title} />
-                <SideChildren>{children}</SideChildren>
-            </SideContainer>
-        </GlobalContainer>
+        <Route {...rest}>
+            <PageLayout title={title} children={children} />
+        </Route>
     );
 };
