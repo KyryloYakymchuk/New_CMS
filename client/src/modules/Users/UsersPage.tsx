@@ -18,6 +18,7 @@ import { EventChangeType, ISingleFilterFormValue } from '@interfaces/types';
 import { IGetUsersData } from '@redux/types/users';
 import { loaderAction } from '@redux/actions/loader';
 import { redirectHandler } from '@utils/functions/redirectHandler';
+import { offsetGenerator } from '@utils/functions/offsetGenerator';
 
 export interface IRouterParams {
     page: string;
@@ -103,12 +104,9 @@ export const UsersPage: FC = () => {
 
     useEffect(() => {
         dispatch(loaderAction(true));
-
-        const offset = query ? currentPage * 10 : 0;
-
         const queryParams: IGetUsersData = {
             ...sortParams,
-            offset: offset,
+            offset: offsetGenerator(currentPage, deleteRequestStatus, Number(allUsers?.count)),
             limit: LIMIT
         };
         if (filterFormValue) {
