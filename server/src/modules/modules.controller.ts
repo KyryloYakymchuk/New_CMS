@@ -23,7 +23,7 @@ import * as uniqid from "uniqid";
 import { Request } from "express";
 import { AuthGuard } from "@nestjs/passport";
 import { join } from "path";
-import { ApiBearerAuth, ApiExcludeEndpoint, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
 import { ModulesService } from "./modules.service";
 import {

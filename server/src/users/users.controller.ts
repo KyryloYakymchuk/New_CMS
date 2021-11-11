@@ -24,6 +24,7 @@ import * as uniqid from "uniqid";
 import { join } from "path";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { Request } from "express";
+import { existsSync, mkdirSync } from "fs";
 
 import { UserService } from "../shared/user/user.service";
 import { DeleteUserDTO, EditUserDTO } from "./dto/users.dto";
@@ -68,10 +69,17 @@ export class UsersController {
   @UseInterceptors(
     FileInterceptor("img", {
       storage: diskStorage({
-        destination: ({ body: { userID } }, file: Express.Multer.File, cb) =>
-          cb(null, join(__dirname, "..", "uploads", "profileImages")),
-        filename: ({ body: { userID } }, file, cb) =>
-          cb(null, `${userID}${uniqid("_")}.${file.mimetype.split("/")[1]}`),   
+        destination: (_, __, cb) => {
+          const uploadsDir = join(__dirname, "..", "uploads");
+          if (!existsSync(uploadsDir)) mkdirSync(uploadsDir);
+
+          const profDir = join(__dirname, "..", "uploads", "profileImages");
+          if (!existsSync(profDir)) mkdirSync(profDir);
+
+          cb(null, profDir);
+        },
+        filename: ({ body: { userID } }, file: Express.Multer.File, cb) =>
+          cb(null, `${userID}${uniqid("_")}.${file.mimetype.split("/")[1]}`),
       }),
     })
   )
@@ -81,7 +89,9 @@ export class UsersController {
     @Req() req: Request
   ): Promise<Record<string, any>> {
     const result = await this.userService.setProfileImg(userDTO, file);
+
     await this.loggerGateway.logAction(req, module);
+
     return result;
   }
 
@@ -110,7 +120,9 @@ export class UsersController {
   ): Promise<Record<string, string>> {
     const user = await this.userService.findUserByID(userID);
     if (!user) throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
+
     await this.loggerGateway.logAction(req, module);
+
     return this.userService.deleteUser(userID, userDTO);
   }
 }
