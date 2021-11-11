@@ -1,5 +1,5 @@
 import { Icons } from '@utils/constants/icon';
-import { FC, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import { Field } from 'react-final-form';
 import {
     CloseButton,
@@ -16,9 +16,12 @@ interface IProps {
 }
 
 export const ImageUploader: FC<IProps> = ({ name, ...props }) => {
+    const uploaderInput = useRef<any>(null);
+    //type React.MutableRefObject<HTMLInputElement> dont have .value parameter
     const [activeImage, setActiveImage] = useState<any>();
     // problem with type, srs ask type string but setActiveImage(reader.result) its type ArrayBuffer
     //string | ArrayBuffer | null, not working
+
     const readerFunc = (e: React.ChangeEvent<HTMLInputElement>) => {
         let reader = new FileReader();
         reader.onload = function () {
@@ -31,6 +34,7 @@ export const ImageUploader: FC<IProps> = ({ name, ...props }) => {
 
     const closeFunction = () => {
         setActiveImage(null);
+        uploaderInput.current.value = null;
     };
     return (
         <Field<FileList> name={name}>
@@ -57,6 +61,7 @@ export const ImageUploader: FC<IProps> = ({ name, ...props }) => {
                             onChange(e.target?.files);
                             readerFunc(e);
                         }}
+                        ref={uploaderInput}
                         {...props}
                     />
                     <CloseButton onClick={closeFunction}>

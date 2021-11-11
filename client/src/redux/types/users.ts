@@ -25,7 +25,7 @@ export interface IUser {
 
 export interface IUserListData {
     count: number;
-    users: IUser[];
+    users?: IUser[];
 }
 
 export interface IGetUsersData {

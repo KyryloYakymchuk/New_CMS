@@ -11,6 +11,8 @@ import {
 import { IUser } from '@redux/types/users';
 import { UserFormFields } from '@utils/constants/UserFormFields';
 import { parceOption } from '@utils/functions/userFormData/parseOption';
+import { userCreateFormValidator } from '@utils/validators/users/userCreateFormValidator';
+import { userEditFormValidator } from '@utils/validators/users/userEditFormValidator';
 import { FC } from 'react';
 import { Form } from 'react-final-form';
 import { ButtonContainer, FieldCustom, FormContainer, SelectFieldCustom } from './styled';
@@ -43,6 +45,7 @@ export const UserForm: FC<IProps> = ({
         <Form
             onSubmit={onSubmitForm}
             initialValues={formInitialValues}
+            validate={currentUser ? userEditFormValidator : userCreateFormValidator}
             render={({ handleSubmit }) => (
                 <FormContainer>
                     <form onSubmit={handleSubmit}>
@@ -69,7 +72,6 @@ export const UserForm: FC<IProps> = ({
 
                         <ButtonContainer>
                             <Buttons title="Apply" type="submit" style="pinkButton" />
-                            <Buttons title="Acept" type="submit" style="grayButton" />
                             <Buttons
                                 title="Cancel"
                                 type="button"

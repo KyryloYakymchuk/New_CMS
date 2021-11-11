@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { Buttons } from '@components/Button/Button';
 import { List } from '@components/List/List';
 import { Pagination } from '@components/Pagination/Pagination';
-import { UserPageContainer, PageHeader } from './styled';
+import { UserPageContainer, PageHeader, ListBlock } from './styled';
 import { handleListSort } from '@utils/functions/handleListSort';
 import { userListDataSelector } from '@redux/selectors/users';
 import { DrawerFilterMenu } from '@components/DrawerFilterMenu/DrawerFilterMenu';
@@ -18,6 +18,7 @@ import { EventChangeType, ISingleFilterFormValue } from '@interfaces/types';
 import { IGetUsersData } from '@redux/types/users';
 import { loaderAction } from '@redux/actions/loader';
 import { redirectHandler } from '@utils/functions/redirectHandler';
+import { offsetGenerator } from '@utils/functions/offsetGenerator';
 
 export interface IRouterParams {
     page: string;
@@ -43,7 +44,7 @@ export const UsersPage: FC = () => {
 
     const [sortParams, setSortParams] = useState<ISortParams>({});
     const [deleteRequestStatus, setDeleteRequestStatus] = useState(false);
-    const [userID, setUserID] = useState<string>();
+    const [userID, setUserID] = useState<string>('');
     const [filterFormValue, setFilterFormValue] = useState<string>('');
     const [filterFormSearchStatus, setFilterFormSearchStatus] = useState(false);
     const [drawerMenuOpenStatus, setDrawerMenuOpenStatus] = React.useState(false);
@@ -77,14 +78,18 @@ export const UsersPage: FC = () => {
         setDrawerMenuOpenStatus(!drawerMenuOpenStatus);
     };
     const onSubmitSingleFilterForm = (value: ISingleFilterFormValue) => {
-        setFilterFormSearchStatus(!filterFormSearchStatus);
+        if (filterFormValue !== '') {
+            setFilterFormSearchStatus(!filterFormSearchStatus);
+        }
         setDrawerMenuOpenStatus(!drawerMenuOpenStatus);
         setFilterFormValue(value.search);
         redirectHandler(0, pathname, search, history);
     };
     const clearSingleFilterFormValue = () => {
+        if (filterFormValue !== '') {
+            setFilterFormSearchStatus(!filterFormSearchStatus);
+        }
         setFilterFormValue('');
-        setFilterFormSearchStatus(!filterFormSearchStatus);
         setDrawerMenuOpenStatus(!drawerMenuOpenStatus);
         redirectHandler(0, pathname, search, history);
     };
@@ -99,18 +104,14 @@ export const UsersPage: FC = () => {
 
     useEffect(() => {
         dispatch(loaderAction(true));
-
-        const offset = query ? currentPage * 10 : 0;
-
         const queryParams: IGetUsersData = {
             ...sortParams,
-            offset: offset,
+            offset: offsetGenerator(currentPage, deleteRequestStatus, Number(allUsers?.count)),
             limit: LIMIT
         };
         if (filterFormValue) {
             queryParams.search = filterFormValue;
         }
-
         if (deleteRequestStatus) {
             dispatch(deleteUsers({ queryParams, userID }));
             setDeleteRequestStatus(false);
@@ -141,15 +142,17 @@ export const UsersPage: FC = () => {
                     />
                 </DrawerFilterMenu>
             </PageHeader>
-            <List
-                sortColumn={sortParams.sortField}
-                sortType={sortParams.sortParameter}
-                sortHandler={handleSortClick}
-                listColumns={userListColumns}
-                listData={allUsers?.users}
-                arrButton={arrUserListButton}
-            />
-            <Pagination count={Number(allUsers?.count)} limit={LIMIT} />
+            <ListBlock>
+                <List
+                    sortColumn={sortParams.sortField}
+                    sortType={sortParams.sortParameter}
+                    sortHandler={handleSortClick}
+                    listColumns={userListColumns}
+                    listData={allUsers?.users}
+                    arrButton={arrUserListButton}
+                />
+                <Pagination count={Number(allUsers?.count)} limit={LIMIT} />
+            </ListBlock>
         </UserPageContainer>
     );
 };

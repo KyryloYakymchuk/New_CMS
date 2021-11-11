@@ -17,6 +17,7 @@ function* getUsers(data: IGetUsersAction): Generator {
             params: data.payload
         });
         //cant be typed because AxiosResponce not working
+
         yield put(setUsers(userResponce?.data));
     } catch (error) {
         return error;
@@ -31,7 +32,6 @@ function* deleteUser(data: IDeleteUserDataAction): Generator {
             params: queryParams
         });
         //cant be typed because AxiosResponce not working
-
         yield put(setUsers(userResponce?.data));
     } catch (error) {
         return error;
@@ -65,7 +65,6 @@ function* editUserImg(data: any): Generator {
 
 export function* usersWatcher() {
     yield takeEvery(UserActionTypes.GET_USERS, getUsers);
-    yield takeEvery(UserActionTypes.DELETE_USER, deleteUser);
     yield takeEvery(UserActionTypes.DELETE_USER, deleteUser);
     yield takeEvery(UserActionTypes.ADD_NEW_USER, addNewUser);
     yield takeEvery(UserActionTypes.EDIT_USER, editUser);
