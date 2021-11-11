@@ -49,7 +49,7 @@ export const SideMenu: FC = () => {
                                 exact
                                 to={subPath}
                                 activeStyle={style}
-                                padding="55px"
+                                padding="25px"
                                 key={subPath}
                             >
                                 {t(subName)}

@@ -1,4 +1,4 @@
-import { AuthRoutes } from '@utils/enums/routes';
+import { AuthRoutes } from '@utils/enums/RoutesPath';
 import { Icons } from '../icon';
 
 export const ResetPasswordFields = [

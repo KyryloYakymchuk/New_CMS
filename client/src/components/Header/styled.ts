@@ -62,7 +62,6 @@ export const HeaderTitle = styled.div`
 export const TitleContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 22px;
   justify-content: space-between;
   width: 100%;
 `;

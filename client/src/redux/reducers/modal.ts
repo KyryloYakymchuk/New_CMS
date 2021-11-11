@@ -1,17 +1,22 @@
 import {
-    IModalAction,
     IModalState,
+    ModalActions,
     ModalActionsTypes
 } from '@redux/types/modal';
 
-const initialState: IModalState = { modal: false };
+const initialState: IModalState = { modalStatus: false };
 
-const modalStatus = (state = initialState, action: IModalAction):IModalState => {
+const modal = (state = initialState, action: ModalActions):IModalState => {
     switch (action.type) {
         case ModalActionsTypes.MODAL_STATUS:
             return {
                 ...state,
-                modal: action.payload
+                modalStatus: action.payload
+            };
+        case ModalActionsTypes.MODAL_MESSAGE:
+            return {
+                ...state,
+                modalMessage: action.payload
             };
 
         default:
@@ -19,4 +24,4 @@ const modalStatus = (state = initialState, action: IModalAction):IModalState => 
     }
 };
 
-export default modalStatus;
+export default modal;

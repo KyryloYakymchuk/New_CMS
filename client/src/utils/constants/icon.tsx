@@ -22,6 +22,10 @@ import ClearIcon from '@mui/icons-material/Clear';
 import LogoutIcon from '@mui/icons-material/Logout';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import SearchIcon from '@mui/icons-material/Search';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import VerticalSplitIcon from '@mui/icons-material/VerticalSplit';
+import DragHandleIcon from '@mui/icons-material/DragHandle';
 export const Icons = {
     // Sidebar icons
     DashboardIcon,
@@ -49,5 +53,9 @@ export const Icons = {
     ExpandMoreIcon,
     ClearIcon,
     SearchIcon,
-    DriveFolderUploadIcon
+    DriveFolderUploadIcon,
+    DeleteIcon,
+    EditIcon,
+    VerticalSplitIcon,
+    DragHandleIcon
 };

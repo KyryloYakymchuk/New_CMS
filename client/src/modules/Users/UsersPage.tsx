@@ -14,7 +14,10 @@ import { handleListSort } from '@utils/functions/handleListSort';
 import { userListDataSelector } from '@redux/selectors/users';
 import { DrawerFilterMenu } from '@components/DrawerFilterMenu/DrawerFilterMenu';
 import { SingleFilterForm } from '@components/Forms/SingleFilterForm/SingleFilterForm';
-import { EventChangeType, ISingleFilterFormValue } from '@interfaces/types';
+import { EventChangeType,
+         ISingleFilterFormValue,
+         ISortHandlerValue,
+         ISortParams } from '@interfaces/types';
 import { IGetUsersData } from '@redux/types/users';
 import { loaderAction } from '@redux/actions/loader';
 import { redirectHandler } from '@utils/functions/redirectHandler';
@@ -23,14 +26,8 @@ import { offsetGenerator } from '@utils/functions/offsetGenerator';
 export interface IRouterParams {
     page: string;
 }
-interface ISortParams {
-    sortField?: string;
-    sortParameter?: string;
-}
-interface ISortHandlerValue {
-    currentSortParams: ISortParams;
-    currSortingTypeIdx: number;
-}
+
+
 
 const LIMIT = 10;
 

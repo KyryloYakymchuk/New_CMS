@@ -8,12 +8,12 @@ import { SkeletonLoader } from '@components/SkeletonLoader/SkeletonLoader';
 
 interface IProps {
     listColumns: IListColumns[];
-    //cant be fixed because type IUser not accepted by function onclickFunc
-    user: any;
+    //cant be fixed because type Idata not accepted by function onclickFunc
+    data: any;
     arrButton?: IArrButton[];
 }
 
-export const ListElement: FC<IProps> = ({ listColumns, user, arrButton }) => {
+export const ListElement: FC<IProps> = ({ listColumns, data, arrButton }) => {
     const loaderStatus = useAppSelector(loaderStatusSelector);
 
     return (
@@ -24,13 +24,13 @@ export const ListElement: FC<IProps> = ({ listColumns, user, arrButton }) => {
                           <SkeletonLoader width="60%" height="25px" />
                       </div>
                   ))
-                : listColumns?.map(({ name }) => <div key={name}>{user[name]}</div>)}
+                : listColumns?.map(({ name }) => <div key={name}>{data[name]}</div>)}
             <ButtonBlock>
                 {loaderStatus ? (
                     <SkeletonLoader width="50%" height="25px" />
                 ) : (
                     arrButton?.map(({ item, onClickFunc }, index) => (
-                        <Button onClick={onClickFunc(user)} key={index}>
+                        <Button onClick={onClickFunc(data)} key={index}>
                             {item}
                         </Button>
                     ))

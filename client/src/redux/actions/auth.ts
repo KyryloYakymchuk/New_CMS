@@ -1,5 +1,6 @@
 import {
     AuthActionsTypes,
+    IConfirmRegisterPayload,
     ILogin,
     IRegister,
     IReset,
@@ -23,5 +24,11 @@ export const resetAction = (payload: IReset) => ({
 
 export const resetPasswordAction = (payload: IResetPassword) => ({
     type: AuthActionsTypes.RESET_PASSWORD,
+    payload
+});
+
+
+export const confirmRegisterdAction = (payload: IConfirmRegisterPayload) => ({
+    type: AuthActionsTypes.REGISTER_CORFIRM,
     payload
 });

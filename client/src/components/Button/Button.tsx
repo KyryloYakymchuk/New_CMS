@@ -12,7 +12,6 @@ interface IProps {
 
 export const Buttons: FC<IProps> = ({ title, type, onClickFunction, icon, style }) => {
     const styles = useStyles();
-
     return (
         <div className={styles[style as keyof typeof styles]}>
             <Button

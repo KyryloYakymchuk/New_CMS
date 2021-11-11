@@ -1,5 +1,4 @@
 import React, { FC, MouseEventHandler } from 'react';
-import { IUser } from '@redux/types/users';
 import { IListColumns } from '@interfaces/types';
 import { ListElement } from './ListElement/ListElement';
 import { ListTitle } from './ListTitle/ListTitle';
@@ -7,7 +6,7 @@ import { ListContainer } from './styled';
 import { Loader } from '@components/Loader/Loader';
 
 type OnClickFuncType = (
-    user: React.ChangeEvent<HTMLDivElement>
+    value: React.ChangeEvent<HTMLDivElement>
 ) => MouseEventHandler<HTMLDivElement>;
 
 export interface IArrButton {
@@ -19,7 +18,7 @@ interface IPrors {
     sortType?: string;
     sortHandler: (sortField: string) => MouseEventHandler<HTMLDivElement>;
     listColumns: IListColumns[];
-    listData?: IUser[];
+    listData?: any;
     arrButton?: IArrButton[];
     sortColumn?: string;
 }
@@ -40,11 +39,11 @@ export const List: FC<IPrors> = ({
                 listColumns={listColumns}
                 sortHandler={sortHandler}
             />
-            {listData?.map((user) => (
+            {listData?.map((data:any, index:any) => (
                 <ListElement
-                    key={user.userID}
+                    key={index}
                     listColumns={listColumns}
-                    user={user}
+                    data={data}
                     arrButton={arrButton}
                 />
             )) || <Loader />}
