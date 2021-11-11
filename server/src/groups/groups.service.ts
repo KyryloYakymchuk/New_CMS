@@ -120,7 +120,7 @@ export class GroupsService {
 
     if (!group) {
       throw new HttpException(
-        "This group does`nt exists!",
+        "This group doesn`t exists!",
         HttpStatus.NOT_FOUND
       );
     }

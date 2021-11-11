@@ -1,7 +1,8 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty, IsNotIn } from "class-validator";
 
 export class AddGroupDTO {
   @IsNotEmpty()
+  @IsNotIn(["Admin", "User"])
   name: string;
   permissions?: any;
 }
@@ -9,6 +10,7 @@ export class AddGroupDTO {
 export class EditGroupDTO {
   @IsNotEmpty()
   groupID: string;
+  @IsNotIn(["Admin", "User"])
   name?: string;
   permissions?: any;
 }

@@ -59,7 +59,9 @@ export class UsersController {
     @Req() req: Request
   ): Promise<Record<string, string>> {
     const result = await this.userService.register(userDTO);
+
     await this.loggerGateway.logAction(req, module);
+
     return result;
   }
 
