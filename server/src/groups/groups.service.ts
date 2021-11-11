@@ -98,6 +98,29 @@ export class GroupsService {
     return { count: groupsCount.length, groups };
   }
 
+  async getGroupsForSelect(userDTO: QueryDTO): Promise<Record<string, any>> {
+    const { search, limit, offset, sortField, sortParameter } = userDTO;
+
+    const groups = await this.groupModel
+      .find(!!search ? { name: { $regex: new RegExp(search, "i") } } : {})
+      .sort({ [sortField]: sortParameter })
+      .limit(!!limit ? +limit : 10)
+      .skip(!!offset ? +offset : 0);
+
+    const groupsCount = await this.groupModel.find(
+      !!search ? { name: { $regex: new RegExp(search, "i") } } : {}
+    );
+
+    if (groupsCount.length === 0)
+      throw new HttpException("Groups not found!", HttpStatus.NOT_FOUND);
+
+    const selectData = groups.reduce(
+      (acc, curr) => [...acc, { label: curr.name, value: curr.groupID }],
+      []
+    );
+
+    return { groups: selectData };
+  }
   async addGroup(userDTO: AddGroupDTO): Promise<Record<string, string>> {
     const group = await this.groupModel.findOne({ name: userDTO.name });
 
