@@ -44,7 +44,7 @@ export const UsersPage: FC = () => {
 
     const [sortParams, setSortParams] = useState<ISortParams>({});
     const [deleteRequestStatus, setDeleteRequestStatus] = useState(false);
-    const [userID, setUserID] = useState<string>();
+    const [userID, setUserID] = useState<string>('');
     const [filterFormValue, setFilterFormValue] = useState<string>('');
     const [filterFormSearchStatus, setFilterFormSearchStatus] = useState(false);
     const [drawerMenuOpenStatus, setDrawerMenuOpenStatus] = React.useState(false);
@@ -112,7 +112,6 @@ export const UsersPage: FC = () => {
         if (filterFormValue) {
             queryParams.search = filterFormValue;
         }
-
         if (deleteRequestStatus) {
             dispatch(deleteUsers({ queryParams, userID }));
             setDeleteRequestStatus(false);

@@ -11,7 +11,7 @@ interface IValidator {
     birthday?: string;
 }
 
-export const UserCreateFormValidator = (values: IValidator) => {
+export const userCreateFormValidator = (values: IValidator) => {
     const errors: IValidator = {};
     // EMAIL
     if (!values.email) {

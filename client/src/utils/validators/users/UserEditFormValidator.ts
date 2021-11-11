@@ -12,7 +12,7 @@ interface IValidator {
     profileImg?: any;
 }
 
-export const UserEditFormValidator = (values: IValidator) => {
+export const userEditFormValidator = (values: IValidator) => {
     const errors: IValidator = {};
     // EMAIL
     if (!values.email) {

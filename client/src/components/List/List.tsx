@@ -40,18 +40,14 @@ export const List: FC<IPrors> = ({
                 listColumns={listColumns}
                 sortHandler={sortHandler}
             />
-            {listData ? (
-                listData.map((user) => (
-                    <ListElement
-                        key={user.userID}
-                        listColumns={listColumns}
-                        user={user}
-                        arrButton={arrButton}
-                    />
-                ))
-            ) : (
-                <Loader />
-            )}
+            {listData?.map((user) => (
+                <ListElement
+                    key={user.userID}
+                    listColumns={listColumns}
+                    user={user}
+                    arrButton={arrButton}
+                />
+            )) || <Loader />}
         </ListContainer>
     );
 };

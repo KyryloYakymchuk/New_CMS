@@ -61,9 +61,6 @@ export const ImageUploader: FC<IProps> = ({ name, ...props }) => {
                             onChange(e.target?.files);
                             readerFunc(e);
                         }}
-                        onBlur={(e) => {
-                            onChange(activeImage ? e.target?.files : null);
-                        }}
                         ref={uploaderInput}
                         {...props}
                     />
