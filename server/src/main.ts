@@ -6,6 +6,7 @@ import { ValidationPipe } from "@nestjs/common";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 
 import { SocketIoAdapter } from "./socket-io.adapter";
+import { AppDefaultsService } from "./app-defaults/app-defaults.service";
 
 declare const module: any;
 
@@ -38,6 +39,10 @@ async function bootstrap() {
   });
 
   await app.listen(process.env.PORT || 5000);
+
+  const defaultsService = app.get(AppDefaultsService);
+
+  await defaultsService.initAppWithDefaults();
 
   if (module.hot) {
     module.hot.accept();

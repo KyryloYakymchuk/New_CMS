@@ -87,6 +87,7 @@ export class AuthController {
       throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
 
     await this.userService.setAction(verified.userID);
+   
     return this.userService.confirmUser(verified.userID);
   }
 

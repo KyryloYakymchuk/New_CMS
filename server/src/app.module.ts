@@ -21,6 +21,7 @@ import { OrdersModule } from "./orders/orders.module";
 import { OrderProblemsModule } from "./orders/oderProblems.module";
 import { NewslettersModule } from "./newsletters/newsletters.module";
 import { TicketsModule } from "./tickets/tickets.module";
+import { AppDefaultsModule } from "./app-defaults/app-defaults.module";
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { TicketsModule } from "./tickets/tickets.module";
     LoggerModule,
     NewslettersModule,
     TicketsModule,
+    AppDefaultsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
