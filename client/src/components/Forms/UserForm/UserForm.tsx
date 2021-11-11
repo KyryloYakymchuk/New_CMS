@@ -11,8 +11,8 @@ import {
 import { IUser } from '@redux/types/users';
 import { UserFormFields } from '@utils/constants/UserFormFields';
 import { parceOption } from '@utils/functions/userFormData/parseOption';
-import { userCreateFormValidator } from '@utils/validators/users/userCreateFormValidator';
-import { userEditFormValidator } from '@utils/validators/users/userEditFormValidator';
+import { userCreateFormValidator } from '@utils/validators/users/UserCreateFormValidator';
+import { userEditFormValidator } from '@utils/validators/users/UserEditFormValidator';
 import { FC } from 'react';
 import { Form } from 'react-final-form';
 import { ButtonContainer, FieldCustom, FormContainer, SelectFieldCustom } from './styled';
