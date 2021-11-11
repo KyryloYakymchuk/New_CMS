@@ -43,6 +43,15 @@ export class GroupsController {
     return await this.groupsService.getGroups(userDTO);
   }
 
+  @Get("/select-data")
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
+  async getGroupsForSelect(
+    @Query() userDTO: QueryDTO
+  ): Promise<Record<string, any>> {
+    return await this.groupsService.getGroupsForSelect(userDTO);
+  }
+
   @Post()
   @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
