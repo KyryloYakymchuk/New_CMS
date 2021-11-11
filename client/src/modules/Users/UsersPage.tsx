@@ -106,7 +106,14 @@ export const UsersPage: FC = () => {
         dispatch(loaderAction(true));
         const queryParams: IGetUsersData = {
             ...sortParams,
-            offset: offsetGenerator(currentPage, deleteRequestStatus, Number(allUsers?.count)),
+            offset: offsetGenerator(
+                currentPage,
+                deleteRequestStatus,
+                Number(allUsers?.count),
+                pathname,
+                search,
+                history
+            ),
             limit: LIMIT
         };
         if (filterFormValue) {

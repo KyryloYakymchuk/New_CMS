@@ -14,7 +14,7 @@ export interface IUser {
     confirmed?: boolean;
     email: string;
     lastname?: string;
-    group?: string[] | [];
+    group?: string[] | { value: string; label: string };
     name: string;
     phone?: string;
     profileImg?: null | string;

@@ -8,6 +8,7 @@ import { FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { currentUserDataSelector } from '@redux/selectors/users';
 import { groupNamesSelector } from '@redux/selectors/groups';
+import { IGetGroupsData } from '@redux/types/groups';
 
 const DEFAULT_LIMIT = 10;
 
@@ -16,8 +17,6 @@ export const CreateUserPage: FC = () => {
     const currentUser: any = useAppSelector(currentUserDataSelector);
     //problem in typed IUser cant use currentUser?.group
     const arrGroupNames = useAppSelector<IOption[] | undefined>(groupNamesSelector);
-    console.log();
-
     const [selectGroupName, setSelectGroupName] = useState<string>();
     const [selectGroupArr, setSelectGroupArr] = useState<MultiValueType>(currentUser?.group);
     const debouncedSelectGroupName = useDebounce(selectGroupName, 500);
@@ -52,10 +51,12 @@ export const CreateUserPage: FC = () => {
     };
 
     useEffect(() => {
-        const queryParams = {
-            limit: DEFAULT_LIMIT,
-            search: debouncedSelectGroupName
+        const queryParams: IGetGroupsData = {
+            limit: DEFAULT_LIMIT
         };
+        if (debouncedSelectGroupName) {
+            queryParams.search = String(debouncedSelectGroupName);
+        }
         dispatch(getGroupNames(queryParams));
     }, [dispatch, debouncedSelectGroupName]);
 
