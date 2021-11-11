@@ -205,8 +205,8 @@ export class LoggerService {
 
     return {
       userID: verified.userID,
-      userEmail: user?.email || fuser.contacts.email,
-      username: user?.name || fuser.userMain.firstName,
+      userEmail: user?.email || fuser?.contacts?.email,
+      username: user?.name || fuser?.userMain?.firstName,
       module,
       action,
     };
@@ -215,7 +215,9 @@ export class LoggerService {
   async saveLog(userDTO: LoggerDTO) {
     const logObj = await this.formAction(userDTO);
     const newLog = new this.logModel(logObj);
+
     await newLog.save();
+
     return newLog;
   }
 }
