@@ -1,15 +1,6 @@
 import i18n from '@utils/helpers/i18n';
 import { emailRE, passwordCyrillicRE, passwordSpacesRE } from '../RegularExpressions';
 
-// interface IImg {
-//     lastModified?: number;
-//     lastModifiedDate?: any;
-//     name?: string;
-//     size?: number;
-//     type?: string;
-//     webkitRelativePath?: string;
-// }
-
 interface IValidator {
     name?: string;
     lastname?: string;
@@ -24,11 +15,12 @@ interface IValidator {
 export const UserEditFormValidator = (values: IValidator) => {
     const errors: IValidator = {};
     // EMAIL
-    if (values.email) {
-        if (!emailRE.test(values.email)) {
-            errors.email = i18n.t('Invalid email address');
-        }
+    if (!values.email) {
+        errors.email = i18n.t('Required');
+    } else if (!emailRE.test(values.email)) {
+        errors.email = i18n.t('Invalid email address');
     }
+
     // PASSWORD
     if (values.password) {
         if (passwordSpacesRE.test(values.password)) {
@@ -44,15 +36,16 @@ export const UserEditFormValidator = (values: IValidator) => {
         errors.confirmPassword = i18n.t('Passwords must match');
     }
     // first name
-    if (values.name) {
-        if (values?.name?.length > 30) {
-            errors.name = i18n.t('Must have a maximum of 30 characters');
-        } else if (!values.name.match('^[a-zA-Z]+$')) {
-            errors.name = i18n.t('The first name must contain only letters');
-        } else if (!values.name.match(/^[A-Z]/)) {
-            errors.name = i18n.t('First letter must be in upper case');
-        }
+    if (!values.name) {
+        errors.name = i18n.t('Required');
+    } else if (values?.name?.length > 30) {
+        errors.name = i18n.t('Must have a maximum of 30 characters');
+    } else if (!values.name.match('^[a-zA-Z]+$')) {
+        errors.name = i18n.t('The first name must contain only letters');
+    } else if (!values.name.match(/^[A-Z]/)) {
+        errors.name = i18n.t('First letter must be in upper case');
     }
+
     //last name
     if (values?.lastname) {
         if (values?.lastname?.length > 30) {
