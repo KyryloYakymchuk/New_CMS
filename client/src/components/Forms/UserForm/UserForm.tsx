@@ -8,12 +8,15 @@ import {
     MultiValueType,
     OnChangeMultiValueType
 } from '@interfaces/types';
+import { ButtonContainer } from '@modules/Modules/styled';
 import { IUser } from '@redux/types/users';
 import { UserFormFields } from '@utils/constants/UserFormFields';
 import { parceOption } from '@utils/functions/userFormData/parseOption';
 import { FC } from 'react';
 import { Form } from 'react-final-form';
-import { ButtonContainer, FieldCustom, FormContainer, SelectFieldCustom } from './styled';
+import { FieldCustom, FormContainer, SelectFieldCustom } from './styled';
+import { useTranslation } from 'react-i18next';
+
 
 interface IProps {
     currentUser?: any;
@@ -33,7 +36,7 @@ export const UserForm: FC<IProps> = ({
     onSubmitForm
 }) => {
     const options: IOption[] = parceOption(arrGroupNames);
-
+    const { t } = useTranslation();
     const formInitialValues = {
         ...currentUser,
         group: parceOption(currentUser?.group)
@@ -58,7 +61,7 @@ export const UserForm: FC<IProps> = ({
                         ))}
                         <SelectFieldCustom
                             name="group"
-                            selectName="Group"
+                            selectName={t('Group')}
                             component={MultiSelect}
                             onChangeMultiValue={onChangeMultiValue}
                             selectGroupArr={selectGroupArr}
@@ -68,10 +71,9 @@ export const UserForm: FC<IProps> = ({
                         {currentUser ? <ImageUploader name="profileImg" /> : null}
 
                         <ButtonContainer>
-                            <Buttons title="Apply" type="submit" style="pinkButton" />
-                            <Buttons title="Acept" type="submit" style="grayButton" />
+                            <Buttons title={t('Apply')} type="submit" style="pinkButton" />
                             <Buttons
-                                title="Cancel"
+                                title={t('Cancel')}
                                 type="button"
                                 style="grayButton"
                                 onClickFunction={() => {

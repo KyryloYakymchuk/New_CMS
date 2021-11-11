@@ -31,6 +31,16 @@ export interface ISingleFilterFormValue {
     search: string;
 }
 
+export interface ISortParams {
+    sortField?: string;
+    sortParameter?: string;
+}
+
+export interface ISortHandlerValue {
+    currentSortParams: ISortParams;
+    currSortingTypeIdx: number;
+}
+
 export type GetSelectDataType = (newValue: string, actionMeta?: InputActionMeta) => void;
 export type MultiValueType = MultiValue<IOption>;
 export type OnChangeMultiValueType = (newValue: MultiValueType) => void;

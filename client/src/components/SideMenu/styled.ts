@@ -37,6 +37,9 @@ export const NavbarItem = styled(NavLink)<IMenuProps>`
   span {
     padding-left: 15px;
     text-align: start;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 
   
@@ -71,7 +74,9 @@ export const TitleNavbarSubItem = styled.div<IMenuProps>`
     padding-left: 15px;
     text-align: start;    
     width: 250px;
-
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 `;
 

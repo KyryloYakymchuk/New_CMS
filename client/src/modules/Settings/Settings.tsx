@@ -17,8 +17,8 @@ export const Settings: FC = () => {
             <label>{t('Language')}-</label>
             <Select value={localStorage.getItem('i18nextLng')!} onChange={handleChange}>
                 {langItem.map(({ item }, index) => (
-                    <option value={item}>
-                        {item} key={index}
+                    <option key={index} value={item}>
+                        {item} 
                     </option>
                 ))}
             </Select>

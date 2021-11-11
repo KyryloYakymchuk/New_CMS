@@ -5,8 +5,10 @@ export const GlobalContainer = styled.div`
 `;
 export const SideContainer = styled.div`
   width: 100%;
+  padding: 0 15px;
+
 `;
 
 export const SideChildren = styled.div`
-  margin-left: 15px;
+  overflow-y: auto;
 `;

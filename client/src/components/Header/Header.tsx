@@ -1,17 +1,16 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { Button } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import { setModalStatusAction } from '@redux/actions/modal';
+import { setModalMessageAction, setModalStatusAction } from '@redux/actions/modal';
 import { Icons } from '@utils/constants/icon';
-import { AuthRoutes } from '@utils/enums/routes';
-import { useAppSelector } from '@utils/hooks/useAppSelector';
+import { AuthRoutes } from '@utils/enums/RoutesPath';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
 import { HeaderContainer, HeaderTitle, TitleContainer, TitleItem } from './styled';
-import { modalStatusSelector } from '@redux/selectors/modal';
 import { tokenServise } from '@services/tokenServise';
+import { ModalButton } from '@components/Modal/ModalButton';
 
 interface Props {
     title: string;
@@ -21,9 +20,8 @@ export const Header: FC<Props> = ({ title }) => {
     const dispatch = useDispatch();
     const history = useHistory();
     const { t } = useTranslation();
-
-    const isModalOpen = useAppSelector(modalStatusSelector);
-
+    const [modalStatus, setModalStatus] = useState<boolean>(false);
+    
     /* For future mobile version  */
     //     const statusmenu = useTypedSelector( ({ menuReducer }) => menuReducer.status);
     // const handleClickBurger = () => {
@@ -32,18 +30,19 @@ export const Header: FC<Props> = ({ title }) => {
     // };
 
     const handleClickLogout = () => {
-        dispatch(setModalStatusAction(true));
+        dispatch(setModalMessageAction('Are you sure you want to log out?'));
+        setModalStatus(true);
     };
 
     const handleAccept = () => {
         tokenServise.removeToken();
-
         history.push(AuthRoutes.LOGIN);
         dispatch(setModalStatusAction(false));
     };
 
     const handleClose = () => {
-        dispatch(setModalStatusAction(false));
+        setModalStatus(false);
+
     };
 
     return (
@@ -76,11 +75,11 @@ export const Header: FC<Props> = ({ title }) => {
                 </TitleContainer>
             </HeaderContainer>
             <ModalConfirm
-                isModalOpen={isModalOpen}
-                message={'Are you sure you want to log out?'}
-                handleAccept={handleAccept}
-                handleClose={handleClose}
-            />
+             handleAccept={handleAccept}
+             handleClose={handleClose}
+             modalStatus={modalStatus}>
+                <ModalButton handleAccept={handleAccept} handleClose={handleClose} />
+            </ModalConfirm>
         </>
     );
 };

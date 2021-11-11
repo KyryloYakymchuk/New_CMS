@@ -2,7 +2,8 @@ export enum AuthActionsTypes {
     LOGIN = 'LOGIN',
     REGISTER = 'REGISTER',
     RESET = 'RESET',
-    RESET_PASSWORD = 'RESET_PASSWORD'
+    RESET_PASSWORD = 'RESET_PASSWORD',
+    REGISTER_CORFIRM = 'REGISTER_CORFIRM'
 }
 
 //LOGIN
@@ -40,6 +41,15 @@ export interface IRegister {
 export interface IRegisterAction {
     type: AuthActionsTypes.REGISTER;
     payload: IRegister;
+}
+
+export interface IConfirmRegisterPayload  {
+    token?: string;
+}
+
+export interface IConfirmRegisterAction {
+    type: AuthActionsTypes.REGISTER_CORFIRM ;
+    payload: IConfirmRegisterPayload;
 }
 
 //RESET

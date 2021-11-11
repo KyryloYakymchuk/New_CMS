@@ -58,7 +58,7 @@ export class AuthService {
       template: "../server/src/mail/templates/mailConfirm.hbs",
       context: {
         token: hash,
-        url: `${process.env.BASE_URL}auth/register/confirm`,
+        url: `${process.env.BASE_URL}auth/login`,
       },
     });
 

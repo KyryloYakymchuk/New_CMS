@@ -1,44 +1,46 @@
+import i18n from '@utils/helpers/i18n';
+
 export const UserFormFields = [
     {
         type: 'text',
         name: 'name',
-        label: 'Name',
+        label: i18n.t('Name'),
         icon: null
     },
     {
         type: 'text',
         name: 'email',
-        label: 'Email',
+        label: i18n.t('Email'),
         icon: null
     },
     {
         type: 'text',
         name: 'lastname',
-        label: 'Last name',
+        label: i18n.t('Last name'),
         icon: null
     },
     {
         type: 'password',
         name: 'password',
-        label: 'Password',
+        label: i18n.t('Password'),
         icon: null
     },
     {
         type: 'text',
         name: 'phone',
-        label: 'Phone',
+        label: i18n.t('Phone Number'),
         icon: null
     },
     {
         type: 'password',
         name: 'confirmPassword',
-        label: 'Confirm Password',
+        label: i18n.t('Confirm Password'),
         icon: null
     },
     {
         type: 'date',
         name: 'birthday',
-        label: 'Date',
+        label: i18n.t('Birthday'),
         icon: null
     }
 ];

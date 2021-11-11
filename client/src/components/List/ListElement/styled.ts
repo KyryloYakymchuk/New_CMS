@@ -23,6 +23,7 @@ export const ListElementContainer = styled.div`
   }
   & > :last-child {
     width: 30%;
+    justify-content: flex-end;
   }
   & > :first-child {
     color: black;

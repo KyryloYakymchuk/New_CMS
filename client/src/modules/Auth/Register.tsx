@@ -7,12 +7,11 @@ import { loaderAction } from '@redux/actions/loader';
 import { setModalStatusAction } from '@redux/actions/modal';
 import { errorAction } from '@redux/actions/error';
 import { MainText } from '@utils/constants/AuthField/RegisterFields';
-import { AuthRoutes } from '@utils/enums/routes';
+import { AuthRoutes } from '@utils/enums/RoutesPath';
 import { AuthLayout } from '@components/Auth/AuthLayout/AuthLayout';
 import { RegisterForm } from '@components/Auth/RegisterForm/RegisterForm';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
-import { useAppSelector } from '@utils/hooks/useAppSelector';
-import { modalStatusSelector } from '@redux/selectors/modal';
+import { ModalButton } from '@components/Modal/ModalButton';
 
 export interface IFormValues {
     email: string;
@@ -30,8 +29,6 @@ export const Register: FC = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const { t } = useTranslation();
-
-    const isModalOpen = useAppSelector(modalStatusSelector);
 
     const onSubmit = (value: IFormValues) => {
         dispatch(registerAction({ value }));
@@ -53,10 +50,10 @@ export const Register: FC = () => {
                 <RegisterForm onSubmit={onSubmit} />
             </AuthLayout>
             <ModalConfirm
-                isModalOpen={isModalOpen}
-                message={t('A confirmation letter has been sent to the Email !')}
                 handleAccept={handleAccept}
-            />
+            >
+            <ModalButton handleAccept={handleAccept} />
+            </ModalConfirm>
         </>
     );
 };

@@ -1,9 +1,11 @@
 export enum ModalActionsTypes {
-    MODAL_STATUS = 'MODAL_STATUS'
+    MODAL_STATUS = 'MODAL_STATUS',
+    MODAL_MESSAGE = 'MODAL_MESSAGE'
 }
 
 export interface IModalState {
-    modal: boolean;
+    modalStatus: boolean;
+    modalMessage?:string;
 }
 
 export interface IModalAction {
@@ -11,4 +13,10 @@ export interface IModalAction {
     payload: boolean;
 }
 
-export type ModalActions = IModalAction;
+export interface IModaMessagelAction {
+    type: ModalActionsTypes.MODAL_MESSAGE;
+    payload: string;
+}
+
+
+export type ModalActions = IModalAction | IModaMessagelAction;

@@ -1,8 +1,8 @@
 import React, { FC, MouseEventHandler } from 'react';
 import { IListColumns } from '@interfaces/types';
-import { ListElement } from './ListElement/ListElement';
-import { ListTitle } from './ListTitle/ListTitle';
-import { ListContainer } from './styled';
+import { ListTitle } from '@components/List/ListTitle/ListTitle';
+import { ListContainer } from '@components/List/styled';
+import { ListDDElement } from './ListElement/ListDDElement';
 
 type OnClickFuncType = (
     value: React.ChangeEvent<HTMLDivElement>
@@ -22,7 +22,7 @@ interface IPrors {
     sortColumn?: string;
 }
 
-export const List: FC<IPrors> = ({
+export const ListDD: FC<IPrors> = ({
     listColumns,
     listData,
     arrButton,
@@ -39,13 +39,13 @@ export const List: FC<IPrors> = ({
                 sortHandler={sortHandler}
             />
             {listData?.map((data:any, index:any) => (
-                <ListElement
+                <ListDDElement
                     key={index}
                     listColumns={listColumns}
                     data={data}
                     arrButton={arrButton}
                 />
-            ))}
+            ))}         
         </ListContainer>
     );
 };

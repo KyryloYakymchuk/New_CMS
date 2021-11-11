@@ -1,11 +1,12 @@
-import { AuthRoutes } from '@utils/enums/routes';
+import { AuthRoutes } from '@utils/enums/RoutesPath';
+import i18n from '@utils/helpers/i18n';
 import { Icons } from '../icon';
 
 export const ResetFields = [
     {
         type: 'text',
         name: 'email',
-        label: 'Email',
+        label: i18n.t('Email'),
         icon: <Icons.AlternateEmailIcon />
     }
 ];

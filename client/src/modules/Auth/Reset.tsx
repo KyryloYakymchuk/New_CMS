@@ -5,12 +5,11 @@ import { errorAction } from '@redux/actions/error';
 import { loaderAction } from '@redux/actions/loader';
 import { resetAction } from '@redux/actions/auth';
 import { MainText } from '@utils/constants/AuthField/ResetFields';
-import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { AuthLayout } from '@components/Auth/AuthLayout/AuthLayout';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
 import { ResetForm } from '@components/Auth/ResetForm/ResetForm';
-import { setModalStatusAction } from '@redux/actions/modal';
-import { modalStatusSelector } from '@redux/selectors/modal';
+import {  setModalStatusAction } from '@redux/actions/modal';
+import { ModalButton } from '@components/Modal/ModalButton';
 
 export interface IFormValues {
     email: string;
@@ -19,7 +18,6 @@ export interface IFormValues {
 export const Reset: FC = () => {
     const { title, description } = MainText;
 
-    const isModalOpen = useAppSelector(modalStatusSelector);
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -27,10 +25,12 @@ export const Reset: FC = () => {
     const onSubmit = (value: IFormValues) => {
         dispatch(resetAction({ email: value.email }));
         dispatch(loaderAction(true));
+
     };
 
     const handleAccept = () => {
         dispatch(setModalStatusAction(false));
+
     };
 
     useEffect(() => {
@@ -43,10 +43,10 @@ export const Reset: FC = () => {
                 <ResetForm onSubmit={onSubmit} />
             </AuthLayout>
             <ModalConfirm
-                isModalOpen={isModalOpen}
-                message={t('A confirmation letter has been sent to the Email !')}
                 handleAccept={handleAccept}
-            />
+            >
+            <ModalButton handleAccept={handleAccept} />
+            </ModalConfirm>
         </>
     );
 };

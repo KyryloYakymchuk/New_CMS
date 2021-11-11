@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Field } from 'react-final-form';
 
 export const FormContainer = styled.div`
-    width: 45%;
+    width: 900px;
     text-decoration: none;
     display: flex;
     flex-wrap: wrap;

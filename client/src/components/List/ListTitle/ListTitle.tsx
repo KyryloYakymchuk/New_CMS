@@ -2,6 +2,7 @@ import { FC, MouseEventHandler } from 'react';
 import { IListColumns } from '@interfaces/types';
 import { ListTitleContainer, SvgButton } from './styled';
 import { Icons } from '@utils/constants/icon';
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
     sortType?: string;
@@ -10,6 +11,8 @@ interface IProps {
     sortColumn?: string;
 }
 export const ListTitle: FC<IProps> = ({ listColumns, sortHandler, sortType, sortColumn }) => {
+const { t } = useTranslation();
+
     return (
         <ListTitleContainer>
             {listColumns.map(({ title, name }) => (
@@ -20,7 +23,7 @@ export const ListTitle: FC<IProps> = ({ listColumns, sortHandler, sortType, sort
                     )}
                 </div>
             ))}
-            <div>interact</div>
+            <div>{t('interact')}</div>
         </ListTitleContainer>
     );
 };
