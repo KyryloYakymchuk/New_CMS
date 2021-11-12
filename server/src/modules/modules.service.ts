@@ -841,14 +841,13 @@ export class ModulesService {
   async editModule(dto: EditModuleDTO): Promise<Record<string, any>> {
     const { moduleID, name, fields, categories } = dto;
 
-    const module = await this.findModulesByID(moduleID);
-
     if (fields)
       throw new HttpException(
         "You can`t edit fields using this request!",
         HttpStatus.BAD_REQUEST
       );
 
+    const module = await this.findModulesByID(moduleID);
     if (!module)
       throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
 
@@ -864,7 +863,7 @@ export class ModulesService {
 
     return this.moduleModel.updateOne(
       { moduleID },
-      { $set: { name, fields }, categories },
+      { name, categories },
       { new: true }
     );
   }
@@ -878,8 +877,8 @@ export class ModulesService {
     return module.fields;
   }
 
-  async addField(userDTO: AddFieldsDTO): Promise<Record<string, any>> {
-    const { moduleID, name, type, settings } = userDTO;
+  async addField(dto: AddFieldsDTO): Promise<Record<string, any>> {
+    const { moduleID, name, type, settings } = dto;
 
     const module = await this.findModulesByID(moduleID);
     if (!module)
@@ -902,6 +901,7 @@ export class ModulesService {
       order: moduleFields === 0 ? 0 : maxOrderObject.order + 1,
     };
     const newFieldsArr = moduleFields.push(createdField);
+
     await this.validateFields(moduleFields);
 
     await this.moduleModel.findOneAndUpdate(
@@ -913,8 +913,8 @@ export class ModulesService {
     return { count: newFieldsArr, fields: moduleFields };
   }
 
-  async editField(userDTO: EditFieldsDTO): Promise<Record<string, any>> {
-    const { id, name, type, settings } = userDTO;
+  async editField(dto: EditFieldsDTO): Promise<Record<string, any>> {
+    const { id, name, type, settings } = dto;
 
     const module = await this.moduleModel.findOne({ "fields.id": id });
     const { fields } = module;
@@ -947,20 +947,20 @@ export class ModulesService {
     return { count: fields.length, fields: validatedFields };
   }
 
-  async editFieldsOrder(userDTO: EditFieldsOrderDTO) {
-    const { moduleID, fields } = userDTO;
+  async editFieldsOrder(dto: EditFieldsOrderDTO) {
+    const { moduleID, fields } = dto;
     const module = await this.findModulesByID(moduleID);
 
     if (!module)
       throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
+
     await this.changeFieldsOrder(module.name, fields, moduleID);
+
     return this.findModulesByID(moduleID);
   }
 
-  async addItemCategory(
-    userDTO: AddItemCategoryDTO
-  ): Promise<Record<string, any>> {
-    const { moduleName, itemID, categoryID } = userDTO;
+  async addItemCategory(dto: AddItemCategoryDTO): Promise<Record<string, any>> {
+    const { moduleName, itemID, categoryID } = dto;
 
     const module = await this.findModulesByName(moduleName);
     if (!module)
@@ -979,9 +979,9 @@ export class ModulesService {
   }
 
   async deleteItemCategory(
-    userDTO: DeleteItemCategoryDTO
+    dto: DeleteItemCategoryDTO
   ): Promise<Record<string, any>> {
-    const { moduleName, itemID, categoryID } = userDTO;
+    const { moduleName, itemID, categoryID } = dto;
 
     const module = await this.findModulesByName(moduleName);
     if (!module)
@@ -996,11 +996,12 @@ export class ModulesService {
     });
 
     await this.removeItemCategoryByID({ moduleName, itemID, categoryID });
+
     return this.getItemCategories({ moduleName, itemID });
   }
 
-  async deleteField(userDTO: DeleteFieldsDTO) {
-    const module = await this.moduleModel.findOne({ "fields.id": userDTO });
+  async deleteField(dto: DeleteFieldsDTO) {
+    const module = await this.moduleModel.findOne({ "fields.id": dto });
     const { fields } = module;
     if (!module)
       throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
@@ -1008,13 +1009,13 @@ export class ModulesService {
     let idx: number;
 
     fields.forEach((field, index) => {
-      if (field.id === userDTO) idx = index;
+      if (field.id === dto) idx = index;
     });
 
     fields.splice(idx, 1);
 
     await this.moduleModel.findOneAndUpdate(
-      { "fields.id": userDTO },
+      { "fields.id": dto },
       { $set: { fields } },
       { new: true }
     );
@@ -1023,10 +1024,10 @@ export class ModulesService {
   }
 
   async uploadFile(
-    userDTO: ModuleIDDTO,
+    dto: ModuleIDDTO,
     file: any
   ): Promise<Record<string, string>> {
-    const { moduleID } = userDTO;
+    const { moduleID } = dto;
 
     const imgTypes = [
       "png",
@@ -1080,9 +1081,10 @@ export class ModulesService {
 
   async deleteModule(userDTO: DeleteModuleDTO): Promise<Record<string, any>> {
     const module = await this.findModulesByID(userDTO);
-    await this.moduleModel.findOneAndDelete({ moduleID: module.moduleID });
-    const modulesCount = await this.moduleModel.find().countDocuments();
 
+    await this.moduleModel.findOneAndDelete({ moduleID: module.moduleID });
+
+    const modulesCount = await this.moduleModel.find().countDocuments();
     const modules = await this.moduleModel.find().limit(10).skip(0);
 
     return {
@@ -1091,39 +1093,37 @@ export class ModulesService {
     };
   }
 
-  async addItemToWishList(userId: string, userDTO: WishListDTO) {
+  async addItemToWishList(userId: string, dto: WishListDTO) {
+    const { moduleName, itemId } = dto;
+
     const user = await this.userService.findUserByUserID(userId);
-    if (!user) {
-      throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
-    }
+    if (!user) throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
 
-    const item = await this.getItemByID(userDTO.moduleName, userDTO.itemId);
-    if (!item) {
-      throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
-    }
+    const item = await this.getItemByID(moduleName, itemId);
+    if (!item) throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
 
-    const sameItem = user.wishlist.find((el) => {
-      return el.itemData.itemID == item.itemData.itemID;
-    });
-    if (sameItem) {
+    const sameItem = user.wishlist.find(
+      (el) => el.itemData.itemID == item.itemData.itemID
+    );
+
+    if (sameItem)
       throw new HttpException(
         "Same product is already exist in wishlist",
         HttpStatus.BAD_REQUEST
       );
-    }
-    if (!user.wishlist) {
-      user.wishlist = [];
-    }
+
+    if (!user.wishlist) user.wishlist = [];
+
     user.wishlist.push(item);
 
-    if (!item.itemData.likedUsers) {
-      item.itemData.likedUsers = [];
-    }
+    if (!item.itemData.likedUsers) item.itemData.likedUsers = [];
+
     item.itemData.likedUsers.push(user.userID);
 
     await mongoose.connect(process.env.MONGO_URI, options);
-    const Item = require(`../../schemas/${userDTO.moduleName}`);
-    await Item.findOneAndUpdate({ "itemData.itemID": userDTO.itemId }, item);
+
+    const Item = require(`../../schemas/${moduleName}`);
+    await Item.findOneAndUpdate({ "itemData.itemID": itemId }, item);
 
     const wishlist = user.wishlist;
     await this.userService.editUser({ userID: userId, wishlist });
@@ -1131,83 +1131,75 @@ export class ModulesService {
     return "Product successfully add to wishlist";
   }
 
-  async addItemToViewed(userId: string, userDTO: WishListDTO) {
+  async addItemToViewed(userId: string, dto: WishListDTO) {
+    const { moduleName, itemId } = dto;
+
     const user = await this.userService.findUserByUserID(userId);
-    if (!user) {
-      throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
-    }
+    if (!user) throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
 
-    const item = await this.getItemByID(userDTO.moduleName, userDTO.itemId);
-    if (!item) {
-      throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
-    }
+    const item = await this.getItemByID(moduleName, itemId);
+    if (!item) throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
 
-    const sameItem = user.viewed.find((el) => {
-      return el.itemData.itemID == item.itemData.itemID;
-    });
-    if (sameItem) {
-      throw new HttpException("", HttpStatus.BAD_REQUEST);
-    }
+    const sameItem = user.viewed.find(
+      (el) => el.itemData.itemID == item.itemData.itemID
+    );
+
+    if (sameItem) throw new HttpException("", HttpStatus.BAD_REQUEST);
+
     user.viewed.push(item);
     const viewed = user.viewed;
+
     await this.userService.editUser({ userID: userId, viewed });
   }
 
-  async removeItemFromWishList(userId: string, userDTO: WishListDTO) {
+  async removeItemFromWishList(userId: string, dto: WishListDTO) {
+    const { moduleName, itemId } = dto;
+
     const user = await this.userService.findUserByUserID(userId);
-    if (!user) {
-      throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
-    }
+    if (!user) throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
 
-    const item = await this.getItemByID(userDTO.moduleName, userDTO.itemId);
-    if (!item) {
-      throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
-    }
+    const item = await this.getItemByID(moduleName, itemId);
+    if (!item) throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
 
-    const sameItem = user.wishlist.find((el) => {
-      return el.itemData.itemID == item.itemData.itemID;
-    });
-    if (!sameItem) {
+    const sameItem = user.wishlist.find(
+      (el) => el.itemData.itemID == item.itemData.itemID
+    );
+    if (!sameItem)
       throw new HttpException(
         "No such product in wishlist",
         HttpStatus.BAD_REQUEST
       );
-    }
 
     if (!item.itemData.likedUsers) item.itemData.likedUsers = [];
-    item.itemData.likedUsers = item.itemData.likedUsers.filter(function (
-      value
-    ) {
-      return value != userId;
-    });
+
+    item.itemData.likedUsers = item.itemData.likedUsers.filter(
+      (value) => value !== userId
+    );
 
     await mongoose.connect(process.env.MONGO_URI, options);
+
     const Item = require(`../../schemas/webshop`);
     await Item.findOneAndUpdate({ itemID: item.itemID }, item);
 
     if (!user.wishlist) user.wishlist = [];
-    const wishlist = user.wishlist.filter(function (value) {
-      return value.itemData.itemID != userDTO.itemId;
-    });
+    const wishlist = user.wishlist.filter(
+      (value) => value.itemData.itemID != itemId
+    );
 
     await this.userService.editUser({ userID: userId, wishlist });
     await mongoose.connection.close();
+
     return wishlist;
   }
 
-  async markNews(userId: string, userDTO: MarkNewsDTO) {
+  async markNews(userId: string, dto: MarkNewsDTO) {
     let user = await this.userService.findUserByUserID(userId);
+    if (!user) throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
 
-    if (!user) {
-      throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
-    }
+    const { itemID, type } = dto;
 
-    const { itemID, type } = userDTO;
     let item = await this.getItemByID("news", itemID);
-
-    if (!item) {
-      throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
-    }
+    if (!item) throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
 
     user = user.toObject();
     item = item.toObject();
@@ -1221,11 +1213,11 @@ export class ModulesService {
       item.like += Number(user.likedNews?.includes(itemID));
 
       await this.userService.updateUser(user);
-
       await this.editItemByID("news", itemID, [item]);
 
       return { isLiked: user.likedNews?.includes(itemID), likes: item.like };
     }
+
     if (type == "dislike") {
       user.dislikedNews?.includes(itemID)
         ? (user.dislikedNews = user.dislikedNews.filter((el) => el !== itemID))
