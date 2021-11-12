@@ -21,7 +21,6 @@ export const Login: FC = () => {
     const history = useHistory();
     const { t } = useTranslation();
     const token = useParams();
-    console.log(token);
 
     const onSubmit = (value: IFormValues) => {
         dispatch(loginAction({ value, history }));

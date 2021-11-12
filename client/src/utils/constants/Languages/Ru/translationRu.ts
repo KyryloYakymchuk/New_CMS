@@ -88,6 +88,8 @@ export const ru = {
     'Wrong date': 'Неправильная дата',
     'name should not be empty': 'Имя не должно быть пустым!',
     "Name shouldn't have spaces!": 'Имя не должно содержать пробелов!',
+    'One letter, one number, only latin, and one special character':
+    'Одна буква, одна цифра, только латынь и один спец. символ',
     // Modules
    'This module is already exists!': 'Этот модуль уже существует!',
    //Fields

@@ -1,5 +1,5 @@
 import i18n from '@utils/helpers/i18n';
-import { emailRE, passwordCyrillicRE, passwordSpacesRE } from '../RegularExpressions';
+import { emailRE, passwordMatch, passwordSpacesRE } from '../RegularExpressions';
 
 interface IValidator {
     name?: string;
@@ -27,8 +27,9 @@ export const userEditFormValidator = (values: IValidator) => {
             errors.password = i18n.t('Password must not contain spaces');
         } else if (values?.password?.length < 8) {
             errors.password = i18n.t('Minimum 8 characters');
-        } else if (passwordCyrillicRE.test(values.password)) {
-            errors.password = i18n.t('Password must not contain cyrillic');
+        } else if (!values.password.match(passwordMatch)){
+            errors.password 
+            = i18n.t('One letter, one number, only latin, and one special character');
         }
     }
     // CONFIRM PASSWORD
