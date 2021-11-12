@@ -1,18 +1,20 @@
 import { combineReducers } from 'redux';
 import error from './error';
 import loader from './loader';
-import modalStatus from './modal';
+import modal from './modal';
 import menuReducer from './menu';
 import users from './users';
 import groups from './groups';
+import modules from './modules';
 
 const rootReducer = combineReducers({
     menuReducer,
     error,
     loader,
-    modalStatus,
+    modal,
     users,
-    groups
+    groups,
+    modules
 });
 
 export default rootReducer;

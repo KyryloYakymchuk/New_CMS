@@ -20,7 +20,7 @@ import {
 import { AnyFilesInterceptor } from "@nestjs/platform-express";
 import { diskStorage } from "multer";
 import * as uniqid from "uniqid";
-import { Request } from "express";
+import { query, Request } from "express";
 import { AuthGuard } from "@nestjs/passport";
 import { join } from "path";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
@@ -528,10 +528,11 @@ export class ModulesController {
     return result;
   }
 
-  @Put()
+  @Put("/")
   @HttpCode(HttpStatus.OK)
   async editModule(
     @Body() userDTO: EditModuleDTO,
+    @Query() queryDTO: PaginationDTO,
     @Req() req: Request
   ): Promise<Record<string, any>> {
     const { name, fields } = userDTO;
@@ -541,14 +542,16 @@ export class ModulesController {
         HttpStatus.NOT_ACCEPTABLE
       );
     }
+    
     if (fields) {
       const validated = await this.moduleService.validateFields(fields);
       if (validated) userDTO.fields = validated;
-
-      const result = await this.moduleService.editModule(userDTO);
-      await this.loggerGateway.logAction(req, module);
-      return result;
     }
+    
+    const result = await this.moduleService.editModule(userDTO);
+    await this.loggerGateway.logAction(req, module);
+
+    return this.moduleService.getModules(queryDTO)
   }
 
   @Get("fields/:moduleName")

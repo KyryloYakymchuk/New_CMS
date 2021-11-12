@@ -1,10 +1,12 @@
 import { FC } from 'react';
 import { IListColumns } from '@interfaces/types';
-import { IArrButton } from '../List';
-import { Button, ButtonBlock, ListElementContainer } from './styled';
 import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { loaderStatusSelector } from '@redux/selectors/loader';
 import { SkeletonLoader } from '@components/SkeletonLoader/SkeletonLoader';
+import { IArrButton } from '../ListDD';
+import { Button,
+         ButtonBlock,
+         ListElementContainer } from '@components/List/ListElement/styled';
 
 interface IProps {
     listColumns: IListColumns[];
@@ -13,18 +15,20 @@ interface IProps {
     arrButton?: IArrButton[];
 }
 
-export const ListElement: FC<IProps> = ({ listColumns, data, arrButton }) => {
+export const ListDDElement: FC<IProps> = ({ listColumns, data, arrButton }) => {
     const loaderStatus = useAppSelector(loaderStatusSelector);
-
     return (
         <ListElementContainer>
             {loaderStatus
                 ? listColumns?.map(({ name }) => (
-                      <div>
-                          <SkeletonLoader key={name} width="60%" height="25px" />
+                      <div key={name}>
+                          <SkeletonLoader width="60%" height="25px" />
                       </div>
                   ))
-                : listColumns?.map(({ name }) => <div key={name}>{data[name]}</div>)}
+                : listColumns?.map(({ name }) => 
+                <div key={name}>{data[name]}</div>                              
+
+                )}
             <ButtonBlock>
                 {loaderStatus ? (
                     <SkeletonLoader width="50%" height="25px" />

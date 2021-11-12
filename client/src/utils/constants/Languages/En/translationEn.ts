@@ -10,9 +10,10 @@ export const en = {
     Settings: 'Settings',
     //Sub items side menu
     //Pages
-    'All Pages': 'All Pages',
-    'New Pages': 'New Pages',
-    'Edit Page': 'Edit Page',
+    'All Pages':'All Pages',
+    'New Page':'New Page',
+    'Edit Page':'Edit Page',
+    'Create Page':'Create page',
     //NewsLetter
     'All Letter': 'All Letter',
     'All Jobs': 'All Jobs',
@@ -21,6 +22,13 @@ export const en = {
     'All Fields': 'All Fields',
     'All Items': 'All Items',
     'All Orders': 'All Orders',
+    // Modules 
+    'All Modules':'All Modules',
+    'New Module':'New Module',
+    'Edit Module':'Edit Module',
+    'Delete module':'Delete module',
+    'Module Fields':'Module Fields',
+
     // Settings
     Language: 'Language',
 
@@ -30,24 +38,31 @@ export const en = {
     No: 'No',
     Filter: 'Filter',
     'Create user': 'Create user',
+    'Apply':'Apply',
+    'Cancel':'Cancel',
+    'Create':'Create',
+    'New Field':'New Field',
+
     //List
     Name: 'Name',
     Email: 'Email',
     Number: 'Number',
     interact: 'interact',
+    Type:'Type',
+    Module:'Module',
 
     //Modal message
     'Are you sure you want to log out?': 'Are you sure you want to log out?',
     'A confirmation letter has been sent to the Email !':
-        'A confirmation letter has been sent to the Email !',
+    'A confirmation letter has been sent to the Email !',
     'Password reset successfuly !': 'Password reset successfuly !',
 
     //Auth
-    'Forgot Password': 'Forgot Password',
+    'Forgot Password?': 'Forgot Password?',
     'Sign In': 'Sign In',
     Register: 'Register',
     'Don`t have an account ?': 'Don`t have an account ?',
-    'Hello ! Welcome back.': 'Hello ! Welcome back.',
+    'Hello! Welcome back.': 'Hello! Welcome back.',
     'Log in with your data that you entered during Your registrarion':
         'Log in with your data that you entered during Your registrarion',
     'Have an account ?': 'Have an account ?',
@@ -74,5 +89,18 @@ export const en = {
     'The last name must contain only letters': 'The last name must contain only letters',
     'The phone number must contain only numbers': 'The phone number must contain only numbers',
     'Invalid Phone!': 'Invalid Phone!',
-    'Wrong date': 'Wrong date'
+    'Wrong date': 'Wrong date',
+    'name should not be empty': 'Name should not be empty!',
+    "Name shouldn't have spaces!": 'Name shouldn`t have spaces!',
+    // Modules
+   'This module is already exists!': 'This module is already exists!',
+    //Fields Label 
+    'Password':'Password',
+    'Confirm Password':'Confirm Password',
+    'Firstname':'Firstname',
+    'Lastname':'Lastname',
+    'Phone Number':'Phone Number',
+    'Birthday':'Birthday',
+    'Module Name':'Module Name',
+    'Group':'Group'
 };

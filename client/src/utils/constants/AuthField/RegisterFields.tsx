@@ -1,49 +1,50 @@
-import { AuthRoutes } from '@utils/enums/routes';
+import { AuthRoutes } from '@utils/enums/RoutesPath';
+import i18n from '@utils/helpers/i18n';
 import { Icons } from '../icon';
 
 export const RegisterFields = [
     {
         type: 'text',
         name: 'email',
-        label: 'Email',
+        label: `${i18n.t('Email')} *`,
         icon: <Icons.AlternateEmailIcon />
     },
     {
         type: 'password',
         name: 'password',
-        label: 'Password',
+        label: `${i18n.t('Password')} *`,
         icon: <Icons.VpnKeyIcon />
     },
     {
         type: 'password',
         name: 'confirmPassword',
-        label: 'Confirm Password',
+        label: `${i18n.t('Confirm Password')} *`,
         icon: <Icons.VpnKeyIcon />
     },
     {
         type: 'text',
-        name: 'name',
-        label: 'Firstname',
+        name: 'firstname',
+        label: `${i18n.t('Firstname')} *`,
         icon: <Icons.PersonIcon />
     },
     {
         type: 'text',
         name: 'lastname',
-        label: 'Lastname',
+        label: i18n.t('Lastname'),
         icon: <Icons.PersonOutlineIcon />
     },
 
     {
         type: 'text',
         name: 'phone',
-        label: 'Phone Number',
+        label: i18n.t('Phone Number'),
         icon: <Icons.PhoneIphoneIcon />
     },
 
     {
         type: 'date',
         name: 'birthday',
-        label: 'Birthday',
+        label: i18n.t('Birthday'),
         icon: <Icons.TodayIcon />
     }
 ];

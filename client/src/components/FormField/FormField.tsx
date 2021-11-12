@@ -6,7 +6,7 @@ import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { InputAdornment } from '@mui/material';
 import { errorMessageSelector } from '@redux/selectors/error';
 
-type FormProps = FieldRenderProps<string, any>;
+type FormProps = FieldRenderProps<string, HTMLElement>;
 
 const FormField: FC<FormProps> = ({ input, meta, children, ...rest }) => {
     const errorMessage = useAppSelector(errorMessageSelector);

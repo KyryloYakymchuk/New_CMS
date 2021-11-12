@@ -1,3 +1,4 @@
+import { MouseEventHandler } from 'react';
 import { InputActionMeta, MultiValue } from 'react-select';
 export interface IAddress {
     street: string;
@@ -30,6 +31,19 @@ export interface IOption {
 export interface ISingleFilterFormValue {
     search: string;
 }
+
+export interface ISortParams {
+    sortField?: string;
+    sortParameter?: string;
+}
+
+export interface ISortHandlerValue {
+    currentSortParams: ISortParams;
+    currSortingTypeIdx: number;
+}
+export type OnClickFuncType = (
+    e: React.ChangeEvent<HTMLDivElement>
+) => MouseEventHandler<HTMLDivElement>;
 
 export type GetSelectDataType = (newValue: string, actionMeta?: InputActionMeta) => void;
 export type MultiValueType = MultiValue<IOption>;

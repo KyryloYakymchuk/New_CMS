@@ -1,9 +1,9 @@
 import { FC, MouseEventHandler } from 'react';
 import { IListColumns, OnClickFuncType } from '@interfaces/types';
-import { ListElement } from './ListElement/ListElement';
-import { ListTitle } from './ListTitle/ListTitle';
-import { ListContainer } from './styled';
-import { Loader } from '@components/Loader/Loader';
+import { ListTitle } from '@components/List/ListTitle/ListTitle';
+import { ListContainer } from '@components/List/styled';
+import { ListDDElement } from './ListElement/ListDDElement';
+
 
 export interface IArrButton {
     item: JSX.Element;
@@ -20,7 +20,7 @@ interface IPrors {
     sortColumn?: string;
 }
 
-export const List: FC<IPrors> = ({
+export const ListDD: FC<IPrors> = ({
     listColumns,
     listData,
     arrButton,
@@ -38,13 +38,13 @@ export const List: FC<IPrors> = ({
             />
             {/* Always diferent data */}
             {listData?.map((data:any, index:number) => (
-                <ListElement
+                <ListDDElement
                     key={index}
                     listColumns={listColumns}
                     data={data}
                     arrButton={arrButton}
                 />
-            )) || <Loader />}
+            ))}         
         </ListContainer>
     );
 };

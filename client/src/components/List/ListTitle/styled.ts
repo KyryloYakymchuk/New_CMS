@@ -22,6 +22,7 @@ export const ListTitleContainer = styled.div`
         align-items: center;
         :last-child {
             width: 30%;
+            justify-content: flex-end;
         }
     }
 `;

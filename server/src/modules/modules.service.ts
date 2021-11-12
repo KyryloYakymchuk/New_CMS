@@ -945,6 +945,8 @@ export class ModulesService {
 
   async editModule(userDTO: EditModuleDTO): Promise<Record<string, any>> {
     const { moduleID, name, fields } = userDTO;
+    console.log({namebefore:name});
+    
 
     const module = await this.findModulesByID(moduleID);
 
@@ -966,10 +968,12 @@ export class ModulesService {
           HttpStatus.CONFLICT
         );
     }
+    console.log({name});
+    
 
     return this.moduleModel.findOneAndUpdate(
       { moduleID },
-      { $set: userDTO },
+      { $set: { name, fields } },
       { new: true }
     );
   }
@@ -1259,7 +1263,14 @@ export class ModulesService {
   async deleteModule(userDTO: DeleteModuleDTO): Promise<Record<string, any>> {
     const module = await this.findModulesByID(userDTO);
     await this.moduleModel.findOneAndDelete({ moduleID: module.moduleID });
-    return this.moduleModel.find().limit(10).skip(0);
+    const modulesCount = await this.moduleModel.find().countDocuments()
+
+    const modules = await this.moduleModel.find().limit(10).skip(0)
+
+    return {
+      count: modulesCount,
+      modules
+    };
   }
 
   async addItemToWishList(userId: string, userDTO: WishListDTO) {

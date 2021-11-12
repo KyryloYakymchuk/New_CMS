@@ -46,7 +46,7 @@ export const LoginForm: FC<LoginProps> = ({ onSubmit }) => {
                                 {icon}
                             </FieldCustom>
                         ))}
-                        <ForgotPassword to="/auth/reset">{t('Forgot Password')}</ForgotPassword>
+                        <ForgotPassword to="/auth/reset">{t('Forgot Password?')}</ForgotPassword>
                         <ButtonContainer>
                             <AuthButtonContainer
                                 description={t(description)}

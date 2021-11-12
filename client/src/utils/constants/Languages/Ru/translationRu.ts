@@ -10,9 +10,10 @@ export const ru = {
     Settings: 'Настройки',
     //Sub items side menu
     //Pages
-    'All Pages': 'Все страницы',
-    'New Pages': 'Новая страница',
-    'Edit Page': 'Редактировать страницу',
+    'All Pages':'Все страницы',
+    'New Page':'Новая страница',
+    'Edit Page':'Редактировать страницу',
+    'Create Page':'Создать страницу',
     //NewsLetter
     'All Letter': 'Все письма',
     'All Jobs': 'Все рассылки',
@@ -21,32 +22,42 @@ export const ru = {
     'All Fields': 'Поля',
     'All Items': 'Продукты',
     'All Orders': 'Заказы',
+    // Modules 
+    'All Modules':'Все модули',
+    'New Module':'Добавить модуль',
+    'Edit Module':'Редактировать модуль',
+    'Delete module':'Удалить модуль',
+    'Module Fields':'Поля модуля', 
     // Settings
     Language: 'Язык',
-
     //Actions
     Logout: 'Выйти',
     Yes: 'Да',
     No: 'Нет',
     Filter: 'Фильтр',
     'Create user': 'Создать пользователя',
+    'Apply':'Применить',
+    'Cancel':'Отменить',
+    'Create':'Создать',
+    'New Field':'Создать поле',
     //List
     Name: 'Имя',
     Email: 'Почта',
     Number: 'Номер',
     interact: 'Действие',
+    Type:'Тип',
+    Module:'Модуль',
     //Modal message
     'Are you sure you want to log out?': 'Вы уверенны что хотите покинуть сайт ?',
     'A confirmation letter has been sent to the Email !':
         'Письмо с подтверждением отправлено на Email !',
     'Password reset successfuly !': 'Пароль сброшен успешно !',
-
     //Auth
-    'Forgot Password': 'Забыл пароль',
+    'Forgot Password?': 'Забыли пароль?',
     'Sign In': 'Войти',
     Register: 'Зарегистрироваться',
     'Don`t have an account ?': 'Нет аккаунта ?',
-    'Hello ! Welcome back.': 'Привет ! Добро пожаловать назад.',
+    'Hello! Welcome back.': 'Привет! Добро пожаловать назад.',
     'Log in with your data that you entered during Your registrarion':
         'Авторизуйтесь, используя данные, которые вы ввели при регистрации.',
     'Have an account ?': 'Уже есть аккаунт?',
@@ -60,7 +71,6 @@ export const ru = {
         'Для сброса пароля введите свой адрес электронной почты',
     'Send email': 'Отправить письмо',
     'To reset your password Enter new password': 'Для сброса пароля Введите новый пароль',
-
     //Validate
     'Wrong password!': 'Неправильный пароль!',
     Required: 'Обязательное поле',
@@ -75,5 +85,19 @@ export const ru = {
     'The last name must contain only letters': 'Фамилия должна состоять только из букв',
     'The phone number must contain only numbers': 'Номер телефона должен содержать только цифры',
     'Invalid Phone!': 'Неверный телефон',
-    'Wrong date': 'Неправильная дата'
+    'Wrong date': 'Неправильная дата',
+    'name should not be empty': 'Имя не должно быть пустым!',
+    "Name shouldn't have spaces!": 'Имя не должно содержать пробелов!',
+    // Modules
+   'This module is already exists!': 'Этот модуль уже существует!',
+   //Fields
+   'Password':'Пароль',
+   'Confirm Password':'Подтвердите пароль',
+   'Firstname':'Имя',
+   'Lastname':'Фамилия',
+   'Phone Number':'Номер телефона',
+   'Birthday':'Дата рождения',
+   'Module Name':'Имя модуля',
+   'Group':'Группа'
+
 };

@@ -1,17 +1,18 @@
-import { AuthRoutes } from '@utils/enums/routes';
+import { AuthRoutes } from '@utils/enums/RoutesPath';
+import i18n from '@utils/helpers/i18n';
 import { Icons } from '../icon';
 
 export const LoginFields = [
     {
         type: 'text',
         name: 'email',
-        label: 'Email',
+        label: i18n.t('Email'),
         icon: <Icons.AlternateEmailIcon />
     },
     {
         type: 'password',
         name: 'password',
-        label: 'Password',
+        label: i18n.t('Password'),
         icon: <Icons.VpnKeyIcon />
     }
 ];
@@ -25,6 +26,6 @@ export const ButtonsData = {
 };
 
 export const MainText = {
-    title: 'Hello ! Welcome back.',
+    title: 'Hello! Welcome back.',
     description: 'Log in with your data that you entered during Your registrarion'
 };
