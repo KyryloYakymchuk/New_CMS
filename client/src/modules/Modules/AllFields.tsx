@@ -18,12 +18,16 @@ import { editableDataSelector } from '@redux/selectors/modules';
 import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
 import { ModalButton } from '@components/Modal/ModalButton';
+import { deleteFieldModuleAction } from '@redux/actions/modules';
 //!for future pagination 
 // import { Pagination } from '@components/Pagination/Pagination';
 
 
 // const LIMIT = 10;
 const constantFields = [
+    // yet no create field functionality
+    //  if you want to test delete field, replace this ids, in smth else    
+    // or create new field in DB 
     'f_name',
     'f_pDate',
     'f_aDate',
@@ -47,7 +51,7 @@ export const AllFields: FC = () => {
     // const [sortingTypeIdx, setSortingTypeIdx] = useState(0);
 
     const [modalStatus, setModalStatus] = useState<boolean>();
-    const [fieldId, setFieldId] = useState<string>('');
+    const [fieldId, setFieldId] = useState('');
     
     const handleSortClick = (sortField: string) => () => {
         //!for eslint
@@ -75,15 +79,16 @@ export const AllFields: FC = () => {
         const temp: any = value;
         setFieldId(temp.id);
         if (constantFields.includes(temp.id)){
-            dispatch(setModalMessageAction('Sorry, but these are сonstants fields'));
+            dispatch(setModalMessageAction('Sorry, but these are сonstant field'));
             setModalStatus(true);
         } else {
-            dispatch(setModalMessageAction(`${t('Delete Field')} ${temp.name} ?`));
+            dispatch(setModalMessageAction(`${t('Delete')} ${temp.name} ?`));
             setModalStatus(true);
         }
     };
     //!future content
     const handleAccept = () => {
+        dispatch(deleteFieldModuleAction({ fieldId }));
         setModalStatus(false);
     };
     const handleClose = () => {
@@ -118,6 +123,7 @@ export const AllFields: FC = () => {
                 onClickFunction={createModuleClick}
                 icon={<Icons.AddIcon />}
             />
+            {/* Future filter  */}
             {/* <DrawerFilterMenu
                 toggleDrawerMenu={toggleDrawerMenu}
                 drawerMenuOpenStatus={drawerMenuOpenStatus}
@@ -136,6 +142,7 @@ export const AllFields: FC = () => {
           listData={allFieldsModule?.fields}
           arrButton={actionsButtons}
         />
+        {/* Future pagination  */}
         {/* <Pagination count={Number(allModules?.count)} limit={LIMIT} /> */}
         <ModalConfirm
             handleAccept={handleAccept}

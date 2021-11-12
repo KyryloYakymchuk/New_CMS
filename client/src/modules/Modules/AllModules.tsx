@@ -92,7 +92,7 @@ export const AllModules: FC = () => {
         const temp: any = value;
         setModalStatus(true);
         setModuleId(temp.moduleID);
-        dispatch(setModalMessageAction(`${t('Delete module')} ${temp.name} ?`));
+        dispatch(setModalMessageAction(`${t('Delete')} ${temp.name} ?`));
         setDeleteRequestStatus(true);
     };
     const handleAccept = () => {
@@ -149,6 +149,7 @@ export const AllModules: FC = () => {
                     onClickFunction={createModuleClick}
                     icon={<Icons.AddIcon />}
                 />
+                {/* Future filter  */}
                 {/* <DrawerFilterMenu
                 toggleDrawerMenu={toggleDrawerMenu}
                 drawerMenuOpenStatus={drawerMenuOpenStatus}

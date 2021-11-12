@@ -26,7 +26,6 @@ export const ru = {
     'All Modules':'Все модули',
     'New Module':'Добавить модуль',
     'Edit Module':'Редактировать модуль',
-    'Delete module':'Удалить модуль',
     'Module Fields':'Поля модуля', 
     // Settings
     Language: 'Язык',
@@ -40,6 +39,8 @@ export const ru = {
     'Cancel':'Отменить',
     'Create':'Создать',
     'New Field':'Создать поле',
+    'Delete':'Удалить',
+
     //List
     Name: 'Имя',
     Email: 'Почта',
@@ -90,6 +91,7 @@ export const ru = {
     "Name shouldn't have spaces!": 'Имя не должно содержать пробелов!',
     // Modules
    'This module is already exists!': 'Этот модуль уже существует!',
+   'Sorry, but these are сonstant field':'Извините, но это постоянное поле',
    //Fields
    'Password':'Пароль',
    'Confirm Password':'Подтвердите пароль',

@@ -2,7 +2,9 @@ import { IGetModulePayload,
          ISetModulePayload,
          ModulesActionTypes, 
          IDeleteModulePayload, 
-         ICreateModulePayload
+         ICreateModulePayload,
+         IDeleteFieldModulePayload,
+         IFieldResponse
         } from '@redux/types/modules';
 
 export const getModulesAction = (payload: IGetModulePayload) => ({
@@ -37,3 +39,13 @@ export const editModuleAction = (payload: ICreateModulePayload) => ({
     payload
 });
 
+export const deleteFieldModuleAction = (payload: IDeleteFieldModulePayload) => ({
+    type: ModulesActionTypes.DELETE_FIELD_MODULE,
+    payload
+});
+
+
+export const setFieldsResponseAction = (payload:IFieldResponse)=>({
+    type: ModulesActionTypes.SET_FIELD_RESPONSE,
+    payload
+});
