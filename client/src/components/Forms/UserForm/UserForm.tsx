@@ -18,7 +18,7 @@ import { ButtonContainer, FieldCustom, FormContainer, SelectFieldCustom } from '
 
 interface IProps {
     currentUser?: any;
-    arrGroupNames?: IOption[] | undefined;
+    arrGroupNames?: IOption[];
     getSelectData?: GetSelectDataType;
     onChangeMultiValue: OnChangeMultiValueType;
     selectGroupArr?: MultiValueType;
@@ -36,8 +36,7 @@ export const UserForm: FC<IProps> = ({
     const options: IOption[] | undefined = arrGroupNames;
 
     const formInitialValues = {
-        ...currentUser,
-        group: currentUser?.group
+        ...currentUser
     };
 
     return (

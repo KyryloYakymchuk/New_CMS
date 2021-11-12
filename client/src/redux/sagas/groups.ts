@@ -19,7 +19,7 @@ function* getGroups(data: IGetGroupsDataAction): Generator {
 function* getGroupNames(data: IGetGroupsDataAction): Generator {
     try {
         const groupResponce: any = yield call(api.get, '/groups/select-data', {
-            params: data?.payload
+            params: data.payload
         });
         //cant be typed because AxiosResponce not working
         yield put(setGroupNames(groupResponce?.data));

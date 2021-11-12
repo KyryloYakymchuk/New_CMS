@@ -1,4 +1,5 @@
-import { IOption } from './../../types/types';
+import { IOption } from '@interfaces/types';
+
 export enum GroupsActionTypes {
     SET_GROUPS = 'SET_GROUPS',
     GET_GROUPS = 'GET_GROUPS',
