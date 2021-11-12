@@ -58,6 +58,9 @@ export class AppDefaultsService {
 
     const profDir = join(__dirname, "..", "uploads", "profileImages");
     if (!existsSync(profDir)) mkdirSync(profDir);
+
+    const itemModuleDir = join(__dirname, "..", "uploads", "itemsImages");
+    if (!existsSync(profDir)) mkdirSync(itemModuleDir);
   }
 
   async initAppWithDefaults(): Promise<void> {
