@@ -4,10 +4,11 @@ import { useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router';
 
 import { loaderAction } from '@redux/actions/loader';
-import { deleteModuleAction,
-         getModulesAction,
-         setEditDataModuleAction
-        } from '@redux/actions/modules';
+import {
+    deleteModuleAction,
+    getModulesAction,
+    setEditDataModuleAction
+} from '@redux/actions/modules';
 import { IGetModulePayload } from '@redux/types/modules';
 import { modulesListSelector } from '@redux/selectors/modules';
 import { setModalMessageAction } from '@redux/actions/modal';
@@ -31,112 +32,124 @@ import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { PageHeader, UserPageContainer } from '@modules/Users/styled';
 import { offsetGenerator } from '@utils/functions/offsetGenerator';
 
-
 const LIMIT = 10;
 
 export const AllModules: FC = () => {
-let { search } = useLocation();
-const { t } = useTranslation();
-const dispatch = useDispatch();
-const history = useHistory();
-const allModules = useAppSelector(modulesListSelector);
+    let { search, pathname } = useLocation();
+    const { t } = useTranslation();
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const allModules = useAppSelector(modulesListSelector);
 
-const query = new URLSearchParams(search);
-const currentPage = Number(query.get('page'));
+    const query = new URLSearchParams(search);
+    const currentPage = Number(query.get('page'));
 
+    const [sortParams, setSortParams] = useState<ISortParams>({});
+    const [sortingTypeIdx, setSortingTypeIdx] = useState(0);
+    const [modalStatus, setModalStatus] = useState<boolean>();
+    const [moduleId, setModuleId] = useState<string>();
+    const [deleteRequestStatus, setDeleteRequestStatus] = useState(false);
 
-const [sortParams, setSortParams] = useState<ISortParams>({});
-const [sortingTypeIdx, setSortingTypeIdx] = useState(0);
-const [modalStatus, setModalStatus] = useState<boolean>();
-const [moduleId, setModuleId] = useState<string>();
-const [deleteRequestStatus, setDeleteRequestStatus] = useState(false);
-
-
-const handleSortClick = (sortField: string) => () => {
-    const temp: ISortHandlerValue = handleListSort(
-        sortField,
-        sortingTypeIdx,
-        String(sortParams.sortField)
-    );
-    setSortingTypeIdx(temp.currSortingTypeIdx);
-    setSortParams(temp.currentSortParams);
-};
-
-const createModuleClick = () => {
-   history.push('/module/create');
-};
-const moduleFieldClick = (value: React.ChangeEvent<HTMLDivElement>) => () => {
-    const temp: any = value;
-    history.push(`/module/fields/${temp.name}`);
-
-    dispatch(setEditDataModuleAction({
-        name: temp.name,
-        moduleID: temp.moduleID,
-        fields: temp.fields,
-        categories: temp.categories
-     }));
-};
-const editModuleClick = (value: React.ChangeEvent<HTMLDivElement>)  => () => {
-    const temp: any = value;
-    history.push(`/module/edit/${temp.name}`);
-    dispatch(setEditDataModuleAction({
-        name: temp.name,
-        moduleID: temp.moduleID,
-        fields: temp.fields,
-        categories: temp.categories
-     }));
-
-};
-const deleteModuleClick = (value: React.ChangeEvent<HTMLDivElement>)=> () => {
-    const temp: any = value;
-    setModalStatus(true);
-    setModuleId(temp.moduleID);
-    dispatch(setModalMessageAction(`${t('Delete module')} ${temp.name} ?`));
-    setDeleteRequestStatus(true);
-};
-const handleAccept = () => {
-    const queryParams: IGetModulePayload = {
-        ...sortParams,
-        offset: offsetGenerator(currentPage, deleteRequestStatus, Number(allModules?.count)),
-        limit: LIMIT
+    const handleSortClick = (sortField: string) => () => {
+        const temp: ISortHandlerValue = handleListSort(
+            sortField,
+            sortingTypeIdx,
+            String(sortParams.sortField)
+        );
+        setSortingTypeIdx(temp.currSortingTypeIdx);
+        setSortParams(temp.currentSortParams);
     };
-    dispatch(deleteModuleAction({ moduleID: moduleId, queryParams }));
-    setModalStatus(false);
-};
-const handleClose = () => {
-    setModalStatus(false);
-};
 
-
-const actionsButtons = [
-    { item: <Icons.VerticalSplitIcon />, onClickFunc: moduleFieldClick },
-    { item: <Icons.EditIcon />, onClickFunc: editModuleClick },
-    { item: <Icons.DeleteIcon />, onClickFunc: deleteModuleClick }
-];
-
-
-useEffect(() => {
-    dispatch(loaderAction(true));
-    const queryParams: IGetModulePayload = {
-        ...sortParams,
-        offset: offsetGenerator(currentPage, deleteRequestStatus, Number(allModules?.count)),
-        limit: LIMIT
+    const createModuleClick = () => {
+        history.push('/module/create');
     };
-    dispatch(setEditDataModuleAction({}));
-    dispatch(getModulesAction(queryParams));
-}, [dispatch, currentPage]);
+    const moduleFieldClick = (value: React.ChangeEvent<HTMLDivElement>) => () => {
+        const temp: any = value;
+        history.push(`/module/fields/${temp.name}`);
+
+        dispatch(
+            setEditDataModuleAction({
+                name: temp.name,
+                moduleID: temp.moduleID,
+                fields: temp.fields,
+                categories: temp.categories
+            })
+        );
+    };
+    const editModuleClick = (value: React.ChangeEvent<HTMLDivElement>) => () => {
+        const temp: any = value;
+        history.push(`/module/edit/${temp.name}`);
+        dispatch(
+            setEditDataModuleAction({
+                name: temp.name,
+                moduleID: temp.moduleID,
+                fields: temp.fields,
+                categories: temp.categories
+            })
+        );
+    };
+    const deleteModuleClick = (value: React.ChangeEvent<HTMLDivElement>) => () => {
+        const temp: any = value;
+        setModalStatus(true);
+        setModuleId(temp.moduleID);
+        dispatch(setModalMessageAction(`${t('Delete module')} ${temp.name} ?`));
+        setDeleteRequestStatus(true);
+    };
+    const handleAccept = () => {
+        const queryParams: IGetModulePayload = {
+            ...sortParams,
+            offset: offsetGenerator(
+                currentPage,
+                deleteRequestStatus,
+                Number(allModules?.count),
+                pathname,
+                search,
+                history
+            ),
+            limit: LIMIT
+        };
+        dispatch(deleteModuleAction({ moduleID: moduleId, queryParams }));
+        setModalStatus(false);
+    };
+    const handleClose = () => {
+        setModalStatus(false);
+    };
+
+    const actionsButtons = [
+        { item: <Icons.VerticalSplitIcon />, onClickFunc: moduleFieldClick },
+        { item: <Icons.EditIcon />, onClickFunc: editModuleClick },
+        { item: <Icons.DeleteIcon />, onClickFunc: deleteModuleClick }
+    ];
+
+    useEffect(() => {
+        dispatch(loaderAction(true));
+        const queryParams: IGetModulePayload = {
+            ...sortParams,
+            offset: offsetGenerator(
+                currentPage,
+                deleteRequestStatus,
+                Number(allModules?.count),
+                pathname,
+                search,
+                history
+            ),
+            limit: LIMIT
+        };
+        dispatch(setEditDataModuleAction({}));
+        dispatch(getModulesAction(queryParams));
+    }, [dispatch, currentPage]);
 
     return (
         <UserPageContainer>
-        <PageHeader>
-            <Buttons
-                title={t('New Module')}
-                type="button"
-                style="pinkButton"
-                onClickFunction={createModuleClick}
-                icon={<Icons.AddIcon />}
-            />
-            {/* <DrawerFilterMenu
+            <PageHeader>
+                <Buttons
+                    title={t('New Module')}
+                    type="button"
+                    style="pinkButton"
+                    onClickFunction={createModuleClick}
+                    icon={<Icons.AddIcon />}
+                />
+                {/* <DrawerFilterMenu
                 toggleDrawerMenu={toggleDrawerMenu}
                 drawerMenuOpenStatus={drawerMenuOpenStatus}
             >
@@ -147,21 +160,21 @@ useEffect(() => {
                     onChangeFieldValue={onChangeFieldValue}
                 />
             </DrawerFilterMenu> */}
-        </PageHeader>
-        <List
-            sortHandler={handleSortClick}
-            listColumns={modulesListColumns}
-            listData={allModules?.modules}
-            arrButton={actionsButtons}
-        />
-        <Pagination count={Number(allModules?.count)} limit={LIMIT} />
-        <ModalConfirm
-            handleAccept={handleAccept}
-            handleClose={handleClose}
-            modalStatus={modalStatus}
-        >
-            <ModalButton handleAccept={handleAccept} handleClose={handleClose} />
-        </ModalConfirm>
-    </UserPageContainer>
+            </PageHeader>
+            <List
+                sortHandler={handleSortClick}
+                listColumns={modulesListColumns}
+                listData={allModules?.modules}
+                arrButton={actionsButtons}
+            />
+            <Pagination count={Number(allModules?.count)} limit={LIMIT} />
+            <ModalConfirm
+                handleAccept={handleAccept}
+                handleClose={handleClose}
+                modalStatus={modalStatus}
+            >
+                <ModalButton handleAccept={handleAccept} handleClose={handleClose} />
+            </ModalConfirm>
+        </UserPageContainer>
     );
 };
