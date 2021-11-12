@@ -27,6 +27,7 @@ export class EditModuleDTO {
   name?: string;
   fields?: Array<any>;
   icon?: string;
+  categories: boolean;
 }
 
 export class AddFieldsDTO {

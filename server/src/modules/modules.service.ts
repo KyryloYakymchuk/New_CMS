@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { InjectConnection, InjectModel } from "@nestjs/mongoose";
+import { InjectModel } from "@nestjs/mongoose";
 import * as mongoose from "mongoose";
-import { Connection, Model } from "mongoose";
+import { Model } from "mongoose";
 import * as shortid from "shortid";
 import * as fs from "fs";
 import * as Client from "ssh2-sftp-client";
@@ -40,6 +40,8 @@ import { QueryDTO } from "../shared/dto/shared.dto";
 import { FuserService } from "../shared/fuser/fuser.service";
 import { AddVariantDTO } from "./dto/modules.dto";
 
+import { defFields } from "./constants";
+
 export const options = {
   useNewUrlParser: true,
   server: {
@@ -53,7 +55,6 @@ export class ModulesService {
   constructor(
     @InjectModel("Module") private moduleModel: Model<Module>,
     @InjectModel("Category") private categoryModel: Model<Category>,
-    @InjectConnection() private connection: Connection,
     private uploaderService: UploaderService,
     private userService: FuserService
   ) {}
@@ -68,24 +69,7 @@ export class ModulesService {
     return type.toLowerCase();
   }
 
-  private generateSchema(
-    // fields: Record<any, any>,
-    module: Record<any, any>
-  ): string {
-    // const typeForSchema = {
-    //   string: `String,`,
-    //   number: `Number,`,
-    //   boolean: `Boolean,`,
-    //   array: `Array,`,
-    //   date: `Date,`,
-    // };
-    //
-    // let typesStr = ``;
-    // Object.keys(fields).forEach((field) => {
-    //   typesStr += `
-    //         ${field}: ${typeForSchema[fields[field]]}`;
-    // });
-
+  private generateSchema(module: Record<any, any>): string {
     const editedName =
       module.name.charAt(0).toUpperCase() + module.name.slice(1) + "Schema";
 
@@ -146,8 +130,8 @@ export class ModulesService {
     return newItem;
   }
 
-  async findModulesByName(name: any): Promise<Record<string, any>> {
-    return this.moduleModel.findOne({ name: new RegExp(name, "gi") });
+  async findModulesByName(name: string): Promise<Record<string, any>> {
+    return this.moduleModel.findOne({ name });
   }
 
   async findModulesByID(moduleID: any): Promise<Record<string, any>> {
@@ -261,8 +245,8 @@ export class ModulesService {
     return { count: modulesCount.length, modules };
   }
 
-  async createModule(userDTO: AddModuleDTO): Promise<Record<string, string>> {
-    const { name, fields = [], icon, categories } = userDTO;
+  async createModule(dto: AddModuleDTO): Promise<Record<string, string>> {
+    const { name, fields = [], icon, categories } = dto;
     const module = await this.findModulesByName(name);
 
     if (module) {
@@ -272,46 +256,7 @@ export class ModulesService {
       );
     }
 
-    fields.unshift({
-      name: "dropdown",
-      type: "string",
-      settings: {
-        textPrompt: "status",
-        values: "disabled,publish,archived",
-      },
-      id: "f_Status",
-      order: 3,
-    });
-
-    fields.unshift({
-      name: "datePicker",
-      type: "string",
-      settings: {
-        textPrompt: "archiveDate",
-      },
-      id: "f_aDate",
-      order: 2,
-    });
-
-    fields.unshift({
-      name: "datePicker",
-      type: "string",
-      settings: {
-        textPrompt: "publishDate",
-      },
-      id: "f_pDate",
-      order: 1,
-    });
-
-    fields.unshift({
-      name: "textbox",
-      type: "string",
-      settings: {
-        textPrompt: "name",
-      },
-      id: "f_name",
-      order: 0,
-    });
+    defFields.forEach((e) => fields.unshift(e));
 
     const newModule = new this.moduleModel({
       name,
@@ -566,6 +511,7 @@ export class ModulesService {
       );
 
       const filesObj = await this.putFilesInObj(files, module);
+
       if (!!Object.keys(filesObj).length)
         await this.saveImgInDB(module.name, newItem.itemID, filesObj);
     };
@@ -573,14 +519,17 @@ export class ModulesService {
     fs.stat(modelFile, async (err) => {
       if (err) {
         const fields = { itemID: "string" };
+
         module.fields.forEach((field) => {
           fields[field.settings.textPrompt] = ModulesService.validateType(
             field.type
           );
         });
+
         await this.saveSchema(this.generateSchema(module), modelFile);
-        await saveItem();
-      } else await saveItem();
+      }
+
+      await saveItem();
     });
 
     const itemsList = await this.getItemsList(module.name, paginationDTO);
@@ -808,60 +757,6 @@ export class ModulesService {
     return newVariant.variantID;
   }
 
-  // async deleteVariant(userDTO: DeleteVariantDTO): Promise<Record<string, any>> {
-  //   const { moduleName, itemID, variantID } = userDTO;
-  //
-  //   const file = join(__dirname, "..", "schemas", `${moduleName}.js`);
-  //
-  //   fs.access(file, async (err) => {
-  //     if (err) {
-  //       throw new HttpException("Schema not found!", HttpStatus.NOT_FOUND);
-  //     }
-  //   });
-  //
-  //   await this.deleteVariantByID(moduleName, itemID, variantID);
-  //
-  //   const item = await this.getItemByID(moduleName, itemID);
-  //   return item.variants;
-  // }
-
-  // async editVariant(
-  //   userDTO: EditVariantDTO
-  //   // files: Record<any, any>
-  // ): Promise<Record<string, any>> {
-  //   const { moduleName, variantID } = userDTO;
-  //   const module = await this.findModulesByName(moduleName);
-  //
-  //   if (!module)
-  //     throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
-  //
-  //   const file = join(__dirname, "..", "schemas", `${moduleName}.js`);
-  //
-  //   fs.access(file, async (err) => {
-  //     if (err) {
-  //       throw new HttpException("Schema not found!", HttpStatus.NOT_FOUND);
-  //     }
-  //   });
-  //
-  //   const editVariant = {
-  //     variantID,
-  //     name: userDTO.name,
-  //     quantity: userDTO.quantity,
-  //     werehouse: userDTO.werehouse,
-  //     price: userDTO.price,
-  //     discount: userDTO.discount,
-  //     tax: userDTO.tax,
-  //   };
-  //
-  //   await this.editVariantByID(moduleName, variantID, editVariant);
-  //
-  //   // const filesObj = await this.putFilesInObj(files, module);
-  //   // if (!!Object.keys(filesObj).length)
-  //   //   await this.saveImgInDB(module.name, variantID, filesObj);
-  //
-  //   return this.getItemsList(moduleName);
-  // }
-
   async editVariantsOrder(
     userDTO: EditVariantsOrderDTO
   ): Promise<Record<string, any>> {
@@ -943,10 +838,8 @@ export class ModulesService {
     await this.changeVariantStock(moduleName, itemID, variantID, storage);
   }
 
-  async editModule(userDTO: EditModuleDTO): Promise<Record<string, any>> {
-    const { moduleID, name, fields } = userDTO;
-    console.log({namebefore:name});
-    
+  async editModule(dto: EditModuleDTO): Promise<Record<string, any>> {
+    const { moduleID, name, fields, categories } = dto;
 
     const module = await this.findModulesByID(moduleID);
 
@@ -959,7 +852,7 @@ export class ModulesService {
     if (!module)
       throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
 
-    if (name) {
+    if (name && module.name !== name) {
       const uniqueName = await this.findModulesByName(name);
 
       if (uniqueName)
@@ -968,84 +861,31 @@ export class ModulesService {
           HttpStatus.CONFLICT
         );
     }
-    console.log({name});
-    
 
-    return this.moduleModel.findOneAndUpdate(
+    return this.moduleModel.updateOne(
       { moduleID },
-      { $set: { name, fields } },
+      { $set: { name, fields }, categories },
       { new: true }
     );
   }
 
-  // public updateFields(module: Record<any, any>): void {
-  //   const modelFile = join(__dirname, "..", "schemas", `${module.name}.js`);
-  //   const fields = { itemID: "string" };
-  //
-  //   const addFields = () => {
-  //     module.fields.forEach((field) => {
-  //       fields[field.settings.textPrompt] = ModulesService.validateType(
-  //         field.type
-  //       );
-  //     });
-  //   };
-  //
-  //   fs.stat(modelFile, async (err) => {
-  //     if (err) {
-  //       addFields();
-  //       await this.saveSchema(this.generateSchema(fields, module), modelFile);
-  //     } else {
-  //       fs.unlinkSync(modelFile);
-  //       addFields();
-  //       await this.saveSchema(this.generateSchema(fields, module), modelFile);
-  //     }
-  //   });
-  // }
-
-  // private async copyData(moduleName: string): Promise<Record<string, any>> {
-  //   await mongoose.connect(process.env.MONGO_URI, options);
-  //   const Item = require(`../../schemas/${moduleName}`);
-  //
-  //   const items = await Item.find();
-  //   await mongoose.connection.close();
-  //   return items;
-  // }
-  //
-  // private async pasteData(
-  //   moduleName: string,
-  //   items: Record<string, any>
-  // ): Promise<void> {
-  //   await mongoose.connect(process.env.MONGO_URI, options);
-  //   const Item = require(`../../schemas/${moduleName}`);
-  //
-  //   for (let item in items)
-  //     if (items.hasOwnProperty(item)) {
-  //       const newItem = new Item(item);
-  //       await newItem.save();
-  //     }
-  //
-  //   await mongoose.connection.close();
-  // }
-
-  async getFields(userDTO: ModuleNameDTO): Promise<Record<any, any>> {
-    const module = await this.findModulesByName(userDTO);
+  async getFields(dto: ModuleNameDTO): Promise<Record<any, any>> {
+    const module = await this.findModulesByName(dto.name);
 
     if (!module)
       throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
+
     return module.fields;
   }
 
   async addField(userDTO: AddFieldsDTO): Promise<Record<string, any>> {
     const { moduleID, name, type, settings } = userDTO;
 
-    // await mongoose.connect(process.env.MONGO_URI, options);
-
     const module = await this.findModulesByID(moduleID);
     if (!module)
       throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
 
     const moduleFields = module.fields;
-    // const data = await this.copyData(module.name);
 
     const maxOrderObject =
       moduleFields.length > 0 &&
@@ -1070,18 +910,6 @@ export class ModulesService {
       { new: true }
     );
 
-    // const updatedModule = await this.moduleModel.findOne({ moduleID });
-    // this.updateFields(updatedModule);
-
-    // await mongoose.connect(process.env.MONGO_URI, options);
-    // await mongoose.connection.db.dropCollection(module.name);
-    //
-    // await mongoose.connection.close();
-    // await mongoose.connect(process.env.MONGO_URI, options);
-    // await this.pasteData(module.name, data);
-    // await this.getItemsList(module.name);
-    //
-    // await mongoose.connection.close();
     return { count: newFieldsArr, fields: moduleFields };
   }
 
@@ -1115,11 +943,6 @@ export class ModulesService {
       { $set: { fields } },
       { new: true }
     );
-
-    // const updatedModule = await this.moduleModel.findOne({
-    //   moduleID: module.moduleID,
-    // });
-    // this.updateFields(updatedModule);
 
     return { count: fields.length, fields: validatedFields };
   }
@@ -1196,11 +1019,6 @@ export class ModulesService {
       { new: true }
     );
 
-    // const updatedModule = await this.moduleModel.findOne({
-    //   moduleID: module.moduleID,
-    // });
-    // this.updateFields(updatedModule);
-
     return { count: fields.length, fields };
   }
 
@@ -1263,13 +1081,13 @@ export class ModulesService {
   async deleteModule(userDTO: DeleteModuleDTO): Promise<Record<string, any>> {
     const module = await this.findModulesByID(userDTO);
     await this.moduleModel.findOneAndDelete({ moduleID: module.moduleID });
-    const modulesCount = await this.moduleModel.find().countDocuments()
+    const modulesCount = await this.moduleModel.find().countDocuments();
 
-    const modules = await this.moduleModel.find().limit(10).skip(0)
+    const modules = await this.moduleModel.find().limit(10).skip(0);
 
     return {
       count: modulesCount,
-      modules
+      modules,
     };
   }
 
@@ -1366,8 +1184,6 @@ export class ModulesService {
     await mongoose.connect(process.env.MONGO_URI, options);
     const Item = require(`../../schemas/webshop`);
     await Item.findOneAndUpdate({ itemID: item.itemID }, item);
-
-    // await item.save();
 
     if (!user.wishlist) user.wishlist = [];
     const wishlist = user.wishlist.filter(function (value) {

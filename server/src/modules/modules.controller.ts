@@ -82,27 +82,34 @@ export class ModulesController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
   async addModule(
-    @Body() userDTO: AddModuleDTO,
+    @Body() dto: AddModuleDTO,
     @Req() req: Request
   ): Promise<Record<string, any>> {
-    const { name, fields } = userDTO;
+    const { name, fields } = dto;
+
     if (name && name.includes(" ")) {
       throw new HttpException(
         "Name shouldn't have spaces!",
         HttpStatus.NOT_ACCEPTABLE
       );
     }
+
     if (fields) {
       const validated = await this.moduleService.validateFields(fields);
+
       if (validated) {
-        userDTO.fields = validated;
-        const result = await this.moduleService.createModule(userDTO);
+        dto.fields = validated;
+        const result = await this.moduleService.createModule(dto);
+
         await this.loggerGateway.logAction(req, module);
+
         return result;
       }
     } else {
-      const result = await this.moduleService.createModule(userDTO);
+      const result = await this.moduleService.createModule(dto);
+
       await this.loggerGateway.logAction(req, module);
+
       return result;
     }
   }
@@ -117,12 +124,14 @@ export class ModulesController {
     @Headers("authorization") token: string
   ): Promise<Record<string, any>> {
     const verified = await this.userService.verifyToken(token.split(" ")[1]);
-    if (!verified) {
+
+    if (!verified)
       throw new HttpException("Link expired!", HttpStatus.NOT_FOUND);
-    }
+
     const user = await this.userService.findUserByUserID(verified.userID);
 
     const items = await this.moduleService.getItems(userDTO, paginationDTO);
+
     if (!items)
       throw new HttpException("Items not found!", HttpStatus.NOT_FOUND);
 
@@ -134,7 +143,6 @@ export class ModulesController {
       count: items.count,
       items: items.items.map((el) => {
         const responseItem = {};
-
         el = el.toObject();
 
         fields.forEach((field) => {
@@ -306,7 +314,7 @@ export class ModulesController {
   @UseInterceptors(
     AnyFilesInterceptor({
       storage: diskStorage({
-        destination: ({ body: { data } }, file: Express.Multer.File, cb) =>
+        destination: (_, __, cb) =>
           cb(null, join(__dirname, "..", "uploads", "itemsImages")),
         filename: ({ body: { data } }, file, cb) =>
           cb(
@@ -319,53 +327,40 @@ export class ModulesController {
     })
   )
   async createItem(
-    @Body() userDTO: AddItemDTO,
+    @Body() dto: AddItemDTO,
     @Req() req: Request,
     @UploadedFiles() files: Express.Multer.File[],
     @Query() paginationDTO: PaginationDTO
   ): Promise<Record<string, any>> {
     const { body } = req;
+
     const result = await this.moduleService.addItem(
-      userDTO,
+      dto,
       files,
       body,
       paginationDTO
     );
+
     await this.loggerGateway.logAction(req, module);
+
     return {
       count: result.count,
-      items: result.items.map((el) => {
-        return new ResponseItemsDTO(el);
-      }),
+      items: result.items.map((el) => new ResponseItemsDTO(el)),
     };
   }
 
   @Put("/item")
   @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
-  // @UseInterceptors(
-  //   AnyFilesInterceptor({
-  //     storage: diskStorage({
-  //       destination: ({ body: { data } }, file: Express.Multer.File, cb) =>
-  //         cb(null, join(__dirname, "..", "uploads", "itemsImages")),
-  //       filename: ({ body: { data } }, file, cb) =>
-  //         cb(
-  //           null,
-  //           `${JSON.parse(data).moduleID}${uniqid("_")}.${
-  //             file.mimetype.split("/")[1]
-  //           }`
-  //         ),
-  //     }),
-  //   })
-  // )
   async editItem(
     @Body() userDTO: EditItemDTO,
     @Req() req: Request
-    // @UploadedFile() files: Express.Multer.File[]
   ): Promise<Record<string, any>> {
     const files = [];
     const result = await this.moduleService.editItem(userDTO, files);
+
     await this.loggerGateway.logAction(req, module);
+
     return result;
   }
 
@@ -405,71 +400,6 @@ export class ModulesController {
   async deleteItemCategory(@Body() userDTO: DeleteItemCategoryDTO) {
     return this.moduleService.deleteItemCategory(userDTO);
   }
-
-  // @Post("/item/variants")
-  // @UseGuards(AuthGuard("jwt"))
-  // @UseInterceptors(
-  //   AnyFilesInterceptor({
-  //     storage: diskStorage({
-  //       destination: ({ body: { data } }, file: Express.Multer.File, cb) =>
-  //         cb(null, join(__dirname, "..", "uploads", "itemsImages")),
-  //       filename: ({ body: { data } }, file, cb) =>
-  //         cb(
-  //           null,
-  //           `${JSON.parse(data).moduleID}${uniqid("_")}.${
-  //             file.mimetype.split("/")[1]
-  //           }`
-  //         ),
-  //     }),
-  //   })
-  // )
-  // async addVariant(
-  //   @Body() userDTO: AddVariantDTO,
-  //   @Req() req: Request,
-  //   // @UploadedFile() files: Express.Multer.File[]
-  // ) {
-  //   const result = await this.moduleService.addVariant(userDTO);
-  //   // await this.loggerGateway.logAction(req, module);
-  //
-  //   return {variantID: result};
-  // }
-
-  // @Delete("/item/variants")
-  // // @UseGuards(AuthGuard("jwt"))
-  // async deleteVariant(@Body() userDTO: DeleteVariantDTO, @Req() req: Request) {
-  //   const result = await this.moduleService.deleteVariant(userDTO);
-  //   // await this.loggerGateway.logAction(req, module);
-  //   return result;
-  // }
-
-  // @Put("/item/variants")
-  // // @UseGuards(AuthGuard("jwt"))
-  // @UseInterceptors(
-  //   AnyFilesInterceptor({
-  //     storage: diskStorage({
-  //       destination: ({ body: { itemID } }, file: Express.Multer.File, cb) =>
-  //         cb(null, join(__dirname, "..", "uploads", "itemsImages")),
-  //       filename: ({ body: { itemID } }, file, cb) =>
-  //         cb(
-  //           null,
-  //           `${itemID}${uniqid("_")}.${
-  //             file.mimetype.split("/")[1]
-  //           }`
-  //         ),
-  //     }),
-  //   })
-  // )
-  // async editVariant(
-  //   @Body() userDTO: EditVariantDTO,
-  //   @Req() req: Request,
-  //   @UploadedFile() files: Express.Multer.File[]
-  // ): Promise<Record<string, any>> {
-  //   const newfiles = [files];
-  //
-  //   const result = await this.moduleService.editVariant(userDTO, newfiles);
-  //   // await this.loggerGateway.logAction(req, module);
-  //   return result;
-  // }
 
   @Put("/item/variants/order")
   @ApiBearerAuth()
@@ -531,27 +461,28 @@ export class ModulesController {
   @Put("/")
   @HttpCode(HttpStatus.OK)
   async editModule(
-    @Body() userDTO: EditModuleDTO,
+    @Body() dto: EditModuleDTO,
     @Query() queryDTO: PaginationDTO,
     @Req() req: Request
   ): Promise<Record<string, any>> {
-    const { name, fields } = userDTO;
+    const { name, fields } = dto;
+
     if (name && name.includes(" ")) {
       throw new HttpException(
         "Name should`nt have spaces!",
         HttpStatus.NOT_ACCEPTABLE
       );
     }
-    
+
     if (fields) {
       const validated = await this.moduleService.validateFields(fields);
-      if (validated) userDTO.fields = validated;
+      if (validated) dto.fields = validated;
     }
-    
-    const result = await this.moduleService.editModule(userDTO);
+
+    await this.moduleService.editModule(dto);
     await this.loggerGateway.logAction(req, module);
 
-    return this.moduleService.getModules(queryDTO)
+    return this.moduleService.getModules(queryDTO);
   }
 
   @Get("fields/:moduleName")
