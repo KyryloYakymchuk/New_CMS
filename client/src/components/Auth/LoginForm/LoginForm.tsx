@@ -3,7 +3,7 @@ import { Form } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
 
 import { ButtonsData, LoginFields } from '@utils/constants/AuthField/LoginFields';
-import { LoginValidator } from '@utils/validators/Auth/LoginValidator';
+import { loginValidator } from '@utils/validators/Auth/LoginValidator';
 import { IFormValues } from '@modules/Auth/Login';
 import FormField from '@components/FormField/FormField';
 import { AuthButtonContainer } from '@components/Auth/AuthButtons/AuthButtonsContainer';
@@ -31,7 +31,7 @@ export const LoginForm: FC<LoginProps> = ({ onSubmit }) => {
     return (
         <Form
             onSubmit={onSubmit}
-            validate={LoginValidator}
+            validate={loginValidator}
             render={({ handleSubmit }) => (
                 <FormContainer>
                     <form onSubmit={handleSubmit}>

@@ -13,22 +13,22 @@ import { errorMessageSelector } from '@redux/selectors/error';
 import { editableDataSelector } from '@redux/selectors/modules';
 import { ICreateModulePayload } from '@redux/types/modules';
 
-import { ModuleButtons, ModuleFormFields } from '@utils/constants/ModulesFormFields';
+import { ModuleFormFields } from '@utils/constants/ModulesFormFields';
 import { useAppSelector } from '@utils/hooks/useAppSelector';
 
 import { ErrorMessage, FieldCustom } from '@modules/Auth/styled';
 import { ButtonContainer, FormContainer } from './styled';
-import { CreateModuleValidate } from '@utils/validators/Modules/CreateModule';
+import { createModuleValidate } from '@utils/validators/Modules/CreateModule';
 
 export const CreateModule: FC = () => {
 const dispatch = useDispatch();
-const historyPage:History = useHistory();
+const historyPage: History = useHistory();
 const editData = useAppSelector(editableDataSelector);
 const errorMessage = useAppSelector(errorMessageSelector);
 const { t } = useTranslation();
 
-const onSubmit = (value:ICreateModulePayload) => {
-    if (editData && editData.moduleID) {
+const onSubmit = (value: ICreateModulePayload) => {
+    if (editData?.moduleID) {
         dispatch(editModuleAction({ 
              name: value.name,
              categories: value.categories,
@@ -54,7 +54,7 @@ const onSubmit = (value:ICreateModulePayload) => {
     return (
         <Form
             initialValues={editData && editData}
-            validate={CreateModuleValidate}
+            validate={createModuleValidate}
             onSubmit={onSubmit}
             render={({ handleSubmit }) => (
                 <FormContainer>
@@ -64,12 +64,15 @@ const onSubmit = (value:ICreateModulePayload) => {
                                  <FieldCustom key={index} {...fields}/>
                                 ))}                       
                             <ButtonContainer>
-                                {ModuleButtons.map(( buttons, index) => (
+
+                                 <Buttons type='submit' title={t('Apply')} style= 'pinkButton'/>
                                  <Buttons 
-                                  key={index}
-                                  {...buttons}
-                                   onClickFunction={buttons.goBackClick}/>
-                                ))}
+                                 type='button'
+                                 title={t('Cancel')}
+                                 style={'greyButton'}
+                                 onClickFunction={() => history.back()} 
+                                 />
+
                             </ButtonContainer>
                     </form>
                 </FormContainer>

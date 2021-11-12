@@ -11,7 +11,6 @@ import {
 import { ButtonContainer } from '@modules/Modules/styled';
 import { IUser } from '@redux/types/users';
 import { UserFormFields } from '@utils/constants/UserFormFields';
-import { parceOption } from '@utils/functions/userFormData/parseOption';
 import { FC } from 'react';
 import { Form } from 'react-final-form';
 import { FieldCustom, FormContainer, SelectFieldCustom } from './styled';
@@ -22,7 +21,7 @@ import { userCreateFormValidator } from '@utils/validators/users/UserCreateFormV
 
 interface IProps {
     currentUser?: any;
-    arrGroupNames?: string[];
+    arrGroupNames?: IOption[];
     getSelectData?: GetSelectDataType;
     onChangeMultiValue: OnChangeMultiValueType;
     selectGroupArr?: MultiValueType;
@@ -37,11 +36,11 @@ export const UserForm: FC<IProps> = ({
     onChangeMultiValue,
     onSubmitForm
 }) => {
-    const options: IOption[] = parceOption(arrGroupNames);
+    const options: IOption[] | undefined = arrGroupNames;
     const { t } = useTranslation();
+
     const formInitialValues = {
-        ...currentUser,
-        group: parceOption(currentUser?.group)
+        ...currentUser
     };
 
     return (
@@ -79,9 +78,7 @@ export const UserForm: FC<IProps> = ({
                                 title={t('Cancel')}
                                 type="button"
                                 style="grayButton"
-                                onClickFunction={() => {
-                                    history.back();
-                                }}
+                                onClickFunction={()=>history.back()}
                             />
                         </ButtonContainer>
                     </form>

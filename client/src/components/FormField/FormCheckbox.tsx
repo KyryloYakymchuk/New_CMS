@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { Checkbox } from '@mui/material';
 import { Label } from '@modules/Modules/styled';
 
-type FormProps = FieldRenderProps<boolean, any>;
+type FormProps = FieldRenderProps<boolean, HTMLElement>;
 
 const FormCheckbox: FC<FormProps> = ({ input, meta, children, ...rest }) => {
     return (

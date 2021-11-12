@@ -50,6 +50,7 @@ export const AllFields: FC = () => {
     const [fieldId, setFieldId] = useState<string>('');
     
     const handleSortClick = (sortField: string) => () => {
+        //!for eslint
         console.log(sortField);
         //!for future sorting 
         // const temp: ISortHandlerValue = handleListSort(
@@ -66,6 +67,7 @@ export const AllFields: FC = () => {
     };
     const editFieldClick = (value: React.ChangeEvent<HTMLDivElement>)  => () => {
         const temp: any = value;     
+        //!for eslint
         console.log(temp);
     
     };
@@ -80,6 +82,7 @@ export const AllFields: FC = () => {
             setModalStatus(true);
         }
     };
+    //!future content
     const handleAccept = () => {
         setModalStatus(false);
     };
@@ -115,7 +118,6 @@ export const AllFields: FC = () => {
                 onClickFunction={createModuleClick}
                 icon={<Icons.AddIcon />}
             />
-            //!for future filter
             {/* <DrawerFilterMenu
                 toggleDrawerMenu={toggleDrawerMenu}
                 drawerMenuOpenStatus={drawerMenuOpenStatus}
@@ -134,7 +136,6 @@ export const AllFields: FC = () => {
           listData={allFieldsModule?.fields}
           arrButton={actionsButtons}
         />
-        //!for future pagination 
         {/* <Pagination count={Number(allModules?.count)} limit={LIMIT} /> */}
         <ModalConfirm
             handleAccept={handleAccept}

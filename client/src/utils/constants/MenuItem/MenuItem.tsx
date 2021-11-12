@@ -21,9 +21,9 @@ export const MenuItem = [
         itemId: 3,
         height: '180px',
         subItems: [
-            { subName: 'All Pages', subPath:'/'  },
+            { subName: 'All Pages', subPath:ProtectedRoutes.DASHBOARD  },
             { subName: 'New Page', subPath:ProtectedRoutes.NEWPAGE },
-            { subName: 'Edit Page', subPath:'/' }
+            { subName: 'Edit Page', subPath:ProtectedRoutes.DASHBOARD }
         ]
     },
     {
@@ -49,8 +49,8 @@ export const MenuItem = [
         itemId: 6,
         height: '130px',
         subItems: [
-            { subName: 'All Letter', subPath:'/'  },
-            { subName: 'All Jobs', subPath:'/'  }
+            { subName: 'All Letter', subPath:ProtectedRoutes.DASHBOARD  },
+            { subName: 'All Jobs', subPath:ProtectedRoutes.DASHBOARD  }
         ]
     },
     {
@@ -59,10 +59,10 @@ export const MenuItem = [
         itemId: 7,
         height: '225px',
         subItems: [
-            { subName: 'Categories', subPath: '/' },
-            { subName: 'All Fields', subPath: '/' },
-            { subName: 'All Items', subPath: '/' },
-            { subName: 'All Orders', subPath: '/' }
+            { subName: 'Categories', subPath: ProtectedRoutes.DASHBOARD },
+            { subName: 'All Fields', subPath: ProtectedRoutes.DASHBOARD },
+            { subName: 'All Items', subPath: ProtectedRoutes.DASHBOARD },
+            { subName: 'All Orders', subPath: ProtectedRoutes.DASHBOARD }
         ]
     },
     {

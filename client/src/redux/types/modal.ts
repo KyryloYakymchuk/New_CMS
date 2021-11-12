@@ -13,10 +13,10 @@ export interface IModalAction {
     payload: boolean;
 }
 
-export interface IModaMessagelAction {
+export interface IModalMessageAction {
     type: ModalActionsTypes.MODAL_MESSAGE;
     payload: string;
 }
 
 
-export type ModalActions = IModalAction | IModaMessagelAction;
+export type ModalActions = IModalAction | IModalMessageAction;

@@ -3,7 +3,7 @@ import { Form } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
 
 import { ButtonsData, RegisterFields } from '@utils/constants/AuthField/RegisterFields';
-import { RegisterValidator } from '@utils/validators/Auth/RegisterValidator';
+import { registerValidator } from '@utils/validators/Auth/RegisterValidator';
 import { Loader } from '@utils/constants/Loader';
 import { IFormValues } from '@modules/Auth/Register';
 import FormField from '@components/FormField/FormField';
@@ -29,7 +29,7 @@ export const RegisterForm: FC<RegisterProps> = ({ onSubmit }) => {
     return (
         <Form
             onSubmit={onSubmit}
-            validate={RegisterValidator}
+            validate={registerValidator}
             render={({ handleSubmit }) => (
                 <FormContainer>
                     <form onSubmit={handleSubmit}>

@@ -1,3 +1,5 @@
+import { IOption } from '@interfaces/types';
+
 export enum GroupsActionTypes {
     SET_GROUPS = 'SET_GROUPS',
     GET_GROUPS = 'GET_GROUPS',
@@ -7,11 +9,11 @@ export enum GroupsActionTypes {
 
 export interface IGroupsInitialState {
     allGroups?: ISetGroupsData;
-    groupNames?: string[];
+    groupNames?: { groups: IOption[] };
 }
 
 export interface IGetGroupsData {
-    limit: number;
+    limit?: number;
     offset?: number;
     search?: string;
     sortField?: string | null;
@@ -49,7 +51,7 @@ export interface IGetGroupsDataAction {
 }
 export interface ISetGroupNamesAction {
     type: GroupsActionTypes.SET_GROUP_NAMES;
-    payload: string[];
+    payload: { count: number; groups: IOption[] };
 }
 export interface IGetGroupNamesAction {
     type: GroupsActionTypes.GET_GROUP_NAMES;

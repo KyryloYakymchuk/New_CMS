@@ -8,7 +8,7 @@ interface IErrors {
     name?: string;
 }
 
-export const CreateModuleValidate = (values: ValidatorProps) => {
+export const createModuleValidate = (values: ValidatorProps) => {
     const errors: IErrors = {};
     if (values.name && values.name.length > 30) {
         errors.name = i18n.t('Must have a maximum of 30 characters');

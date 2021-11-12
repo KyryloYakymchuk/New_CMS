@@ -29,6 +29,7 @@ import { handleListSort } from '@utils/functions/handleListSort';
 import { useAppSelector } from '@utils/hooks/useAppSelector';
 
 import { PageHeader, UserPageContainer } from '@modules/Users/styled';
+import { offsetGenerator } from '@utils/functions/offsetGenerator';
 
 
 const LIMIT = 10;
@@ -48,6 +49,7 @@ const [sortParams, setSortParams] = useState<ISortParams>({});
 const [sortingTypeIdx, setSortingTypeIdx] = useState(0);
 const [modalStatus, setModalStatus] = useState<boolean>();
 const [moduleId, setModuleId] = useState<string>();
+const [deleteRequestStatus, setDeleteRequestStatus] = useState(false);
 
 
 const handleSortClick = (sortField: string) => () => {
@@ -65,6 +67,8 @@ const createModuleClick = () => {
 };
 const moduleFieldClick = (value: React.ChangeEvent<HTMLDivElement>) => () => {
     const temp: any = value;
+    history.push(`/module/fields/${temp.name}`);
+
     dispatch(setEditDataModuleAction({
         name: temp.name,
         moduleID: temp.moduleID,
@@ -74,9 +78,6 @@ const moduleFieldClick = (value: React.ChangeEvent<HTMLDivElement>) => () => {
 };
 const editModuleClick = (value: React.ChangeEvent<HTMLDivElement>)  => () => {
     const temp: any = value;
-    history.push(`/module/fields/${temp.name}`);
-
-
     history.push(`/module/edit/${temp.name}`);
     dispatch(setEditDataModuleAction({
         name: temp.name,
@@ -91,11 +92,12 @@ const deleteModuleClick = (value: React.ChangeEvent<HTMLDivElement>)=> () => {
     setModalStatus(true);
     setModuleId(temp.moduleID);
     dispatch(setModalMessageAction(`${t('Delete module')} ${temp.name} ?`));
+    setDeleteRequestStatus(true);
 };
 const handleAccept = () => {
-    const offset = query ? currentPage * 10 : 0;
     const queryParams: IGetModulePayload = {
-        offset: offset,
+        ...sortParams,
+        offset: offsetGenerator(currentPage, deleteRequestStatus, Number(allModules?.count)),
         limit: LIMIT
     };
     dispatch(deleteModuleAction({ moduleID: moduleId, queryParams }));
@@ -115,11 +117,9 @@ const actionsButtons = [
 
 useEffect(() => {
     dispatch(loaderAction(true));
-
-    const offset = query ? currentPage * 10 : 0;
-
     const queryParams: IGetModulePayload = {
-        offset: offset,
+        ...sortParams,
+        offset: offsetGenerator(currentPage, deleteRequestStatus, Number(allModules?.count)),
         limit: LIMIT
     };
     dispatch(setEditDataModuleAction({}));
@@ -136,7 +136,6 @@ useEffect(() => {
                 onClickFunction={createModuleClick}
                 icon={<Icons.AddIcon />}
             />
-            //!For future filter
             {/* <DrawerFilterMenu
                 toggleDrawerMenu={toggleDrawerMenu}
                 drawerMenuOpenStatus={drawerMenuOpenStatus}

@@ -1,16 +1,6 @@
 import i18n from '@utils/helpers/i18n';
 import FormCheckbox from '@components/FormField/FormCheckbox';
 import FormField from '@components/FormField/FormField';
-export const ModuleButtons = [
-    { type: 'submit', title: i18n.t('Apply'), style: 'pinkButton' },
-    {
-      type: 'button',
-      title: i18n.t('Cancel'),
-      style: 'greyButton',
-      goBackClick: () => history.back() 
-    }
-];
-
 export const ModuleFormFields = [
     {
         type: 'text',

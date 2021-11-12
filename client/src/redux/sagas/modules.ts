@@ -12,7 +12,7 @@ import { api } from '@services/api';
 
 function* getModulesReq(data: IGetModuleAction): Generator {
     try {
-        const fieldsResponse: any = yield call(api.get, '/modules/', {
+        const fieldsResponse:any = yield call(api.get, '/modules/', {
             params:data.payload
         });
         yield put(setModulesAction(fieldsResponse.data));
