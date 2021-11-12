@@ -22,7 +22,7 @@ export const RegisterFields = [
     },
     {
         type: 'text',
-        name: 'firstname',
+        name: 'name',
         label: 'Firstname',
         icon: <Icons.PersonIcon />
     },

@@ -10,7 +10,6 @@ import {
 } from '@interfaces/types';
 import { IUser } from '@redux/types/users';
 import { UserFormFields } from '@utils/constants/UserFormFields';
-import { parceOption } from '@utils/functions/userFormData/parseOption';
 import { userCreateFormValidator } from '@utils/validators/users/UserCreateFormValidator';
 import { userEditFormValidator } from '@utils/validators/users/UserEditFormValidator';
 import { FC } from 'react';
@@ -19,7 +18,7 @@ import { ButtonContainer, FieldCustom, FormContainer, SelectFieldCustom } from '
 
 interface IProps {
     currentUser?: any;
-    arrGroupNames?: string[];
+    arrGroupNames?: IOption[];
     getSelectData?: GetSelectDataType;
     onChangeMultiValue: OnChangeMultiValueType;
     selectGroupArr?: MultiValueType;
@@ -34,11 +33,10 @@ export const UserForm: FC<IProps> = ({
     onChangeMultiValue,
     onSubmitForm
 }) => {
-    const options: IOption[] = parceOption(arrGroupNames);
+    const options: IOption[] | undefined = arrGroupNames;
 
     const formInitialValues = {
-        ...currentUser,
-        group: parceOption(currentUser?.group)
+        ...currentUser
     };
 
     return (

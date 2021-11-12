@@ -11,12 +11,11 @@ interface IErrors {
     password?: string;
 }
 
-export const LoginValidator = (values: ValidatorProps) => {
+export const loginValidator = (values: ValidatorProps) => {
     const errors: IErrors = {};
     // EMAIL
     if (!values.email) {
         errors.email = i18n.t('Required');
-        
     }
     if (!emailRE.test(values.email)) {
         errors.email = i18n.t('Invalid email address');

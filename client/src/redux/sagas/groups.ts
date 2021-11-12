@@ -4,7 +4,6 @@ import { call } from '@redux-saga/core/effects';
 import { setGroups } from '@redux/actions/groups';
 import { GroupsActionTypes, IGetGroupsDataAction } from '@redux/types/groups';
 import { api } from '@services/api';
-import { parserGroupNames } from '@utils/functions/parserGroupNames';
 
 function* getGroups(data: IGetGroupsDataAction): Generator {
     try {
@@ -19,11 +18,11 @@ function* getGroups(data: IGetGroupsDataAction): Generator {
 }
 function* getGroupNames(data: IGetGroupsDataAction): Generator {
     try {
-        const groupResponce: any = yield call(api.get, '/groups/', {
-            params: data?.payload
+        const groupResponce: any = yield call(api.get, '/groups/select-data', {
+            params: data.payload
         });
         //cant be typed because AxiosResponce not working
-        yield put(setGroupNames(parserGroupNames(groupResponce?.data)));
+        yield put(setGroupNames(groupResponce?.data));
     } catch (error) {
         return error;
     }

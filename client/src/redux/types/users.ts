@@ -9,12 +9,17 @@ export enum UserActionTypes {
     EDIT_USER_IMG = 'EDIT_USER_IMG'
 }
 
+interface IUserGrouops {
+    value: string;
+    label: string;
+}
+
 export interface IUser {
     birthday?: string;
     confirmed?: boolean;
     email: string;
     lastname?: string;
-    group?: string[] | [];
+    group?: IUserGrouops;
     name: string;
     phone?: string;
     profileImg?: null | string;
@@ -52,7 +57,7 @@ export interface ISetUsersAction {
 }
 export interface IGetCurrentUsersAction {
     type: UserActionTypes.SET_CURRENT_USERS;
-    payload: IUser | React.ChangeEvent<HTMLDivElement>;
+    payload: IUser;
 }
 export interface IClearCurrentUsersAction {
     type: UserActionTypes.CLEAR_CURRENT_USERS;
@@ -73,7 +78,7 @@ export interface IEditUserAction {
 
 export interface IUsers {
     userListData?: IUserListData;
-    currentUserData?: IUser | React.ChangeEvent<HTMLDivElement>;
+    currentUserData?: IUser;
 }
 
 export type IUserActions =

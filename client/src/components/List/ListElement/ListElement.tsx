@@ -20,8 +20,8 @@ export const ListElement: FC<IProps> = ({ listColumns, user, arrButton }) => {
         <ListElementContainer>
             {loaderStatus
                 ? listColumns?.map(({ name }) => (
-                      <div key={name}>
-                          <SkeletonLoader width="60%" height="25px" />
+                      <div>
+                          <SkeletonLoader key={name} width="60%" height="25px" />
                       </div>
                   ))
                 : listColumns?.map(({ name }) => <div key={name}>{user[name]}</div>)}
