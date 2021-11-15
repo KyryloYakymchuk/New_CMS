@@ -1,7 +1,6 @@
 import { FC } from 'react';
-import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import Drawer from '@mui/material/Drawer';
 import { useTranslation } from 'react-i18next';
-
 import { Buttons } from '@components/Button/Button';
 import { Icons } from '@utils/constants/icon';
 import { CloseButton, FilterLayout, FilterLayoutHeader, HeaderTitle } from './styled';
@@ -27,12 +26,7 @@ export const DrawerFilterMenu: FC<IProps> = ({
                 icon={<Icons.ManageSearchIcon />}
                 onClickFunction={toggleDrawerMenu}
             />
-            <SwipeableDrawer
-                anchor={'right'}
-                open={drawerMenuOpenStatus}
-                onClose={toggleDrawerMenu}
-                onOpen={toggleDrawerMenu}
-            >
+            <Drawer anchor={'right'} open={drawerMenuOpenStatus} onClose={toggleDrawerMenu}>
                 <FilterLayout>
                     <FilterLayoutHeader>
                         <HeaderTitle>{t('Filter')}</HeaderTitle>
@@ -42,7 +36,7 @@ export const DrawerFilterMenu: FC<IProps> = ({
                     </FilterLayoutHeader>
                     {children}
                 </FilterLayout>
-            </SwipeableDrawer>
+            </Drawer>
         </div>
     );
 };

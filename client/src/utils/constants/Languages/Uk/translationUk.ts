@@ -40,7 +40,8 @@ export const ua = {
     Create: 'Створити',
     'New Field': 'Створити поле',
     Delete: 'Видалити',
-
+    Select: 'Обрати',
+    'No items': 'немає опцiй',
     //List
     Name: 'Iм`я',
     Email: 'Пошта',

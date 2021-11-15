@@ -7,11 +7,12 @@ import { useStyles } from '@utils/styles/modal';
 import { Text } from './styled';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '@utils/hooks/useAppSelector';
+import { modalMessageSelector, modalStatusSelector } from '@redux/selectors/modal';
 
 interface ModalProps {
     handleAccept: VoidFunction;
     handleClose?: VoidFunction;
-    modalStatus?:boolean;
+    modalStatus?: boolean;
 }
 
 export const ModalConfirm: FC<ModalProps> = ({
@@ -20,11 +21,11 @@ export const ModalConfirm: FC<ModalProps> = ({
     modalStatus,
     children
 }) => {
-    const isModalOpen = useAppSelector(({ modal }) => modal?.modalStatus);
-    const message = useAppSelector(({ modal }) => modal?.modalMessage);
+    const isModalOpen = useAppSelector(modalStatusSelector);
+    const message = useAppSelector(modalMessageSelector);
 
     const classes = useStyles();
-    const { t }  = useTranslation();
+    const { t } = useTranslation();
 
     return (
         <Modal

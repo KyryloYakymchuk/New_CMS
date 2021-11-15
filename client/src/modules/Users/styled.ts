@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 
-export const UserPageContainer = styled.div`
-    overflow-y: auto;
-`;
+export const UserPageContainer = styled.div``;
 export const PageHeader = styled.div`
     width: 100%;
     height: 80px;

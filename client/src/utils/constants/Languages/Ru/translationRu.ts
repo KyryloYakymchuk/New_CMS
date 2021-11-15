@@ -40,7 +40,8 @@ export const ru = {
     Create: 'Создать',
     'New Field': 'Создать поле',
     Delete: 'Удалить',
-
+    Select: 'Выбрать',
+    'No items': 'Нет опций',
     //List
     Name: 'Имя',
     Email: 'Почта',
@@ -104,5 +105,5 @@ export const ru = {
     'Phone Number': 'Номер телефона',
     Birthday: 'Дата рождения',
     'Module Name': 'Имя модуля',
-    Group: 'Группа'
+    Group: 'Группa'
 };
