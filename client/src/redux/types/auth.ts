@@ -1,3 +1,5 @@
+import { History } from 'history';
+
 export enum AuthActionsTypes {
     LOGIN = 'LOGIN',
     REGISTER = 'REGISTER',
@@ -7,16 +9,14 @@ export enum AuthActionsTypes {
 }
 
 //LOGIN
-interface ILoginPayload {
+export interface ILoginPayload {
     email: string;
     password: string;
 }
-
 export interface ILogin {
     value: ILoginPayload;
-    history?: any;
+    history: History;
 }
-
 export interface ILoginAction {
     type: AuthActionsTypes.LOGIN;
     payload: ILogin;
@@ -43,12 +43,12 @@ export interface IRegisterAction {
     payload: IRegister;
 }
 
-export interface IConfirmRegisterPayload  {
+export interface IConfirmRegisterPayload {
     token?: string;
 }
 
 export interface IConfirmRegisterAction {
-    type: AuthActionsTypes.REGISTER_CORFIRM ;
+    type: AuthActionsTypes.REGISTER_CORFIRM;
     payload: IConfirmRegisterPayload;
 }
 
@@ -79,8 +79,4 @@ export interface IResetPasswordAction {
     payload: IResetPassword;
 }
 
-export type AuthActions =
-| ILoginAction
-| IRegisterAction
-| IResetAction
-| IResetPasswordAction;
+export type AuthActions = ILoginAction | IRegisterAction | IResetAction | IResetPasswordAction;

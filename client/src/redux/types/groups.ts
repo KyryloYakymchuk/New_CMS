@@ -7,9 +7,12 @@ export enum GroupsActionTypes {
     GET_GROUP_NAMES = 'GET_GROUP_NAMES'
 }
 
+export interface IGroupNames {
+    groups: IOption[];
+}
 export interface IGroupsInitialState {
     allGroups?: ISetGroupsData;
-    groupNames?: { groups: IOption[] };
+    groupNames?: IGroupNames;
 }
 
 export interface IGetGroupsData {

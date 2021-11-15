@@ -27,7 +27,8 @@
       "@components/*": ["./components/*"],
       "@utils/*": ["./utils/*"],
       "@modules/*": ["./modules/*"],
-      "@services/*": ["./services/*"]
+      "@services/*": ["./services/*"],
+      "@api/*": ["./api/*"]
     }
   }
 }

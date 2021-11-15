@@ -1,5 +1,5 @@
-import { put, takeEvery } from '@redux-saga/core/effects';
-import { call } from '@redux-saga/core/effects';
+import { deleteUserApi, getUsersApi } from '@api/users';
+import { put, takeEvery, call } from '@redux-saga/core/effects';
 import { loaderAction } from '@redux/actions/loader';
 import { setUsers } from '@redux/actions/users';
 import {
@@ -11,53 +11,46 @@ import {
 } from '@redux/types/users';
 import { api } from '@services/api';
 
-function* getUsers(data: IGetUsersAction): Generator {
+function* getUsers(config: IGetUsersAction) {
     try {
-        const userResponce: any = yield call(api.get, '/users/', {
-            params: data.payload
-        });
-        //cant be typed because AxiosResponce not working
+        const { data } = yield call(getUsersApi, config);
+        yield put(setUsers(data));
+    } catch (error) {
+        return error;
+    }
+    yield put(loaderAction(false));
+}
 
-        yield put(setUsers(userResponce?.data));
+function* deleteUser(config: IDeleteUserDataAction) {
+    try {
+        const { data } = yield call(deleteUserApi, config);
+        yield put(setUsers(data));
     } catch (error) {
         return error;
     }
     yield put(loaderAction(false));
 }
-function* deleteUser(data: IDeleteUserDataAction): Generator {
-    const { queryParams, userID } = data.payload;
+function* addNewUser(config: IAddUserAction) {
+    try {
+        yield call(api.post, '/users', config.payload);
+    } catch (error) {
+        return error;
+    }
+    yield put(loaderAction(false));
+}
 
+function* editUser(config: IEditUserAction) {
     try {
-        const userResponce: any = yield call(api.delete, '/users/' + userID, {
-            params: queryParams
-        });
-        //cant be typed because AxiosResponce not working
-        yield put(setUsers(userResponce?.data));
+        yield call(api.put, '/users', config.payload);
     } catch (error) {
         return error;
     }
     yield put(loaderAction(false));
 }
-function* addNewUser(data: IAddUserAction): Generator {
+function* editUserImg(config: any) {
+    //hard code typed coming son in next task Revise all typing
     try {
-        yield call(api.post, '/users', data.payload);
-    } catch (error) {
-        return error;
-    }
-    yield put(loaderAction(false));
-}
-function* editUser(data: IEditUserAction): Generator {
-    try {
-        yield call(api.put, '/users', data.payload);
-    } catch (error) {
-        return error;
-    }
-    yield put(loaderAction(false));
-}
-function* editUserImg(data: any): Generator {
-    //hard code request, problem in back
-    try {
-        yield call(api.post, '/users/img', data.payload);
+        yield call(api.post, '/users/img', config.payload);
     } catch (error) {
         return error;
     }

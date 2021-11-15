@@ -21,7 +21,6 @@ export const Login: FC = () => {
     const history = useHistory();
     const { t } = useTranslation();
     const token = useParams();
-
     const onSubmit = (value: IFormValues) => {
         dispatch(loginAction({ value, history }));
     };
@@ -29,7 +28,7 @@ export const Login: FC = () => {
     const handleAccept = () => {
         dispatch(setModalStatusAction(false));
     };
-    
+
     useEffect(() => {
         if (token) {
             dispatch(confirmRegisterdAction(token));
@@ -39,15 +38,13 @@ export const Login: FC = () => {
 
     const { title, description } = MainText;
     return (
-    <> 
-       <AuthLayout title={t(title)} description={t(description)}>
-            <LoginForm onSubmit={onSubmit} />
-       </AuthLayout>
-        <ModalConfirm
-                handleAccept={handleAccept}
-        >
-            <ModalButton handleAccept={handleAccept} />
-         </ModalConfirm>
-    </>
+        <>
+            <AuthLayout title={t(title)} description={t(description)}>
+                <LoginForm onSubmit={onSubmit} />
+            </AuthLayout>
+            <ModalConfirm handleAccept={handleAccept}>
+                <ModalButton handleAccept={handleAccept} />
+            </ModalConfirm>
+        </>
     );
 };
