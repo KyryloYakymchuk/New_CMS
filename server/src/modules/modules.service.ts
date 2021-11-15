@@ -111,6 +111,7 @@ export class ModulesService {
 
   private static async createItem(moduleName, model): Promise<any> {
     await mongoose.connect(process.env.MONGO_URI, options);
+
     const Item = require(`../../schemas/${moduleName}`);
     const items = await Item.find();
 
@@ -127,6 +128,7 @@ export class ModulesService {
     await newItem.save();
 
     await mongoose.connection.close();
+
     return newItem;
   }
 
@@ -473,12 +475,12 @@ export class ModulesService {
   }
 
   async addItem(
-    userDTO: AddItemDTO,
+    dto: AddItemDTO,
     files: Record<any, any>,
     body: any,
     paginationDTO: PaginationDTO
   ): Promise<any> {
-    const { data } = userDTO;
+    const { data } = dto;
     const parsedData = JSON.parse(data);
 
     const module = await this.findModulesByID(parsedData.moduleID);
@@ -536,6 +538,7 @@ export class ModulesService {
     const newItem = await this.getItemByID(module.name, newItemID);
 
     itemsList.items.push(newItem);
+
     return { count: itemsList.length, items: itemsList };
   }
 
