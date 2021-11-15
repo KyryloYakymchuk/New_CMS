@@ -35,6 +35,20 @@ ${({ type }) => type !== 'checkbox' && `width: 100%;
     color: black;
   };`
 }
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background: transparent;
+    bottom: 0;
+    color: transparent;
+    cursor: pointer;
+    height: auto;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto;
+}
+
 `;
 
 export const ButtonContainer = styled.div`

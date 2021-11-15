@@ -1,5 +1,5 @@
 import i18n from '@utils/helpers/i18n';
-import { emailRE } from '../RegularExpressions';
+import { emailRE, passwordMatch, passwordSpacesRE } from '../RegularExpressions';
 
 interface ValidatorProps {
     email: string;
@@ -24,16 +24,13 @@ export const loginValidator = (values: ValidatorProps) => {
     // PASSWORD
     if (!values.password) {
         errors.password = i18n.t('Required');
-    }
-    if (/(\s)/g.test(values.password)) {
+    } else if (passwordSpacesRE.test(values.password)) {
         errors.password = i18n.t('Password must not contain spaces');
-    }
-    if (values?.password?.length < 8) {
-        errors.password = i18n.t('Minimum 8 characters');
-    }
-    if (/[^a-zA-Z0-9]/g.test(values.password)) {
-        errors.password = i18n.t('Password must not contain cyrillic');
-    }
-
+    } else if (values?.password?.length < 8) {
+        errors.password = i18n.t('Minimum 8 symbols');
+    } else if (!values.password.match(passwordMatch)){
+            errors.password
+            = i18n.t('One letter, one number, only latin, and one special character');
+        }
     return errors;
 };

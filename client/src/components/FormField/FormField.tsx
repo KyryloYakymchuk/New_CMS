@@ -11,6 +11,7 @@ type FormProps = FieldRenderProps<string, HTMLElement>;
 const FormField: FC<FormProps> = ({ input, meta, children, ...rest }) => {
     const errorMessage = useAppSelector(errorMessageSelector);
     const { touched, error } = meta;
+    
     return (
         <TextField
             error={Boolean((touched && error) || errorMessage)}

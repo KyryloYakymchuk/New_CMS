@@ -87,6 +87,8 @@ export const ua = {
     'Wrong date': 'Неправильна дата',
     'name should not be empty': 'Ім`я не повинно бути порожнім!',
     "Name shouldn't have spaces!": 'Ім`я не повинно містити прогалин!',
+    'One letter, one number, only latin, and one special character':
+    'Одна буква, одна цифра, лише латина та один спец. символ',
     // Modules
    'This module is already exists!': 'Цей модуль існує!',
     //Fields

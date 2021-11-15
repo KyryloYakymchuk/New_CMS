@@ -92,6 +92,8 @@ export const en = {
     'Wrong date': 'Wrong date',
     'name should not be empty': 'Name should not be empty!',
     "Name shouldn't have spaces!": 'Name shouldn`t have spaces!',
+    'One letter, one number, only latin, and one special character':
+    'One letter, one number, only latin, and one special character',
     // Modules
    'This module is already exists!': 'This module is already exists!',
     //Fields Label 
