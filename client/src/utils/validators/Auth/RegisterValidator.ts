@@ -1,8 +1,8 @@
 import i18n from '@utils/helpers/i18n';
-import { emailRE, passwordCyrillicRE, passwordSpacesRE } from '../RegularExpressions';
+import { emailRE, passwordMatch, passwordSpacesRE } from '../RegularExpressions';
 
 interface ValidatorProps {
-    name?: string;
+    firstname?: string;
     lastname?: string;
     email?: string;
     phone?: string;
@@ -12,7 +12,7 @@ interface ValidatorProps {
 }
 
 interface IErrors {
-    name?: string;
+    firstname?: string;
     lastname?: string;
     email?: string;
     phone?: string;
@@ -35,10 +35,11 @@ export const registerValidator = (values: ValidatorProps) => {
     } else if (passwordSpacesRE.test(values.password)) {
         errors.password = i18n.t('Password must not contain spaces');
     } else if (values?.password?.length < 8) {
-        errors.password = i18n.t('Minimum 8 characters');
-    } else if (passwordCyrillicRE.test(values.password)) {
-        errors.password = i18n.t('Password must not contain cyrillic');
-    }
+        errors.password = i18n.t('Minimum 8 symbols');
+    } else if (!values.password.match(passwordMatch)){
+            errors.password =
+            i18n.t('One letter, one number, only latin, and one special character');
+        }
     // CONFIRM PASSWORD
     if (!values.confirmPassword) {
         errors.confirmPassword = i18n.t('Required');
@@ -46,14 +47,14 @@ export const registerValidator = (values: ValidatorProps) => {
         errors.confirmPassword = i18n.t('Passwords must match');
     }
     // first name
-    if (!values.name) {
-        errors.name = i18n.t('Required');
-    } else if (values?.name?.length > 30) {
-        errors.name = i18n.t('Must have a maximum of 30 characters');
-    } else if (!values.name.match('^[a-zA-Z]+$')) {
-        errors.name = i18n.t('The first name must contain only letters');
-    } else if (!values.name.match(/^[A-Z]/)) {
-        errors.name = i18n.t('First letter must be in upper case');
+    if (!values.firstname) {
+        errors.firstname = i18n.t('Required');
+    } else if (values?.firstname?.length > 30) {
+        errors.firstname = i18n.t('Must have a maximum of 30 characters');
+    } else if (!values.firstname.match('^[a-zA-Z]+$')) {
+        errors.firstname = i18n.t('The first name must contain only letters');
+    } else if (!values.firstname.match(/^[A-Z]/)) {
+        errors.firstname = i18n.t('First letter must be in upper case');
     }
     //last name
     if (values?.lastname) {
@@ -81,6 +82,5 @@ export const registerValidator = (values: ValidatorProps) => {
             errors.birthday = i18n.t('Wrong date');
         }
     }
-
     return errors;
 };

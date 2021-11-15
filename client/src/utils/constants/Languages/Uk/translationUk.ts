@@ -90,6 +90,8 @@ export const ua = {
     "Name shouldn't have spaces!": 'Ім`я не повинно містити прогалин!',
    'Sorry, but these are сonstant field':'Вибачте, але це поле заборонено до видалення',
 
+    'One letter, one number, only latin, and one special character':
+    'Одна буква, одна цифра, лише латина та один спец. символ',
     // Modules
    'This module is already exists!': 'Цей модуль існує!',
     //Fields
