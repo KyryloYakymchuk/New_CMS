@@ -123,6 +123,9 @@ export class UsersController {
     const user = await this.userService.findUserByID(userID);
     if (!user) throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
 
+    if (req.user["userID"] === userID)
+      throw new HttpException("Cannot delete yourself", HttpStatus.BAD_REQUEST);
+
     await this.loggerGateway.logAction(req, module);
 
     return this.userService.deleteUser(userID, userDTO);
