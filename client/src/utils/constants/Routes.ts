@@ -13,6 +13,7 @@ import { CreateUserPage } from '@components/CreateUserPage/CreateUserPage';
 import { AllModules } from '@modules/Modules/AllModules';
 import { CreateModule } from '@modules/Modules/CreateModule';
 import { AllFields } from '@modules/Modules/AllFields';
+import { CreateField } from '@modules/Modules/CreateField';
 
 // Main components
 export const protectedRoutes = [
@@ -70,6 +71,12 @@ export const protectedRoutes = [
         path: ProtectedRoutes.MODULE_FIELDS,
         component: AllFields,
         title: 'Module Fields'
+    },
+
+    {
+        path: ProtectedRoutes.MODULE_FIELDS_CREATE,
+        component: CreateField,
+        title: 'Create Field Module'
     },
     {
         path: ProtectedRoutes.GROUPS,

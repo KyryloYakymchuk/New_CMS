@@ -67,7 +67,7 @@ export const AllFields: FC = () => {
     };
     
     const createModuleClick = () => {
-       history.push('/module/create');
+       history.push(`/module/${allFieldsModule?.name}/fields/create`);
     };
     const editFieldClick = (value: React.ChangeEvent<HTMLDivElement>)  => () => {
         const temp: any = value;     

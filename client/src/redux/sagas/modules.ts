@@ -1,9 +1,10 @@
 import { put, takeEvery, call } from '@redux-saga/core/effects';
 import { errorAction } from '@redux/actions/error';
 import { loaderAction } from '@redux/actions/loader';
-import { setModulesAction } from '@redux/actions/modules';
+import { setFieldsResponseAction, setModulesAction } from '@redux/actions/modules';
 import {
     ICreateModuleAction,
+    IDeleteFieldModuleAction,
     IDeleteModuleAction,
     IGetModuleAction,
     ModulesActionTypes
@@ -12,6 +13,7 @@ import request from 'axios';
 
 import {
     createModulesReqApi,
+    deleteFieldModuleReqApi,
     deleteModulesReqApi,
     editModulesReqApi,
     getModulesReqApi
@@ -66,6 +68,16 @@ function* editModulesReq(config: ICreateModuleAction) {
             yield put(errorAction(error.response?.data as IError));
         }
     }
+} function* deleteFieldModuleReq(config: IDeleteFieldModuleAction) {
+
+    try {
+     const { data } = yield call(deleteFieldModuleReqApi, config);
+        yield put(setFieldsResponseAction(data));
+    } catch (error) {
+        if (request.isAxiosError(error) && error.response) {
+            yield put(errorAction(error.response?.data as IError));
+        }
+    }
 }
 
 export function* modulesWatcher() {
@@ -73,4 +85,5 @@ export function* modulesWatcher() {
     yield takeEvery(ModulesActionTypes.DELETE_MODULE, deleteModulesReq);
     yield takeEvery(ModulesActionTypes.CREATE_MODULE, createModulesReq);
     yield takeEvery(ModulesActionTypes.EDIT_MODULE, editModulesReq);
+    yield takeEvery(ModulesActionTypes.DELETE_FIELD_MODULE, deleteFieldModuleReq);
 }

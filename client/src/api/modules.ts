@@ -1,7 +1,8 @@
 import {
     IModuleListData,
     IDeleteModuleAction,
-    ICreateModuleAction
+    ICreateModuleAction,
+    IDeleteFieldModuleAction
 } from './../redux/types/modules';
 import { IGetModuleAction } from '@redux/types/modules';
 import { api } from '@services/api';
@@ -28,4 +29,11 @@ export const editModulesReqApi = (config: ICreateModuleAction): Promise<IModuleL
         moduleID,
         categories
     });
+};
+
+
+export const deleteFieldModuleReqApi = (config: IDeleteFieldModuleAction)
+: Promise<IModuleListData> => {
+    const { fieldId } = config.payload;
+    return api.delete('/modules/fields/' + fieldId);
 };
