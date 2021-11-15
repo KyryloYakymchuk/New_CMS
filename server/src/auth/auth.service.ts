@@ -3,7 +3,6 @@ import { sign } from "jsonwebtoken";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import * as bcrypt from "bcryptjs";
-import * as fs from "fs";
 
 import { UserService } from "../shared/user/user.service";
 import { User } from "../types/user";
@@ -27,39 +26,21 @@ export class AuthService {
 
   async sendEmail(userID: string, hash: any): Promise<Record<string, any>> {
     const user = await this.userService.findUserByID(userID);
-
     if (!user) throw new HttpException("User not found", HttpStatus.NOT_FOUND);
 
-    // const mail = fs.readFileSync(
-    //   "./src/mail/templates/mailConfirm.html",
-    //   "utf8"
-    // );
-    //
-    // const newMail = () => {
-    //   const repOne = mail.replace(
-    //     /pageUrl/,
-    //     `${process.env.BASE_URL}auth/register/confirm`
-    //   );
-    //   return repOne.replace(/token/, `${hash}`);
-    // };
-    //
-    // await this.mailService.sendMail({
-    //   from: '"CMS" <ochkodym@gmail.com>',
-    //   to: user.email,
-    //   subject: "Confirm your account",
-    //   text: `Confirm your account by clicking link below!`,
-    //   html: newMail(),
-    // });
+    const context = {
+      name: `${user?.name || ""} ${user?.lastname || ""}`,
+      token: hash,
+      url: `${process.env.BASE_URL}auth/login`,
+    };
+
     await this.mailService.sendMail({
       from: '"CMS" <ochkodym@gmail.com>',
       to: user.email,
       subject: "Confirm your account",
       text: `Confirm your account by clicking link below!`,
       template: "../server/src/mail/templates/mailConfirm.hbs",
-      context: {
-        token: hash,
-        url: `${process.env.BASE_URL}auth/login`,
-      },
+      context,
     });
 
     return { pageToken: hash };
@@ -70,24 +51,8 @@ export class AuthService {
     hash: any
   ): Promise<Record<string, string>> {
     const user = await this.userService.findUserByID(userID);
-
     if (!user) throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
 
-    const mail = fs.readFileSync("./src/mail/templates/mailReset.html", "utf8");
-    const newMail = () => {
-      const repOne = mail.replace(
-        /pageUrl/,
-        `${process.env.BASE_URL}auth/resetPassword`
-      );
-      return repOne.replace(/token/, `${hash}`);
-    };
-
-    // await this.mailService.sendMail({
-    //   from: '"CMS" <ochkodym@gmail.com>',
-    //   to: user.email,
-    //   subject: "Reset your password",
-    //   html: newMail(),
-    // });
     await this.mailService.sendMail({
       from: '"CMS" <ochkodym@gmail.com>',
       to: user.email,
@@ -107,10 +72,9 @@ export class AuthService {
     newPassword: string
   ): Promise<Record<string, string>> {
     const user = await this.userService.findUserByID(userID);
+    if (!user) return { message: "Password changed successfully!" };
 
     const hashed = await bcrypt.hash(newPassword, 10);
-
-    if (!user) return { message: "Password changed successfully!" };
 
     await this.userModel.findOneAndUpdate(
       { userID: userID },
