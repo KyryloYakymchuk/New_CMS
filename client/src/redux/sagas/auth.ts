@@ -42,8 +42,10 @@ function* registerReq(config: IRegisterAction) {
         yield put(setModalMessageAction('A confirmation letter has been sent to the Email !'));
         yield put(errorAction());
         yield put(loaderAction(false));
-    } catch (error: any) {
-        yield put(errorAction(error.response.data.message));
+    } catch (error) {
+        if (request.isAxiosError(error) && error.response) {
+            yield put(errorAction(error.response?.data as IError));
+        }
         yield put(loaderAction(false));
     }
 }

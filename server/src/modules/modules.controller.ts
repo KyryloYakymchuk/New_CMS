@@ -489,11 +489,7 @@ export class ModulesController {
       if (validated) dto.fields = validated;
     }
 
-<<<<<<< Updated upstream
     await this.moduleService.editModule(dto);
-=======
-    const result = await this.moduleService.editModule(userDTO);
->>>>>>> Stashed changes
     await this.loggerGateway.logAction(req, module);
 
     return this.moduleService.getModules(queryDTO);
