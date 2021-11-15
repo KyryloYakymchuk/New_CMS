@@ -14,20 +14,23 @@ import { handleListSort } from '@utils/functions/handleListSort';
 import { userListDataSelector } from '@redux/selectors/users';
 import { DrawerFilterMenu } from '@components/DrawerFilterMenu/DrawerFilterMenu';
 import { SingleFilterForm } from '@components/Forms/SingleFilterForm/SingleFilterForm';
-import { EventChangeType,
-         ISingleFilterFormValue,
-         ISortHandlerValue,
-         ISortParams } from '@interfaces/types';
+import {
+    EventChangeType,
+    ISingleFilterFormValue,
+    ISortHandlerValue,
+    ISortParams
+} from '@interfaces/types';
 import { IGetUsersData } from '@redux/types/users';
 import { loaderAction } from '@redux/actions/loader';
 import { redirectHandler } from '@utils/functions/redirectHandler';
 import { offsetGenerator } from '@utils/functions/offsetGenerator';
+import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
+import { ModalButton } from '@components/Modal/ModalButton';
+import { setModalMessageAction } from '@redux/actions/modal';
 
 export interface IRouterParams {
     page: string;
 }
-
-
 
 const LIMIT = 10;
 
@@ -38,9 +41,10 @@ export const UsersPage: FC = () => {
     let { search, pathname } = useLocation();
     const query = new URLSearchParams(search);
     const currentPage = Number(query.get('page'));
-
+    const [modalStatus, setModalStatus] = useState<boolean>(false);
     const [sortParams, setSortParams] = useState<ISortParams>({});
     const [deleteRequestStatus, setDeleteRequestStatus] = useState(false);
+    const [deleteWatcher, setDeleteWatcher] = useState(false);
     const [userID, setUserID] = useState<string>('');
     const [filterFormValue, setFilterFormValue] = useState<string>('');
     const [filterFormSearchStatus, setFilterFormSearchStatus] = useState(false);
@@ -52,7 +56,8 @@ export const UsersPage: FC = () => {
     const deleteUserClick = (user: React.ChangeEvent<HTMLDivElement>) => () => {
         const temp: any = user;
         setUserID(temp.userID);
-        setDeleteRequestStatus(true);
+        setModalStatus(true);
+        dispatch(setModalMessageAction('Are you sure you want to delete thit user?'));
     };
     const editUserClick = (user: React.ChangeEvent<HTMLDivElement>) => () => {
         dispatch(setCurrentUser(user));
@@ -96,8 +101,16 @@ export const UsersPage: FC = () => {
 
     const arrUserListButton = [
         { item: <Icons.AddIcon />, onClickFunc: editUserClick },
-        { item: <Icons.PersonIcon />, onClickFunc: deleteUserClick }
+        { item: <Icons.DeleteIcon />, onClickFunc: deleteUserClick }
     ];
+    const handleAccept = () => {
+        setModalStatus(false);
+        setDeleteRequestStatus(true);
+        setDeleteWatcher(!deleteWatcher);
+    };
+    const handleClose = () => {
+        setModalStatus(false);
+    };
 
     useEffect(() => {
         dispatch(loaderAction(true));
@@ -122,7 +135,7 @@ export const UsersPage: FC = () => {
         } else {
             dispatch(getUsers(queryParams));
         }
-    }, [dispatch, userID, currentPage, sortParams, filterFormSearchStatus]);
+    }, [dispatch, deleteWatcher, currentPage, sortParams, filterFormSearchStatus]);
 
     return (
         <UserPageContainer>
@@ -157,6 +170,13 @@ export const UsersPage: FC = () => {
                 />
                 <Pagination count={Number(allUsers?.count)} limit={LIMIT} />
             </ListBlock>
+            <ModalConfirm
+                handleAccept={handleAccept}
+                handleClose={handleClose}
+                modalStatus={modalStatus}
+            >
+                <ModalButton handleAccept={handleAccept} handleClose={handleClose} />
+            </ModalConfirm>
         </UserPageContainer>
     );
 };

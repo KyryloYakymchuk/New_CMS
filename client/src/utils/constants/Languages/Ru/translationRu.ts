@@ -10,10 +10,10 @@ export const ru = {
     Settings: 'Настройки',
     //Sub items side menu
     //Pages
-    'All Pages':'Все страницы',
-    'New Page':'Новая страница',
-    'Edit Page':'Редактировать страницу',
-    'Create Page':'Создать страницу',
+    'All Pages': 'Все страницы',
+    'New Page': 'Новая страница',
+    'Edit Page': 'Редактировать страницу',
+    'Create Page': 'Создать страницу',
     //NewsLetter
     'All Letter': 'Все письма',
     'All Jobs': 'Все рассылки',
@@ -22,11 +22,11 @@ export const ru = {
     'All Fields': 'Поля',
     'All Items': 'Продукты',
     'All Orders': 'Заказы',
-    // Modules 
-    'All Modules':'Все модули',
-    'New Module':'Добавить модуль',
-    'Edit Module':'Редактировать модуль',
-    'Module Fields':'Поля модуля', 
+    // Modules
+    'All Modules': 'Все модули',
+    'New Module': 'Добавить модуль',
+    'Edit Module': 'Редактировать модуль',
+    'Module Fields': 'Поля модуля',
     // Settings
     Language: 'Язык',
     //Actions
@@ -35,21 +35,23 @@ export const ru = {
     No: 'Нет',
     Filter: 'Фильтр',
     'Create user': 'Создать пользователя',
-    'Apply':'Применить',
-    'Cancel':'Отменить',
-    'Create':'Создать',
-    'New Field':'Создать поле',
-    'Delete':'Удалить',
+    Apply: 'Применить',
+    Cancel: 'Отменить',
+    Create: 'Создать',
+    'New Field': 'Создать поле',
+    Delete: 'Удалить',
 
     //List
     Name: 'Имя',
     Email: 'Почта',
     Number: 'Номер',
     interact: 'Действие',
-    Type:'Тип',
-    Module:'Модуль',
+    Type: 'Тип',
+    Module: 'Модуль',
     //Modal message
     'Are you sure you want to log out?': 'Вы уверенны что хотите покинуть сайт ?',
+    'Are you sure you want to delete thit user?':
+        'Вы уверены что хотите удалить этого пользователя?',
     'A confirmation letter has been sent to the Email !':
         'Письмо с подтверждением отправлено на Email !',
     'Password reset successfuly !': 'Пароль сброшен успешно !',
@@ -90,18 +92,17 @@ export const ru = {
     'name should not be empty': 'Имя не должно быть пустым!',
     "Name shouldn't have spaces!": 'Имя не должно содержать пробелов!',
     'One letter, one number, only latin, and one special character':
-    'Одна буква, одна цифра, только латынь и один спец. символ',
+        'Одна буква, одна цифра, только латынь и один спец. символ',
     // Modules
-   'This module is already exists!': 'Этот модуль уже существует!',
-   'Sorry, but these are сonstant field':'Извините, но это постоянное поле',
-   //Fields
-   'Password':'Пароль',
-   'Confirm Password':'Подтвердите пароль',
-   'Firstname':'Имя',
-   'Lastname':'Фамилия',
-   'Phone Number':'Номер телефона',
-   'Birthday':'Дата рождения',
-   'Module Name':'Имя модуля',
-   'Group':'Группа'
-
+    'This module is already exists!': 'Этот модуль уже существует!',
+    'Sorry, but these are сonstant field': 'Извините, но это постоянное поле',
+    //Fields
+    Password: 'Пароль',
+    'Confirm Password': 'Подтвердите пароль',
+    Firstname: 'Имя',
+    Lastname: 'Фамилия',
+    'Phone Number': 'Номер телефона',
+    Birthday: 'Дата рождения',
+    'Module Name': 'Имя модуля',
+    Group: 'Группа'
 };

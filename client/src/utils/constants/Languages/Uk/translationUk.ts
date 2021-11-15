@@ -10,10 +10,10 @@ export const ua = {
     Settings: 'Налаштування',
     //Sub items side menu
     //Pages
-    'All Pages':'Всi сторiнки',
-    'New Page':'Нова сторiнка',
-    'Edit Page':'Редагувати сторiнку',
-    'Create Page':'Створити сторiнку',
+    'All Pages': 'Всi сторiнки',
+    'New Page': 'Нова сторiнка',
+    'Edit Page': 'Редагувати сторiнку',
+    'Create Page': 'Створити сторiнку',
     //NewsLetter
     'All Letter': 'Всi листи',
     'All Jobs': 'Всi розсилки',
@@ -22,11 +22,11 @@ export const ua = {
     'All Fields': 'Поля',
     'All Items': 'Продукти',
     'All Orders': 'Замовлення',
-    // Modules 
-    'All Modules':'Всi модулi',
-    'New Module':'Додати модуль',
-    'Edit Module':'Редагувати модуль',
-    'Module Fields':'Поля модуля',
+    // Modules
+    'All Modules': 'Всi модулi',
+    'New Module': 'Додати модуль',
+    'Edit Module': 'Редагувати модуль',
+    'Module Fields': 'Поля модуля',
     // Settings
     Language: 'Мова',
     //Actions
@@ -35,21 +35,23 @@ export const ua = {
     No: 'Нi',
     Filter: 'Фiльтр',
     'Create user': 'Створити користувача',
-    'Apply':'Застосувати',
-    'Cancel':'Скасувати',
-    'Create':'Створити',
-    'New Field':'Створити поле',   
-    'Delete':'Видалити',
+    Apply: 'Застосувати',
+    Cancel: 'Скасувати',
+    Create: 'Створити',
+    'New Field': 'Створити поле',
+    Delete: 'Видалити',
 
     //List
     Name: 'Iм`я',
     Email: 'Пошта',
     Number: 'Номер',
     interact: 'Дiя',
-    Type:'Тип',
-    Module:'Модуль',
+    Type: 'Тип',
+    Module: 'Модуль',
     //Modal message
     'Are you sure you want to log out?': 'Ви впевненi, що хочете покинути сайт ?',
+    'Are you sure you want to delete thit user?':
+        'Ви впевненi що хочете видалити цього користувача?',
     'A confirmation letter has been sent to the Email !':
         'На електронну пошту надіслано лист підтвердження!',
     'Password reset successfuly !': 'Пароль успішно скинуто !',
@@ -88,19 +90,19 @@ export const ua = {
     'Wrong date': 'Неправильна дата',
     'name should not be empty': 'Ім`я не повинно бути порожнім!',
     "Name shouldn't have spaces!": 'Ім`я не повинно містити прогалин!',
-   'Sorry, but these are сonstant field':'Вибачте, але це поле заборонено до видалення',
+    'Sorry, but these are сonstant field': 'Вибачте, але це поле заборонено до видалення',
 
     'One letter, one number, only latin, and one special character':
-    'Одна буква, одна цифра, лише латина та один спец. символ',
+        'Одна буква, одна цифра, лише латина та один спец. символ',
     // Modules
-   'This module is already exists!': 'Цей модуль існує!',
+    'This module is already exists!': 'Цей модуль існує!',
     //Fields
-    'Password':'Пароль',
-    'Confirm Password':'Підтвердіть пароль',
-    'Firstname':'Ім`я',
-    'Lastname':'Прізвище',
-    'Phone Number':'Номер телефону',
-    'Birthday':'Дата народження',
-    'Module Name':'Ім`я модуля',
-    'Group':'Група'
+    Password: 'Пароль',
+    'Confirm Password': 'Підтвердіть пароль',
+    Firstname: 'Ім`я',
+    Lastname: 'Прізвище',
+    'Phone Number': 'Номер телефону',
+    Birthday: 'Дата народження',
+    'Module Name': 'Ім`я модуля',
+    Group: 'Група'
 };
