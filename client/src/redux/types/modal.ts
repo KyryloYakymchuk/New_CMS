@@ -19,4 +19,5 @@ export interface IModalMessageAction {
 }
 
 
+
 export type ModalActions = IModalAction | IModalMessageAction;

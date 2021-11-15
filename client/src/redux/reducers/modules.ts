@@ -14,6 +14,13 @@ const modules = (state = initialState, action: IModuleActions):IModules => {
                 ...state,
                 editableModule: action.payload
             };
+        case ModulesActionTypes.SET_FIELD_RESPONSE:
+            return {
+              ...state,
+               editableModule: { 
+                   ...state.editableModule, fields: action.payload.fields
+               } 
+            };
         default:
             return state;
     }

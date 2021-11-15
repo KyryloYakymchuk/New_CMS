@@ -26,7 +26,6 @@ export const en = {
     'All Modules':'All Modules',
     'New Module':'New Module',
     'Edit Module':'Edit Module',
-    'Delete module':'Delete module',
     'Module Fields':'Module Fields',
 
     // Settings
@@ -42,6 +41,8 @@ export const en = {
     'Cancel':'Cancel',
     'Create':'Create',
     'New Field':'New Field',
+    'Delete':'Delete',
+
 
     //List
     Name: 'Name',
@@ -96,6 +97,7 @@ export const en = {
     'One letter, one number, only latin, and one special character',
     // Modules
    'This module is already exists!': 'This module is already exists!',
+   'Sorry, but these are сonstant field':'Sorry, but these are сonstant field',
     //Fields Label 
     'Password':'Password',
     'Confirm Password':'Confirm Password',

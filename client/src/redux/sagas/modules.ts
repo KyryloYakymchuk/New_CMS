@@ -1,8 +1,10 @@
 import { put, takeEvery, call } from '@redux-saga/core/effects';
 import { errorAction } from '@redux/actions/error';
 import { loaderAction } from '@redux/actions/loader';
-import { setModulesAction } from '@redux/actions/modules';
+import { setFieldsResponseAction,
+      setModulesAction } from '@redux/actions/modules';
 import { ICreateModuleAction,
+    IDeleteFieldModuleAction,
     IDeleteModuleAction,
     IGetModuleAction,
     ModulesActionTypes } from '@redux/types/modules';
@@ -66,10 +68,23 @@ function* editModulesReq(data: ICreateModuleAction): Generator {
     }
 }
 
+function* deleteFieldModuleReq(data: IDeleteFieldModuleAction): Generator {
+    const { fieldId } = data.payload;
+
+    try {
+     const fieldsResponse:any =  yield call(api.delete, '/modules/fields/' + fieldId);
+        yield put(setFieldsResponseAction(fieldsResponse.data));
+    } catch (error: any) {
+        yield put(errorAction(error.response.data.message));
+    }
+}
+
 
 export function* modulesWatcher() {
     yield takeEvery(ModulesActionTypes.GET_MODULES, getModulesReq);
     yield takeEvery(ModulesActionTypes.DELETE_MODULE, deleteModulesReq);
     yield takeEvery(ModulesActionTypes.CREATE_MODULE, createModulesReq);
     yield takeEvery(ModulesActionTypes.EDIT_MODULE, editModulesReq);
+    yield takeEvery(ModulesActionTypes.DELETE_FIELD_MODULE, deleteFieldModuleReq);
+
 }

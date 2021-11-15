@@ -25,7 +25,6 @@ export const ua = {
     // Modules 
     'All Modules':'Всi модулi',
     'New Module':'Додати модуль',
-    'Delete module':'Видалити модуль',
     'Edit Module':'Редагувати модуль',
     'Module Fields':'Поля модуля',
     // Settings
@@ -40,6 +39,8 @@ export const ua = {
     'Cancel':'Скасувати',
     'Create':'Створити',
     'New Field':'Створити поле',   
+    'Delete':'Видалити',
+
     //List
     Name: 'Iм`я',
     Email: 'Пошта',
@@ -87,6 +88,8 @@ export const ua = {
     'Wrong date': 'Неправильна дата',
     'name should not be empty': 'Ім`я не повинно бути порожнім!',
     "Name shouldn't have spaces!": 'Ім`я не повинно містити прогалин!',
+   'Sorry, but these are сonstant field':'Вибачте, але це поле заборонено до видалення',
+
     'One letter, one number, only latin, and one special character':
     'Одна буква, одна цифра, лише латина та один спец. символ',
     // Modules

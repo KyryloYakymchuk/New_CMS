@@ -6,7 +6,10 @@ export enum ModulesActionTypes {
     DELETE_MODULE = 'DELETE_MODULE',
     CREATE_MODULE = 'CREATE_MODULE',
     SET_EDIT_DATA_MODULE = 'SET_EDIT_DATA_MODULE',
-    EDIT_MODULE = 'EDIT_MODULE'
+    EDIT_MODULE = 'EDIT_MODULE',
+    DELETE_FIELD_MODULE = 'DELETE_FIELD_MODULE',
+    SET_FIELD_RESPONSE = 'SET_FIELD_RESPONSE'
+
 }
 
 export interface ISetModulePayload {
@@ -92,6 +95,24 @@ export interface IEditModuleAction {
     payload: ICreateModulePayload;
 }
 
+export interface IDeleteFieldModulePayload {
+    fieldId:string;
+}
+
+export interface IDeleteFieldModuleAction {
+    type: ModulesActionTypes.DELETE_FIELD_MODULE;
+    payload: IDeleteFieldModulePayload;
+}
+
+
+export interface IFieldResponse {
+    fields:[];
+}
+
+export interface ISetFieldResponseAction {
+    type:ModulesActionTypes.SET_FIELD_RESPONSE;
+    payload:IFieldResponse;
+}
 
 
 export type IModuleActions = 
@@ -99,4 +120,6 @@ IGetModuleAction |
 ISetModuleAction | 
 IDeleteModuleAction |
 ICreateModuleAction | 
-ISetEditDataModuleAction;
+ISetEditDataModuleAction |
+ISetFieldResponseAction |
+IDeleteFieldModuleAction;
