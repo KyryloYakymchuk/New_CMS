@@ -241,7 +241,7 @@ export class ModulesService {
     );
 
     if (modulesCount.length === 0) {
-      throw new HttpException("Modules not found!", HttpStatus.NOT_FOUND);
+      throw new HttpException("No items!", HttpStatus.NO_CONTENT);
     }
 
     return { count: modulesCount.length, modules };

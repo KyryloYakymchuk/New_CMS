@@ -37,11 +37,22 @@ export class UserService {
 
   async register(userDTO: RegisterDTO): Promise<Record<string, any>> {
     const { email } = userDTO;
+
     const user = await this.findUser(email);
     if (user)
       throw new HttpException("User already exists!", HttpStatus.BAD_REQUEST);
 
-    const createdUser = new this.userModel(userDTO);
+    const group = await this.userModel.findOne({ name: "User" });
+
+    const createdUser = new this.userModel({
+      userDTO,
+      groups: [
+        {
+          label: group.name,
+          value: group.groupID,
+        },
+      ],
+    });
     await createdUser.save();
 
     const deleteTask = await cron.schedule("* * 2 * *", () => {

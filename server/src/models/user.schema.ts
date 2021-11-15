@@ -19,7 +19,7 @@ export const UserSchema = new mongoose.Schema({
   },
   group: {
     type: Array,
-    default: ["User"],
+    default: [],
   },
   phone: {
     type: String,

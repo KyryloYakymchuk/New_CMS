@@ -414,6 +414,8 @@ export class ModulesController {
   }
 
   @Get("/item/variants/:moduleName/:itemID")
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   async getItemVariants(
     @Param() userDTO: GetItemVariantsDTO,
     @Req() req: Request
@@ -422,6 +424,8 @@ export class ModulesController {
   }
 
   @Put("/items")
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   async editItems(
     @Body() userDTO: EditItemsDTO,
     @Query() paginationDTO: PaginationDTO,
@@ -432,12 +436,16 @@ export class ModulesController {
     return result;
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   @Put("/item/variants/stock")
   async setVariantStock(@Body() userDTO: SetVariantStockDTO) {
     return this.moduleService.setVariantStock(userDTO);
   }
 
   @Post("/upload")
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   @UseInterceptors(
     AnyFilesInterceptor({
       storage: diskStorage({
@@ -459,6 +467,8 @@ export class ModulesController {
   }
 
   @Put("/")
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   @HttpCode(HttpStatus.OK)
   async editModule(
     @Body() dto: EditModuleDTO,
@@ -491,16 +501,22 @@ export class ModulesController {
   }
 
   @Post("fields")
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   async addFields(
-    @Body() userDTO: AddFieldsDTO,
+    @Body() dto: AddFieldsDTO,
     @Req() req: Request
   ): Promise<Record<string, any>> {
-    const result = await this.moduleService.addField(userDTO);
+    const result = await this.moduleService.addField(dto);
+
     await this.loggerGateway.logAction(req, module);
+
     return result;
   }
 
   @Put("fields")
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   @HttpCode(HttpStatus.OK)
   async editFields(
     @Body() userDTO: EditFieldsDTO,
@@ -512,6 +528,8 @@ export class ModulesController {
   }
 
   @Put("fields/order")
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   @HttpCode(HttpStatus.OK)
   async editFieldsOrder(
     @Body() userDTO: EditFieldsOrderDTO,
@@ -523,6 +541,8 @@ export class ModulesController {
   }
 
   @Delete("fields/:fieldID")
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   @HttpCode(HttpStatus.OK)
   async deleteFields(
     @Param("fieldID") userDTO: DeleteFieldsDTO,
@@ -534,6 +554,8 @@ export class ModulesController {
   }
 
   @Delete(":module")
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   @HttpCode(HttpStatus.OK)
   async deleteModule(
     @Param("module") userDTO: DeleteModuleDTO,
