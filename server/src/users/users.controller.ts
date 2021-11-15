@@ -51,6 +51,25 @@ export class UsersController {
     return this.userService.getUsers(userDTO);
   }
 
+  @Get(":userID")
+  @UseGuards(AuthGuard("jwt"))
+  async getUser(@Param("userID") userID: string): Promise<Record<string, any>> {
+    if (!userID)
+      throw new HttpException("ID is not provided", HttpStatus.BAD_REQUEST);
+
+    const find = await this.userService.findUserByID(userID);
+    if (!find)
+      throw new HttpException(
+        "Cannot find user with provided ID",
+        HttpStatus.NOT_FOUND
+      );
+
+    const user = find.toObject();
+    delete user["password"];
+
+    return user;
+  }
+
   @Post()
   @UseGuards(AuthGuard("jwt"))
   @HttpCode(HttpStatus.OK)
