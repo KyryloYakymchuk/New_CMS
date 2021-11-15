@@ -2,7 +2,8 @@ import {
     IModuleListData,
     IDeleteModuleAction,
     ICreateModuleAction,
-    IDeleteFieldModuleAction
+    IDeleteFieldModuleAction,
+    ICreateFieldModuleAction
 } from './../redux/types/modules';
 import { IGetModuleAction } from '@redux/types/modules';
 import { api } from '@services/api';
@@ -37,3 +38,13 @@ export const deleteFieldModuleReqApi = (config: IDeleteFieldModuleAction)
     const { fieldId } = config.payload;
     return api.delete('/modules/fields/' + fieldId);
 };
+
+export const createFieldModuleReqApi = (config: ICreateFieldModuleAction)
+: Promise<IModuleListData> => {
+
+console.log(config.payload);
+console.log(12);
+
+    return api.post('/modules/fields/', config.payload );
+};
+

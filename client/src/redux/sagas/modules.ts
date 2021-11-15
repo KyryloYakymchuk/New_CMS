@@ -3,6 +3,7 @@ import { errorAction } from '@redux/actions/error';
 import { loaderAction } from '@redux/actions/loader';
 import { setFieldsResponseAction, setModulesAction } from '@redux/actions/modules';
 import {
+    ICreateFieldModuleAction,
     ICreateModuleAction,
     IDeleteFieldModuleAction,
     IDeleteModuleAction,
@@ -12,6 +13,7 @@ import {
 import request from 'axios';
 
 import {
+    createFieldModuleReqApi,
     createModulesReqApi,
     deleteFieldModuleReqApi,
     deleteModulesReqApi,
@@ -19,6 +21,7 @@ import {
     getModulesReqApi
 } from '@api/modules';
 import { IError } from '@redux/types/error';
+import { ProtectedRoutes } from '@utils/enums/RoutesPath';
 
 function* getModulesReq(config: IGetModuleAction) {
     try {
@@ -47,7 +50,7 @@ function* createModulesReq(config: ICreateModuleAction) {
     try {
         const { data } = yield call(createModulesReqApi, config);
         yield put(setModulesAction(data));
-        history?.push('/modules');
+        history?.push(ProtectedRoutes.MODULES);
         yield put(errorAction());
     } catch (error) {
         if (request.isAxiosError(error) && error.response) {
@@ -61,7 +64,7 @@ function* editModulesReq(config: ICreateModuleAction) {
     try {
         const { data } = yield call(editModulesReqApi, config);
         yield put(setModulesAction(data));
-        history?.push('/modules');
+        history?.push(ProtectedRoutes.MODULES);
         yield put(errorAction());
     } catch (error) {
         if (request.isAxiosError(error) && error.response) {
@@ -79,6 +82,22 @@ function* editModulesReq(config: ICreateModuleAction) {
         }
     }
 }
+function* createFieldModuleReq(config: ICreateFieldModuleAction) {  
+    const { history } = config.payload;
+
+    try {
+     const { data } = yield call(createFieldModuleReqApi, config);
+        yield put(setFieldsResponseAction(data));
+        history?.push(ProtectedRoutes.MODULE_FIELDS);       
+    } catch (error) {
+        if (request.isAxiosError(error) && error.response) {
+            yield put(errorAction(error.response?.data as IError));
+        }
+    }
+}
+
+
+
 
 export function* modulesWatcher() {
     yield takeEvery(ModulesActionTypes.GET_MODULES, getModulesReq);
@@ -86,4 +105,7 @@ export function* modulesWatcher() {
     yield takeEvery(ModulesActionTypes.CREATE_MODULE, createModulesReq);
     yield takeEvery(ModulesActionTypes.EDIT_MODULE, editModulesReq);
     yield takeEvery(ModulesActionTypes.DELETE_FIELD_MODULE, deleteFieldModuleReq);
+    yield takeEvery(ModulesActionTypes.CREATE_FIELD_MODULE, createFieldModuleReq);
+
+    
 }

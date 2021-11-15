@@ -9,7 +9,7 @@ export const Select = styled.select`
     width: 200px;
     outline: none;
     padding: 0 4px;
-
+    margin-bottom: 15px;
     option {
         cursor: pointer;
         background:aliceblue;

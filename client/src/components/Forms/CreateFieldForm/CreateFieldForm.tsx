@@ -1,52 +1,56 @@
 
-import FormField from '@components/FormField/FormField';
-import { initialfileds } from '@utils/constants/Modules/typeSelectData';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { Form } from 'react-final-form';
-import { FieldCustom, FormContainer } from '../SingleFilterForm/styled';
+import { useTranslation } from 'react-i18next';
+
+import { errorMessageSelector } from '@redux/selectors/error';
+
+import { useAppSelector } from '@utils/hooks/useAppSelector';
+
+import { ErrorMessage, FieldCustom } from '@modules/Auth/styled';
+import { ButtonContainer, FormContainer } from '@modules/Modules/styled';
+
+import { Buttons } from '@components/Button/Button';
+import { FieldSettings } from '@components/Forms/Modules/FieldSettings';
+import FormField from '@components/FormField/FormField';
+
+import { ICreateFieldProps, IFieldProps } from '@interfaces/types';
+
+
 
 interface IProps {
-    selectValue:string;
+    currentField?:IFieldProps;
+    onSubmit:(value:ICreateFieldProps) => void;
 }
 
-const allField = {
-    checkbox: FormField,
-    textbox: FormField,
-    textarea: FormField,
-    upload: FormField,
-    module: FormField,
-    dropdown: FormField,
-    wysiwyg: FormField,
-    map: FormField
-};
-
-export const CreateFieldForm: FC<IProps> = ({ selectValue }) =>{
-    // big data, need typed later 
-    const [currentField, setCurrentField] = useState<any>(); 
-    console.log(currentField);
-
-
-  useEffect(() => {
-    initialfileds.forEach((field) => {
-        if (field.type === selectValue){
-         setCurrentField(field);
-        } 
-     });
-  }, [selectValue]);    
-
-const onSubmit = (value:any) => {
-    console.log(value);
-};
-    
+export const CreateFieldForm: FC<IProps> = ({ currentField, onSubmit }) =>{
+const { t } = useTranslation(); 
+const errorMessage = useAppSelector(errorMessageSelector);  
 return (
     <Form
         onSubmit={onSubmit}
         render={({ handleSubmit }) => (
                 <FormContainer>
                     <form onSubmit={handleSubmit}>    
-                     {selectValue === String(Object.keys(allField))  &&                    
-                            <FieldCustom />                        
-                     }                    
+                        <ErrorMessage>{errorMessage && t(errorMessage)}</ErrorMessage>
+                            <FieldCustom
+                                label={t('Name')}
+                                name={'textPrompt'}
+                                type={currentField?.key}
+                                component={FormField}
+                            />
+                        {currentField?.settings &&
+                          <FieldSettings settings={currentField?.settings}/>
+                        }
+                        <ButtonContainer>
+                            <Buttons type="submit" title={t('Apply')} style="pinkButton" />
+                            <Buttons
+                                type="button"
+                                title={t('Cancel')}
+                                style={'greyButton'}
+                                onClickFunction={() => history.back()}
+                            />
+                        </ButtonContainer>
                     </form>
                 </FormContainer>
             )}

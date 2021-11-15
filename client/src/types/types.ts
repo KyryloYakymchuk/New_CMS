@@ -1,5 +1,7 @@
 import { MouseEventHandler } from 'react';
 import { InputActionMeta, MultiValue } from 'react-select';
+import { History } from 'history';
+
 export interface IAddress {
     street: string;
     city: string;
@@ -44,6 +46,47 @@ export interface ISortHandlerValue {
 export type OnClickFuncType = (
     e: React.ChangeEvent<HTMLDivElement>
 ) => MouseEventHandler<HTMLDivElement>;
+
+
+
+export interface IFieldSelectSettings {
+    value?:string;
+    id?:number;
+   
+}
+
+export interface IFieldSettings {
+    id?:number;
+    name?:string;
+    type?:string;
+    key?:string;
+    fieldType?:string;
+    select?:IFieldSelectSettings[];
+}
+
+export interface ICreateFieldProps {
+    history?:History;
+    id?:number;
+    name?:string;
+    type?:string;
+    key?:string;
+    fieldType?:string;
+    moduleID?:string;
+    settings?: IFieldSettings;
+}
+
+
+export interface IFieldProps {
+    id?:number;
+    name?:string;
+    type?:string;
+    key?:string;
+    fieldType?:string;
+    moduleID?:string;
+    settings?: IFieldSettings[];
+}
+
+
 
 export type GetSelectDataType = (newValue: string, actionMeta?: InputActionMeta) => void;
 export type MultiValueType = MultiValue<IOption>;

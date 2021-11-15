@@ -1,3 +1,4 @@
+import { ICreateFieldProps } from '@interfaces/types';
 import { History } from 'history';
 
 export enum ModulesActionTypes {
@@ -8,7 +9,8 @@ export enum ModulesActionTypes {
     SET_EDIT_DATA_MODULE = 'SET_EDIT_DATA_MODULE',
     EDIT_MODULE = 'EDIT_MODULE',
     DELETE_FIELD_MODULE = 'DELETE_FIELD_MODULE',
-    SET_FIELD_RESPONSE = 'SET_FIELD_RESPONSE'
+    SET_FIELD_RESPONSE = 'SET_FIELD_RESPONSE',
+    CREATE_FIELD_MODULE = 'CREATE_FIELD_MODULE'
 
 }
 
@@ -113,7 +115,10 @@ export interface ISetFieldResponseAction {
     type:ModulesActionTypes.SET_FIELD_RESPONSE;
     payload:IFieldResponse;
 }
-
+export interface ICreateFieldModuleAction {
+    type:ModulesActionTypes.CREATE_FIELD_MODULE;
+    payload:ICreateFieldProps;
+}
 
 export type IModuleActions = 
 IGetModuleAction |
@@ -122,4 +127,5 @@ IDeleteModuleAction |
 ICreateModuleAction | 
 ISetEditDataModuleAction |
 ISetFieldResponseAction |
-IDeleteFieldModuleAction;
+IDeleteFieldModuleAction | 
+ICreateFieldModuleAction;

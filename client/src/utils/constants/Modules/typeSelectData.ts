@@ -1,28 +1,17 @@
-export const typeSelectData = [ 
-    { item: 'checkbox' },
-    { item: 'textbox' },
-    { item: 'textarea' },
-    { item: 'upload' },
-    { item: 'module' },
-    { item: 'dropdown' },
-    { item: 'wysiwyg' },
-    { item: 'map' }
-];
-
-
 export const initialfileds = [
     {
         id: 0,
         name: 'Checkbox',
-        key: 'checkbox',
+        key: 'text',
         type: 'checkbox',
         fieldType: 'boolean'
+        
       },
       {
         id: 1,
         name: 'TextBox',
         type: 'textbox',
-        key: 'textarea',
+        key: 'text',
         fieldType: 'string',
         settings: [
           {
@@ -117,7 +106,7 @@ export const initialfileds = [
       },
       {
         id: 4,
-        name: ' Module Data from Items',
+        name: 'Module Data from Items',
         type: 'module',
         key: 'moduleDataFromItems',
         fieldType: 'string',
