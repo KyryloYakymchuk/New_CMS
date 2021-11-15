@@ -21,7 +21,7 @@ export const Header: FC<Props> = ({ title }) => {
     const history = useHistory();
     const { t } = useTranslation();
     const [modalStatus, setModalStatus] = useState<boolean>(false);
-    
+
     /* For future mobile version  */
     //     const statusmenu = useTypedSelector( ({ menuReducer }) => menuReducer.status);
     // const handleClickBurger = () => {
@@ -42,7 +42,6 @@ export const Header: FC<Props> = ({ title }) => {
 
     const handleClose = () => {
         setModalStatus(false);
-
     };
 
     return (
@@ -75,9 +74,10 @@ export const Header: FC<Props> = ({ title }) => {
                 </TitleContainer>
             </HeaderContainer>
             <ModalConfirm
-             handleAccept={handleAccept}
-             handleClose={handleClose}
-             modalStatus={modalStatus}>
+                handleAccept={handleAccept}
+                handleClose={handleClose}
+                modalStatus={modalStatus}
+            >
                 <ModalButton handleAccept={handleAccept} handleClose={handleClose} />
             </ModalConfirm>
         </>

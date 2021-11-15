@@ -54,6 +54,7 @@ export const en = {
 
     //Modal message
     'Are you sure you want to log out?': 'Are you sure you want to log out?',
+    'Are you sure you want to delete thit user?': 'Are you sure you want to delete thit user?',
     'A confirmation letter has been sent to the Email !':
     'A confirmation letter has been sent to the Email !',
     'Password reset successfuly !': 'Password reset successfuly !',
