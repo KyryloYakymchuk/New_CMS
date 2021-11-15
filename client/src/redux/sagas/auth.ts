@@ -1,3 +1,4 @@
+import request from 'axios';
 import { put, takeEvery, call } from '@redux-saga/core/effects';
 
 import { errorAction } from '@redux/actions/error';
@@ -17,36 +18,39 @@ import { ProtectedRoutes } from '@utils/enums/RoutesPath';
 
 import { api } from '@services/api';
 import { tokenServise } from '@services/tokenServise';
+import { loginReqApi } from '@api/auth';
+import { IError } from '@redux/types/error';
 
-function* loginReq(data: ILoginAction): Generator {
-    const { value, history } = data.payload;
+function* loginReq(config: ILoginAction) {
+    const { history } = config.payload;
     try {
-        const fieldsResponse: any = yield call(api.post, '/auth/login', value);
-        yield tokenServise.setToken(fieldsResponse.data.accessToken);
+        const { data } = yield call(loginReqApi, config);
+        yield tokenServise.setToken(data.accessToken);
         yield put(errorAction());
         history.push(ProtectedRoutes.DASHBOARD);
-    } catch (error: any) {
-        yield put(errorAction(error.response.data.message));
+    } catch (error) {
+        if (request.isAxiosError(error) && error.response) {
+            yield put(errorAction(error.response?.data as IError));
+        }
     }
 }
 
-function* registerReq(data: IRegisterAction): Generator {
-    const { value } = data.payload;
+function* registerReq(config: IRegisterAction) {
     try {
-        yield call(api.post, '/auth/register', value);
-
+        yield call(api.post, '/auth/register', config.payload.value);
         yield put(setModalStatusAction(true));
         yield put(setModalMessageAction('A confirmation letter has been sent to the Email !'));
         yield put(errorAction());
         yield put(loaderAction(false));
-    } catch (error: any) {
-        yield put(errorAction(error.response.data.message));
+    } catch (error) {
+        if (request.isAxiosError(error) && error.response) {
+            yield put(errorAction(error.response?.data as IError));
+        }
         yield put(loaderAction(false));
-
     }
 }
 
-function* resetReq(data: IResetAction): Generator {
+function* resetReq(data: IResetAction) {
     const { email } = data.payload;
     try {
         yield call(api.post, '/auth/password', { email: email });
@@ -54,36 +58,37 @@ function* resetReq(data: IResetAction): Generator {
         yield put(setModalMessageAction('A confirmation letter has been sent to the Email !'));
         yield put(errorAction());
         yield put(loaderAction(false));
-    } catch (error: any) {
-        yield put(errorAction(error.response.data.message));
+    } catch (error) {
         yield put(loaderAction(false));
-
+        if (request.isAxiosError(error) && error.response) {
+            yield put(errorAction(error.response?.data as IError));
+        }
     }
 }
 
-function* resetPasswordReq(data: IResetPasswordAction): Generator {
+function* resetPasswordReq(data: IResetPasswordAction) {
     const { val } = data.payload;
-
     try {
         yield call(api.post, '/auth/password/confirm', { ...val });
         yield put(setModalStatusAction(true));
         yield put(setModalMessageAction('Password reset successfully !'));
         yield put(errorAction());
         yield put(loaderAction(false));
-    } catch (error: any) {
-        yield put(errorAction(error.response.data.message));
+    } catch (error) {
         yield put(loaderAction(false));
-        
+        if (request.isAxiosError(error) && error.response) {
+            yield put(errorAction(error.response?.data as IError));
+        }
     }
 }
 
-
-function* confirmRegisterReq(data: IConfirmRegisterAction): Generator {
+function* confirmRegisterReq(data: IConfirmRegisterAction) {
     try {
         yield call(api.post, '/auth/register/confirm', data.payload);
         yield put(setModalStatusAction(true));
         yield put(setModalMessageAction('You account confirmed successfuly !'));
-    } catch (error: any) {
+    } catch (error) {
+        return error;
     }
 }
 
@@ -93,5 +98,4 @@ export function* authWatcher() {
     yield takeEvery(AuthActionsTypes.RESET, resetReq);
     yield takeEvery(AuthActionsTypes.RESET_PASSWORD, resetPasswordReq);
     yield takeEvery(AuthActionsTypes.REGISTER_CORFIRM, confirmRegisterReq);
-
 }

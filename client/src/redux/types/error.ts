@@ -3,7 +3,8 @@ export enum ErrorActionsTypes {
 }
 
 export interface IError {
-    message?: string;
+    message: string;
+    statusCode?: number;
 }
 
 export interface IErrorAction {

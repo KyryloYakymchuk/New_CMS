@@ -1,90 +1,76 @@
 import { put, takeEvery, call } from '@redux-saga/core/effects';
 import { errorAction } from '@redux/actions/error';
 import { loaderAction } from '@redux/actions/loader';
-import { setFieldsResponseAction,
-      setModulesAction } from '@redux/actions/modules';
-import { ICreateModuleAction,
-    IDeleteFieldModuleAction,
+import { setModulesAction } from '@redux/actions/modules';
+import {
+    ICreateModuleAction,
     IDeleteModuleAction,
     IGetModuleAction,
-    ModulesActionTypes } from '@redux/types/modules';
+    ModulesActionTypes
+} from '@redux/types/modules';
+import request from 'axios';
 
+import {
+    createModulesReqApi,
+    deleteModulesReqApi,
+    editModulesReqApi,
+    getModulesReqApi
+} from '@api/modules';
+import { IError } from '@redux/types/error';
 
-import { api } from '@services/api';
-
-function* getModulesReq(data: IGetModuleAction): Generator {
+function* getModulesReq(config: IGetModuleAction) {
     try {
-        const fieldsResponse:any = yield call(api.get, '/modules/', {
-            params:data.payload
-        });
-        yield put(setModulesAction(fieldsResponse.data));
-
-    } catch (error: any) {
-        yield put(errorAction(error.response.data.message));
+        const { data } = yield call(getModulesReqApi, config);
+        yield put(setModulesAction(data));
+    } catch (error) {
+        if (request.isAxiosError(error) && error.response) {
+            yield put(errorAction(error.response?.data as IError));
+        }
     }
     yield put(loaderAction(false));
 }
 
-function* deleteModulesReq(data: IDeleteModuleAction): Generator {
-    const { moduleID, queryParams } = data.payload;
-    
+function* deleteModulesReq(config: IDeleteModuleAction) {
     try {
-        const fieldsResponse: any = yield call(api.delete, '/modules/' + moduleID, {
-            params:queryParams
-        });
-        //!Need fix back, wrong response
-        yield put(setModulesAction(fieldsResponse.data));
-
-    } catch (error: any) {
-        yield put(errorAction(error.response.data.message));
+        const { data } = yield call(deleteModulesReqApi, config);
+        yield put(setModulesAction(data));
+    } catch (error) {
+        if (request.isAxiosError(error) && error.response) {
+            yield put(errorAction(error.response?.data as IError));
+        }
     }
 }
-function* createModulesReq(data: ICreateModuleAction): Generator {
-    const { categories, name, history } = data.payload;
-    
+function* createModulesReq(config: ICreateModuleAction) {
+    const { history } = config.payload;
     try {
-        const fieldsResponse: any = yield call(api.post, '/modules/', { categories, name } );
-        yield put(setModulesAction(fieldsResponse.data));
+        const { data } = yield call(createModulesReqApi, config);
+        yield put(setModulesAction(data));
         history?.push('/modules');
         yield put(errorAction());
-    } catch (error: any) {
-        yield put(errorAction(error.response.data.message));
+    } catch (error) {
+        if (request.isAxiosError(error) && error.response) {
+            yield put(errorAction(error.response?.data as IError));
+        }
     }
 }
 
-function* editModulesReq(data: ICreateModuleAction): Generator {
-    const { name, moduleID, categories, history } = data.payload;
+function* editModulesReq(config: ICreateModuleAction) {
+    const { history } = config.payload;
     try {
-        const fieldsResponse: any = yield call(api.put, '/modules/', {
-             name,
-             moduleID,
-             categories
-        });
-        yield put(setModulesAction(fieldsResponse.data));
+        const { data } = yield call(editModulesReqApi, config);
+        yield put(setModulesAction(data));
         history?.push('/modules');
         yield put(errorAction());
-    } catch (error: any) {
-        yield put(errorAction(error.response.data.message));
+    } catch (error) {
+        if (request.isAxiosError(error) && error.response) {
+            yield put(errorAction(error.response?.data as IError));
+        }
     }
 }
-
-function* deleteFieldModuleReq(data: IDeleteFieldModuleAction): Generator {
-    const { fieldId } = data.payload;
-
-    try {
-     const fieldsResponse:any =  yield call(api.delete, '/modules/fields/' + fieldId);
-        yield put(setFieldsResponseAction(fieldsResponse.data));
-    } catch (error: any) {
-        yield put(errorAction(error.response.data.message));
-    }
-}
-
 
 export function* modulesWatcher() {
     yield takeEvery(ModulesActionTypes.GET_MODULES, getModulesReq);
     yield takeEvery(ModulesActionTypes.DELETE_MODULE, deleteModulesReq);
     yield takeEvery(ModulesActionTypes.CREATE_MODULE, createModulesReq);
     yield takeEvery(ModulesActionTypes.EDIT_MODULE, editModulesReq);
-    yield takeEvery(ModulesActionTypes.DELETE_FIELD_MODULE, deleteFieldModuleReq);
-
 }

@@ -41,7 +41,7 @@ export interface IGetUsersData {
     sortParameter?: string | null;
 }
 export interface IDeleteUserData {
-    queryParams: IGetUsersData;
+    queryParams?: IGetUsersData;
     userID?: string;
 }
 interface IQueryParams {
