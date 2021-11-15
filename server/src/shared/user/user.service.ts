@@ -45,14 +45,15 @@ export class UserService {
     const group = await this.userModel.findOne({ name: "User" });
 
     const createdUser = new this.userModel({
-      userDTO,
-      groups: [
+      ...userDTO,
+      group: [
         {
           label: group.name,
           value: group.groupID,
         },
       ],
     });
+
     await createdUser.save();
 
     const deleteTask = await cron.schedule("* * 2 * *", () => {
