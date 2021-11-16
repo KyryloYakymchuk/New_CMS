@@ -26,7 +26,7 @@ import { redirectHandler } from '@utils/functions/redirectHandler';
 import { offsetGenerator } from '@utils/functions/offsetGenerator';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
 import { ModalButton } from '@components/Modal/ModalButton';
-import { setModalMessageAction } from '@redux/actions/modal';
+
 
 export interface IRouterParams {
     page: string;
@@ -42,6 +42,7 @@ export const UsersPage: FC = () => {
     const query = new URLSearchParams(search);
     const currentPage = Number(query.get('page'));
     const [modalStatus, setModalStatus] = useState<boolean>(false);
+    const [modalMessage, setModalMessage] = useState('');
     const [sortParams, setSortParams] = useState<ISortParams>({});
     const [deleteRequestStatus, setDeleteRequestStatus] = useState(false);
     const [deleteWatcher, setDeleteWatcher] = useState(false);
@@ -57,7 +58,7 @@ export const UsersPage: FC = () => {
         const temp: any = user;
         setUserID(temp.userID);
         setModalStatus(true);
-        dispatch(setModalMessageAction('Are you sure you want to delete thit user?'));
+        setModalMessage('Are you sure you want to delete thit user?');
     };
     const editUserClick = (user: React.ChangeEvent<HTMLDivElement>) => () => {
         dispatch(setCurrentUser(user));
@@ -174,6 +175,7 @@ export const UsersPage: FC = () => {
                 handleAccept={handleAccept}
                 handleClose={handleClose}
                 modalStatus={modalStatus}
+                message={modalMessage}
             >
                 <ModalButton handleAccept={handleAccept} handleClose={handleClose} />
             </ModalConfirm>
