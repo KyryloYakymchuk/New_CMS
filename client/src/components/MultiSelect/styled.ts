@@ -5,7 +5,7 @@ export const SelectBlock = styled.div`
     position: relative;
     width: 35%;
     padding: 0;
-    margin: 16px 10px;
+    margin: 5px 10px 40px 5px;
 `;
 export const SelectTitle = styled.div`
     position: absolute;

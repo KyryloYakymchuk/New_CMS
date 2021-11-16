@@ -18,7 +18,6 @@ import { useTranslation } from 'react-i18next';
 import { userEditFormValidator } from '@utils/validators/users/UserEditFormValidator';
 import { userCreateFormValidator } from '@utils/validators/users/UserCreateFormValidator';
 
-
 interface IProps {
     currentUser?: any;
     arrGroupNames?: IOption[];
@@ -64,6 +63,7 @@ export const UserForm: FC<IProps> = ({
                         <SelectFieldCustom
                             name="group"
                             selectName={t('Group')}
+                            placeholderName={t('Groups')}
                             component={MultiSelect}
                             onChangeMultiValue={onChangeMultiValue}
                             selectGroupArr={selectGroupArr}
@@ -78,7 +78,7 @@ export const UserForm: FC<IProps> = ({
                                 title={t('Cancel')}
                                 type="button"
                                 style="grayButton"
-                                onClickFunction={()=>history.back()}
+                                onClickFunction={() => history.back()}
                             />
                         </ButtonContainer>
                     </form>

@@ -61,7 +61,7 @@ export const UsersPage: FC = () => {
     };
     const editUserClick = (user: React.ChangeEvent<HTMLDivElement>) => () => {
         dispatch(setCurrentUser(user));
-        history.push('/pages/editUser');
+        history.push('/users/editUser');
     };
     const handleSortClick = (sortField: string) => () => {
         const temp: ISortHandlerValue = handleListSort(
@@ -74,7 +74,7 @@ export const UsersPage: FC = () => {
     };
     const createUserClick = () => {
         dispatch(clearCurrentUser());
-        history.push('/pages/createUser');
+        history.push('/users/createUser');
     };
     const toggleDrawerMenu = () => {
         setDrawerMenuOpenStatus(!drawerMenuOpenStatus);
@@ -100,7 +100,7 @@ export const UsersPage: FC = () => {
     };
 
     const arrUserListButton = [
-        { item: <Icons.AddIcon />, onClickFunc: editUserClick },
+        { item: <Icons.EditIcon />, onClickFunc: editUserClick },
         { item: <Icons.DeleteIcon />, onClickFunc: deleteUserClick }
     ];
     const handleAccept = () => {
