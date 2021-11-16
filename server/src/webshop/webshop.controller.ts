@@ -203,22 +203,10 @@ export class WebshopController {
     return await this.webshopService.editVariant(userDTO, req.files);
   }
 
-  // @Get('/item')
-  // // @UseGuards(AuthGuard("jwt"))
-  // async getOne(@Body() getItem: GetItemCategoriesDTO): Promise<Record<string, any>> {
-  //   const item = await this.webshopService.getItemByID(getItem.moduleName, getItem.itemID);
-  //   if (!item){
-  //     throw new HttpException('No item by this id', HttpStatus.NOT_FOUND);
-  //   }
-  //
-  //   return new ResponseItemDto(item);
-  // }
-
   @Get("/items")
   @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
   async getItems(
-    // @Param("name") userDTO: ModuleNameDTO,
     @Query() paginationDTO: GetItemsDTO,
     @Query() type: ResponseTypeDTO,
     @Headers("authorization") token?: string
@@ -266,7 +254,6 @@ export class WebshopController {
     if (!item) {
       throw new HttpException("No item by this id", HttpStatus.NOT_FOUND);
     }
-    // item = item.toObject();
     const responseProduct = new ResponseProductDTO(item.toObject());
 
     if (user?.orders) {
@@ -371,34 +358,7 @@ export class WebshopController {
       items: this.webshopService.createResponseComments(
         responseComments,
         verified?.userID
-      ) /*responseComments.map((el) => {
-        el.isLiked =
-          !!token &&
-          !!(el.likedUsers && el.likedUsers.includes(verified.userID));
-        el.isDisliked =
-          !!token &&
-          !!(el.dislikedUsers && el.dislikedUsers.includes(verified.userID));
-
-        const dateNow = new Date();
-        const elDate = el.date;
-        el.date =
-          Math.floor(
-            (dateNow.getTime() - el.date.getTime()) / (1000 * 60 * 60 * 24)
-          ) + " days ago";
-
-        if (el.date == "0 days ago")
-          el.date =
-            Math.floor(
-              (dateNow.getTime() - elDate.getTime()) / (1000 * 60 * 60)
-            ) + " hours ago";
-
-        if (el.date == "0 hours ago")
-          el.date =
-            Math.floor((dateNow.getTime() - elDate.getTime()) / (1000 * 60)) +
-            " minutes ago";
-
-        return new ResponseCommentDTO(el);
-      }),*/,
+      ),
     };
   }
 
@@ -607,21 +567,6 @@ export class WebshopController {
   ): Promise<Record<string, any>> {
     return this.webshopService.getItemCategories(userDTO);
   }
-  // //log
-  //   @Put("/item/categories")
-  //   @UseGuards(AuthGuard("jwt"))
-  //   async addItemCategory(
-  //       @Body() userDTO: AddItemCategoryDTO
-  //   ): Promise<Record<string, any>> {
-  //     return this.webshopService.addItemCategory(userDTO);
-  //   }
-  //
-  // //log
-  //   @Delete("/item/categories")
-  //   @UseGuards(AuthGuard("jwt"))
-  //   async deleteItemCategory(@Body() userDTO: DeleteItemCategoryDTO) {
-  //     return this.webshopService.deleteItemCategory(userDTO);
-  //   }
 
   @Get("foryou")
   async getForYou(
