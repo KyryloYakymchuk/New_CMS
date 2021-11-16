@@ -1,17 +1,11 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-
 import { setModalMessageAction } from '@redux/actions/modal';
-
 import { Buttons } from '@components/Button/Button';
 import { ListDD } from '@components/ListDD/ListDD';
-
 import { Icons } from '@utils/constants/icon';
-//!for future sorting
-// import { ISortParams } from '@interfaces/types';
-
 import { PageHeader, UserPageContainer } from '@modules/Users/styled';
 import { moduleFieldsListColumns } from '@utils/constants/ListsData/ListsData';
 import { editableDataSelector } from '@redux/selectors/modules';
@@ -19,10 +13,8 @@ import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
 import { ModalButton } from '@components/Modal/ModalButton';
 import { deleteFieldModuleAction } from '@redux/actions/modules';
-//!for future pagination
-// import { Pagination } from '@components/Pagination/Pagination';
+import { modalMessageSelector } from '@redux/selectors/modal';
 
-// const LIMIT = 10;
 const constantFields = [
     // yet no create field functionality
     //  if you want to test delete field, replace this ids, in smth else
@@ -38,6 +30,7 @@ export const AllFields: FC = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const allFieldsModule = useAppSelector(editableDataSelector);
+    const requestMessage = useAppSelector(modalMessageSelector);
     //!for future pagination
     // let { search } = useLocation();
     // const query = new URLSearchParams(search);
@@ -95,11 +88,11 @@ export const AllFields: FC = () => {
         console.log(value);
     };
 
-    const actionsButtons = [
+    const actionsButtons = useMemo(()=>[
         { item: <Icons.DragHandleIcon />, onClickFunc: onDragClick },
         { item: <Icons.EditIcon />, onClickFunc: editFieldClick },
         { item: <Icons.DeleteIcon />, onClickFunc: deleteFieldClick }
-    ];
+    ], []);
 
     useEffect(() => {
         if (!allFieldsModule) {
@@ -142,6 +135,7 @@ export const AllFields: FC = () => {
                 handleAccept={handleAccept}
                 handleClose={handleClose}
                 modalStatus={modalStatus}
+                message={requestMessage}
             >
                 {!constantFields?.includes(fieldId) ? (
                     <ModalButton handleAccept={handleAccept} handleClose={handleClose} />
