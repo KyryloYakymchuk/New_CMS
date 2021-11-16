@@ -118,7 +118,7 @@ export class ModulesController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
   async getItems(
-    @Param("name") userDTO: ModuleNameDTO,
+    @Param("name") dto: ModuleNameDTO,
     @Query() paginationDTO: GetItemsDTO,
     responseFields: FieldsDTO,
     @Headers("authorization") token: string
@@ -130,7 +130,7 @@ export class ModulesController {
 
     const user = await this.userService.findUserByUserID(verified.userID);
 
-    const items = await this.moduleService.getItems(userDTO, paginationDTO);
+    const items = await this.moduleService.getItems(dto, paginationDTO);
 
     if (!items)
       throw new HttpException("Items not found!", HttpStatus.NOT_FOUND);
@@ -496,6 +496,8 @@ export class ModulesController {
   }
 
   @Get("fields/:moduleName")
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   async getFields(@Param("moduleName") userDTO: ModuleNameDTO) {
     return this.moduleService.getFields(userDTO);
   }
