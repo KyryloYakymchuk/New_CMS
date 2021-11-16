@@ -521,10 +521,10 @@ export class ModulesController {
   @UseGuards(AuthGuard("jwt"))
   @HttpCode(HttpStatus.OK)
   async editFields(
-    @Body() userDTO: EditFieldsDTO,
+    @Body() dto: EditFieldsDTO,
     @Req() req: Request
   ): Promise<Record<string, any>> {
-    const result = await this.moduleService.editField(userDTO);
+    const result = await this.moduleService.editField(dto);
     await this.loggerGateway.logAction(req, module);
     return result;
   }
