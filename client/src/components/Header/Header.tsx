@@ -20,7 +20,7 @@ export const Header: FC<Props> = ({ title }) => {
     const dispatch = useDispatch();
     const history = useHistory();
     const { t } = useTranslation();
-    const [modalStatus, setModalStatus] = useState<boolean>(false);
+    const [modalStatus, setModalStatus] = useState(false);
 
     /* For future mobile version  */
     //     const statusmenu = useTypedSelector( ({ menuReducer }) => menuReducer.status);
