@@ -20,7 +20,7 @@ export const deleteUsers = (payload: IDeleteUserData) => ({
     payload
 });
 
-export const setCurrentUser = (payload: React.ChangeEvent<HTMLDivElement>) => ({
+export const setCurrentUser = (payload: IUser) => ({
     type: UserActionTypes.SET_CURRENT_USERS,
     payload
 });

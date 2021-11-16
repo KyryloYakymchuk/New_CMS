@@ -20,13 +20,14 @@ import {
     ISortHandlerValue,
     ISortParams
 } from '@interfaces/types';
-import { IGetUsersData } from '@redux/types/users';
+import { IGetUsersData, IUser } from '@redux/types/users';
 import { loaderAction } from '@redux/actions/loader';
 import { redirectHandler } from '@utils/functions/redirectHandler';
 import { offsetGenerator } from '@utils/functions/offsetGenerator';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
 import { ModalButton } from '@components/Modal/ModalButton';
 import { setModalMessageAction } from '@redux/actions/modal';
+import { modalMessageSelector } from '@redux/selectors/modal';
 
 export interface IRouterParams {
     page: string;
@@ -41,6 +42,7 @@ export const UsersPage: FC = () => {
     let { search, pathname } = useLocation();
     const query = new URLSearchParams(search);
     const currentPage = Number(query.get('page'));
+    const message = useAppSelector(modalMessageSelector);
     const [modalStatus, setModalStatus] = useState<boolean>(false);
     const [sortParams, setSortParams] = useState<ISortParams>({});
     const [deleteRequestStatus, setDeleteRequestStatus] = useState(false);
@@ -53,16 +55,20 @@ export const UsersPage: FC = () => {
 
     const allUsers = useAppSelector(userListDataSelector);
 
-    const deleteUserClick = (user: React.ChangeEvent<HTMLDivElement>) => () => {
-        const temp: any = user;
-        setUserID(temp.userID);
-        setModalStatus(true);
-        dispatch(setModalMessageAction('Are you sure you want to delete thit user?'));
-    };
-    const editUserClick = (user: React.ChangeEvent<HTMLDivElement>) => () => {
-        dispatch(setCurrentUser(user));
-        history.push('/users/editUser');
-    };
+    function deleteUserClick<T extends IUser>(user: T) {
+        return () => {
+            const temp: T = user;
+            setUserID(temp.userID);
+            setModalStatus(true);
+            dispatch(setModalMessageAction('Are you sure you want to delete thit user?'));
+        };
+    }
+    function editUserClick<T extends IUser>(user: T) {
+        return () => {
+            dispatch(setCurrentUser(user));
+            history.push('/users/editUser');
+        };
+    }
     const handleSortClick = (sortField: string) => () => {
         const temp: ISortHandlerValue = handleListSort(
             sortField,
@@ -174,6 +180,7 @@ export const UsersPage: FC = () => {
                 handleAccept={handleAccept}
                 handleClose={handleClose}
                 modalStatus={modalStatus}
+                message={message}
             >
                 <ModalButton handleAccept={handleAccept} handleClose={handleClose} />
             </ModalConfirm>

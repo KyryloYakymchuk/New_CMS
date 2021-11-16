@@ -6,6 +6,8 @@ import Fade from '@material-ui/core/Fade';
 import { useStyles } from '@utils/styles/modal';
 import { Text } from './styled';
 import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '@utils/hooks/useAppSelector';
+import { modalMessageSelector } from '@redux/selectors/modal';
 
 interface ModalProps {
     handleAccept: VoidFunction;
@@ -24,7 +26,7 @@ export const ModalConfirm: FC<ModalProps> = ({
 }) => {
     const classes = useStyles();
     const { t } = useTranslation();
-
+    const requestMessage = useAppSelector(modalMessageSelector);
     return (
         <Modal
             aria-labelledby="transition-modal-title"
@@ -40,7 +42,7 @@ export const ModalConfirm: FC<ModalProps> = ({
         >
             <Fade in={modalStatus}>
                 <div className={classes.paper}>
-                    <Text>{message && t(message)}</Text>
+                    <Text>{message || (requestMessage && t(message || requestMessage))}</Text>
                     {children}
                 </div>
             </Fade>

@@ -19,6 +19,7 @@ import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
 import { ModalButton } from '@components/Modal/ModalButton';
 import { deleteFieldModuleAction } from '@redux/actions/modules';
+import { modalMessageSelector } from '@redux/selectors/modal';
 //!for future pagination
 // import { Pagination } from '@components/Pagination/Pagination';
 
@@ -38,6 +39,7 @@ export const AllFields: FC = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const allFieldsModule = useAppSelector(editableDataSelector);
+    const message = useAppSelector(modalMessageSelector);
     //!for future pagination
     // let { search } = useLocation();
     // const query = new URLSearchParams(search);
@@ -142,6 +144,7 @@ export const AllFields: FC = () => {
                 handleAccept={handleAccept}
                 handleClose={handleClose}
                 modalStatus={modalStatus}
+                message={message}
             >
                 {!constantFields?.includes(fieldId) ? (
                     <ModalButton handleAccept={handleAccept} handleClose={handleClose} />
