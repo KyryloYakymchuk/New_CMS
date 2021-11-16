@@ -21,8 +21,6 @@ export const ResetForm: FC<LoginProps> = ({ onSubmit }) => {
     const { LoaderCircularButton } = Loader;
     const errorMessage = useAppSelector(errorMessageSelector);
     const loaderStatus = useAppSelector(loaderStatusSelector);
-    console.log('initial');
-    
     const { t } = useTranslation();
     return (
         <Form
