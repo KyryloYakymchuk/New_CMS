@@ -6,24 +6,22 @@ import Fade from '@material-ui/core/Fade';
 import { useStyles } from '@utils/styles/modal';
 import { Text } from './styled';
 import { useTranslation } from 'react-i18next';
-import { useAppSelector } from '@utils/hooks/useAppSelector';
-import { modalMessageSelector, modalStatusSelector } from '@redux/selectors/modal';
 
 interface ModalProps {
     handleAccept: VoidFunction;
     handleClose?: VoidFunction;
-    modalStatus?: boolean;
+    modalStatus: boolean;
+    message?: string;
+    children: JSX.Element;
 }
 
 export const ModalConfirm: FC<ModalProps> = ({
     handleAccept,
     handleClose,
     modalStatus,
+    message,
     children
 }) => {
-    const isModalOpen = useAppSelector(modalStatusSelector);
-    const message = useAppSelector(modalMessageSelector);
-
     const classes = useStyles();
     const { t } = useTranslation();
 
@@ -32,7 +30,7 @@ export const ModalConfirm: FC<ModalProps> = ({
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
             className={classes.modal}
-            open={modalStatus || isModalOpen}
+            open={modalStatus}
             onClose={handleClose || handleAccept}
             closeAfterTransition
             BackdropComponent={Backdrop}
@@ -40,7 +38,7 @@ export const ModalConfirm: FC<ModalProps> = ({
                 timeout: 500
             }}
         >
-            <Fade in={isModalOpen || modalStatus}>
+            <Fade in={modalStatus}>
                 <div className={classes.paper}>
                     <Text>{message && t(message)}</Text>
                     {children}

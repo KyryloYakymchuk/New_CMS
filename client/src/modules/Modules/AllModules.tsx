@@ -46,7 +46,7 @@ export const AllModules: FC = () => {
 
     const [sortParams, setSortParams] = useState<ISortParams>({});
     const [sortingTypeIdx, setSortingTypeIdx] = useState(0);
-    const [modalStatus, setModalStatus] = useState<boolean>();
+    const [modalStatus, setModalStatus] = useState(false);
     const [moduleId, setModuleId] = useState<string>();
     const [deleteRequestStatus, setDeleteRequestStatus] = useState(false);
 

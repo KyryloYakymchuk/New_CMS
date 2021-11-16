@@ -12,6 +12,8 @@ import { AuthLayout } from '@components/Auth/AuthLayout/AuthLayout';
 import { RegisterForm } from '@components/Auth/RegisterForm/RegisterForm';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
 import { ModalButton } from '@components/Modal/ModalButton';
+import { useAppSelector } from '@utils/hooks/useAppSelector';
+import { modalMessageSelector, modalStatusSelector } from '@redux/selectors/modal';
 
 export interface IFormValues {
     email: string;
@@ -29,7 +31,8 @@ export const Register: FC = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const { t } = useTranslation();
-
+    const isModalOpen = useAppSelector(modalStatusSelector);
+    const message = useAppSelector(modalMessageSelector);
     const onSubmit = (value: IFormValues) => {
         dispatch(registerAction({ value }));
         dispatch(loaderAction(true));
@@ -49,10 +52,8 @@ export const Register: FC = () => {
             <AuthLayout title={t(title)} description={t(description)}>
                 <RegisterForm onSubmit={onSubmit} />
             </AuthLayout>
-            <ModalConfirm
-                handleAccept={handleAccept}
-            >
-            <ModalButton handleAccept={handleAccept} />
+            <ModalConfirm handleAccept={handleAccept} message={message} modalStatus={isModalOpen}>
+                <ModalButton handleAccept={handleAccept} />
             </ModalConfirm>
         </>
     );
