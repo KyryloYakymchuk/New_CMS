@@ -14,6 +14,7 @@ import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm'
 import { ModalButton } from '@components/Modal/ModalButton';
 import { setModalStatusAction } from '@redux/actions/modal';
 import { useHistory } from 'react-router';
+import { modalMessageSelector, modalStatusSelector } from '@redux/selectors/modal';
 
 const DEFAULT_LIMIT = 10;
 
@@ -67,7 +68,8 @@ export const CreateUserPage: FC = () => {
         }
         dispatch(getGroupNames(queryParams));
     }, [dispatch, debouncedSelectGroupName]);
-
+    const isModalOpen = useAppSelector(modalStatusSelector);
+    const message = useAppSelector(modalMessageSelector);
     return (
         <div>
             <UserForm
@@ -78,7 +80,7 @@ export const CreateUserPage: FC = () => {
                 arrGroupNames={arrGroupNames}
                 getSelectData={getSelectData}
             />
-            <ModalConfirm handleAccept={handleAccept}>
+            <ModalConfirm handleAccept={handleAccept} message={message} modalStatus={isModalOpen}>
                 <ModalButton handleAccept={handleAccept} />
             </ModalConfirm>
         </div>

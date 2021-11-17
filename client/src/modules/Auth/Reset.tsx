@@ -8,8 +8,10 @@ import { MainText } from '@utils/constants/AuthField/ResetFields';
 import { AuthLayout } from '@components/Auth/AuthLayout/AuthLayout';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
 import { ResetForm } from '@components/Auth/ResetForm/ResetForm';
-import {  setModalStatusAction } from '@redux/actions/modal';
+import { setModalStatusAction } from '@redux/actions/modal';
 import { ModalButton } from '@components/Modal/ModalButton';
+import { useAppSelector } from '@utils/hooks/useAppSelector';
+import { modalMessageSelector, modalStatusSelector } from '@redux/selectors/modal';
 
 export interface IFormValues {
     email: string;
@@ -18,19 +20,17 @@ export interface IFormValues {
 export const Reset: FC = () => {
     const { title, description } = MainText;
 
-
     const dispatch = useDispatch();
     const { t } = useTranslation();
-
+    const isModalOpen = useAppSelector(modalStatusSelector);
+    const message = useAppSelector(modalMessageSelector);
     const onSubmit = (value: IFormValues) => {
         dispatch(resetAction({ email: value.email }));
         dispatch(loaderAction(true));
-
     };
 
     const handleAccept = () => {
         dispatch(setModalStatusAction(false));
-
     };
 
     useEffect(() => {
@@ -42,10 +42,8 @@ export const Reset: FC = () => {
             <AuthLayout title={t(title)} description={t(description)}>
                 <ResetForm onSubmit={onSubmit} />
             </AuthLayout>
-            <ModalConfirm
-                handleAccept={handleAccept}
-            >
-            <ModalButton handleAccept={handleAccept} />
+            <ModalConfirm message={message} modalStatus={isModalOpen} handleAccept={handleAccept}>
+                <ModalButton handleAccept={handleAccept} />
             </ModalConfirm>
         </>
     );

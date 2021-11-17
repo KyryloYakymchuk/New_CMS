@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
@@ -6,33 +6,29 @@ import Fade from '@material-ui/core/Fade';
 import { useStyles } from '@utils/styles/modal';
 import { Text } from './styled';
 import { useTranslation } from 'react-i18next';
-import { useAppSelector } from '@utils/hooks/useAppSelector';
-import { modalMessageSelector, modalStatusSelector } from '@redux/selectors/modal';
 
 interface ModalProps {
     handleAccept: VoidFunction;
     handleClose?: VoidFunction;
-    modalStatus?: boolean;
+    modalStatus: boolean;
+    message?: string;
 }
 
-export const ModalConfirm: FC<ModalProps> = ({
+export const ModalConfirm: FC<PropsWithChildren<ModalProps>> = ({
     handleAccept,
     handleClose,
     modalStatus,
+    message,
     children
 }) => {
-    const isModalOpen = useAppSelector(modalStatusSelector);
-    const message = useAppSelector(modalMessageSelector);
-
     const classes = useStyles();
     const { t } = useTranslation();
-
     return (
         <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
             className={classes.modal}
-            open={modalStatus || isModalOpen}
+            open={modalStatus}
             onClose={handleClose || handleAccept}
             closeAfterTransition
             BackdropComponent={Backdrop}
@@ -40,7 +36,7 @@ export const ModalConfirm: FC<ModalProps> = ({
                 timeout: 500
             }}
         >
-            <Fade in={isModalOpen || modalStatus}>
+            <Fade in={modalStatus}>
                 <div className={classes.paper}>
                     <Text>{message && t(message)}</Text>
                     {children}

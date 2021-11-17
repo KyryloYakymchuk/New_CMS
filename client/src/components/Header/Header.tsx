@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Button } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import { setModalMessageAction, setModalStatusAction } from '@redux/actions/modal';
+import { setModalStatusAction } from '@redux/actions/modal';
 import { Icons } from '@utils/constants/icon';
 import { AuthRoutes } from '@utils/enums/RoutesPath';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
@@ -20,8 +20,8 @@ export const Header: FC<Props> = ({ title }) => {
     const dispatch = useDispatch();
     const history = useHistory();
     const { t } = useTranslation();
-    const [modalStatus, setModalStatus] = useState<boolean>(false);
-
+    const [modalStatus, setModalStatus] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
     /* For future mobile version  */
     //     const statusmenu = useTypedSelector( ({ menuReducer }) => menuReducer.status);
     // const handleClickBurger = () => {
@@ -30,7 +30,7 @@ export const Header: FC<Props> = ({ title }) => {
     // };
 
     const handleClickLogout = () => {
-        dispatch(setModalMessageAction('Are you sure you want to log out?'));
+        setModalMessage('Are you sure you want to log out?');
         setModalStatus(true);
     };
 
@@ -77,6 +77,7 @@ export const Header: FC<Props> = ({ title }) => {
                 handleAccept={handleAccept}
                 handleClose={handleClose}
                 modalStatus={modalStatus}
+                message={modalMessage}
             >
                 <ModalButton handleAccept={handleAccept} handleClose={handleClose} />
             </ModalConfirm>
