@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import { FC, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
@@ -10,38 +9,44 @@ import { createFieldModuleAction } from '@redux/actions/modules';
 import { initialfileds } from '@utils/constants/Modules/typeSelectData';
 import { useAppSelector } from '@utils/hooks/useAppSelector';
 
-import { Select, SelectContainer } from '@modules/Settings/styled/styled';
+import { SelectContainer } from '@modules/Settings/styled/styled';
 
 import { CreateFieldForm } from '@components/Forms/CreateFieldForm/CreateFieldForm';
 
 import { ICreateFieldProps } from '@interfaces/types';
-
+import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
+import { ModalButton } from '@components/Modal/ModalButton';
+import { ProtectedRoutes } from '@utils/enums/RoutesPath';
+import { modalMessageSelector, modalStatusSelector } from '@redux/selectors/modal';
+import { setModalStatusAction } from '@redux/actions/modal';
 
 export const CreateField: FC = () => {
-    const [currentField, setCurrentField] = useState<any>(); 
+    const [currentField, setCurrentField] = useState<any>();
+
     const history = useHistory();
     const editData = useAppSelector(editableDataSelector);
+    const message = useAppSelector(modalMessageSelector);
+    const modalStatus = useAppSelector(modalStatusSelector);
+
     const dispatch = useDispatch();
-    const { t } = useTranslation();
-    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        initialfileds.forEach((field) => {   
-        if (field.type === e.target.value){
-            setCurrentField(field);
-        } 
-     });
-    };
-    const onSubmit = (value:ICreateFieldProps) => {
+
+    const onSubmit = (value: ICreateFieldProps) => {
         const newFieldObj = {
-            settings:{ ...value },
-            moduleID:editData?.moduleID,
-            type:currentField.fieldType,
-            name:currentField.type,
-            history
+            settings: { ...value },
+            moduleID: editData?.moduleID,
+            type: currentField.fieldType,
+            name: currentField.type
         };
         dispatch(createFieldModuleAction(newFieldObj));
     };
+
+    const handleAccept = () => {
+        dispatch(setModalStatusAction(false));
+        history.push(ProtectedRoutes.MODULE_FIELDS);
+    };
+
     useEffect(() => {
-        if (!currentField){
+        if (!currentField) {
             setCurrentField(initialfileds[0]);
         }
         if (!editData) {
@@ -52,15 +57,14 @@ export const CreateField: FC = () => {
 
     return (
         <SelectContainer>
-            <label>{t('Type')}-</label>
-            <Select onChange={handleChange}>
-                {initialfileds.map(({ type }, index) => (
-                    <option key={index} value={type}>
-                        {type} 
-                    </option>
-                ))}
-            </Select>
-            <CreateFieldForm onSubmit={onSubmit} currentField={currentField}/>
+            <CreateFieldForm
+                setCurrentField={setCurrentField}
+                onSubmit={onSubmit}
+                currentField={currentField}
+            />
+            <ModalConfirm message={message} modalStatus={modalStatus} handleAccept={handleAccept}>
+                <ModalButton handleAccept={handleAccept} />
+            </ModalConfirm>
         </SelectContainer>
     );
 };

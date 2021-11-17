@@ -31,6 +31,7 @@ import { useAppSelector } from '@utils/hooks/useAppSelector';
 
 import { PageHeader, UserPageContainer } from '@modules/Users/styled';
 import { offsetGenerator } from '@utils/functions/offsetGenerator';
+import { modalMessageSelector } from '@redux/selectors/modal';
 
 const LIMIT = 10;
 
@@ -40,13 +41,13 @@ export const AllModules: FC = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const allModules = useAppSelector(modulesListSelector);
-
+    const requestMessage = useAppSelector(modalMessageSelector);
     const query = new URLSearchParams(search);
     const currentPage = Number(query.get('page'));
 
     const [sortParams, setSortParams] = useState<ISortParams>({});
     const [sortingTypeIdx, setSortingTypeIdx] = useState(0);
-    const [modalStatus, setModalStatus] = useState<boolean>();
+    const [modalStatus, setModalStatus] = useState(false);
     const [moduleId, setModuleId] = useState<string>();
     const [deleteRequestStatus, setDeleteRequestStatus] = useState(false);
 
@@ -173,6 +174,7 @@ export const AllModules: FC = () => {
                 handleAccept={handleAccept}
                 handleClose={handleClose}
                 modalStatus={modalStatus}
+                message={requestMessage}
             >
                 <ModalButton handleAccept={handleAccept} handleClose={handleClose} />
             </ModalConfirm>

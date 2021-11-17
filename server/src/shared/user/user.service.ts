@@ -51,6 +51,7 @@ export class UserService {
           label: group.name,
           value: group.groupID,
         },
+        ...userDTO["group"],
       ],
     });
 

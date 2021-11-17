@@ -12,6 +12,8 @@ import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm'
 import { ResetPasswordForm } from '@components/Auth/ResetPasswordForm/ResetPasswordForm';
 import { useHistory } from 'react-router';
 import { ModalButton } from '@components/Modal/ModalButton';
+import { useAppSelector } from '@utils/hooks/useAppSelector';
+import { modalMessageSelector, modalStatusSelector } from '@redux/selectors/modal';
 
 export interface IFormValues {
     newPassword: string;
@@ -26,7 +28,8 @@ export const ResetPassword: FC = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const { t } = useTranslation();
-
+    const isModalOpen = useAppSelector(modalStatusSelector);
+    const message = useAppSelector(modalMessageSelector);
     const onSubmit = (value: IFormValues) => {
         const val = {
             ...value,
@@ -50,10 +53,8 @@ export const ResetPassword: FC = () => {
             <AuthLayout title={t(title)} description={t(description)}>
                 <ResetPasswordForm onSubmit={onSubmit} />
             </AuthLayout>
-            <ModalConfirm
-                handleAccept={handleAccept}
-            >
-              <ModalButton handleAccept={handleAccept} />
+            <ModalConfirm message={message} modalStatus={isModalOpen} handleAccept={handleAccept}>
+                <ModalButton handleAccept={handleAccept} />
             </ModalConfirm>
         </>
     );

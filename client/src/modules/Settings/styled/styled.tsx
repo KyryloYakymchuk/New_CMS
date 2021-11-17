@@ -6,10 +6,12 @@ export const Select = styled.select`
     border-bottom: 1px solid black;
     font-size: 18px;
     cursor: pointer;
-    width: 200px;
+    width: 500px;
     outline: none;
-    padding: 0 4px;
+    padding: 5px 10px;
     margin-bottom: 15px;
+    font-size: 18px;
+
     option {
         cursor: pointer;
         background:aliceblue;

@@ -10,10 +10,10 @@ export const en = {
     Settings: 'Settings',
     //Sub items side menu
     //Pages
-    'All Pages':'All Pages',
-    'New Page':'New Page',
-    'Edit Page':'Edit Page',
-    'Create Page':'Create page',
+    'All Pages': 'All Pages',
+    'New Page': 'New Page',
+    'Edit Page': 'Edit Page',
+    'Create Page': 'Create page',
     //NewsLetter
     'All Letter': 'All Letter',
     'All Jobs': 'All Jobs',
@@ -27,6 +27,21 @@ export const en = {
     'New Module':'New Module',
     'Edit Module':'Edit Module',
     'Module Fields':'Module Fields',
+    'Create Field Module':'Create Field Module',
+    // Create Field 
+    'Max Chars':'Max Chars',
+    'Title':'Title',
+    'Width':'Width',
+    'Default Text':'Default Text',
+    'Height':'Height',
+    'Max Items':'Max Items',
+    'Max Size':'Max Size',
+    'Filetypes':'Filetypes',
+    'Specifications':'Specifications',
+    'Names (comma seperated)':'Names (comma seperated)',
+    'Values (comma seperated)':'Values (comma seperated)',
+    'Coordinates X':'Coordinates X',
+    'Coordinates Y':'Coordinates Y',
 
     // Settings
     Language: 'Language',
@@ -37,25 +52,26 @@ export const en = {
     No: 'No',
     Filter: 'Filter',
     'Create user': 'Create user',
-    'Apply':'Apply',
-    'Cancel':'Cancel',
-    'Create':'Create',
-    'New Field':'New Field',
-    'Delete':'Delete',
-
-
+    Apply: 'Apply',
+    Cancel: 'Cancel',
+    Create: 'Create',
+    'New Field': 'New Field',
+    Delete: 'Delete',
+    Select: 'Select',
+    'No items': 'No items',
     //List
     Name: 'Name',
     Email: 'Email',
     Number: 'Number',
     interact: 'interact',
-    Type:'Type',
-    Module:'Module',
+    Type: 'Type',
+    Module: 'Module',
 
     //Modal message
     'Are you sure you want to log out?': 'Are you sure you want to log out?',
+    'Are you sure you want to delete thit user?': 'Are you sure you want to delete thit user?',
     'A confirmation letter has been sent to the Email !':
-    'A confirmation letter has been sent to the Email !',
+        'A confirmation letter has been sent to the Email !',
     'Password reset successfuly !': 'Password reset successfuly !',
 
     //Auth
@@ -63,7 +79,7 @@ export const en = {
     'Sign In': 'Sign In',
     Register: 'Register',
     'Don`t have an account ?': 'Don`t have an account ?',
-    'Hello! Welcome back.': 'Hello! Welcome back.',
+    'Welcome!': 'Welcome!',
     'Log in with your data that you entered during Your registrarion':
         'Log in with your data that you entered during Your registrarion',
     'Have an account ?': 'Have an account ?',
@@ -95,16 +111,18 @@ export const en = {
     "Name shouldn't have spaces!": 'Name shouldn`t have spaces!',
     'One letter, one number, only latin, and one special character':
     'One letter, one number, only latin, and one special character',
+    'Only number':'Only number',
+    'Only latin':'Only latin',
     // Modules
-   'This module is already exists!': 'This module is already exists!',
-   'Sorry, but these are сonstant field':'Sorry, but these are сonstant field',
-    //Fields Label 
-    'Password':'Password',
-    'Confirm Password':'Confirm Password',
-    'Firstname':'Firstname',
-    'Lastname':'Lastname',
-    'Phone Number':'Phone Number',
-    'Birthday':'Birthday',
-    'Module Name':'Module Name',
-    'Group':'Group'
+    'This module is already exists!': 'This module is already exists!',
+    'Sorry, but these are сonstant field': 'Sorry, but these are сonstant field',
+    //Fields Label
+    Password: 'Password',
+    'Confirm Password': 'Confirm Password',
+    Firstname: 'Firstname',
+    Lastname: 'Lastname',
+    'Phone Number': 'Phone Number',
+    Birthday: 'Birthday',
+    'Module Name': 'Module Name',
+    Group: 'Group'
 };

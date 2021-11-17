@@ -10,6 +10,10 @@ export const ButtonContainer = styled.div`
 
 export const FormContainer = styled.div`
     width: 500px;
+    h3{
+        text-align: center;
+        margin: 5px 0 15px 0;
+    }
 `;
 export const Label = styled.label`
     margin-right: 15px;

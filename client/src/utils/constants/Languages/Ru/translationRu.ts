@@ -10,10 +10,10 @@ export const ru = {
     Settings: 'Настройки',
     //Sub items side menu
     //Pages
-    'All Pages':'Все страницы',
-    'New Page':'Новая страница',
-    'Edit Page':'Редактировать страницу',
-    'Create Page':'Создать страницу',
+    'All Pages': 'Все страницы',
+    'New Page': 'Новая страница',
+    'Edit Page': 'Редактировать страницу',
+    'Create Page': 'Создать страницу',
     //NewsLetter
     'All Letter': 'Все письма',
     'All Jobs': 'Все рассылки',
@@ -27,6 +27,22 @@ export const ru = {
     'New Module':'Добавить модуль',
     'Edit Module':'Редактировать модуль',
     'Module Fields':'Поля модуля', 
+    'Create Field Module':'Создание Поля Модуля',
+    // Create Field 
+    'Max Chars':'Максимальное количество символов',
+    'Title':'Заголовок',
+    'Width':'Ширина',
+    'Default Text':'Текст по умолчанию',
+    'Height':'Высота',
+    'Max Items':'Максимальное количество файлов',
+    'Max Size':'Максимальный размер',
+    'Filetypes':'Типы файлов',
+    'Specifications':'Характеристики',
+    'Names (comma seperated)':'Имена (через запятую)',
+    'Values (comma seperated)':'Значения (через запятую)',
+    'Coordinates X':'Координаты X',
+    'Coordinates Y':'Координаты Y',
+
     // Settings
     Language: 'Язык',
     //Actions
@@ -35,21 +51,24 @@ export const ru = {
     No: 'Нет',
     Filter: 'Фильтр',
     'Create user': 'Создать пользователя',
-    'Apply':'Применить',
-    'Cancel':'Отменить',
-    'Create':'Создать',
-    'New Field':'Создать поле',
-    'Delete':'Удалить',
-
+    Apply: 'Применить',
+    Cancel: 'Отменить',
+    Create: 'Создать',
+    'New Field': 'Создать поле',
+    Delete: 'Удалить',
+    Select: 'Выбрать',
+    'No items': 'Нет опций',
     //List
     Name: 'Имя',
     Email: 'Почта',
     Number: 'Номер',
     interact: 'Действие',
-    Type:'Тип',
-    Module:'Модуль',
+    Type: 'Тип',
+    Module: 'Модуль',
     //Modal message
     'Are you sure you want to log out?': 'Вы уверенны что хотите покинуть сайт ?',
+    'Are you sure you want to delete thit user?':
+        'Вы уверены что хотите удалить этого пользователя?',
     'A confirmation letter has been sent to the Email !':
         'Письмо с подтверждением отправлено на Email !',
     'Password reset successfuly !': 'Пароль сброшен успешно !',
@@ -58,7 +77,7 @@ export const ru = {
     'Sign In': 'Войти',
     Register: 'Зарегистрироваться',
     'Don`t have an account ?': 'Нет аккаунта ?',
-    'Hello! Welcome back.': 'Привет! Добро пожаловать назад.',
+    'Welcome!': 'Добро пожаловать!',
     'Log in with your data that you entered during Your registrarion':
         'Авторизуйтесь, используя данные, которые вы ввели при регистрации.',
     'Have an account ?': 'Уже есть аккаунт?',
@@ -91,17 +110,18 @@ export const ru = {
     "Name shouldn't have spaces!": 'Имя не должно содержать пробелов!',
     'One letter, one number, only latin, and one special character':
     'Одна буква, одна цифра, только латынь и один спец. символ',
+    'Only number':'Только цифры',
+    'Only latin':'Только латинские символы',
     // Modules
-   'This module is already exists!': 'Этот модуль уже существует!',
-   'Sorry, but these are сonstant field':'Извините, но это постоянное поле',
-   //Fields
-   'Password':'Пароль',
-   'Confirm Password':'Подтвердите пароль',
-   'Firstname':'Имя',
-   'Lastname':'Фамилия',
-   'Phone Number':'Номер телефона',
-   'Birthday':'Дата рождения',
-   'Module Name':'Имя модуля',
-   'Group':'Группа'
-
+    'This module is already exists!': 'Этот модуль уже существует!',
+    'Sorry, but these are сonstant field': 'Извините, но это постоянное поле',
+    //Fields
+    Password: 'Пароль',
+    'Confirm Password': 'Подтвердите пароль',
+    Firstname: 'Имя',
+    Lastname: 'Фамилия',
+    'Phone Number': 'Номер телефона',
+    Birthday: 'Дата рождения',
+    'Module Name': 'Имя модуля',
+    Group: 'Группa'
 };

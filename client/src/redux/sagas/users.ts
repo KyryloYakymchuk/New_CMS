@@ -1,3 +1,4 @@
+import { setModalMessageAction, setModalStatusAction } from './../actions/modal';
 import { deleteUserApi, getUsersApi } from '@api/users';
 import { put, takeEvery, call } from '@redux-saga/core/effects';
 import { loaderAction } from '@redux/actions/loader';
@@ -33,18 +34,24 @@ function* deleteUser(config: IDeleteUserDataAction) {
 function* addNewUser(config: IAddUserAction) {
     try {
         yield call(api.post, '/users', config.payload);
+        yield put(setModalMessageAction('User was created'));
     } catch (error) {
+        yield put(setModalMessageAction('An error occured while creating user'));
         return error;
     }
+    yield put(setModalStatusAction(true));
     yield put(loaderAction(false));
 }
 
 function* editUser(config: IEditUserAction) {
     try {
         yield call(api.put, '/users', config.payload);
+        yield put(setModalMessageAction('User was updated'));
     } catch (error) {
+        yield put(setModalMessageAction('an error occured while updating user'));
         return error;
     }
+    yield put(setModalStatusAction(true));
     yield put(loaderAction(false));
 }
 function* editUserImg(config: any) {

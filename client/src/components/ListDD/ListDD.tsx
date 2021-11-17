@@ -3,7 +3,7 @@ import { IListColumns, OnClickFuncType } from '@interfaces/types';
 import { ListTitle } from '@components/List/ListTitle/ListTitle';
 import { ListContainer } from '@components/List/styled';
 import { ListDDElement } from './ListElement/ListDDElement';
-
+import { formaterFieldListData } from '@utils/functions/formaterFieldListData';
 
 export interface IArrButton {
     item: JSX.Element;
@@ -12,7 +12,7 @@ export interface IArrButton {
 
 interface IPrors {
     sortType?: string;
-    sortHandler: (sortField: string) => MouseEventHandler<HTMLDivElement>;
+    sortHandler?: (sortField: string) => MouseEventHandler<HTMLDivElement>;
     listColumns: IListColumns[];
     //!Always diferent data
     listData?: any;
@@ -37,14 +37,14 @@ export const ListDD: FC<IPrors> = ({
                 sortHandler={sortHandler}
             />
             {/* Always diferent data */}
-            {listData?.map((data:any, index:number) => (
+            {formaterFieldListData(listData)?.map((data: any, index: number) => (
                 <ListDDElement
                     key={index}
                     listColumns={listColumns}
                     data={data}
                     arrButton={arrButton}
                 />
-            ))}         
+            ))}
         </ListContainer>
     );
 };

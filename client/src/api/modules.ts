@@ -15,7 +15,7 @@ export const getModulesReqApi = (config: IGetModuleAction): Promise<IModuleListD
 };
 export const deleteModulesReqApi = (config: IDeleteModuleAction): Promise<IModuleListData> => {
     const { moduleID, queryParams } = config.payload;
-    return api.delete('/users/' + moduleID, {
+    return api.delete('/modules/' + moduleID, {
         params: queryParams
     });
 };
@@ -41,10 +41,6 @@ export const deleteFieldModuleReqApi = (config: IDeleteFieldModuleAction)
 
 export const createFieldModuleReqApi = (config: ICreateFieldModuleAction)
 : Promise<IModuleListData> => {
-
-console.log(config.payload);
-console.log(12);
-
     return api.post('/modules/fields/', config.payload );
 };
 

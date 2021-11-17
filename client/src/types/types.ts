@@ -47,46 +47,48 @@ export type OnClickFuncType = (
     e: React.ChangeEvent<HTMLDivElement>
 ) => MouseEventHandler<HTMLDivElement>;
 
-
-
 export interface IFieldSelectSettings {
-    value?:string;
-    id?:number;
-   
+    value?: string;
+    id?: number;
 }
 
 export interface IFieldSettings {
-    id?:number;
-    name?:string;
-    type?:string;
-    key?:string;
-    fieldType?:string;
-    select?:IFieldSelectSettings[];
+    id?: number;
+    name?: string;
+    type?: string;
+    key?: string;
+    fieldType?: string;
+    title?: string;
+    defaultText?: string;
+    maxChars?: string;
+    maxSize?: string;
+    maxItems?: string;
+    coordinates_x?: string;
+    coordinates_y?: string;
+    select?: IFieldSelectSettings[];
 }
 
 export interface ICreateFieldProps {
-    history?:History;
-    id?:number;
-    name?:string;
-    type?:string;
-    key?:string;
-    fieldType?:string;
-    moduleID?:string;
-    settings?: IFieldSettings;
+    history?: History;
+    id?: number;
+    name?: string;
+    type?: string;
+    key?: string;
+    fieldType?: string;
+    moduleID?: string;
+    settings: IFieldSettings;
 }
-
 
 export interface IFieldProps {
-    id?:number;
-    name?:string;
-    type?:string;
-    key?:string;
-    fieldType?:string;
-    moduleID?:string;
+    id?: number;
+    name?: string;
+    type?: string;
+    key?: string;
+    fieldType?: string;
+    moduleID?: string;
     settings?: IFieldSettings[];
+    validate?: any;
 }
-
-
 
 export type GetSelectDataType = (newValue: string, actionMeta?: InputActionMeta) => void;
 export type MultiValueType = MultiValue<IOption>;

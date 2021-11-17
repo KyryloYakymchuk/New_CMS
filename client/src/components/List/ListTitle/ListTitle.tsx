@@ -6,17 +6,17 @@ import { useTranslation } from 'react-i18next';
 
 interface IProps {
     sortType?: string;
-    sortHandler: (sortField: string) => MouseEventHandler<HTMLDivElement>;
+    sortHandler?: (sortField: string) => MouseEventHandler<HTMLDivElement>;
     listColumns: IListColumns[];
     sortColumn?: string;
 }
-export const ListTitle: FC<IProps> = ({ listColumns, sortHandler, sortType, sortColumn }) => {
-const { t } = useTranslation();
+export const ListTitle: FC<IProps> = ({ listColumns, sortType, sortColumn }) => {
+    const { t } = useTranslation();
 
     return (
         <ListTitleContainer>
             {listColumns.map(({ title, name }) => (
-                <div onClick={sortHandler(name)}>
+                <div>
                     {title}
                     {sortColumn === name && (
                         <SvgButton sortType={sortType}>{<Icons.ExpandMoreIcon />}</SvgButton>

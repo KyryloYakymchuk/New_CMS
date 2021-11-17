@@ -22,6 +22,7 @@ import {
 } from '@api/modules';
 import { IError } from '@redux/types/error';
 import { ProtectedRoutes } from '@utils/enums/RoutesPath';
+import { setModalMessageAction, setModalStatusAction } from '@redux/actions/modal';
 
 function* getModulesReq(config: IGetModuleAction) {
     try {
@@ -72,7 +73,7 @@ function* editModulesReq(config: ICreateModuleAction) {
         }
     }
 } function* deleteFieldModuleReq(config: IDeleteFieldModuleAction) {
-
+    console.log(config);
     try {
      const { data } = yield call(deleteFieldModuleReqApi, config);
         yield put(setFieldsResponseAction(data));
@@ -83,17 +84,18 @@ function* editModulesReq(config: ICreateModuleAction) {
     }
 }
 function* createFieldModuleReq(config: ICreateFieldModuleAction) {  
-    const { history } = config.payload;
 
     try {
      const { data } = yield call(createFieldModuleReqApi, config);
         yield put(setFieldsResponseAction(data));
-        history?.push(ProtectedRoutes.MODULE_FIELDS);       
-    } catch (error) {
+        yield put(setModalStatusAction(true));
+        yield put(setModalMessageAction('Field created successfuly!'));
+    } catch (error:any) {
         if (request.isAxiosError(error) && error.response) {
-            yield put(errorAction(error.response?.data as IError));
+          yield put(errorAction(error.response?.data as IError));
         }
     }
+    
 }
 
 

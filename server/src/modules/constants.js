@@ -3,7 +3,8 @@ export const defFields = [
     name: "dropdown",
     type: "string",
     settings: {
-      textPrompt: "status",
+      name: "status",
+      title: "status",
       values: "disabled,publish,archived",
     },
     id: "f_Status",
@@ -13,7 +14,8 @@ export const defFields = [
     name: "datePicker",
     type: "string",
     settings: {
-      textPrompt: "archiveDate",
+      name: "archiveDate",
+      title: "status",
     },
     id: "f_aDate",
     order: 2,
@@ -22,7 +24,8 @@ export const defFields = [
     name: "datePicker",
     type: "string",
     settings: {
-      textPrompt: "publishDate",
+      name: "publishDate",
+      title: "status",
     },
     id: "f_pDate",
     order: 1,
@@ -31,7 +34,8 @@ export const defFields = [
     name: "textbox",
     type: "string",
     settings: {
-      textPrompt: "name",
+      name: "name",
+      title: "status",
     },
     id: "f_name",
     order: 0,

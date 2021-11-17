@@ -19,7 +19,6 @@ interface LoginProps {
 export const ResetForm: FC<LoginProps> = ({ onSubmit }) => {
     const { buttonIcon, buttonText, linkText, description, path } = ButtonsData;
     const { LoaderCircularButton } = Loader;
-
     const errorMessage = useAppSelector(errorMessageSelector);
     const loaderStatus = useAppSelector(loaderStatusSelector);
     const { t } = useTranslation();

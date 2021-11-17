@@ -6,14 +6,21 @@ import useDebounce from '@utils/hooks/useDebounce';
 import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { ProtectedRoutes } from '@utils/enums/RoutesPath';
 import { currentUserDataSelector } from '@redux/selectors/users';
 import { groupNamesSelector } from '@redux/selectors/groups';
 import { IGetGroupsData } from '@redux/types/groups';
+import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
+import { ModalButton } from '@components/Modal/ModalButton';
+import { setModalStatusAction } from '@redux/actions/modal';
+import { useHistory } from 'react-router';
+import { modalMessageSelector, modalStatusSelector } from '@redux/selectors/modal';
 
 const DEFAULT_LIMIT = 10;
 
 export const CreateUserPage: FC = () => {
     const dispatch = useDispatch();
+    const history = useHistory();
     const currentUser: any = useAppSelector(currentUserDataSelector);
     //problem in typed IUser cant use currentUser?.group
     const arrGroupNames = useAppSelector<IOption[] | undefined>(groupNamesSelector);
@@ -47,6 +54,10 @@ export const CreateUserPage: FC = () => {
             dispatch(addNewUser(requestBody));
         }
     };
+    const handleAccept = () => {
+        dispatch(setModalStatusAction(false));
+        history.push(ProtectedRoutes.USERS);
+    };
 
     useEffect(() => {
         const queryParams: IGetGroupsData = {
@@ -57,15 +68,21 @@ export const CreateUserPage: FC = () => {
         }
         dispatch(getGroupNames(queryParams));
     }, [dispatch, debouncedSelectGroupName]);
-
+    const isModalOpen = useAppSelector(modalStatusSelector);
+    const message = useAppSelector(modalMessageSelector);
     return (
-        <UserForm
-            onSubmitForm={onSubmitForm}
-            selectGroupArr={selectGroupArr}
-            onChangeMultiValue={onChangeMultiValue}
-            currentUser={currentUser}
-            arrGroupNames={arrGroupNames}
-            getSelectData={getSelectData}
-        />
+        <div>
+            <UserForm
+                onSubmitForm={onSubmitForm}
+                selectGroupArr={selectGroupArr}
+                onChangeMultiValue={onChangeMultiValue}
+                currentUser={currentUser}
+                arrGroupNames={arrGroupNames}
+                getSelectData={getSelectData}
+            />
+            <ModalConfirm handleAccept={handleAccept} message={message} modalStatus={isModalOpen}>
+                <ModalButton handleAccept={handleAccept} />
+            </ModalConfirm>
+        </div>
     );
 };
