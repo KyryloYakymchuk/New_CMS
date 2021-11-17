@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import i18n from '@utils/helpers/i18n';
 
 import { Select, SelectContainer } from './styled/styled';
-import { langItem } from '@utils/constants/Languages/langItem';
+import { langList  } from '@utils/constants/Languages/langList';
 
 export const Settings: FC = () => {
     const { t } = useTranslation();
@@ -16,9 +16,9 @@ export const Settings: FC = () => {
         <SelectContainer>
             <label>{t('Language')}-</label>
             <Select value={localStorage.getItem('i18nextLng')!} onChange={handleChange}>
-                {langItem.map(({ item }, index) => (
-                    <option key={index} value={item}>
-                        {item} 
+                {langList .map(({ value, label }, index) => (
+                    <option key={index} value={value}>
+                        {label} 
                     </option>
                 ))}
             </Select>
