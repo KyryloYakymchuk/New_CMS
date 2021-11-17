@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react';
-import { Form } from 'react-final-form';
+import { Field, Form } from 'react-final-form';
 import { History } from 'history';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
@@ -15,11 +15,12 @@ import { ICreateModulePayload } from '@redux/types/modules';
 
 import { useAppSelector } from '@utils/hooks/useAppSelector';
 
-import { ErrorMessage, FieldCustom } from '@modules/Auth/styled';
+import { ErrorMessage } from '@modules/Auth/styled';
 import { ButtonContainer, FormContainer } from './styled';
 import { createModuleValidate } from '@utils/validators/Modules/CreateModule';
 import FormField from '@components/FormField/FormField';
 import FormCheckbox from '@components/FormField/FormCheckbox';
+import { useStyles } from '@utils/styles/field';
 
 export const CreateModule: FC = () => {
     const dispatch = useDispatch();
@@ -27,7 +28,7 @@ export const CreateModule: FC = () => {
     const editData = useAppSelector(editableDataSelector);
     const errorMessage = useAppSelector(errorMessageSelector);
     const { t } = useTranslation();
-
+    const classes = useStyles();
     const onSubmit = (value: ICreateModulePayload) => {
         if (editData?.moduleID) {
             dispatch(
@@ -65,14 +66,15 @@ export const CreateModule: FC = () => {
                 <FormContainer>
                     <form onSubmit={handleSubmit}>
                         <ErrorMessage>{errorMessage && t(errorMessage)}</ErrorMessage>
-                        <FieldCustom
+                        <Field
+                            className={classes.root}
                             type="text"
                             name="name"
                             label={t('Module Name')}
                             variant="outlined"
                             component={FormField}
                         />
-                        <FieldCustom
+                        <Field
                             type="checkbox"
                             name="categories"
                             label={t('Categories')}

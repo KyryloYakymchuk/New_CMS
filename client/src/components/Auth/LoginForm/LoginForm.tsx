@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Form } from 'react-final-form';
+import { Field, Form } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
 
 import { ButtonsData, LoginFields } from '@utils/constants/AuthField/LoginFields';
@@ -9,14 +9,9 @@ import FormField from '@components/FormField/FormField';
 import { AuthButtonContainer } from '@components/Auth/AuthButtons/AuthButtonsContainer';
 
 import { useAppSelector } from '@utils/hooks/useAppSelector';
-import {
-    ButtonContainer,
-    FieldCustom,
-    FormContainer,
-    ForgotPassword,
-    ErrorMessage
-} from '@modules/Auth/styled';
+import { ButtonContainer, FormContainer, ForgotPassword, ErrorMessage } from '@modules/Auth/styled';
 import { errorMessageSelector } from '@redux/selectors/error';
+import { useStyles } from '@utils/styles/field';
 
 interface LoginProps {
     onSubmit: (value: IFormValues) => void;
@@ -27,7 +22,7 @@ export const LoginForm: FC<LoginProps> = ({ onSubmit }) => {
 
     const errorMessage = useAppSelector(errorMessageSelector);
     const { t } = useTranslation();
-
+    const classes = useStyles();
     return (
         <Form
             onSubmit={onSubmit}
@@ -37,14 +32,15 @@ export const LoginForm: FC<LoginProps> = ({ onSubmit }) => {
                     <form onSubmit={handleSubmit}>
                         <ErrorMessage>{errorMessage && t(errorMessage)}</ErrorMessage>
                         {LoginFields.map(({ icon, ...field }, index) => (
-                            <FieldCustom
+                            <Field
+                                className={classes.root}
                                 key={index}
                                 {...field}
                                 variant="outlined"
                                 component={FormField}
                             >
                                 {icon}
-                            </FieldCustom>
+                            </Field>
                         ))}
                         <ForgotPassword to="/auth/reset">{t('Forgot Password?')}</ForgotPassword>
                         <ButtonContainer>

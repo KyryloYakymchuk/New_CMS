@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Form } from 'react-final-form';
+import { Field, Form } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
 import { ButtonsData, ResetPasswordFields } from '@utils/constants/AuthField/ResetPasswordFields';
 import { Loader } from '@utils/constants/Loader';
@@ -7,10 +7,11 @@ import { ResetPasswordValidator } from '@utils/validators/Auth/ResetPasswordVali
 import { IFormValues } from '@modules/Auth/ResetPassword';
 import FormField from '@components/FormField/FormField';
 import { AuthButtonContainer } from '@components/Auth/AuthButtons/AuthButtonsContainer';
-import { ButtonContainer, ErrorMessage, FieldCustom, FormContainer } from '@modules/Auth/styled';
+import { ButtonContainer, ErrorMessage, FormContainer } from '@modules/Auth/styled';
 import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { loaderStatusSelector } from '@redux/selectors/loader';
 import { errorMessageSelector } from '@redux/selectors/error';
+import { useStyles } from '@utils/styles/field';
 
 interface LoginProps {
     onSubmit: (value: IFormValues) => void;
@@ -22,6 +23,7 @@ export const ResetPasswordForm: FC<LoginProps> = ({ onSubmit }) => {
     const errorMessage = useAppSelector(errorMessageSelector);
     const loaderStatus = useAppSelector(loaderStatusSelector);
     const { t } = useTranslation();
+    const classes = useStyles();
     return (
         <Form
             onSubmit={onSubmit}
@@ -31,14 +33,15 @@ export const ResetPasswordForm: FC<LoginProps> = ({ onSubmit }) => {
                     <form onSubmit={handleSubmit}>
                         <ErrorMessage>{errorMessage && t(errorMessage)}</ErrorMessage>
                         {ResetPasswordFields.map(({ icon, ...field }, index) => (
-                            <FieldCustom
+                            <Field
+                                className={classes.root}
                                 key={index}
                                 {...field}
                                 variant="outlined"
                                 component={FormField}
                             >
                                 {icon}
-                            </FieldCustom>
+                            </Field>
                         ))}
                         <ButtonContainer>
                             <AuthButtonContainer
