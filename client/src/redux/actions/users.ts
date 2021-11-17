@@ -36,7 +36,7 @@ export const editUser = (payload: IUser) => ({
     type: UserActionTypes.EDIT_USER,
     payload
 });
-export const editUserImg = (payload: any) => ({
+export const editUserImg = (payload: FormData) => ({
     type: UserActionTypes.EDIT_USER_IMG,
     payload
 });

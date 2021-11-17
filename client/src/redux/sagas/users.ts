@@ -6,6 +6,7 @@ import { setUsers } from '@redux/actions/users';
 import {
     IAddUserAction,
     IDeleteUserDataAction,
+    IEditImgAction,
     IEditUserAction,
     IGetUsersAction,
     UserActionTypes
@@ -54,8 +55,7 @@ function* editUser(config: IEditUserAction) {
     yield put(setModalStatusAction(true));
     yield put(loaderAction(false));
 }
-function* editUserImg(config: any) {
-    //hard code typed coming son in next task Revise all typing
+function* editUserImg(config: IEditImgAction) {
     try {
         yield call(api.post, '/users/img', config.payload);
     } catch (error) {

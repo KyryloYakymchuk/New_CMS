@@ -887,6 +887,16 @@ export class ModulesService {
     if (!module)
       throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
 
+    if (
+      module.fields.find(
+        (e) => e.settings.textPrompt === settings["textPrompt"]
+      )
+    )
+      throw new HttpException(
+        "Field with same name already exists",
+        HttpStatus.BAD_REQUEST
+      );
+
     const moduleFields = module.fields;
 
     const maxOrderObject =

@@ -9,7 +9,7 @@ import {
     getModulesAction,
     setEditDataModuleAction
 } from '@redux/actions/modules';
-import { IGetModulePayload } from '@redux/types/modules';
+import { IGetModulePayload, ISetModulePayload } from '@redux/types/modules';
 import { modulesListSelector } from '@redux/selectors/modules';
 import { setModalMessageAction } from '@redux/actions/modal';
 
@@ -34,14 +34,17 @@ import { offsetGenerator } from '@utils/functions/offsetGenerator';
 import { modalMessageSelector } from '@redux/selectors/modal';
 
 const LIMIT = 10;
-
+interface IClickValue extends ISetModulePayload {
+    categories: boolean;
+    __v: number;
+}
 export const AllModules: FC = () => {
     let { search, pathname } = useLocation();
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const history = useHistory();
     const allModules = useAppSelector(modulesListSelector);
-    const message = useAppSelector(modalMessageSelector);
+    const requestMessage = useAppSelector(modalMessageSelector);
     const query = new URLSearchParams(search);
     const currentPage = Number(query.get('page'));
 
@@ -64,38 +67,46 @@ export const AllModules: FC = () => {
     const createModuleClick = () => {
         history.push('/module/create');
     };
-    const moduleFieldClick = (value: React.ChangeEvent<HTMLDivElement>) => () => {
-        const temp: any = value;
-        history.push(`/module/fields/${temp.name}`);
+    function moduleFieldClick<T extends IClickValue>(value: T) {
+        return () => {
+            const temp: IClickValue = value;
+            history.push(`/module/fields/${temp.name}`);
 
-        dispatch(
-            setEditDataModuleAction({
-                name: temp.name,
-                moduleID: temp.moduleID,
-                fields: temp.fields,
-                categories: temp.categories
-            })
-        );
-    };
-    const editModuleClick = (value: React.ChangeEvent<HTMLDivElement>) => () => {
-        const temp: any = value;
-        history.push(`/module/edit/${temp.name}`);
-        dispatch(
-            setEditDataModuleAction({
-                name: temp.name,
-                moduleID: temp.moduleID,
-                fields: temp.fields,
-                categories: temp.categories
-            })
-        );
-    };
-    const deleteModuleClick = (value: React.ChangeEvent<HTMLDivElement>) => () => {
-        const temp: any = value;
-        setModalStatus(true);
-        setModuleId(temp.moduleID);
-        dispatch(setModalMessageAction(`${t('Delete')} ${temp.name} ?`));
-        setDeleteRequestStatus(true);
-    };
+            dispatch(
+                setEditDataModuleAction({
+                    name: temp.name,
+                    moduleID: temp.moduleID,
+                    fields: temp.fields,
+                    categories: temp.categories
+                })
+            );
+        };
+    }
+
+    function editModuleClick<T extends IClickValue>(value: T) {
+        console.log(value);
+        
+        return () => {
+            history.push(`/module/edit/${value.name}`);
+            dispatch(
+                setEditDataModuleAction({
+                    name: value.name,
+                    moduleID: value.moduleID,
+                    fields: value.fields,
+                    categories: value.categories
+                })
+            );
+        };
+    }
+    function deleteModuleClick<T extends IClickValue>(value: T) {
+        return () => {
+            setModalStatus(true);
+            setModuleId(value.moduleID);
+            dispatch(setModalMessageAction(`${t('Delete')} ${value.name} ?`));
+            setDeleteRequestStatus(true);
+        };
+    }
+
     const handleAccept = () => {
         const queryParams: IGetModulePayload = {
             ...sortParams,
@@ -174,7 +185,7 @@ export const AllModules: FC = () => {
                 handleAccept={handleAccept}
                 handleClose={handleClose}
                 modalStatus={modalStatus}
-                message={message}
+                message={requestMessage}
             >
                 <ModalButton handleAccept={handleAccept} handleClose={handleClose} />
             </ModalConfirm>

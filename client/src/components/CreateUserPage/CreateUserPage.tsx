@@ -1,5 +1,4 @@
 import { UserForm } from '@components/Forms/UserForm/UserForm';
-import { IOption, MultiValueType } from '@interfaces/types';
 import { getGroupNames } from '@redux/actions/groups';
 import { addNewUser, editUser, editUserImg } from '@redux/actions/users';
 import useDebounce from '@utils/hooks/useDebounce';
@@ -15,32 +14,38 @@ import { ModalButton } from '@components/Modal/ModalButton';
 import { setModalStatusAction } from '@redux/actions/modal';
 import { useHistory } from 'react-router';
 import { modalMessageSelector, modalStatusSelector } from '@redux/selectors/modal';
+import { IUser, IUserGrouops } from '@redux/types/users';
+
+interface IOnSubmitValue extends IUser{
+    confirmedPassword?:string;
+}
 
 const DEFAULT_LIMIT = 10;
 
 export const CreateUserPage: FC = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const currentUser: any = useAppSelector(currentUserDataSelector);
-    //problem in typed IUser cant use currentUser?.group
-    const arrGroupNames = useAppSelector<IOption[] | undefined>(groupNamesSelector);
+    const currentUser = useAppSelector(currentUserDataSelector) as IUser;
+    const arrGroupNames = useAppSelector<IUserGrouops[] | undefined>(groupNamesSelector);
     const [selectGroupName, setSelectGroupName] = useState<string>();
-    const [selectGroupArr, setSelectGroupArr] = useState<MultiValueType>(currentUser?.group);
-    const debouncedSelectGroupName = useDebounce(selectGroupName, 500);
 
+    const [selectGroupArr, setSelectGroupArr] = useState<IUserGrouops[]>(currentUser?.group);
+    const debouncedSelectGroupName = useDebounce(selectGroupName, 500);
+    console.log(selectGroupArr);
     const getSelectData = (newValue: string) => {
         setSelectGroupName(newValue);
     };
-    const onChangeMultiValue = (newValue: MultiValueType) => {
+    const onChangeMultiValue = (newValue: IUserGrouops[]) => {
         setSelectGroupArr(newValue);
     };
-    const onSubmitForm = (value: any) => {
-        //different data cant typed
-        const requestBody = {
+    const onSubmitForm = (value: IOnSubmitValue ) => {
+
+        delete value.confirmedPassword;
+        const requestBody:IUser = {
             ...value,
             group: selectGroupArr
         };
-        delete requestBody.confirmedPassword;
+        
         delete requestBody.profileImg;
         if (currentUser) {
             dispatch(editUser(requestBody));

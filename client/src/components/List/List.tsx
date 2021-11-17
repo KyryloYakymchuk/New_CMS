@@ -7,7 +7,7 @@ import { Loader } from '@components/Loader/Loader';
 
 export interface IArrButton<T> {
     item: JSX.Element;
-    onClickFunc: (user: T) => VoidFunction;
+    onClickFunc: (data: T) => VoidFunction;
 }
 
 interface IProps<T> {

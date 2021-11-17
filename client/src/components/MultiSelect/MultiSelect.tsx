@@ -1,4 +1,4 @@
-import { GetSelectDataType, IOption, OnChangeMultiValueType } from '@interfaces/types';
+import { GetSelectDataType, IOption, OnChangeMultiSelectType } from '@interfaces/types';
 import React, { FC, PropsWithChildren } from 'react';
 import { useTranslation } from 'react-i18next';
 import Select from 'react-select';
@@ -10,7 +10,7 @@ interface IMultiSelect {
     children?: React.ReactNode;
     selectName: string;
     getSelectData?: GetSelectDataType;
-    onChangeMultiValue?: OnChangeMultiValueType;
+    onChangeMultiValue?: OnChangeMultiSelectType ;
     selectGroupArr: IOption[];
     placeholderName?: string;
 }
