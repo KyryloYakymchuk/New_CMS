@@ -2,9 +2,10 @@ import { Buttons } from '@components/Button/Button';
 import ControlledFormField from '@components/FormField/ControlledFormField';
 import { ISingleFilterFormValue, OnChangeFieldValueType } from '@interfaces/types';
 import { Icons } from '@utils/constants/icon';
+import { useStyles } from '@utils/styles/field';
 import { FC } from 'react';
-import { Form } from 'react-final-form';
-import { ButtonBlock, FieldCustom, FilterBlock } from './styled';
+import { Field, Form } from 'react-final-form';
+import { ButtonBlock, FilterBlock } from './styled';
 
 interface IProps {
     filterFormValue: string;
@@ -19,6 +20,7 @@ export const SingleFilterForm: FC<IProps> = ({
     clearSingleFilterFormValue,
     onChangeFieldValue
 }) => {
+    const classes = useStyles();
     return (
         <FilterBlock>
             <Form
@@ -26,7 +28,8 @@ export const SingleFilterForm: FC<IProps> = ({
                 initialValues={{ search: filterFormValue }}
                 render={({ handleSubmit }) => (
                     <form onSubmit={handleSubmit}>
-                        <FieldCustom
+                        <Field
+                            className={classes.root}
                             filterFormValue={filterFormValue}
                             type="text"
                             name="search"
@@ -36,7 +39,7 @@ export const SingleFilterForm: FC<IProps> = ({
                             onChangeFieldValue={onChangeFieldValue}
                         >
                             <Icons.SearchIcon />
-                        </FieldCustom>
+                        </Field>
 
                         <ButtonBlock>
                             <Buttons title="Search" type="submit" style="pinkButton" />
