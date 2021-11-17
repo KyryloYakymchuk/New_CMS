@@ -4,7 +4,10 @@ export const useStyles = makeStyles(() => ({
     root: {
         width: '100%',
         // without !important margin not working
-        margin: '10px 0 !important',
+
+        '& label': {
+            marginTop: '20px'
+        },
         '& label.Mui-focused': {
             color: 'black'
         },
@@ -12,6 +15,7 @@ export const useStyles = makeStyles(() => ({
             borderBottomColor: 'rgb(122, 122, 122);'
         },
         '& .MuiOutlinedInput-root': {
+            marginTop: '20px',
             '& fieldset': {
                 borderColor: 'grey'
             },
