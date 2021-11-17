@@ -1,8 +1,10 @@
-import { IFieldSelectSettings } from '@interfaces/types';
-import { Label } from '@modules/Modules/styled';
-import { Select, SelectContainer } from '@modules/Settings/styled/styled';
 import { FC } from 'react';
 import { FieldRenderProps } from 'react-final-form';
+
+import { IFieldSelectSettings } from '@interfaces/types';
+
+import { Label } from '@modules/Modules/styled';
+import { Select, SelectContainer } from '@modules/Settings/styled/styled';
 
 type FormProps = FieldRenderProps<string, HTMLElement>;
 

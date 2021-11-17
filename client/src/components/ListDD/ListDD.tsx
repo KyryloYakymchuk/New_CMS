@@ -1,9 +1,12 @@
 import { FC, MouseEventHandler } from 'react';
+
 import { IListColumns, OnClickFuncType } from '@interfaces/types';
+
 import { ListTitle } from '@components/List/ListTitle/ListTitle';
 import { ListContainer } from '@components/List/styled';
-import { ListDDElement } from './ListElement/ListDDElement';
 import { formaterFieldListData } from '@utils/functions/formaterFieldListData';
+
+import { ListDDElement } from './ListElement/ListDDElement';
 
 export interface IArrButton {
     item: JSX.Element;

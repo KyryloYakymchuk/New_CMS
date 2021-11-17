@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { errorMessageSelector } from '@redux/selectors/error';
 
 import { useAppSelector } from '@utils/hooks/useAppSelector';
+import { initialfileds } from '@utils/constants/Modules/typeSelectData';
+import { toPreviousPage } from '@utils/functions/historyBack';
 
 import { ErrorMessage, FieldCustom } from '@modules/Auth/styled';
 import { ButtonContainer, FormContainer, Label } from '@modules/Modules/styled';
@@ -16,7 +18,7 @@ import FormField from '@components/FormField/FormField';
 import { ICreateFieldProps, IFieldProps } from '@interfaces/types';
 
 import { Select } from '@modules/Settings/styled/styled';
-import { initialfileds } from '@utils/constants/Modules/typeSelectData';
+import { FormApi } from 'final-form';
 
 interface IProps {
     currentField?: IFieldProps;
@@ -28,14 +30,17 @@ export const CreateFieldForm: FC<IProps> = ({ currentField, onSubmit, setCurrent
     const { t } = useTranslation();
     const errorMessage = useAppSelector(errorMessageSelector);
 
-    const handleChange = (form: any) => (e: React.ChangeEvent<HTMLSelectElement>) => {
-        initialfileds.forEach((field) => {
-            if (field.type === e.target.value) {
-                setCurrentField(field);
-            }
-        });
-        form.reset();
-    };
+    // did not find a solution how typed 'form', yet
+    const handleChange =
+        (form: FormApi<ICreateFieldProps, Partial<ICreateFieldProps>>) =>
+        (e: React.ChangeEvent<HTMLSelectElement>) => {
+            initialfileds.forEach((field) => {
+                if (field.type === e.target.value) {
+                    setCurrentField(field);
+                }
+            });
+            form.reset();
+        };
 
     return (
         <Form
@@ -71,7 +76,7 @@ export const CreateFieldForm: FC<IProps> = ({ currentField, onSubmit, setCurrent
                                 type="button"
                                 title={t('Cancel')}
                                 style={'greyButton'}
-                                onClickFunction={() => history.back()}
+                                onClickFunction={toPreviousPage}
                             />
                         </ButtonContainer>
                     </form>

@@ -2,18 +2,21 @@ import { FC, useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { setModalMessageAction } from '@redux/actions/modal';
+
+import { editableDataSelector } from '@redux/selectors/modules';
+import { deleteFieldModuleAction } from '@redux/actions/modules';
+
 import { Buttons } from '@components/Button/Button';
 import { ListDD } from '@components/ListDD/ListDD';
-import { Icons } from '@utils/constants/icon';
-import { PageHeader, UserPageContainer } from '@modules/Users/styled';
-import { moduleFieldsListColumns } from '@utils/constants/ListsData/ListsData';
-import { useAppSelector } from '@utils/hooks/useAppSelector';
-import { editableDataSelector } from '@redux/selectors/modules';
-import { constantFields } from '@utils/constants/Modules/constantsFields';
-import { deleteFieldModuleAction } from '@redux/actions/modules';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
 import { ModalButton } from '@components/Modal/ModalButton';
+
+import { Icons } from '@utils/constants/icon';
+import { useAppSelector } from '@utils/hooks/useAppSelector';
+import { moduleFieldsListColumns } from '@utils/constants/ListsData/ListsData';
+import { constantFields } from '@utils/constants/Modules/constantsFields';
+
+import { PageHeader, UserPageContainer } from '@modules/Users/styled';
 
 export const AllFields: FC = () => {
     const { t } = useTranslation();
@@ -22,6 +25,8 @@ export const AllFields: FC = () => {
     const allFieldsModule = useAppSelector(editableDataSelector);
 
     const [modalStatus, setModalStatus] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+
     const [fieldId, setFieldId] = useState('');
 
     const createModuleClick = () => {
@@ -36,10 +41,10 @@ export const AllFields: FC = () => {
         const temp: any = value;
         setFieldId(temp.id);
         if (constantFields.includes(temp.id)) {
-            dispatch(setModalMessageAction('Sorry, but these are сonstant field'));
+            setModalMessage('Sorry, but these are сonstant field');
             setModalStatus(true);
         } else {
-            dispatch(setModalMessageAction(`${t('Delete')} ${temp.name} ?`));
+            setModalMessage(`${t('Delete')} ${temp.title} ?`);
             setModalStatus(true);
         }
     };
@@ -90,6 +95,7 @@ export const AllFields: FC = () => {
                 handleAccept={handleAccept}
                 handleClose={handleClose}
                 modalStatus={modalStatus}
+                message={modalMessage}
             >
                 {!constantFields?.includes(fieldId) ? (
                     <ModalButton handleAccept={handleAccept} handleClose={handleClose} />

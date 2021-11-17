@@ -17,6 +17,7 @@ import { FieldCustom, FormContainer, SelectFieldCustom } from './styled';
 import { useTranslation } from 'react-i18next';
 import { userEditFormValidator } from '@utils/validators/users/UserEditFormValidator';
 import { userCreateFormValidator } from '@utils/validators/users/UserCreateFormValidator';
+import { toPreviousPage } from '@utils/functions/historyBack';
 
 interface IProps {
     currentUser?: any;
@@ -78,7 +79,7 @@ export const UserForm: FC<IProps> = ({
                                 title={t('Cancel')}
                                 type="button"
                                 style="grayButton"
-                                onClickFunction={() => history.back()}
+                                onClickFunction={toPreviousPage}
                             />
                         </ButtonContainer>
                     </form>

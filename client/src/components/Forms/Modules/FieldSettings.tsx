@@ -1,9 +1,11 @@
 import { FC } from 'react';
-import FormField from '../../FormField/FormField';
-import { FieldCustom } from '@modules/Auth/styled';
-import { FormSelect } from '@components/FormField/FormSelect';
 import { IFieldProps } from '@interfaces/types';
 import { useTranslation } from 'react-i18next';
+
+import { FieldCustom } from '@modules/Auth/styled';
+
+import { FormSelect } from '@components/FormField/FormSelect';
+import FormField from '@components/FormField/FormField';
 
 export const FieldSettings: FC<IFieldProps> = ({ settings }) => {
     const { t } = useTranslation();
@@ -13,20 +15,13 @@ export const FieldSettings: FC<IFieldProps> = ({ settings }) => {
             {settings?.map(({ name, key, select }, index) => (
                 <>
                     {!select ? (
-                        <FieldCustom
-                            key={index}
-                            label={name}
-                            name={key}
-                            type={'text'}
-                            component={FormField}
-                        />
+                        <FieldCustom key={index} label={name} name={key} component={FormField} />
                     ) : (
                         <FieldCustom
                             key={index}
                             name={key}
                             label={name}
                             options={select}
-                            type={'select'}
                             component={FormSelect}
                         />
                     )}

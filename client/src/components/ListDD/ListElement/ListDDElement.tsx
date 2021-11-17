@@ -1,10 +1,15 @@
 import { FC } from 'react';
-import { IListColumns } from '@interfaces/types';
-import { useAppSelector } from '@utils/hooks/useAppSelector';
+
 import { loaderStatusSelector } from '@redux/selectors/loader';
+
+import { IListColumns } from '@interfaces/types';
+
+import { useAppSelector } from '@utils/hooks/useAppSelector';
+
 import { SkeletonLoader } from '@components/SkeletonLoader/SkeletonLoader';
-import { IArrButton } from '../ListDD';
 import { Button, ButtonBlock, ListElementContainer } from '@components/List/ListElement/styled';
+
+import { IArrButton } from '../ListDD';
 
 interface IProps {
     listColumns: IListColumns[];
