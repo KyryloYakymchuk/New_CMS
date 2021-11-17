@@ -1,5 +1,5 @@
-export const langItem = [ 
-    { item: 'ru-RU' },
-    { item: 'en-EN' },
-    { item: 'ua-UA' }
+export const langItem = [
+    { item: 'ru-RU', label: 'Russian' },
+    { item: 'en-EN', label: 'English' },
+    { item: 'ua-UA', label: 'Ukranian' }
 ];
