@@ -67,21 +67,6 @@ export const AllFields: FC = () => {
             //!for eslint
         };
     }
-    // function editModuleClick<T extends IClickValue>(value: T) {
-    //     console.log(value);
-
-    //     return () => {
-    //         history.push(`/module/edit/${value.name}`);
-    //         dispatch(
-    //             setEditDataModuleAction({
-    //                 name: value.name,
-    //                 moduleID: value.moduleID,
-    //                 fields: value.fields,
-    //                 categories: value.categories
-    //             })
-    //         );
-    //     };
-    // }
     function deleteFieldClick<T extends IModuleField>(value: T) {
         return () => {
             setFieldId(value.id);
@@ -94,7 +79,6 @@ export const AllFields: FC = () => {
             }
         };
     }
-    //!future content
     const handleAccept = () => {
         dispatch(deleteFieldModuleAction({ fieldId }));
         setModalStatus(false);

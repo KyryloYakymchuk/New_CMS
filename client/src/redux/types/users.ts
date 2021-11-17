@@ -9,7 +9,7 @@ export enum UserActionTypes {
     EDIT_USER_IMG = 'EDIT_USER_IMG'
 }
 
-export interface IUserGrouops {
+export interface IUserGroups {
     value: string;
     label: string;
 }
@@ -19,7 +19,7 @@ export interface IUser {
     confirmed?: boolean;
     email: string;
     lastname?: string;
-    group: IUserGrouops[];
+    group: IUserGroups[];
     name: string;
     phone?: string;
     profileImg?: null | string;

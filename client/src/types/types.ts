@@ -1,4 +1,4 @@
-import { IUserGrouops } from '@redux/types/users';
+import { IUserGroups } from '@redux/types/users';
 import { MouseEventHandler } from 'react';
 import { InputActionMeta, MultiValue } from 'react-select';
 export interface IAddress {
@@ -47,8 +47,8 @@ export type OnClickFuncType = (
 ) => MouseEventHandler<HTMLDivElement>;
 
 export type GetSelectDataType = (newValue: string, actionMeta?: InputActionMeta) => void;
-export type MultiValueType = IUserGrouops[];
-export type MultiValueSelectType = MultiValue<IUserGrouops>;
+export type MultiValueType = IUserGroups[];
+export type MultiValueSelectType = MultiValue<IUserGroups>;
 export type OnChangeMultiValueType = (newValue: MultiValueType) => void;
 export type OnChangeMultiSelectType = (newValue: MultiValueSelectType) => void;
 export type EventChangeType = React.ChangeEvent<HTMLInputElement>;

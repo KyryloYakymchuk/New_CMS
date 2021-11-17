@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router';
-
 import { loaderAction } from '@redux/actions/loader';
 import {
     deleteModuleAction,
@@ -12,23 +11,16 @@ import {
 import { IGetModulePayload, ISetModulePayload } from '@redux/types/modules';
 import { modulesListSelector } from '@redux/selectors/modules';
 import { setModalMessageAction } from '@redux/actions/modal';
-
 import { Buttons } from '@components/Button/Button';
 import { List } from '@components/List/List';
 import { Pagination } from '@components/Pagination/Pagination';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
 import { ModalButton } from '@components/Modal/ModalButton';
-//!For future filter
-// import { DrawerFilterMenu } from '@components/DrawerFilterMenu/DrawerFilterMenu';
-// import { SingleFilterForm } from '@components/Forms/SingleFilterForm/SingleFilterForm';
-
 import { ISortHandlerValue, ISortParams } from '@interfaces/types';
-
 import { Icons } from '@utils/constants/icon';
 import { modulesListColumns } from '@utils/constants/ListsData/ListsData';
 import { handleListSort } from '@utils/functions/handleListSort';
 import { useAppSelector } from '@utils/hooks/useAppSelector';
-
 import { PageHeader, UserPageContainer } from '@modules/Users/styled';
 import { offsetGenerator } from '@utils/functions/offsetGenerator';
 import { modalMessageSelector } from '@redux/selectors/modal';
@@ -63,29 +55,24 @@ export const AllModules: FC = () => {
         setSortingTypeIdx(temp.currSortingTypeIdx);
         setSortParams(temp.currentSortParams);
     };
-
     const createModuleClick = () => {
         history.push('/module/create');
     };
     function moduleFieldClick<T extends IClickValue>(value: T) {
         return () => {
-            const temp: IClickValue = value;
-            history.push(`/module/fields/${temp.name}`);
-
+            history.push(`/module/fields/${value.name}`);
             dispatch(
                 setEditDataModuleAction({
-                    name: temp.name,
-                    moduleID: temp.moduleID,
-                    fields: temp.fields,
-                    categories: temp.categories
+                    name: value.name,
+                    moduleID: value.moduleID,
+                    fields: value.fields,
+                    categories: value.categories
                 })
             );
         };
     }
 
     function editModuleClick<T extends IClickValue>(value: T) {
-        console.log(value);
-        
         return () => {
             history.push(`/module/edit/${value.name}`);
             dispatch(

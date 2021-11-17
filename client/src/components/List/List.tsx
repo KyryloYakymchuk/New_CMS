@@ -1,9 +1,9 @@
 import { MouseEventHandler } from 'react';
 import { IListColumns } from '@interfaces/types';
+import { Loader } from '@components/Loader/Loader';
 import { ListElement } from './ListElement/ListElement';
 import { ListTitle } from './ListTitle/ListTitle';
 import { ListContainer } from './styled';
-import { Loader } from '@components/Loader/Loader';
 
 export interface IArrButton<T> {
     item: JSX.Element;

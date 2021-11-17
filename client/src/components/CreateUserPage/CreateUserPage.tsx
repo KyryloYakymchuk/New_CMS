@@ -14,7 +14,7 @@ import { ModalButton } from '@components/Modal/ModalButton';
 import { setModalStatusAction } from '@redux/actions/modal';
 import { useHistory } from 'react-router';
 import { modalMessageSelector, modalStatusSelector } from '@redux/selectors/modal';
-import { IUser, IUserGrouops } from '@redux/types/users';
+import { IUser, IUserGroups } from '@redux/types/users';
 
 interface IOnSubmitValue extends IUser{
     confirmedPassword?:string;
@@ -26,16 +26,15 @@ export const CreateUserPage: FC = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const currentUser = useAppSelector(currentUserDataSelector) as IUser;
-    const arrGroupNames = useAppSelector<IUserGrouops[] | undefined>(groupNamesSelector);
+    const arrGroupNames = useAppSelector<IUserGroups[] | undefined>(groupNamesSelector);
     const [selectGroupName, setSelectGroupName] = useState<string>();
-
-    const [selectGroupArr, setSelectGroupArr] = useState<IUserGrouops[]>(currentUser?.group);
+    const [selectGroupArr, setSelectGroupArr] = useState<IUserGroups[]>(currentUser?.group);
     const debouncedSelectGroupName = useDebounce(selectGroupName, 500);
-    console.log(selectGroupArr);
+
     const getSelectData = (newValue: string) => {
         setSelectGroupName(newValue);
     };
-    const onChangeMultiValue = (newValue: IUserGrouops[]) => {
+    const onChangeMultiValue = (newValue: IUserGroups[]) => {
         setSelectGroupArr(newValue);
     };
     const onSubmitForm = (value: IOnSubmitValue ) => {
