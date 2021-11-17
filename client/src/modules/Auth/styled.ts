@@ -24,7 +24,6 @@ export const ErrorMessage = styled.div`
 
 export const FieldCustom = styled(Field)`
 ${({ type }) => type !== 'checkbox' && `width: 100%; 
-  height: 65px;
   margin: 10px 0 !important;
 
   .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused
