@@ -1,5 +1,5 @@
-export const langList  = [
-    { item: 'ru-RU', label: 'Russian' },
-    { item: 'en-EN', label: 'English' },
-    { item: 'ua-UA', label: 'Ukrainian' }
+export const langList = [
+    { value: 'ru-RU', label: 'Russian' },
+    { value: 'en-EN', label: 'English' },
+    { value: 'ua-UA', label: 'Ukrainian' }
 ];
