@@ -33,10 +33,6 @@ export const CreateUserPage: FC = () => {
     const [selectGroupArr, setSelectGroupArr] = useState<IUserGroups[]>(currentUser?.group);
     const debouncedSelectGroupName = useDebounce(selectGroupName, 500);
 
-    const getSelectData = (newValue: string) => {
-        setSelectGroupName(newValue);
-    };
-
     const onSubmitForm = ({ confirmedPassword, ...value }: IOnSubmitValue) => {
         const requestBody: IUser = {
             ...value,
@@ -78,7 +74,7 @@ export const CreateUserPage: FC = () => {
                 onChangeMultiValue={setSelectGroupArr}
                 currentUser={currentUser}
                 arrGroupNames={arrGroupNames}
-                getSelectData={getSelectData}
+                getSelectData={setSelectGroupName}
             />
             <ModalConfirm handleAccept={handleAccept} message={message} modalStatus={isModalOpen}>
                 <ModalButton handleAccept={handleAccept} />
