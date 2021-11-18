@@ -17,10 +17,11 @@ import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { toPreviousPage } from '@utils/functions/historyBack';
 import { createModuleValidate } from '@utils/validators/Modules/CreateModule';
 
-import { ErrorMessage } from '@modules/Auth/styled';
-import { ButtonContainer, FormContainer } from './styled';
 import FormField from '@components/FormField/FormField';
 import FormCheckbox from '@components/FormField/FormCheckbox';
+
+import { ErrorMessage } from '@modules/Auth/styled';
+import { ButtonContainer, FormContainer } from './styled';
 import { useStyles } from '@utils/styles/field';
 
 export const CreateModule: FC = () => {

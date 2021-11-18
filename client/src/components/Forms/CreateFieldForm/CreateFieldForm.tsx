@@ -1,6 +1,7 @@
 import { Dispatch, FC } from 'react';
-import { Form } from 'react-final-form';
+import { Field, Form } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
+import { FormApi } from 'final-form';
 
 import { errorMessageSelector } from '@redux/selectors/error';
 
@@ -8,7 +9,7 @@ import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { initialfileds } from '@utils/constants/Modules/typeSelectData';
 import { toPreviousPage } from '@utils/functions/historyBack';
 
-import { ErrorMessage, FieldCustom } from '@modules/Auth/styled';
+import { ErrorMessage } from '@modules/Auth/styled';
 import { ButtonContainer, FormContainer, Label } from '@modules/Modules/styled';
 
 import { Buttons } from '@components/Button/Button';
@@ -18,7 +19,7 @@ import FormField from '@components/FormField/FormField';
 import { ICreateFieldProps, IFieldProps } from '@interfaces/types';
 
 import { Select } from '@modules/Settings/styled/styled';
-import { FormApi } from 'final-form';
+import { useStyles } from '@utils/styles/field';
 
 interface IProps {
     currentField?: IFieldProps;
@@ -29,8 +30,8 @@ interface IProps {
 export const CreateFieldForm: FC<IProps> = ({ currentField, onSubmit, setCurrentField }) => {
     const { t } = useTranslation();
     const errorMessage = useAppSelector(errorMessageSelector);
+    const classes = useStyles();
 
-    // did not find a solution how typed 'form', yet
     const handleChange =
         (form: FormApi<ICreateFieldProps, Partial<ICreateFieldProps>>) =>
         (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -59,17 +60,15 @@ export const CreateFieldForm: FC<IProps> = ({ currentField, onSubmit, setCurrent
                                 ))}
                             </Select>
                         </div>
-
                         <ErrorMessage>{errorMessage && t(errorMessage)}</ErrorMessage>
-                        <FieldCustom
+                        <Field
+                            className={classes.root}
                             label={t('Title')}
                             name={t('title')}
                             type={currentField?.key}
                             component={FormField}
                         />
-                        {currentField?.settings && (
-                            <FieldSettings settings={currentField?.settings} />
-                        )}
+                        <FieldSettings settings={currentField?.settings} />
                         <ButtonContainer>
                             <Buttons type="submit" title={t('Apply')} style="pinkButton" />
                             <Buttons

@@ -64,19 +64,19 @@ export interface IResetAction {
 
 //RESET_PASSWORD
 
-interface IResetPasswordPayload {
+export interface IResetFormValues {
     newPassword: string;
     newPasswordConfirm: string;
-    token: string;
 }
 
-export interface IResetPassword {
-    val: IResetPasswordPayload;
+export interface IResetPasswordPayload {
+    value: IResetFormValues;
+    token: string;
 }
 
 export interface IResetPasswordAction {
     type: AuthActionsTypes.RESET_PASSWORD;
-    payload: IResetPassword;
+    payload: IResetPasswordPayload;
 }
 
 export type AuthActions = ILoginAction | IRegisterAction | IResetAction | IResetPasswordAction;

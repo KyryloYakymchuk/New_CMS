@@ -4,7 +4,7 @@ import {
     ILogin,
     IRegister,
     IReset,
-    IResetPassword
+    IResetPasswordPayload
 } from '@redux/types/auth';
 
 export const loginAction = (payload: ILogin) => ({
@@ -22,11 +22,10 @@ export const resetAction = (payload: IReset) => ({
     payload
 });
 
-export const resetPasswordAction = (payload: IResetPassword) => ({
+export const resetPasswordAction = (payload: IResetPasswordPayload) => ({
     type: AuthActionsTypes.RESET_PASSWORD,
     payload
 });
-
 
 export const confirmRegisterdAction = (payload: IConfirmRegisterPayload) => ({
     type: AuthActionsTypes.REGISTER_CORFIRM,

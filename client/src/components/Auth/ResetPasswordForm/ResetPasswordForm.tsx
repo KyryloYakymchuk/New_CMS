@@ -4,17 +4,17 @@ import { useTranslation } from 'react-i18next';
 import { ButtonsData, ResetPasswordFields } from '@utils/constants/AuthField/ResetPasswordFields';
 import { Loader } from '@utils/constants/Loader';
 import { ResetPasswordValidator } from '@utils/validators/Auth/ResetPasswordValidator';
-import { IFormValues } from '@modules/Auth/ResetPassword';
 import FormField from '@components/FormField/FormField';
 import { AuthButtonContainer } from '@components/Auth/AuthButtons/AuthButtonsContainer';
 import { ButtonContainer, ErrorMessage, FormContainer } from '@modules/Auth/styled';
 import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { loaderStatusSelector } from '@redux/selectors/loader';
 import { errorMessageSelector } from '@redux/selectors/error';
+import { IResetFormValues } from '@redux/types/auth';
 import { useStyles } from '@utils/styles/field';
 
 interface LoginProps {
-    onSubmit: (value: IFormValues) => void;
+    onSubmit: (value: IResetFormValues) => void;
 }
 
 export const ResetPasswordForm: FC<LoginProps> = ({ onSubmit }) => {

@@ -50,6 +50,7 @@ export type OnClickFuncType = (
 export interface IFieldSelectSettings {
     value?: string;
     id?: number;
+    optionLabel?: string;
 }
 
 export interface IFieldSettings {
@@ -65,6 +66,9 @@ export interface IFieldSettings {
     maxItems?: string;
     coordinates_x?: string;
     coordinates_y?: string;
+    module?: string;
+    required?: string;
+    fileTypes?: string;
     select?: IFieldSelectSettings[];
 }
 

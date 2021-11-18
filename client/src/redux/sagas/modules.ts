@@ -72,10 +72,10 @@ function* editModulesReq(config: ICreateModuleAction) {
             yield put(errorAction(error.response?.data as IError));
         }
     }
-} function* deleteFieldModuleReq(config: IDeleteFieldModuleAction) {
-    console.log(config);
+}
+function* deleteFieldModuleReq(config: IDeleteFieldModuleAction) {
     try {
-     const { data } = yield call(deleteFieldModuleReqApi, config);
+        const { data } = yield call(deleteFieldModuleReqApi, config);
         yield put(setFieldsResponseAction(data));
     } catch (error) {
         if (request.isAxiosError(error) && error.response) {
@@ -83,23 +83,18 @@ function* editModulesReq(config: ICreateModuleAction) {
         }
     }
 }
-function* createFieldModuleReq(config: ICreateFieldModuleAction) {  
-
+function* createFieldModuleReq(config: ICreateFieldModuleAction) {
     try {
-     const { data } = yield call(createFieldModuleReqApi, config);
+        const { data } = yield call(createFieldModuleReqApi, config);
         yield put(setFieldsResponseAction(data));
         yield put(setModalStatusAction(true));
         yield put(setModalMessageAction('Field created successfuly!'));
-    } catch (error:any) {
+    } catch (error: any) {
         if (request.isAxiosError(error) && error.response) {
-          yield put(errorAction(error.response?.data as IError));
+            yield put(errorAction(error.response?.data as IError));
         }
     }
-    
 }
-
-
-
 
 export function* modulesWatcher() {
     yield takeEvery(ModulesActionTypes.GET_MODULES, getModulesReq);
@@ -108,6 +103,4 @@ export function* modulesWatcher() {
     yield takeEvery(ModulesActionTypes.EDIT_MODULE, editModulesReq);
     yield takeEvery(ModulesActionTypes.DELETE_FIELD_MODULE, deleteFieldModuleReq);
     yield takeEvery(ModulesActionTypes.CREATE_FIELD_MODULE, createFieldModuleReq);
-
-    
 }

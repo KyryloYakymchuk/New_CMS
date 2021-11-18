@@ -1,9 +1,14 @@
 import styled from 'styled-components';
+interface IProps {
+    error?: string;
+    touched?: boolean;
+}
 
-export const Select = styled.select`
+export const Select = styled.select<IProps>`
     background-color: transparent;
     border: none;
-    border-bottom: 1px solid black;
+    border-bottom: ${({ error, touched }) =>
+        touched && error ? '1px solid red' : '1px solid black'};
     font-size: 18px;
     cursor: pointer;
     width: 500px;
@@ -14,13 +19,11 @@ export const Select = styled.select`
 
     option {
         cursor: pointer;
-        background:aliceblue;
-        &:checked{
-            background:lightgray;
-
+        background: aliceblue;
+        &:checked {
+            background: lightgray;
         }
     }
 `;
 
-export const SelectContainer = styled.div`
-`;
+export const SelectContainer = styled.div``;

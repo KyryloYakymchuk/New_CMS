@@ -1,6 +1,8 @@
 import i18n from '@utils/helpers/i18n';
 import {
     mapField,
+    modulesField,
+    textAreaField,
     textboxField,
     textPromptField,
     uploadField
@@ -39,8 +41,8 @@ export const initialfileds = [
                 key: 'required',
                 defaultValue: 'false',
                 select: [
-                    { id: 0, value: 'false' },
-                    { id: 1, value: 'true' }
+                    { id: 0, value: 'false', optionLabel: 'false' },
+                    { id: 1, value: 'true', optionLabel: 'true' }
                 ]
             }
         ]
@@ -51,7 +53,7 @@ export const initialfileds = [
         type: 'textarea',
         key: 'textarea',
         fieldType: 'string',
-        validate: textPromptField,
+        validate: textAreaField,
         settings: [
             { id: 0, name: i18n.t('Name'), key: 'name' },
             {
@@ -60,8 +62,8 @@ export const initialfileds = [
                 key: 'required',
                 defaultValue: 'false',
                 select: [
-                    { id: 0, value: 'false' },
-                    { id: 1, value: 'true' }
+                    { id: 0, value: 'false', optionLabel: 'false' },
+                    { id: 1, value: 'true', optionLabel: 'true' }
                 ]
             }
         ]
@@ -82,7 +84,7 @@ export const initialfileds = [
                 defaultValue: '',
                 input: ''
             },
-            { id: 2, name: i18n.t('Max Size'), key: 'maxSize', defaultValue: '', input: '' }, 
+            { id: 2, name: i18n.t('Max Size'), key: 'maxSize', defaultValue: '', input: '' },
             {
                 id: 3,
                 name: i18n.t('Filetypes'),
@@ -90,10 +92,15 @@ export const initialfileds = [
                 defaultValue: '',
                 input: 'e.g. jpg, png, gif, jpeg',
                 select: [
-                    { id: 0, value: 'jpg' },
-                    { id: 1, value: 'png' },
-                    { id: 2, value: 'gif' },
-                    { id: 3, value: 'jpeg' }
+                    { id: 0, value: 'jpg', optionLabel: 'jpg' },
+                    { id: 1, value: 'png', optionLabel: 'png' },
+                    { id: 2, value: 'jpeg', optionLabel: 'jpeg' },
+                    { id: 3, value: 'txt', optionLabel: 'txt' },
+                    { id: 4, value: 'xls', optionLabel: 'xls' },
+                    { id: 5, value: 'xlsx', optionLabel: 'xlsx' },
+                    { id: 6, value: 'doc', optionLabel: 'doc' },
+                    { id: 7, value: 'docs', optionLabel: 'docs' },
+                    { id: 8, value: 'pdf', optionLabel: 'pdf' }
                 ]
             }
         ]
@@ -104,7 +111,7 @@ export const initialfileds = [
         type: 'module',
         key: 'moduleDataFromItems',
         fieldType: 'string',
-        validate: textPromptField,
+        validate: modulesField,
         settings: [
             { id: 0, name: i18n.t('Name'), key: 'name' },
 
@@ -123,7 +130,7 @@ export const initialfileds = [
         type: 'dropdown',
         key: 'dropdown',
         fieldType: 'string',
-        validate: textPromptField,
+        validate: textAreaField,
         settings: [
             { id: 0, name: i18n.t('Name'), key: 'name' },
 
@@ -147,8 +154,8 @@ export const initialfileds = [
                 key: 'required',
                 defaultValue: 'false',
                 select: [
-                    { id: 0, value: 'false' },
-                    { id: 1, value: 'true' }
+                    { id: 0, value: 'false', optionLabel: 'false' },
+                    { id: 1, value: 'true', optionLabel: 'true' }
                 ]
             }
         ]

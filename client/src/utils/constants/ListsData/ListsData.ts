@@ -9,6 +9,6 @@ export const modulesListColumns = [{ title: i18n.t('Name'), name: 'name' }];
 
 export const moduleFieldsListColumns = [
     { title: i18n.t('Title'), name: 'title' },
-    { title: i18n.t('Type'), name: 'type' },
+    { title: i18n.t('Type'), name: 'name' },
     { title: i18n.t('Module'), name: 'module' }
 ];

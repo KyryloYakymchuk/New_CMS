@@ -14,11 +14,7 @@ import { useHistory } from 'react-router';
 import { ModalButton } from '@components/Modal/ModalButton';
 import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { modalMessageSelector, modalStatusSelector } from '@redux/selectors/modal';
-
-export interface IFormValues {
-    newPassword: string;
-    newPasswordConfirm: string;
-}
+import { IResetFormValues } from '@redux/types/auth';
 
 export const ResetPassword: FC = () => {
     const { title, description } = MainText;
@@ -30,12 +26,12 @@ export const ResetPassword: FC = () => {
     const { t } = useTranslation();
     const isModalOpen = useAppSelector(modalStatusSelector);
     const message = useAppSelector(modalMessageSelector);
-    const onSubmit = (value: IFormValues) => {
+    const onSubmit = (value: IResetFormValues) => {
         const val = {
-            ...value,
+            value,
             token
         };
-        dispatch(resetPasswordAction({ val }));
+        dispatch(resetPasswordAction(val));
         dispatch(loaderAction(true));
     };
 

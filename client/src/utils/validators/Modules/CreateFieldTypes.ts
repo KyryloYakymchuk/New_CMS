@@ -48,6 +48,10 @@ export const textboxField = (values: IFieldSettings) => {
     if (values.defaultText && values.defaultText?.length > 30) {
         errors.defaultText = i18n.t('Must have a maximum of 30 characters');
     }
+    if (!values.required) {
+        errors.required = i18n.t('Required');
+    }
+
     return errors;
 };
 
@@ -73,7 +77,33 @@ export const uploadField = (values: IFieldSettings) => {
     if (values.maxSize && !onlyNum.test(values.maxSize)) {
         errors.maxSize = i18n.t('Only number');
     } else if (!values.maxSize) {
-        errors.maxSize = i18n.t('name should not be empty');
+        errors.maxSize = i18n.t('Required');
+    }
+    if (!values.fileTypes) {
+        errors.fileTypes = i18n.t('Required');
+    }
+
+    return errors;
+};
+
+export const textAreaField = (values: IFieldSettings) => {
+    const errors: IFieldSettings = {};
+    if (values.title && values.title.length > 30) {
+        errors.title = i18n.t('Must have a maximum of 30 characters');
+    } else if (!values.title) {
+        errors.title = i18n.t('name should not be empty');
+    }
+    if (!values.name) {
+        errors.name = i18n.t('name should not be empty');
+    } else if (values.name && passwordSpacesRE.test(values.name)) {
+        errors.name = i18n.t('Password must not contain spaces');
+    } else if (values.name && !onlyLatin.test(values.name)) {
+        errors.name = i18n.t('Only latin');
+    } else if (values.name && values.name.length > 30) {
+        errors.name = i18n.t('Must have a maximum of 30 characters');
+    }
+    if (!values.required) {
+        errors.required = i18n.t('Required');
     }
     return errors;
 };
@@ -98,12 +128,35 @@ export const mapField = (values: IFieldSettings) => {
     if (values.coordinates_x && !onlyNum.test(values.coordinates_x)) {
         errors.coordinates_x = i18n.t('Only number');
     } else if (!values.coordinates_x) {
-        errors.coordinates_x = i18n.t('name should not be empty');
+        errors.coordinates_x = i18n.t('Required');
     }
     if (values.coordinates_y && !onlyNum.test(values.coordinates_y)) {
         errors.coordinates_y = i18n.t('Only number');
     } else if (!values.coordinates_y) {
-        errors.coordinates_y = i18n.t('name should not be empty');
+        errors.coordinates_y = i18n.t('Required');
+    }
+
+    return errors;
+};
+
+export const modulesField = (values: IFieldSettings) => {
+    const errors: IFieldSettings = {};
+    if (values.title && values.title.length > 30) {
+        errors.title = i18n.t('Must have a maximum of 30 characters');
+    } else if (!values.title) {
+        errors.title = i18n.t('name should not be empty');
+    }
+    if (!values.name) {
+        errors.name = i18n.t('name should not be empty');
+    } else if (values.name && passwordSpacesRE.test(values.name)) {
+        errors.name = i18n.t('Password must not contain spaces');
+    } else if (values.name && !onlyLatin.test(values.name)) {
+        errors.name = i18n.t('Only latin');
+    } else if (values.name && values.name.length > 30) {
+        errors.name = i18n.t('Must have a maximum of 30 characters');
+    }
+    if (!values.module) {
+        errors.module = i18n.t('Required');
     }
 
     return errors;

@@ -1,18 +1,20 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-
+interface IProps {
+    line_height?: string;
+}
 export const FormContainer = styled.div`
     form {
         width: 80%;
         margin: auto;
     }
 `;
-export const ErrorMessage = styled.div`
+export const ErrorMessage = styled.div<IProps>`
     color: #d32f2f;
     font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
     font-weight: 400;
     font-size: 0.75rem;
-    line-height: 1.66;
+    line-height: ${({ line_height }) => line_height};
     letter-spacing: 0.03333em;
     text-align: left;
     margin-top: 3px;

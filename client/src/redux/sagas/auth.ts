@@ -67,9 +67,11 @@ function* resetReq(data: IResetAction) {
 }
 
 function* resetPasswordReq(data: IResetPasswordAction) {
-    const { val } = data.payload;
     try {
-        yield call(api.post, '/auth/password/confirm', { ...val });
+        yield call(api.post, '/auth/password/confirm', {
+            token: data.payload.token,
+            ...data.payload.value
+        });
         yield put(setModalStatusAction(true));
         yield put(setModalMessageAction('Password reset successfully !'));
         yield put(errorAction());
