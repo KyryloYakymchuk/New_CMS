@@ -1,21 +1,20 @@
-import { FC } from 'react';
 import { IListColumns } from '@interfaces/types';
 import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { loaderStatusSelector } from '@redux/selectors/loader';
 import { SkeletonLoader } from '@components/SkeletonLoader/SkeletonLoader';
-import { IArrButton } from '../ListDD';
-import { Button,
-         ButtonBlock,
-         ListElementContainer } from '@components/List/ListElement/styled';
 
-interface IProps {
+import { Button, ButtonBlock, ListElementContainer } from '@components/List/ListElement/styled';
+import { IArrButton } from '../ListDD';
+
+
+interface IProps<T> {
     listColumns: IListColumns[];
     //cant be fixed because type Idata not accepted by function onclickFunc
     data: any;
-    arrButton?: IArrButton[];
+    arrButton?: IArrButton<T>[];
 }
 
-export const ListDDElement: FC<IProps> = ({ listColumns, data, arrButton }) => {
+export function ListDDElement<T>({ listColumns, data, arrButton }: IProps<T>) {
     const loaderStatus = useAppSelector(loaderStatusSelector);
     return (
         <ListElementContainer>
@@ -25,10 +24,7 @@ export const ListDDElement: FC<IProps> = ({ listColumns, data, arrButton }) => {
                           <SkeletonLoader width="60%" height="25px" />
                       </div>
                   ))
-                : listColumns?.map(({ name }) => 
-                <div key={name}>{data[name]}</div>                              
-
-                )}
+                : listColumns?.map(({ name }) => <div key={name}>{data[name]}</div>)}
             <ButtonBlock>
                 {loaderStatus ? (
                     <SkeletonLoader width="50%" height="25px" />
@@ -42,4 +38,4 @@ export const ListDDElement: FC<IProps> = ({ listColumns, data, arrButton }) => {
             </ButtonBlock>
         </ListElementContainer>
     );
-};
+}

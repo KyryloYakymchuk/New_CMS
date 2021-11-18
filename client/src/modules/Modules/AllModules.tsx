@@ -2,39 +2,33 @@ import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router';
-
 import { loaderAction } from '@redux/actions/loader';
 import {
     deleteModuleAction,
     getModulesAction,
     setEditDataModuleAction
 } from '@redux/actions/modules';
-import { IGetModulePayload } from '@redux/types/modules';
+import { IGetModulePayload, ISetModulePayload } from '@redux/types/modules';
 import { modulesListSelector } from '@redux/selectors/modules';
 import { setModalMessageAction } from '@redux/actions/modal';
-
 import { Buttons } from '@components/Button/Button';
 import { List } from '@components/List/List';
 import { Pagination } from '@components/Pagination/Pagination';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
 import { ModalButton } from '@components/Modal/ModalButton';
-//!For future filter
-// import { DrawerFilterMenu } from '@components/DrawerFilterMenu/DrawerFilterMenu';
-// import { SingleFilterForm } from '@components/Forms/SingleFilterForm/SingleFilterForm';
-
 import { ISortHandlerValue, ISortParams } from '@interfaces/types';
-
 import { Icons } from '@utils/constants/icon';
 import { modulesListColumns } from '@utils/constants/ListsData/ListsData';
 import { handleListSort } from '@utils/functions/handleListSort';
 import { useAppSelector } from '@utils/hooks/useAppSelector';
-
 import { PageHeader, UserPageContainer } from '@modules/Users/styled';
 import { offsetGenerator } from '@utils/functions/offsetGenerator';
 import { modalMessageSelector } from '@redux/selectors/modal';
 
 const LIMIT = 10;
-
+interface IClickValue extends ISetModulePayload {
+    categories: boolean;
+}
 export const AllModules: FC = () => {
     let { search, pathname } = useLocation();
     const { t } = useTranslation();
@@ -60,42 +54,45 @@ export const AllModules: FC = () => {
         setSortingTypeIdx(temp.currSortingTypeIdx);
         setSortParams(temp.currentSortParams);
     };
-
     const createModuleClick = () => {
         history.push('/module/create');
     };
-    const moduleFieldClick = (value: React.ChangeEvent<HTMLDivElement>) => () => {
-        const temp: any = value;
-        history.push(`/module/fields/${temp.name}`);
+    function moduleFieldClick<T extends IClickValue>(value: T) {
+        return () => {
+            history.push(`/module/fields/${value.name}`);
+            dispatch(
+                setEditDataModuleAction({
+                    name: value.name,
+                    moduleID: value.moduleID,
+                    fields: value.fields,
+                    categories: value.categories
+                })
+            );
+        };
+    }
 
-        dispatch(
-            setEditDataModuleAction({
-                name: temp.name,
-                moduleID: temp.moduleID,
-                fields: temp.fields,
-                categories: temp.categories
-            })
-        );
-    };
-    const editModuleClick = (value: React.ChangeEvent<HTMLDivElement>) => () => {
-        const temp: any = value;
-        history.push(`/module/edit/${temp.name}`);
-        dispatch(
-            setEditDataModuleAction({
-                name: temp.name,
-                moduleID: temp.moduleID,
-                fields: temp.fields,
-                categories: temp.categories
-            })
-        );
-    };
-    const deleteModuleClick = (value: React.ChangeEvent<HTMLDivElement>) => () => {
-        const temp: any = value;
-        setModalStatus(true);
-        setModuleId(temp.moduleID);
-        dispatch(setModalMessageAction(`${t('Delete')} ${temp.name} ?`));
-        setDeleteRequestStatus(true);
-    };
+    function editModuleClick<T extends IClickValue>(value: T) {
+        return () => {
+            history.push(`/module/edit/${value.name}`);
+            dispatch(
+                setEditDataModuleAction({
+                    name: value.name,
+                    moduleID: value.moduleID,
+                    fields: value.fields,
+                    categories: value.categories
+                })
+            );
+        };
+    }
+    function deleteModuleClick<T extends IClickValue>(value: T) {
+        return () => {
+            setModalStatus(true);
+            setModuleId(value.moduleID);
+            dispatch(setModalMessageAction(`${t('Delete')} ${value.name} ?`));
+            setDeleteRequestStatus(true);
+        };
+    }
+
     const handleAccept = () => {
         const queryParams: IGetModulePayload = {
             ...sortParams,

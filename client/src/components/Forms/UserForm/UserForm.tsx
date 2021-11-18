@@ -19,7 +19,7 @@ import { userEditFormValidator } from '@utils/validators/users/UserEditFormValid
 import { userCreateFormValidator } from '@utils/validators/users/UserCreateFormValidator';
 
 interface IProps {
-    currentUser?: any;
+    currentUser?: IUser;
     arrGroupNames?: IOption[];
     getSelectData?: GetSelectDataType;
     onChangeMultiValue: OnChangeMultiValueType;

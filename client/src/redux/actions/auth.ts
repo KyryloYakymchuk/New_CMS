@@ -6,29 +6,12 @@ import {
     IReset,
     IResetPassword
 } from '@redux/types/auth';
+import { actionGenerator } from '@utils/functions/actionGenerator';
 
-export const loginAction = (payload: ILogin) => ({
-    type: AuthActionsTypes.LOGIN,
-    payload
-});
-
-export const registerAction = (payload: IRegister) => ({
-    type: AuthActionsTypes.REGISTER,
-    payload
-});
-
-export const resetAction = (payload: IReset) => ({
-    type: AuthActionsTypes.RESET,
-    payload
-});
-
-export const resetPasswordAction = (payload: IResetPassword) => ({
-    type: AuthActionsTypes.RESET_PASSWORD,
-    payload
-});
-
-
-export const confirmRegisterdAction = (payload: IConfirmRegisterPayload) => ({
-    type: AuthActionsTypes.REGISTER_CORFIRM,
-    payload
-});
+export const loginAction = actionGenerator<ILogin>(AuthActionsTypes.LOGIN);
+export const registerAction = actionGenerator<IRegister>(AuthActionsTypes.REGISTER);
+export const resetAction = actionGenerator<IReset>(AuthActionsTypes.RESET);
+export const resetPasswordAction = actionGenerator<IResetPassword>(AuthActionsTypes.RESET_PASSWORD);
+export const confirmRegisterdAction = actionGenerator<IConfirmRegisterPayload>(
+    AuthActionsTypes.REGISTER_CORFIRM
+);

@@ -1,5 +1,4 @@
 import { UserForm } from '@components/Forms/UserForm/UserForm';
-import { IOption, MultiValueType } from '@interfaces/types';
 import { getGroupNames } from '@redux/actions/groups';
 import { addNewUser, editUser, editUserImg } from '@redux/actions/users';
 import useDebounce from '@utils/hooks/useDebounce';
@@ -15,32 +14,30 @@ import { ModalButton } from '@components/Modal/ModalButton';
 import { setModalStatusAction } from '@redux/actions/modal';
 import { useHistory } from 'react-router';
 import { modalMessageSelector, modalStatusSelector } from '@redux/selectors/modal';
+import { IUser, IUserGroups } from '@redux/types/users';
+
+interface IOnSubmitValue extends IUser {
+    confirmedPassword?: string;
+}
 
 const DEFAULT_LIMIT = 10;
 
 export const CreateUserPage: FC = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const currentUser: any = useAppSelector(currentUserDataSelector);
-    //problem in typed IUser cant use currentUser?.group
-    const arrGroupNames = useAppSelector<IOption[] | undefined>(groupNamesSelector);
+    const currentUser = useAppSelector(currentUserDataSelector) as IUser;
+    const isModalOpen = useAppSelector(modalStatusSelector);
+    const message = useAppSelector(modalMessageSelector);
+    const arrGroupNames = useAppSelector<IUserGroups[] | undefined>(groupNamesSelector);
     const [selectGroupName, setSelectGroupName] = useState<string>();
-    const [selectGroupArr, setSelectGroupArr] = useState<MultiValueType>(currentUser?.group);
+    const [selectGroupArr, setSelectGroupArr] = useState<IUserGroups[]>(currentUser?.group);
     const debouncedSelectGroupName = useDebounce(selectGroupName, 500);
 
-    const getSelectData = (newValue: string) => {
-        setSelectGroupName(newValue);
-    };
-    const onChangeMultiValue = (newValue: MultiValueType) => {
-        setSelectGroupArr(newValue);
-    };
-    const onSubmitForm = (value: any) => {
-        //different data cant typed
-        const requestBody = {
+    const onSubmitForm = ({ confirmedPassword, ...value }: IOnSubmitValue) => {
+        const requestBody: IUser = {
             ...value,
             group: selectGroupArr
         };
-        delete requestBody.confirmedPassword;
         delete requestBody.profileImg;
         if (currentUser) {
             dispatch(editUser(requestBody));
@@ -68,17 +65,16 @@ export const CreateUserPage: FC = () => {
         }
         dispatch(getGroupNames(queryParams));
     }, [dispatch, debouncedSelectGroupName]);
-    const isModalOpen = useAppSelector(modalStatusSelector);
-    const message = useAppSelector(modalMessageSelector);
+
     return (
         <div>
             <UserForm
                 onSubmitForm={onSubmitForm}
                 selectGroupArr={selectGroupArr}
-                onChangeMultiValue={onChangeMultiValue}
+                onChangeMultiValue={setSelectGroupArr}
                 currentUser={currentUser}
                 arrGroupNames={arrGroupNames}
-                getSelectData={getSelectData}
+                getSelectData={setSelectGroupName}
             />
             <ModalConfirm handleAccept={handleAccept} message={message} modalStatus={isModalOpen}>
                 <ModalButton handleAccept={handleAccept} />

@@ -3,21 +3,10 @@ import {
     IGetGroupsData,
     IGroupsInitialState
 } from '@redux/types/groups';
+import { actionGenerator } from '@utils/functions/actionGenerator';
 
-export const setGroups = (payload: IGroupsInitialState) => ({
-    type: GroupsActionTypes.SET_GROUPS,
-    payload
-});
-export const getGroups = (payload: IGetGroupsData) => ({
-    type: GroupsActionTypes.GET_GROUPS,
-    payload
-});
+export const setGroups = actionGenerator<IGroupsInitialState>(GroupsActionTypes.SET_GROUPS);
+export const getGroups = actionGenerator<IGetGroupsData>(GroupsActionTypes.GET_GROUPS);
+export const setGroupNames = actionGenerator<string[]>(GroupsActionTypes.SET_GROUP_NAMES);
+export const getGroupNames = actionGenerator<IGetGroupsData>(GroupsActionTypes.GET_GROUP_NAMES);
 
-export const setGroupNames = (payload: string[]) => ({
-    type: GroupsActionTypes.SET_GROUP_NAMES,
-    payload
-});
-export const getGroupNames = (payload: IGetGroupsData) => ({
-    type: GroupsActionTypes.GET_GROUP_NAMES,
-    payload
-});
