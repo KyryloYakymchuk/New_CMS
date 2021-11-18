@@ -1,5 +1,3 @@
-import { FC } from 'react';
-
 import { loaderStatusSelector } from '@redux/selectors/loader';
 
 import { IListColumns } from '@interfaces/types';
@@ -7,18 +5,18 @@ import { IListColumns } from '@interfaces/types';
 import { useAppSelector } from '@utils/hooks/useAppSelector';
 
 import { SkeletonLoader } from '@components/SkeletonLoader/SkeletonLoader';
-import { Button, ButtonBlock, ListElementContainer } from '@components/List/ListElement/styled';
 
+import { Button, ButtonBlock, ListElementContainer } from '@components/List/ListElement/styled';
 import { IArrButton } from '../ListDD';
 
-interface IProps {
+interface IProps<T> {
     listColumns: IListColumns[];
     //cant be fixed because type Idata not accepted by function onclickFunc
     data: any;
-    arrButton?: IArrButton[];
+    arrButton?: IArrButton<T>[];
 }
 
-export const ListDDElement: FC<IProps> = ({ listColumns, data, arrButton }) => {
+export function ListDDElement<T>({ listColumns, data, arrButton }: IProps<T>) {
     const loaderStatus = useAppSelector(loaderStatusSelector);
     return (
         <ListElementContainer>
@@ -42,4 +40,4 @@ export const ListDDElement: FC<IProps> = ({ listColumns, data, arrButton }) => {
             </ButtonBlock>
         </ListElementContainer>
     );
-};
+}

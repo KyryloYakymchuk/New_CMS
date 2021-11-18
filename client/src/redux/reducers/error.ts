@@ -9,7 +9,7 @@ const error = (state = initialState, action: IErrorAction): IError => {
         case ErrorActionsTypes.ERROR_MASSEGE:
             return {
                 ...state,
-                message: action.payload
+                message: action.payload?.message
             };
 
         default:

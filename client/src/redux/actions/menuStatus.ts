@@ -1,11 +1,5 @@
 import { TypeStatusAction } from '@redux/types/menuStatus';
+import { actionGenerator } from '@utils/functions/actionGenerator';
 
-export const statusAction = (payload: boolean) => ({
-    type: TypeStatusAction.STATUS,
-    payload
-});
-
-export const itemIdAction = (payload: number) => ({
-    type: TypeStatusAction.ITEMID,
-    payload
-});
+export const statusAction = actionGenerator<boolean>(TypeStatusAction.STATUS);
+export const itemIdAction = actionGenerator<number>(TypeStatusAction.ITEMID);

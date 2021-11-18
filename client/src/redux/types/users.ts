@@ -9,7 +9,7 @@ export enum UserActionTypes {
     EDIT_USER_IMG = 'EDIT_USER_IMG'
 }
 
-interface IUserGrouops {
+export interface IUserGroups {
     value: string;
     label: string;
 }
@@ -19,7 +19,7 @@ export interface IUser {
     confirmed?: boolean;
     email: string;
     lastname?: string;
-    group?: IUserGrouops;
+    group: IUserGroups[];
     name: string;
     phone?: string;
     profileImg?: null | string;
@@ -30,7 +30,7 @@ export interface IUser {
 
 export interface IUserListData {
     count: number;
-    users?: IUser[];
+    users: IUser[];
 }
 
 export interface IGetUsersData {
@@ -75,7 +75,10 @@ export interface IEditUserAction {
     type: UserActionTypes.EDIT_USER;
     payload: IUser;
 }
-
+export interface IEditImgAction {
+    type: UserActionTypes.EDIT_USER_IMG;
+    payload: FormData;
+}
 export interface IUsers {
     userListData?: IUserListData;
     currentUserData?: IUser;

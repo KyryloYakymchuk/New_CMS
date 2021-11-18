@@ -16,25 +16,24 @@ interface IProps {
 }
 
 export const ImageUploader: FC<IProps> = ({ name, ...props }) => {
-    const uploaderInput = useRef<any>(null);
-    //type React.MutableRefObject<HTMLInputElement> dont have .value parameter
-    const [activeImage, setActiveImage] = useState<any>();
-    // problem with type, srs ask type string but setActiveImage(reader.result) its type ArrayBuffer
-    //string | ArrayBuffer | null, not working
-
+    const uploaderInput = useRef<HTMLInputElement>(null);
+    const [activeImage, setActiveImage] = useState<string | null>();
+    
     const readerFunc = (e: React.ChangeEvent<HTMLInputElement>) => {
         let reader = new FileReader();
         reader.onload = function () {
-            setActiveImage(reader.result);
+            const image  = reader.result as string | null;
+            setActiveImage(image);
         };
         if (e?.target?.files?.[0]) {
             reader?.readAsDataURL(e.target?.files?.[0]);
         }
     };
-
     const closeFunction = () => {
         setActiveImage(null);
-        uploaderInput.current.value = null;
+        if (uploaderInput.current) {
+            uploaderInput.current.value = '';
+        } 
     };
     return (
         <Field<FileList> name={name}>

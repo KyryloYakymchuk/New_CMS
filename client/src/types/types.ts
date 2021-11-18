@@ -1,3 +1,4 @@
+import { IUserGroups } from '@redux/types/users';
 import { MouseEventHandler } from 'react';
 import { InputActionMeta, MultiValue } from 'react-select';
 import { History } from 'history';
@@ -95,7 +96,9 @@ export interface IFieldProps {
 }
 
 export type GetSelectDataType = (newValue: string, actionMeta?: InputActionMeta) => void;
-export type MultiValueType = MultiValue<IOption>;
+export type MultiValueType = IUserGroups[];
+export type MultiValueSelectType = MultiValue<IUserGroups>;
 export type OnChangeMultiValueType = (newValue: MultiValueType) => void;
+export type OnChangeMultiSelectType = (newValue: MultiValueSelectType) => void;
 export type EventChangeType = React.ChangeEvent<HTMLInputElement>;
 export type OnChangeFieldValueType = (e: EventChangeType) => void;

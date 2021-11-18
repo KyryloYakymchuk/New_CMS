@@ -20,7 +20,7 @@ import { userCreateFormValidator } from '@utils/validators/users/UserCreateFormV
 import { toPreviousPage } from '@utils/functions/historyBack';
 
 interface IProps {
-    currentUser?: any;
+    currentUser?: IUser;
     arrGroupNames?: IOption[];
     getSelectData?: GetSelectDataType;
     onChangeMultiValue: OnChangeMultiValueType;

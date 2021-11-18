@@ -1,42 +1,18 @@
 import {
-    IUserListData,
     UserActionTypes,
-    IGetUsersData,
     IDeleteUserData,
-    IUser
+    IUser,
+    IGetUsersData,
+    IUserListData
 } from '@redux/types/users';
+import { actionGenerator } from '@utils/functions/actionGenerator';
 
-export const getUsers = (payload: IGetUsersData) => ({
-    type: UserActionTypes.GET_USERS,
-    payload
-});
+export const getUsers = actionGenerator<IGetUsersData>(UserActionTypes.GET_USERS);
+export const setUsers = actionGenerator<IUserListData[]>(UserActionTypes.SET_USERS);
+export const deleteUsers = actionGenerator<IDeleteUserData>(UserActionTypes.DELETE_USER);
+export const setCurrentUser = actionGenerator<IUser>(UserActionTypes.SET_CURRENT_USERS);
+export const clearCurrentUser = actionGenerator<undefined>(UserActionTypes.CLEAR_CURRENT_USERS);
+export const addNewUser = actionGenerator<IUser>(UserActionTypes.ADD_NEW_USER);
+export const editUser = actionGenerator<IUser>(UserActionTypes.EDIT_USER);
+export const editUserImg = actionGenerator<FormData>(UserActionTypes.EDIT_USER_IMG);
 
-export const setUsers = (payload: IUserListData[]) => ({
-    type: UserActionTypes.SET_USERS,
-    payload
-});
-export const deleteUsers = (payload: IDeleteUserData) => ({
-    type: UserActionTypes.DELETE_USER,
-    payload
-});
-
-export const setCurrentUser = (payload: React.ChangeEvent<HTMLDivElement>) => ({
-    type: UserActionTypes.SET_CURRENT_USERS,
-    payload
-});
-export const clearCurrentUser = () => ({
-    type: UserActionTypes.CLEAR_CURRENT_USERS
-});
-
-export const addNewUser = (payload: IUser) => ({
-    type: UserActionTypes.ADD_NEW_USER,
-    payload
-});
-export const editUser = (payload: IUser) => ({
-    type: UserActionTypes.EDIT_USER,
-    payload
-});
-export const editUserImg = (payload: any) => ({
-    type: UserActionTypes.EDIT_USER_IMG,
-    payload
-});

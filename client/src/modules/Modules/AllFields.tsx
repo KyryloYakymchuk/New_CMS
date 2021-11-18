@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -17,6 +17,7 @@ import { moduleFieldsListColumns } from '@utils/constants/ListsData/ListsData';
 import { constantFields } from '@utils/constants/Modules/constantsFields';
 
 import { PageHeader, UserPageContainer } from '@modules/Users/styled';
+import { IModuleField } from '@redux/types/modules';
 
 export const AllFields: FC = () => {
     const { t } = useTranslation();
@@ -32,22 +33,25 @@ export const AllFields: FC = () => {
     const createModuleClick = () => {
         history.push(`/module/${allFieldsModule?.name}/fields/create`);
     };
-    const editFieldClick = (value: React.ChangeEvent<HTMLDivElement>) => () => {
-        const temp: any = value;
-        //!for eslint
-        console.log(temp);
-    };
-    const deleteFieldClick = (value: React.ChangeEvent<HTMLDivElement>) => () => {
-        const temp: any = value;
-        setFieldId(temp.id);
-        if (constantFields.includes(temp.id)) {
-            setModalMessage('Sorry, but these are сonstant field');
-            setModalStatus(true);
-        } else {
-            setModalMessage(`${t('Delete')} ${temp.title} ?`);
-            setModalStatus(true);
-        }
-    };
+
+    function editFieldClick<T extends IModuleField>(value: T) {
+        return () => {
+            console.log(value);
+            //!for eslint
+        };
+    }
+    function deleteFieldClick<T extends IModuleField>(value: T) {
+        return () => {
+            setFieldId(value.id);
+            if (constantFields.includes(value.id)) {
+                setModalMessage('Sorry, but these are сonstant field');
+                setModalStatus(true);
+            } else {
+                setModalMessage(`${t('Delete')} ${value.title} ?`);
+                setModalStatus(true);
+            }
+        };
+    }
     const handleAccept = () => {
         dispatch(deleteFieldModuleAction({ fieldId }));
         setModalStatus(false);
@@ -56,18 +60,17 @@ export const AllFields: FC = () => {
         setModalStatus(false);
     };
 
-    const onDragClick = (value: React.ChangeEvent<HTMLDivElement>) => () => {
-        console.log(value);
-    };
+    function onDragClick<T extends IModuleField>(value: T) {
+        return () => {
+            console.log(value);
+        };
+    }
 
-    const actionsButtons = useMemo(
-        () => [
-            { item: <Icons.DragHandleIcon />, onClickFunc: onDragClick },
-            { item: <Icons.EditIcon />, onClickFunc: editFieldClick },
-            { item: <Icons.DeleteIcon />, onClickFunc: deleteFieldClick }
-        ],
-        []
-    );
+    const actionsButtons = [
+        { item: <Icons.DragHandleIcon />, onClickFunc: onDragClick },
+        { item: <Icons.EditIcon />, onClickFunc: editFieldClick },
+        { item: <Icons.DeleteIcon />, onClickFunc: deleteFieldClick }
+    ];
 
     useEffect(() => {
         if (!allFieldsModule) {

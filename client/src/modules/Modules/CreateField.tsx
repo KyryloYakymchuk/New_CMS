@@ -13,7 +13,7 @@ import { SelectContainer } from '@modules/Settings/styled/styled';
 
 import { CreateFieldForm } from '@components/Forms/CreateFieldForm/CreateFieldForm';
 
-import { ICreateFieldProps } from '@interfaces/types';
+import { ICreateFieldProps, IFieldProps } from '@interfaces/types';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
 import { ModalButton } from '@components/Modal/ModalButton';
 import { ProtectedRoutes } from '@utils/enums/RoutesPath';
@@ -21,8 +21,7 @@ import { modalMessageSelector, modalStatusSelector } from '@redux/selectors/moda
 import { setModalStatusAction } from '@redux/actions/modal';
 
 export const CreateField: FC = () => {
-    const [currentField, setCurrentField] = useState<any>();
-
+    const [currentField, setCurrentField] = useState<IFieldProps>();
     const history = useHistory();
     const editData = useAppSelector(editableDataSelector);
     const message = useAppSelector(modalMessageSelector);
@@ -34,8 +33,8 @@ export const CreateField: FC = () => {
         const newFieldObj = {
             settings: { ...value },
             moduleID: editData?.moduleID,
-            type: currentField.fieldType,
-            name: currentField.type
+            type: currentField?.fieldType,
+            name: currentField?.type
         };
         dispatch(createFieldModuleAction(newFieldObj));
     };

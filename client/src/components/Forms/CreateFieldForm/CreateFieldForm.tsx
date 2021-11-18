@@ -1,4 +1,4 @@
-import { Dispatch, FC } from 'react';
+import { FC } from 'react';
 import { Field, Form } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
 import { FormApi } from 'final-form';
@@ -24,7 +24,7 @@ import { useStyles } from '@utils/styles/field';
 interface IProps {
     currentField?: IFieldProps;
     onSubmit: (value: ICreateFieldProps) => void;
-    setCurrentField: Dispatch<React.SetStateAction<IFieldProps>>;
+    setCurrentField: (value: IFieldProps) => void;
 }
 
 export const CreateFieldForm: FC<IProps> = ({ currentField, onSubmit, setCurrentField }) => {

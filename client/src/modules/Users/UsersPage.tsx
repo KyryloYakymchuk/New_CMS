@@ -20,7 +20,7 @@ import {
     ISortHandlerValue,
     ISortParams
 } from '@interfaces/types';
-import { IGetUsersData } from '@redux/types/users';
+import { IGetUsersData, IUser } from '@redux/types/users';
 import { loaderAction } from '@redux/actions/loader';
 import { redirectHandler } from '@utils/functions/redirectHandler';
 import { offsetGenerator } from '@utils/functions/offsetGenerator';
@@ -53,16 +53,19 @@ export const UsersPage: FC = () => {
 
     const allUsers = useAppSelector(userListDataSelector);
 
-    const deleteUserClick = (user: React.ChangeEvent<HTMLDivElement>) => () => {
-        const temp: any = user;
-        setUserID(temp.userID);
-        setModalStatus(true);
-        setModalMessage('Are you sure you want to delete thit user?');
-    };
-    const editUserClick = (user: React.ChangeEvent<HTMLDivElement>) => () => {
-        dispatch(setCurrentUser(user));
-        history.push('/users/editUser');
-    };
+    function deleteUserClick<T extends IUser>(user: T) {
+        return () => {
+            setUserID(user.userID);
+            setModalStatus(true);
+            setModalMessage('Are you sure you want to delete thit user?');
+        };
+    }
+    function editUserClick<T extends IUser>(user: T) {
+        return () => {
+            dispatch(setCurrentUser(user));
+            history.push('/users/editUser');
+        };
+    }
     const handleSortClick = (sortField: string) => () => {
         const temp: ISortHandlerValue = handleListSort(
             sortField,

@@ -1,36 +1,33 @@
-import { FC, MouseEventHandler } from 'react';
-
-import { IListColumns, OnClickFuncType } from '@interfaces/types';
-
+import { MouseEventHandler } from 'react';
+import { IListColumns } from '@interfaces/types';
 import { ListTitle } from '@components/List/ListTitle/ListTitle';
 import { ListContainer } from '@components/List/styled';
 import { formaterFieldListData } from '@utils/functions/formaterFieldListData';
-
 import { ListDDElement } from './ListElement/ListDDElement';
 
-export interface IArrButton {
+export interface IArrButton<T> {
     item: JSX.Element;
-    onClickFunc: OnClickFuncType;
+    onClickFunc: (data: T) => VoidFunction;
 }
 
-interface IPrors {
+interface IProps<T> {
     sortType?: string;
     sortHandler?: (sortField: string) => MouseEventHandler<HTMLDivElement>;
     listColumns: IListColumns[];
     //!Always diferent data
     listData?: any;
-    arrButton?: IArrButton[];
+    arrButton?: IArrButton<T>[];
     sortColumn?: string;
 }
 
-export const ListDD: FC<IPrors> = ({
+export function ListDD<T>({
     listColumns,
     listData,
     arrButton,
     sortHandler,
     sortType,
     sortColumn
-}) => {
+}: IProps<T>) {
     return (
         <ListContainer>
             <ListTitle
@@ -50,4 +47,4 @@ export const ListDD: FC<IPrors> = ({
             ))}
         </ListContainer>
     );
-};
+}
