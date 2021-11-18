@@ -21,7 +21,7 @@ import { modalMessageSelector, modalStatusSelector } from '@redux/selectors/moda
 import { setModalStatusAction } from '@redux/actions/modal';
 
 export const CreateField: FC = () => {
-    const [currentField, setCurrentField] = useState<IFieldProps>();
+    const [currentField, setCurrentField] = useState<IFieldProps>(initialfileds[0]);
     const history = useHistory();
     const editData = useAppSelector(editableDataSelector);
     const message = useAppSelector(modalMessageSelector);
@@ -45,14 +45,11 @@ export const CreateField: FC = () => {
     };
 
     useEffect(() => {
-        if (!currentField) {
-            setCurrentField(initialfileds[0]);
-        }
         if (!editData) {
             history.push('/modules');
         }
         dispatch(errorAction());
-    }, [currentField, editData]);
+    }, [editData]);
 
     return (
         <SelectContainer>

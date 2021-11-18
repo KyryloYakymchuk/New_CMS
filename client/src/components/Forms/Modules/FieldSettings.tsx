@@ -23,8 +23,7 @@ export const FieldSettings: FC<IFieldProps> = ({ settings }) => {
             {settings?.map(({ name, key, select }, index) => (
                 <>
                     {!select ? (
-                        <Field
-                            
+                        <Field                        
                             className={classes.root}
                             key={index}
                             label={name}

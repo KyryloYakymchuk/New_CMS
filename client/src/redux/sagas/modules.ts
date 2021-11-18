@@ -1,3 +1,4 @@
+import request from 'axios';
 import { put, takeEvery, call } from '@redux-saga/core/effects';
 import { errorAction } from '@redux/actions/error';
 import { loaderAction } from '@redux/actions/loader';
@@ -10,7 +11,6 @@ import {
     IGetModuleAction,
     ModulesActionTypes
 } from '@redux/types/modules';
-import request from 'axios';
 
 import {
     createFieldModuleReqApi,

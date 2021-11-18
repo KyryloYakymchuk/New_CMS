@@ -35,11 +35,9 @@ export const CreateFieldForm: FC<IProps> = ({ currentField, onSubmit, setCurrent
     const handleChange =
         (form: FormApi<ICreateFieldProps, Partial<ICreateFieldProps>>) =>
         (e: React.ChangeEvent<HTMLSelectElement>) => {
-            initialfileds.forEach((field) => {
-                if (field.type === e.target.value) {
-                    setCurrentField(field);
-                }
-            });
+            setCurrentField(
+                initialfileds.find((field) => field.type === e.target.value) || initialfileds[0]
+            );
             form.reset();
         };
 

@@ -17,15 +17,15 @@ import {
 import { ProtectedRoutes } from '@utils/enums/RoutesPath';
 
 import { api } from '@services/api';
-import { tokenServise } from '@services/tokenServise';
 import { loginReqApi } from '@api/auth';
 import { IError } from '@redux/types/error';
+import { tokenServiсe } from '@services/tokenServise';
 
 function* loginReq(config: ILoginAction) {
     const { history } = config.payload;
     try {
         const { data } = yield call(loginReqApi, config.payload);
-        yield tokenServise.setToken(data.accessToken);
+        yield tokenServiсe.setToken(data.accessToken);
         yield put(errorAction());
         history.push(ProtectedRoutes.DASHBOARD);
     } catch (error) {

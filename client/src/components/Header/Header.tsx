@@ -9,8 +9,8 @@ import { Icons } from '@utils/constants/icon';
 import { AuthRoutes } from '@utils/enums/RoutesPath';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
 import { HeaderContainer, HeaderTitle, TitleContainer, TitleItem } from './styled';
-import { tokenServise } from '@services/tokenServise';
 import { ModalButton } from '@components/Modal/ModalButton';
+import { tokenServiсe } from '@services/tokenServise';
 
 interface Props {
     title: string;
@@ -35,7 +35,7 @@ export const Header: FC<Props> = ({ title }) => {
     };
 
     const handleAccept = () => {
-        tokenServise.removeToken();
+        tokenServiсe.removeToken();
         history.push(AuthRoutes.LOGIN);
         dispatch(setModalStatusAction(false));
     };

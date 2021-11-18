@@ -92,7 +92,7 @@ export interface IFieldProps {
     fieldType?: string;
     moduleID?: string;
     settings?: IFieldSettings[];
-    validate?: any;
+    validate?: (values: IFieldSettings) => IFieldSettings;
 }
 
 export type GetSelectDataType = (newValue: string, actionMeta?: InputActionMeta) => void;
