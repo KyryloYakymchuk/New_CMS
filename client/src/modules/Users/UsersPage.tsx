@@ -55,8 +55,7 @@ export const UsersPage: FC = () => {
 
     function deleteUserClick<T extends IUser>(user: T) {
         return () => {
-            const temp: T = user;
-            setUserID(temp.userID);
+            setUserID(user.userID);
             setModalStatus(true);
             setModalMessage('Are you sure you want to delete thit user?');
         };

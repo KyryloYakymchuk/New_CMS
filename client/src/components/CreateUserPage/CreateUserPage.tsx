@@ -16,8 +16,8 @@ import { useHistory } from 'react-router';
 import { modalMessageSelector, modalStatusSelector } from '@redux/selectors/modal';
 import { IUser, IUserGroups } from '@redux/types/users';
 
-interface IOnSubmitValue extends IUser{
-    confirmedPassword?:string;
+interface IOnSubmitValue extends IUser {
+    confirmedPassword?: string;
 }
 
 const DEFAULT_LIMIT = 10;
@@ -26,6 +26,8 @@ export const CreateUserPage: FC = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const currentUser = useAppSelector(currentUserDataSelector) as IUser;
+    const isModalOpen = useAppSelector(modalStatusSelector);
+    const message = useAppSelector(modalMessageSelector);
     const arrGroupNames = useAppSelector<IUserGroups[] | undefined>(groupNamesSelector);
     const [selectGroupName, setSelectGroupName] = useState<string>();
     const [selectGroupArr, setSelectGroupArr] = useState<IUserGroups[]>(currentUser?.group);
@@ -34,17 +36,12 @@ export const CreateUserPage: FC = () => {
     const getSelectData = (newValue: string) => {
         setSelectGroupName(newValue);
     };
-    const onChangeMultiValue = (newValue: IUserGroups[]) => {
-        setSelectGroupArr(newValue);
-    };
-    const onSubmitForm = (value: IOnSubmitValue ) => {
 
-        delete value.confirmedPassword;
-        const requestBody:IUser = {
+    const onSubmitForm = ({ confirmedPassword, ...value }: IOnSubmitValue) => {
+        const requestBody: IUser = {
             ...value,
             group: selectGroupArr
         };
-        
         delete requestBody.profileImg;
         if (currentUser) {
             dispatch(editUser(requestBody));
@@ -72,14 +69,13 @@ export const CreateUserPage: FC = () => {
         }
         dispatch(getGroupNames(queryParams));
     }, [dispatch, debouncedSelectGroupName]);
-    const isModalOpen = useAppSelector(modalStatusSelector);
-    const message = useAppSelector(modalMessageSelector);
+
     return (
         <div>
             <UserForm
                 onSubmitForm={onSubmitForm}
                 selectGroupArr={selectGroupArr}
-                onChangeMultiValue={onChangeMultiValue}
+                onChangeMultiValue={setSelectGroupArr}
                 currentUser={currentUser}
                 arrGroupNames={arrGroupNames}
                 getSelectData={getSelectData}

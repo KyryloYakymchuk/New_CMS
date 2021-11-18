@@ -28,7 +28,6 @@ import { modalMessageSelector } from '@redux/selectors/modal';
 const LIMIT = 10;
 interface IClickValue extends ISetModulePayload {
     categories: boolean;
-    __v: number;
 }
 export const AllModules: FC = () => {
     let { search, pathname } = useLocation();

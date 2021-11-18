@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -60,7 +60,7 @@ export const AllFields: FC = () => {
     const createModuleClick = () => {
         history.push(`/module/${allFieldsModule?.name}/fields/create`);
     };
-  
+
     function editFieldClick<T extends IModuleField>(value: T) {
         return () => {
             console.log(value);
@@ -93,14 +93,11 @@ export const AllFields: FC = () => {
         };
     }
 
-    const actionsButtons = useMemo(
-        () => [
-            { item: <Icons.DragHandleIcon />, onClickFunc: onDragClick },
-            { item: <Icons.EditIcon />, onClickFunc: editFieldClick },
-            { item: <Icons.DeleteIcon />, onClickFunc: deleteFieldClick }
-        ],
-        []
-    );
+    const actionsButtons = [
+        { item: <Icons.DragHandleIcon />, onClickFunc: onDragClick },
+        { item: <Icons.EditIcon />, onClickFunc: editFieldClick },
+        { item: <Icons.DeleteIcon />, onClickFunc: deleteFieldClick }
+    ];
 
     useEffect(() => {
         if (!allFieldsModule) {
