@@ -31,7 +31,7 @@ export interface IGetModulePayload {
     search?: string;
 }
 
-interface IQueryParams {
+export interface IQueryParams {
     queryParams: IGetModulePayload;
 }
 

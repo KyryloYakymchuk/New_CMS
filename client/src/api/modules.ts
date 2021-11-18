@@ -1,30 +1,30 @@
 import {
     IModuleListData,
-    IDeleteModuleAction,
-    ICreateModuleAction,
-    IDeleteFieldModuleAction,
-    ICreateFieldModuleAction
+    IDeleteFieldModulePayload,
+    ICreateModulePayload,
+    IDeleteModulePayload,
+    IQueryParams
 } from './../redux/types/modules';
-import { IGetModuleAction } from '@redux/types/modules';
 import { api } from '@services/api';
+import { ICreateFieldProps } from '@interfaces/types';
 
-export const getModulesReqApi = (config: IGetModuleAction): Promise<IModuleListData> => {
+export const getModulesReqApi = (payload: IQueryParams): Promise<IModuleListData> => {
     return api.get('/modules/', {
-        params: config.payload
+        params: payload
     });
 };
-export const deleteModulesReqApi = (config: IDeleteModuleAction): Promise<IModuleListData> => {
-    const { moduleID, queryParams } = config.payload;
+export const deleteModulesReqApi = (payload: IDeleteModulePayload): Promise<IModuleListData> => {
+    const { moduleID, queryParams } = payload;
     return api.delete('/modules/' + moduleID, {
         params: queryParams
     });
 };
-export const createModulesReqApi = (config: ICreateModuleAction): Promise<IModuleListData> => {
-    const { categories, name } = config.payload;
+export const createModulesReqApi = (payload: ICreateModulePayload): Promise<IModuleListData> => {
+    const { categories, name } = payload;
     return api.post('/modules/', { categories, name });
 };
-export const editModulesReqApi = (config: ICreateModuleAction): Promise<IModuleListData> => {
-    const { name, moduleID, categories } = config.payload;
+export const editModulesReqApi = (payload: ICreateModulePayload): Promise<IModuleListData> => {
+    const { name, moduleID, categories } = payload;
     return api.post('/modules/', {
         name,
         moduleID,
@@ -32,15 +32,13 @@ export const editModulesReqApi = (config: ICreateModuleAction): Promise<IModuleL
     });
 };
 
-
-export const deleteFieldModuleReqApi = (config: IDeleteFieldModuleAction)
-: Promise<IModuleListData> => {
-    const { fieldId } = config.payload;
+export const deleteFieldModuleReqApi = (
+    payload: IDeleteFieldModulePayload
+): Promise<IModuleListData> => {
+    const { fieldId } = payload;
     return api.delete('/modules/fields/' + fieldId);
 };
 
-export const createFieldModuleReqApi = (config: ICreateFieldModuleAction)
-: Promise<IModuleListData> => {
-    return api.post('/modules/fields/', config.payload );
+export const createFieldModuleReqApi = (payload: ICreateFieldProps): Promise<IModuleListData> => {
+    return api.post('/modules/fields/', payload);
 };
-

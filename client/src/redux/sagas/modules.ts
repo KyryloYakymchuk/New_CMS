@@ -26,7 +26,7 @@ import { setModalMessageAction, setModalStatusAction } from '@redux/actions/moda
 
 function* getModulesReq(config: IGetModuleAction) {
     try {
-        const { data } = yield call(getModulesReqApi, config);
+        const { data } = yield call(getModulesReqApi, config.payload);
         yield put(setModulesAction(data));
     } catch (error) {
         if (request.isAxiosError(error) && error.response) {
@@ -38,7 +38,7 @@ function* getModulesReq(config: IGetModuleAction) {
 
 function* deleteModulesReq(config: IDeleteModuleAction) {
     try {
-        const { data } = yield call(deleteModulesReqApi, config);
+        const { data } = yield call(deleteModulesReqApi, config.payload);
         yield put(setModulesAction(data));
     } catch (error) {
         if (request.isAxiosError(error) && error.response) {
@@ -49,7 +49,7 @@ function* deleteModulesReq(config: IDeleteModuleAction) {
 function* createModulesReq(config: ICreateModuleAction) {
     const { history } = config.payload;
     try {
-        const { data } = yield call(createModulesReqApi, config);
+        const { data } = yield call(createModulesReqApi, config.payload);
         yield put(setModulesAction(data));
         history?.push(ProtectedRoutes.MODULES);
         yield put(errorAction());
@@ -63,7 +63,7 @@ function* createModulesReq(config: ICreateModuleAction) {
 function* editModulesReq(config: ICreateModuleAction) {
     const { history } = config.payload;
     try {
-        const { data } = yield call(editModulesReqApi, config);
+        const { data } = yield call(editModulesReqApi, config.payload);
         yield put(setModulesAction(data));
         history?.push(ProtectedRoutes.MODULES);
         yield put(errorAction());
@@ -75,7 +75,7 @@ function* editModulesReq(config: ICreateModuleAction) {
 }
 function* deleteFieldModuleReq(config: IDeleteFieldModuleAction) {
     try {
-        const { data } = yield call(deleteFieldModuleReqApi, config);
+        const { data } = yield call(deleteFieldModuleReqApi, config.payload);
         yield put(setFieldsResponseAction(data));
     } catch (error) {
         if (request.isAxiosError(error) && error.response) {
@@ -85,7 +85,7 @@ function* deleteFieldModuleReq(config: IDeleteFieldModuleAction) {
 }
 function* createFieldModuleReq(config: ICreateFieldModuleAction) {
     try {
-        const { data } = yield call(createFieldModuleReqApi, config);
+        const { data } = yield call(createFieldModuleReqApi, config.payload);
         yield put(setFieldsResponseAction(data));
         yield put(setModalStatusAction(true));
         yield put(setModalMessageAction('Field created successfuly!'));

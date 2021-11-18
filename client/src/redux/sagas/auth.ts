@@ -24,7 +24,7 @@ import { IError } from '@redux/types/error';
 function* loginReq(config: ILoginAction) {
     const { history } = config.payload;
     try {
-        const { data } = yield call(loginReqApi, config);
+        const { data } = yield call(loginReqApi, config.payload);
         yield tokenServise.setToken(data.accessToken);
         yield put(errorAction());
         history.push(ProtectedRoutes.DASHBOARD);

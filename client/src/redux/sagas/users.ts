@@ -15,7 +15,7 @@ import { api } from '@services/api';
 
 function* getUsers(config: IGetUsersAction) {
     try {
-        const { data } = yield call(getUsersApi, config);
+        const { data } = yield call(getUsersApi, config.payload);
         yield put(setUsers(data));
     } catch (error) {
         return error;
@@ -25,7 +25,7 @@ function* getUsers(config: IGetUsersAction) {
 
 function* deleteUser(config: IDeleteUserDataAction) {
     try {
-        const { data } = yield call(deleteUserApi, config);
+        const { data } = yield call(deleteUserApi, config.payload);
         yield put(setUsers(data));
     } catch (error) {
         return error;

@@ -1,13 +1,13 @@
-import { IGetGroupsDataAction, IGroupNames, ISetGroupsData } from '@redux/types/groups';
+import { IGetGroupsData, IGroupNames, ISetGroupsData } from '@redux/types/groups';
 import { api } from '@services/api';
 
-export const getGroupsApi = (config: IGetGroupsDataAction): Promise<ISetGroupsData> => {
+export const getGroupsApi = (payload: IGetGroupsData): Promise<ISetGroupsData> => {
     return api.get('/groups/', {
-        params: config.payload
+        params: payload
     });
 };
-export const getGroupNamesApi = (config: IGetGroupsDataAction): Promise<IGroupNames> => {
+export const getGroupNamesApi = (payload: IGetGroupsData): Promise<IGroupNames> => {
     return api.get('/groups/select-data', {
-        params: config.payload
+        params: payload
     });
 };

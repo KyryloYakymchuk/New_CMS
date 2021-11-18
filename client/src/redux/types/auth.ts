@@ -23,7 +23,7 @@ export interface ILoginAction {
 }
 
 //REGISTER
-interface IRegisterPayload {
+export interface IRegisterPayload {
     email: string;
     password: string;
     confirmPassword: string;

@@ -43,13 +43,11 @@ export const AllFields: FC = () => {
     function deleteFieldClick<T extends IModuleField>(value: T) {
         return () => {
             setFieldId(value.id);
-            if (constantFields.includes(value.id)) {
-                setModalMessage('Sorry, but these are сonstant field');
-                setModalStatus(true);
-            } else {
-                setModalMessage(`${t('Delete')} ${value.title} ?`);
-                setModalStatus(true);
-            }
+            const message = constantFields.includes(value.id)
+                ? 'Sorry, but these are сonstant field'
+                : `${t('Delete')} ${value.title}`;
+            setModalMessage(message);
+            setModalStatus(true);
         };
     }
     const handleAccept = () => {
