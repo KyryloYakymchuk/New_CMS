@@ -21,9 +21,10 @@ export const ResetPasswordValidator = (values: ValidatorProps) => {
         errors.newPassword = i18n.t('Password must not contain spaces');
     } else if (values?.newPassword?.length < 8) {
         errors.newPassword = i18n.t('Minimum 8 characters');
-    } else if (!values.newPassword.match(passwordMatch)){
-        errors.newPassword = 
-        i18n.t('One letter, one number, only latin, and one special character');
+    } else if (!values.newPassword.match(passwordMatch)) {
+        errors.newPassword = i18n.t(
+            'One letter, one number, only latin, and one special character'
+        );
     }
 
     // CONFIRM PASSWORD

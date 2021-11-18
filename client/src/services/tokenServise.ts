@@ -24,4 +24,4 @@ class TokenServise {
     }
 }
 
-export const tokenServise = new TokenServise();
+export const tokenServiсe = new TokenServise();

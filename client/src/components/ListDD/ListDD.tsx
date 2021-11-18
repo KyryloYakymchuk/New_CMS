@@ -2,6 +2,7 @@ import { MouseEventHandler } from 'react';
 import { IListColumns } from '@interfaces/types';
 import { ListTitle } from '@components/List/ListTitle/ListTitle';
 import { ListContainer } from '@components/List/styled';
+import { formaterFieldListData } from '@utils/functions/formaterFieldListData';
 import { ListDDElement } from './ListElement/ListDDElement';
 
 export interface IArrButton<T> {
@@ -11,7 +12,7 @@ export interface IArrButton<T> {
 
 interface IProps<T> {
     sortType?: string;
-    sortHandler: (sortField: string) => MouseEventHandler<HTMLDivElement>;
+    sortHandler?: (sortField: string) => MouseEventHandler<HTMLDivElement>;
     listColumns: IListColumns[];
     //!Always diferent data
     listData?: any;
@@ -36,7 +37,7 @@ export function ListDD<T>({
                 sortHandler={sortHandler}
             />
             {/* Always diferent data */}
-            {listData?.map((data: any, index: number) => (
+            {formaterFieldListData(listData)?.map((data: any, index: number) => (
                 <ListDDElement
                     key={index}
                     listColumns={listColumns}

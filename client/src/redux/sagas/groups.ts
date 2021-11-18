@@ -7,7 +7,7 @@ import { getGroupNamesApi, getGroupsApi } from '@api/groups';
 
 function* getGroups(config: IGetGroupsDataAction) {
     try {
-        const { data } = yield call(getGroupsApi, config);
+        const { data } = yield call(getGroupsApi, config.payload);
         yield put(setGroups(data));
     } catch (error) {
         return error;
@@ -15,7 +15,7 @@ function* getGroups(config: IGetGroupsDataAction) {
 }
 function* getGroupNames(config: IGetGroupsDataAction) {
     try {
-        const { data } = yield call(getGroupNamesApi, config);
+        const { data } = yield call(getGroupNamesApi, config.payload);
         yield put(setGroupNames(data));
     } catch (error) {
         return error;

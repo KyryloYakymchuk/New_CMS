@@ -22,11 +22,26 @@ export const en = {
     'All Fields': 'All Fields',
     'All Items': 'All Items',
     'All Orders': 'All Orders',
-    // Modules
-    'All Modules': 'All Modules',
-    'New Module': 'New Module',
-    'Edit Module': 'Edit Module',
-    'Module Fields': 'Module Fields',
+    // Modules 
+    'All Modules':'All Modules',
+    'New Module':'New Module',
+    'Edit Module':'Edit Module',
+    'Module Fields':'Module Fields',
+    'Create Field Module':'Create Field Module',
+    // Create Field 
+    'Max Chars':'Max Chars',
+    'Title':'Title',
+    'Width':'Width',
+    'Default Text':'Default Text',
+    'Height':'Height',
+    'Max Items':'Max Items',
+    'Max Size':'Max Size',
+    'Filetypes':'Filetypes',
+    'Specifications':'Specifications',
+    'Names (comma seperated)':'Names (comma seperated)',
+    'Values (comma seperated)':'Values (comma seperated)',
+    'Coordinates X':'Coordinates X',
+    'Coordinates Y':'Coordinates Y',
 
     // Settings
     Language: 'Language',
@@ -64,7 +79,7 @@ export const en = {
     'Sign In': 'Sign In',
     Register: 'Register',
     'Don`t have an account ?': 'Don`t have an account ?',
-    'Hello! Welcome back.': 'Hello! Welcome back.',
+    'Welcome!': 'Welcome!',
     'Log in with your data that you entered during Your registrarion':
         'Log in with your data that you entered during Your registrarion',
     'Have an account ?': 'Have an account ?',
@@ -95,7 +110,9 @@ export const en = {
     'name should not be empty': 'Name should not be empty!',
     "Name shouldn't have spaces!": 'Name shouldn`t have spaces!',
     'One letter, one number, only latin, and one special character':
-        'One letter, one number, only latin, and one special character',
+    'One letter, one number, only latin, and one special character',
+    'Only number':'Only number',
+    'Only latin':'Only latin',
     // Modules
     'This module is already exists!': 'This module is already exists!',
     'Sorry, but these are сonstant field': 'Sorry, but these are сonstant field',

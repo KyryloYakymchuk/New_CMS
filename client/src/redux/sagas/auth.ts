@@ -17,15 +17,15 @@ import {
 import { ProtectedRoutes } from '@utils/enums/RoutesPath';
 
 import { api } from '@services/api';
-import { tokenServise } from '@services/tokenServise';
 import { loginReqApi } from '@api/auth';
 import { IError } from '@redux/types/error';
+import { tokenServiсe } from '@services/tokenServise';
 
 function* loginReq(config: ILoginAction) {
     const { history } = config.payload;
     try {
-        const { data } = yield call(loginReqApi, config);
-        yield tokenServise.setToken(data.accessToken);
+        const { data } = yield call(loginReqApi, config.payload);
+        yield tokenServiсe.setToken(data.accessToken);
         yield put(errorAction());
         history.push(ProtectedRoutes.DASHBOARD);
     } catch (error) {
@@ -67,9 +67,11 @@ function* resetReq(data: IResetAction) {
 }
 
 function* resetPasswordReq(data: IResetPasswordAction) {
-    const { val } = data.payload;
     try {
-        yield call(api.post, '/auth/password/confirm', { ...val });
+        yield call(api.post, '/auth/password/confirm', {
+            token: data.payload.token,
+            ...data.payload.value
+        });
         yield put(setModalStatusAction(true));
         yield put(setModalMessageAction('Password reset successfully !'));
         yield put(errorAction());

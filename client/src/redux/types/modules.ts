@@ -1,3 +1,4 @@
+import { ICreateFieldProps } from '@interfaces/types';
 import { History } from 'history';
 
 export enum ModulesActionTypes {
@@ -8,15 +9,15 @@ export enum ModulesActionTypes {
     SET_EDIT_DATA_MODULE = 'SET_EDIT_DATA_MODULE',
     EDIT_MODULE = 'EDIT_MODULE',
     DELETE_FIELD_MODULE = 'DELETE_FIELD_MODULE',
-    SET_FIELD_RESPONSE = 'SET_FIELD_RESPONSE'
-
+    SET_FIELD_RESPONSE = 'SET_FIELD_RESPONSE',
+    CREATE_FIELD_MODULE = 'CREATE_FIELD_MODULE'
 }
 
 export interface ISetModulePayload {
-    _id:string;
+    _id: string;
     fields: [];
-    name:string;
-    moduleID:string;
+    name: string;
+    moduleID: string;
 }
 
 export interface IModuleListData {
@@ -30,7 +31,7 @@ export interface IGetModulePayload {
     search?: string;
 }
 
-interface IQueryParams {
+export interface IQueryParams {
     queryParams: IGetModulePayload;
 }
 
@@ -40,16 +41,16 @@ export interface IGetModuleAction {
 }
 
 export interface ISetModuleAction {
-    type:ModulesActionTypes.SET_MODULES;
-    payload:IModuleListData;
+    type: ModulesActionTypes.SET_MODULES;
+    payload: IModuleListData;
 }
 
 export interface ICreateModulePayload {
     name?: string;
-    categories?:boolean;
+    categories?: boolean;
     moduleID?: string;
     history?: History;
-    fields?:[];
+    fields?: [];
 }
 
 export interface IModules {
@@ -58,8 +59,8 @@ export interface IModules {
 }
 
 export interface IDeleteModulePayload {
-    moduleID?:string;
-    queryParams:IGetModulePayload;
+    moduleID?: string;
+    queryParams: IGetModulePayload;
 }
 
 export interface IDeleteModuleAction {
@@ -68,17 +69,18 @@ export interface IDeleteModuleAction {
 }
 
 export interface IModuleSettings {
-    required:string;
-    textPrompt:string;
+    required: string;
+    textPrompt: string;
 }
 
 export interface IModuleField {
-    id:string;
-    name:string;
-    order:number;
-    settings:IModuleSettings;
-    type:string;
-} 
+    id: string;
+    name: string;
+    title: string;
+    order: number;
+    settings: IModuleSettings;
+    type: string;
+}
 
 export interface ICreateModuleAction {
     type: ModulesActionTypes.CREATE_MODULE;
@@ -96,7 +98,7 @@ export interface IEditModuleAction {
 }
 
 export interface IDeleteFieldModulePayload {
-    fieldId:string;
+    fieldId: string;
 }
 
 export interface IDeleteFieldModuleAction {
@@ -104,22 +106,25 @@ export interface IDeleteFieldModuleAction {
     payload: IDeleteFieldModulePayload;
 }
 
-
 export interface IFieldResponse {
-    fields:[];
+    fields: [];
 }
 
 export interface ISetFieldResponseAction {
-    type:ModulesActionTypes.SET_FIELD_RESPONSE;
-    payload:IFieldResponse;
+    type: ModulesActionTypes.SET_FIELD_RESPONSE;
+    payload: IFieldResponse;
+}
+export interface ICreateFieldModuleAction {
+    type: ModulesActionTypes.CREATE_FIELD_MODULE;
+    payload: ICreateFieldProps;
 }
 
-
-export type IModuleActions = 
-IGetModuleAction |
-ISetModuleAction | 
-IDeleteModuleAction |
-ICreateModuleAction | 
-ISetEditDataModuleAction |
-ISetFieldResponseAction |
-IDeleteFieldModuleAction;
+export type IModuleActions =
+    | IGetModuleAction
+    | ISetModuleAction
+    | IDeleteModuleAction
+    | ICreateModuleAction
+    | ISetEditDataModuleAction
+    | ISetFieldResponseAction
+    | IDeleteFieldModuleAction
+    | ICreateFieldModuleAction;

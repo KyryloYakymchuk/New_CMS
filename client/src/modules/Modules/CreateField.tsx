@@ -1,28 +1,66 @@
-import { useTranslation } from 'react-i18next';
-import { FC, useState } from 'react';
-import { Select, SelectContainer } from '@modules/Settings/styled/styled';
-import { typeSelectData } from '@utils/constants/Modules/typeSelectData';
+import { FC, useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
+import { useDispatch } from 'react-redux';
+
+import { editableDataSelector } from '@redux/selectors/modules';
+import { errorAction } from '@redux/actions/error';
+import { createFieldModuleAction } from '@redux/actions/modules';
+
+import { initialfileds } from '@utils/constants/Modules/typeSelectData';
+import { useAppSelector } from '@utils/hooks/useAppSelector';
+
+import { SelectContainer } from '@modules/Settings/styled/styled';
+
 import { CreateFieldForm } from '@components/Forms/CreateFieldForm/CreateFieldForm';
 
-export const CreateField: FC = () => {
-    const [selectValue, setSelectValue] = useState('checkbox');
-    const { t } = useTranslation();
+import { ICreateFieldProps, IFieldProps } from '@interfaces/types';
+import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
+import { ModalButton } from '@components/Modal/ModalButton';
+import { ProtectedRoutes } from '@utils/enums/RoutesPath';
+import { modalMessageSelector, modalStatusSelector } from '@redux/selectors/modal';
+import { setModalStatusAction } from '@redux/actions/modal';
 
-    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-       setSelectValue(e.target.value);
+export const CreateField: FC = () => {
+    const [currentField, setCurrentField] = useState<IFieldProps>(initialfileds[0]);
+    const history = useHistory();
+    const editData = useAppSelector(editableDataSelector);
+    const message = useAppSelector(modalMessageSelector);
+    const modalStatus = useAppSelector(modalStatusSelector);
+
+    const dispatch = useDispatch();
+
+    const onSubmit = (value: ICreateFieldProps) => {
+        const newFieldObj = {
+            settings: { ...value },
+            moduleID: editData?.moduleID,
+            type: currentField?.fieldType,
+            name: currentField?.type
+        };
+        dispatch(createFieldModuleAction(newFieldObj));
     };
+
+    const handleAccept = () => {
+        dispatch(setModalStatusAction(false));
+        history.push(ProtectedRoutes.MODULE_FIELDS);
+    };
+
+    useEffect(() => {
+        if (!editData) {
+            history.push('/modules');
+        }
+        dispatch(errorAction());
+    }, [editData]);
 
     return (
         <SelectContainer>
-            <label>{t('Type')}-</label>
-            <Select value={selectValue} onChange={handleChange}>
-                {typeSelectData.map(({ item }, index) => (
-                    <option key={index} value={item}>
-                        {item} 
-                    </option>
-                ))}
-            </Select>
-            <CreateFieldForm selectValue={selectValue}/>
+            <CreateFieldForm
+                setCurrentField={setCurrentField}
+                onSubmit={onSubmit}
+                currentField={currentField}
+            />
+            <ModalConfirm message={message} modalStatus={modalStatus} handleAccept={handleAccept}>
+                <ModalButton handleAccept={handleAccept} />
+            </ModalConfirm>
         </SelectContainer>
     );
 };

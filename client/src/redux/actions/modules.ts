@@ -1,3 +1,4 @@
+import { ICreateFieldProps } from '@interfaces/types';
 import {
     IGetModulePayload,
     ISetModulePayload,
@@ -28,4 +29,7 @@ export const deleteFieldModuleAction = actionGenerator<IDeleteFieldModulePayload
 );
 export const setFieldsResponseAction = actionGenerator<IFieldResponse>(
     ModulesActionTypes.SET_FIELD_RESPONSE
+);
+export const createFieldModuleAction = actionGenerator<ICreateFieldProps>(
+    ModulesActionTypes.CREATE_FIELD_MODULE
 );

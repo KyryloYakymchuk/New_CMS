@@ -14,12 +14,14 @@ import { editableDataSelector } from '@redux/selectors/modules';
 import { ICreateModulePayload } from '@redux/types/modules';
 
 import { useAppSelector } from '@utils/hooks/useAppSelector';
+import { toPreviousPage } from '@utils/functions/historyBack';
+import { createModuleValidate } from '@utils/validators/Modules/CreateModule';
+
+import FormField from '@components/FormField/FormField';
+import FormCheckbox from '@components/FormField/FormCheckbox';
 
 import { ErrorMessage } from '@modules/Auth/styled';
 import { ButtonContainer, FormContainer } from './styled';
-import { createModuleValidate } from '@utils/validators/Modules/CreateModule';
-import FormField from '@components/FormField/FormField';
-import FormCheckbox from '@components/FormField/FormCheckbox';
 import { useStyles } from '@utils/styles/field';
 
 export const CreateModule: FC = () => {
@@ -89,7 +91,7 @@ export const CreateModule: FC = () => {
                                 type="button"
                                 title={t('Cancel')}
                                 style={'greyButton'}
-                                onClickFunction={() => history.back()}
+                                onClickFunction={toPreviousPage}
                             />
                         </ButtonContainer>
                     </form>

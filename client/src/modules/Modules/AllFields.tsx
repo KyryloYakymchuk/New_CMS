@@ -2,60 +2,33 @@ import { FC, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { setModalMessageAction } from '@redux/actions/modal';
+
+import { editableDataSelector } from '@redux/selectors/modules';
+import { deleteFieldModuleAction } from '@redux/actions/modules';
+
 import { Buttons } from '@components/Button/Button';
 import { ListDD } from '@components/ListDD/ListDD';
-import { Icons } from '@utils/constants/icon';
-import { PageHeader, UserPageContainer } from '@modules/Users/styled';
-import { moduleFieldsListColumns } from '@utils/constants/ListsData/ListsData';
-import { editableDataSelector } from '@redux/selectors/modules';
-import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
 import { ModalButton } from '@components/Modal/ModalButton';
-import { deleteFieldModuleAction } from '@redux/actions/modules';
-import { modalMessageSelector } from '@redux/selectors/modal';
-import { IModuleField } from '@redux/types/modules';
 
-const constantFields = [
-    // yet no create field functionality
-    //  if you want to test delete field, replace this ids, in smth else
-    // or create new field in DB
-    'f_name',
-    'f_pDate',
-    'f_aDate',
-    'f_Status'
-];
+import { Icons } from '@utils/constants/icon';
+import { useAppSelector } from '@utils/hooks/useAppSelector';
+import { moduleFieldsListColumns } from '@utils/constants/ListsData/ListsData';
+import { constantFields } from '@utils/constants/Modules/constantsFields';
+
+import { PageHeader, UserPageContainer } from '@modules/Users/styled';
+import { IModuleField } from '@redux/types/modules';
 
 export const AllFields: FC = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const history = useHistory();
     const allFieldsModule = useAppSelector(editableDataSelector);
-    const requestMessage = useAppSelector(modalMessageSelector);
-    //!for future pagination
-    // let { search } = useLocation();
-    // const query = new URLSearchParams(search);
-    // const currentPage = Number(query.get('page'));
-
-    //!for future sorting
-    // const [sortParams, setSortParams] = useState<ISortParams>({});
-    // const [sortingTypeIdx, setSortingTypeIdx] = useState(0);
 
     const [modalStatus, setModalStatus] = useState(false);
-    const [fieldId, setFieldId] = useState('');
+    const [modalMessage, setModalMessage] = useState('');
 
-    const handleSortClick = (sortField: string) => () => {
-        //!for eslint
-        console.log(sortField);
-        //!for future sorting
-        // const temp: ISortHandlerValue = handleListSort(
-        //     sortField,
-        //     sortingTypeIdx,
-        //     String(sortParams.sortField)
-        // );
-        // setSortingTypeIdx(temp.currSortingTypeIdx);
-        // setSortParams(temp.currentSortParams);
-    };
+    const [fieldId, setFieldId] = useState('');
 
     const createModuleClick = () => {
         history.push(`/module/${allFieldsModule?.name}/fields/create`);
@@ -70,13 +43,11 @@ export const AllFields: FC = () => {
     function deleteFieldClick<T extends IModuleField>(value: T) {
         return () => {
             setFieldId(value.id);
-            if (constantFields.includes(value.id)) {
-                dispatch(setModalMessageAction('Sorry, but these are сonstant field'));
-                setModalStatus(true);
-            } else {
-                dispatch(setModalMessageAction(`${t('Delete')} ${value.name} ?`));
-                setModalStatus(true);
-            }
+            const message = constantFields.includes(value.id)
+                ? 'Sorry, but these are сonstant field'
+                : `${t('Delete')} ${value.title}`;
+            setModalMessage(message);
+            setModalStatus(true);
         };
     }
     const handleAccept = () => {
@@ -115,32 +86,17 @@ export const AllFields: FC = () => {
                     onClickFunction={createModuleClick}
                     icon={<Icons.AddIcon />}
                 />
-                {/* Future filter  */}
-                {/* <DrawerFilterMenu
-                toggleDrawerMenu={toggleDrawerMenu}
-                drawerMenuOpenStatus={drawerMenuOpenStatus}
-            >
-                <SingleFilterForm
-                    filterFormValue={filterFormValue}
-                    onSubmitSingleFilterForm={onSubmitSingleFilterForm}
-                    clearSingleFilterFormValue={clearSingleFilterFormValue}
-                    onChangeFieldValue={onChangeFieldValue}
-                />
-            </DrawerFilterMenu> */}
             </PageHeader>
             <ListDD
-                sortHandler={handleSortClick}
                 listColumns={moduleFieldsListColumns}
                 listData={allFieldsModule?.fields}
                 arrButton={actionsButtons}
             />
-            {/* Future pagination  */}
-            {/* <Pagination count={Number(allModules?.count)} limit={LIMIT} /> */}
             <ModalConfirm
                 handleAccept={handleAccept}
                 handleClose={handleClose}
                 modalStatus={modalStatus}
-                message={requestMessage}
+                message={modalMessage}
             >
                 {!constantFields?.includes(fieldId) ? (
                     <ModalButton handleAccept={handleAccept} handleClose={handleClose} />

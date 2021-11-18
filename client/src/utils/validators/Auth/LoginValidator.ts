@@ -27,10 +27,10 @@ export const loginValidator = (values: ValidatorProps) => {
     } else if (passwordSpacesRE.test(values.password)) {
         errors.password = i18n.t('Password must not contain spaces');
     } else if (values?.password?.length < 8) {
-        errors.password = i18n.t('Minimum 8 symbols');
-    } else if (!values.password.match(passwordMatch)){
-            errors.password
-            = i18n.t('One letter, one number, only latin, and one special character');
-        }
+        errors.password = i18n.t('Minimum 8 characters');
+    } else if (!values.password.match(passwordMatch)) {
+        errors.password = i18n.t('One letter, one number, only latin, and one special character');
+    }
+
     return errors;
 };

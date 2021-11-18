@@ -11,10 +11,10 @@ type FormProps = FieldRenderProps<boolean, HTMLElement> &
 
 const FormCheckbox: FC<FormProps> = ({ input, meta, children, ...rest }) => {
     return (
-        <>
-            <Label htmlFor={rest.id}>{rest.label}</Label>
+        <Label>
+            {rest.label}
             <Checkbox {...rest} {...input} />
-        </>
+        </Label>
     );
 };
 export default FormCheckbox;

@@ -149,7 +149,7 @@ export class ModulesService {
       let fieldName: string;
 
       module.fields.forEach((field) => {
-        if (fieldID === field.id) fieldName = field.settings.textPrompt;
+        if (fieldID === field.id) fieldName = field.settings.name;
       });
 
       if (filesObj[fieldName])
@@ -198,9 +198,12 @@ export class ModulesService {
       "specifications",
       "names",
       "values",
-      "coordinates",
+      "coordinates_x",
+      "coordinates_y",
       "icon",
       "maxSize",
+      "name",
+      'title'
     ];
 
     fields.forEach((obj) => {
@@ -499,7 +502,7 @@ export class ModulesService {
     const generateModel = () => {
       module.fields.forEach((field) => {
         parsedData.fields.forEach((input) => {
-          model[field.settings.textPrompt] = input.value;
+          model[field.settings.name] = input.value;
         });
       });
 
@@ -523,7 +526,7 @@ export class ModulesService {
         const fields = { itemID: "string" };
 
         module.fields.forEach((field) => {
-          fields[field.settings.textPrompt] = ModulesService.validateType(
+          fields[field.settings.name] = ModulesService.validateType(
             field.type
           );
         });
@@ -687,7 +690,7 @@ export class ModulesService {
       module.fields.forEach((field) => {
         items.forEach((input) => {
           if (input.id === field.id) {
-            itemsToEdit[field.settings.textPrompt] = input.value;
+            itemsToEdit[field.settings.name] = input.value;
           }
         });
       });
@@ -886,10 +889,21 @@ export class ModulesService {
     const module = await this.findModulesByID(moduleID);
     if (!module)
       throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
+console.log(module);
 
     if (
       module.fields.find(
-        (e) => e.settings.textPrompt === settings["textPrompt"]
+        (e) => e.settings.name === settings["name"]
+      )
+    )
+      throw new HttpException(
+        "Field with same name already exists",
+        HttpStatus.BAD_REQUEST
+      );
+
+    if (
+      module.fields.find(
+        (e) => e.settings.name === settings["name"]
       )
     )
       throw new HttpException(

@@ -1,55 +1,84 @@
+import { FC } from 'react';
+import { Field, Form } from 'react-final-form';
+import { useTranslation } from 'react-i18next';
+import { FormApi } from 'final-form';
 
-import FormField from '@components/FormField/FormField';
+import { errorMessageSelector } from '@redux/selectors/error';
+
+import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { initialfileds } from '@utils/constants/Modules/typeSelectData';
-import { FC, useEffect, useState } from 'react';
-import { Form } from 'react-final-form';
-import { FieldCustom, FormContainer } from '../SingleFilterForm/styled';
+import { toPreviousPage } from '@utils/functions/historyBack';
+
+import { ErrorMessage } from '@modules/Auth/styled';
+import { ButtonContainer, FormContainer, Label } from '@modules/Modules/styled';
+
+import { Buttons } from '@components/Button/Button';
+import { FieldSettings } from '@components/Forms/Modules/FieldSettings';
+import FormField from '@components/FormField/FormField';
+
+import { ICreateFieldProps, IFieldProps } from '@interfaces/types';
+
+import { Select } from '@modules/Settings/styled/styled';
+import { useStyles } from '@utils/styles/field';
 
 interface IProps {
-    selectValue:string;
+    currentField?: IFieldProps;
+    onSubmit: (value: ICreateFieldProps) => void;
+    setCurrentField: (value: IFieldProps) => void;
 }
 
-const allField = {
-    checkbox: FormField,
-    textbox: FormField,
-    textarea: FormField,
-    upload: FormField,
-    module: FormField,
-    dropdown: FormField,
-    wysiwyg: FormField,
-    map: FormField
-};
+export const CreateFieldForm: FC<IProps> = ({ currentField, onSubmit, setCurrentField }) => {
+    const { t } = useTranslation();
+    const errorMessage = useAppSelector(errorMessageSelector);
+    const classes = useStyles();
 
-export const CreateFieldForm: FC<IProps> = ({ selectValue }) =>{
-    // big data, need typed later 
-    const [currentField, setCurrentField] = useState<any>(); 
-    console.log(currentField);
+    const handleChange =
+        (form: FormApi<ICreateFieldProps, Partial<ICreateFieldProps>>) =>
+        (e: React.ChangeEvent<HTMLSelectElement>) => {
+            setCurrentField(
+                initialfileds.find((field) => field.type === e.target.value) || initialfileds[0]
+            );
+            form.reset();
+        };
 
-
-  useEffect(() => {
-    initialfileds.forEach((field) => {
-        if (field.type === selectValue){
-         setCurrentField(field);
-        } 
-     });
-  }, [selectValue]);    
-
-const onSubmit = (value:any) => {
-    console.log(value);
-};
-    
-return (
-    <Form
-        onSubmit={onSubmit}
-        render={({ handleSubmit }) => (
+    return (
+        <Form
+            onSubmit={onSubmit}
+            validate={currentField?.validate}
+            render={({ handleSubmit, form }) => (
                 <FormContainer>
-                    <form onSubmit={handleSubmit}>    
-                     {selectValue === String(Object.keys(allField))  &&                    
-                            <FieldCustom />                        
-                     }                    
+                    <form onSubmit={handleSubmit}>
+                        <Label>{t('Type')}</Label>
+                        <div>
+                            <Select onChange={handleChange(form)}>
+                                {initialfileds.map(({ type }, index) => (
+                                    <option key={index} value={type}>
+                                        {type}
+                                    </option>
+                                ))}
+                            </Select>
+                        </div>
+                        <ErrorMessage>{errorMessage && t(errorMessage)}</ErrorMessage>
+                        <Field
+                            className={classes.root}
+                            label={t('Title')}
+                            name={t('title')}
+                            type={currentField?.key}
+                            component={FormField}
+                        />
+                        <FieldSettings settings={currentField?.settings} />
+                        <ButtonContainer>
+                            <Buttons type="submit" title={t('Apply')} style="pinkButton" />
+                            <Buttons
+                                type="button"
+                                title={t('Cancel')}
+                                style={'greyButton'}
+                                onClickFunction={toPreviousPage}
+                            />
+                        </ButtonContainer>
                     </form>
                 </FormContainer>
             )}
         />
-);
+    );
 };

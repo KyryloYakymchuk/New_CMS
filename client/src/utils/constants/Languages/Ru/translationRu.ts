@@ -22,11 +22,27 @@ export const ru = {
     'All Fields': 'Поля',
     'All Items': 'Продукты',
     'All Orders': 'Заказы',
-    // Modules
-    'All Modules': 'Все модули',
-    'New Module': 'Добавить модуль',
-    'Edit Module': 'Редактировать модуль',
-    'Module Fields': 'Поля модуля',
+    // Modules 
+    'All Modules':'Все модули',
+    'New Module':'Добавить модуль',
+    'Edit Module':'Редактировать модуль',
+    'Module Fields':'Поля модуля', 
+    'Create Field Module':'Создание Поля Модуля',
+    // Create Field 
+    'Max Chars':'Максимальное количество символов',
+    'Title':'Заголовок',
+    'Width':'Ширина',
+    'Default Text':'Текст по умолчанию',
+    'Height':'Высота',
+    'Max Items':'Максимальное количество файлов',
+    'Max Size':'Максимальный размер',
+    'Filetypes':'Типы файлов',
+    'Specifications':'Характеристики',
+    'Names (comma seperated)':'Имена (через запятую)',
+    'Values (comma seperated)':'Значения (через запятую)',
+    'Coordinates X':'Координаты X',
+    'Coordinates Y':'Координаты Y',
+
     // Settings
     Language: 'Язык',
     //Actions
@@ -61,7 +77,7 @@ export const ru = {
     'Sign In': 'Войти',
     Register: 'Зарегистрироваться',
     'Don`t have an account ?': 'Нет аккаунта ?',
-    'Hello! Welcome back.': 'Привет! Добро пожаловать назад.',
+    'Welcome!': 'Добро пожаловать!',
     'Log in with your data that you entered during Your registrarion':
         'Авторизуйтесь, используя данные, которые вы ввели при регистрации.',
     'Have an account ?': 'Уже есть аккаунт?',
@@ -93,7 +109,9 @@ export const ru = {
     'name should not be empty': 'Имя не должно быть пустым!',
     "Name shouldn't have spaces!": 'Имя не должно содержать пробелов!',
     'One letter, one number, only latin, and one special character':
-        'Одна буква, одна цифра, только латынь и один спец. символ',
+    'Одна буква, одна цифра, только латынь и один спец. символ',
+    'Only number':'Только цифры',
+    'Only latin':'Только латинские символы',
     // Modules
     'This module is already exists!': 'Этот модуль уже существует!',
     'Sorry, but these are сonstant field': 'Извините, но это постоянное поле',

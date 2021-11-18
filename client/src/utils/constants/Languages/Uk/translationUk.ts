@@ -22,11 +22,27 @@ export const ua = {
     'All Fields': 'Поля',
     'All Items': 'Продукти',
     'All Orders': 'Замовлення',
-    // Modules
-    'All Modules': 'Всi модулi',
-    'New Module': 'Додати модуль',
-    'Edit Module': 'Редагувати модуль',
-    'Module Fields': 'Поля модуля',
+    // Modules 
+    'All Modules':'Всi модулi',
+    'New Module':'Додати модуль',
+    'Edit Module':'Редагувати модуль',
+    'Module Fields':'Поля модуля',
+    'Create Field Module':'Створення Поля Модуля',
+    // Create Field 
+    'Max Chars':'Максимальна кількість символів',
+    'Title':'Заголовок',
+    'Width':'Ширина',
+    'Default Text':'Текст за замовчуванням',
+    'Height':'Висота',
+    'Max Items':'Максимальна кількість файлів',
+    'Max Size':'Максимальний розмір',
+    'Filetypes':'Типи файлів',
+    'Specifications':'Характеристики',
+    'Names (comma seperated)':'Імена (через кому)',
+    'Values (comma seperated)':'Значення (через кому)',
+    'Coordinates X':'Координати X',
+    'Coordinates Y':'Координати Y',
+
     // Settings
     Language: 'Мова',
     //Actions
@@ -61,7 +77,7 @@ export const ua = {
     'Sign In': 'Увійти',
     Register: 'Реєстрація',
     'Don`t have an account ?': 'Не маєте аккаунту?',
-    'Hello! Welcome back.': 'Привіт! З поверненням.',
+    'Welcome!': 'Ласкаво просимо!',
     'Log in with your data that you entered during Your registrarion':
         'Увійдіть, використовуючи дані, які ви ввели під час реєстрації',
     'Have an account ?': 'Є аккаунт?',
@@ -91,10 +107,12 @@ export const ua = {
     'Wrong date': 'Неправильна дата',
     'name should not be empty': 'Ім`я не повинно бути порожнім!',
     "Name shouldn't have spaces!": 'Ім`я не повинно містити прогалин!',
-    'Sorry, but these are сonstant field': 'Вибачте, але це поле заборонено до видалення',
-
+   'Sorry, but these are сonstant field':'Вибачте, але це поле заборонено до видалення',
     'One letter, one number, only latin, and one special character':
-        'Одна буква, одна цифра, лише латина та один спец. символ',
+    'Одна буква, одна цифра, лише латина та один спец. символ',
+    'Only number':'Тільки цифри',
+    'Only latin':'Тільки латинські символы',
+
     // Modules
     'This module is already exists!': 'Цей модуль існує!',
     //Fields
