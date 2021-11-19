@@ -211,7 +211,6 @@ export class ModulesController {
   @UseGuards(AuthGuard("jwt"))
   async addItemToWishList(
     @Body() userDTO: WishListDTO,
-    @Req() req: Request,
     @Headers("authorization") token: string
   ) {
     const verified = await this.userService.verifyToken(token.split(" ")[1]);
@@ -232,7 +231,6 @@ export class ModulesController {
   @UseGuards(AuthGuard("jwt"))
   async removeItemFromWishList(
     @Body() userDTO: DeleteItemFromWishListDTO,
-    @Req() req: Request,
     @Headers("authorization") token: string
   ) {
     const verified = await this.userService.verifyToken(token.split(" ")[1]);
@@ -284,7 +282,6 @@ export class ModulesController {
   @HttpCode(HttpStatus.OK)
   async addItemToViewed(
     @Body() userDTO: WishListDTO,
-    @Req() req: Request,
     @Headers("authorization") token: string
   ) {
     const verified = await this.userService.verifyToken(token.split(" ")[1]);
@@ -295,15 +292,16 @@ export class ModulesController {
     return await this.moduleService.addItemToViewed(verified.userID, userDTO);
   }
 
-  @Delete("/item")
+  @Delete("/item/:moduleName/:itemID")
   @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
   async deleteItem(
-    @Body() userDTO: DeleteItemDTO,
     @Req() req: Request,
-    @Query() paginationDTO: PaginationDTO
+    @Query() paginationDTO: PaginationDTO,
+    @Param() data: DeleteItemDTO
   ) {
-    const result = await this.moduleService.deleteItem(userDTO, paginationDTO);
+    const result = await this.moduleService.deleteItem(data, paginationDTO);
+
     await this.loggerGateway.logAction(req, module);
     return result;
   }
@@ -380,9 +378,9 @@ export class ModulesController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
   async getItemCategories(
-    @Param() userDTO: GetItemCategoriesDTO
+    @Param() dto: GetItemCategoriesDTO
   ): Promise<Record<string, any>> {
-    return this.moduleService.getItemCategories(userDTO);
+    return this.moduleService.getItemCategories(dto);
   }
 
   @Put("/item/categories")
@@ -498,8 +496,8 @@ export class ModulesController {
   @Get("fields/:moduleName")
   @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
-  async getFields(@Param("moduleName") userDTO: ModuleNameDTO) {
-    return this.moduleService.getFields(userDTO);
+  async getFields(@Param("moduleName") dto: ModuleNameDTO) {
+    return this.moduleService.getFields(dto);
   }
 
   @Post("fields")
