@@ -895,12 +895,6 @@ export class ModulesService {
         HttpStatus.BAD_REQUEST
       );
 
-    if (module.fields.find((e) => e.settings.name === settings["name"]))
-      throw new HttpException(
-        "Field with same name already exists",
-        HttpStatus.BAD_REQUEST
-      );
-
     if (name === "dropdown") {
       if (settings["labels"] && settings["values"]) {
         if (
