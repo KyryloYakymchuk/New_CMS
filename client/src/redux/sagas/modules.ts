@@ -90,7 +90,7 @@ function* createFieldModuleReq(config: ICreateFieldModuleAction) {
         yield put(setFieldsResponseAction(data));
         yield put(setModalStatusAction(true));
         yield put(setModalMessageAction('Field created successfuly!'));
-    } catch (error: any) {
+    } catch (error) {
         if (request.isAxiosError(error) && error.response) {
             yield put(errorAction(error.response?.data as IError));
         }
@@ -103,7 +103,7 @@ function* editFieldModuleReq(config: ICreateFieldModuleAction) {
         yield put(setFieldsResponseAction(data));
         yield put(setModalStatusAction(true));
         yield put(setModalMessageAction('Field edit successfuly!'));
-    } catch (error: any) {
+    } catch (error) {
         if (request.isAxiosError(error) && error.response) {
             yield put(errorAction(error.response?.data as IError));
         }

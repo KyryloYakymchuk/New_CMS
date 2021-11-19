@@ -32,22 +32,16 @@ export const CreateField: FC = () => {
     const dispatch = useDispatch();
 
     const onSubmit = (value: ICreateFieldProps) => {
+        let newFieldObj: ICreateFieldProps = {
+            moduleID: moduleEditData?.moduleID,
+            settings: { ...value },
+            type: currentField?.fieldType,
+            name: currentField?.type
+        };
         if (editedField?.id) {
-            const newFieldObj = {
-                moduleID: moduleEditData?.moduleID,
-                settings: { ...value },
-                type: currentField?.fieldType,
-                name: currentField?.type,
-                id: editedField.id
-            };
+            newFieldObj.id = editedField?.id;
             dispatch(editFieldModuleAction(newFieldObj));
         } else {
-            const newFieldObj = {
-                settings: { ...value },
-                moduleID: moduleEditData?.moduleID,
-                type: currentField?.fieldType,
-                name: currentField?.type
-            };
             dispatch(createFieldModuleAction(newFieldObj));
         }
     };
