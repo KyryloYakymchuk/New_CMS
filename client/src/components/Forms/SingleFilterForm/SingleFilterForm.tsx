@@ -5,6 +5,7 @@ import { Icons } from '@utils/constants/icon';
 import { useStyles } from '@utils/styles/field';
 import { FC } from 'react';
 import { Field, Form } from 'react-final-form';
+import { useTranslation } from 'react-i18next';
 import { ButtonBlock, FilterBlock } from './styled';
 
 interface IProps {
@@ -21,6 +22,7 @@ export const SingleFilterForm: FC<IProps> = ({
     onChangeFieldValue
 }) => {
     const classes = useStyles();
+    const { t } = useTranslation();
     return (
         <FilterBlock>
             <Form
@@ -33,7 +35,7 @@ export const SingleFilterForm: FC<IProps> = ({
                             filterFormValue={filterFormValue}
                             type="text"
                             name="search"
-                            label="Search"
+                            label={t('Search')}
                             variant="outlined"
                             component={ControlledFormField}
                             onChangeFieldValue={onChangeFieldValue}
@@ -42,9 +44,9 @@ export const SingleFilterForm: FC<IProps> = ({
                         </Field>
 
                         <ButtonBlock>
-                            <Buttons title="Search" type="submit" style="pinkButton" />
+                            <Buttons title={t('Search')} type="submit" style="pinkButton" />
                             <Buttons
-                                title="Clear"
+                                title={t('Clear')}
                                 type="button"
                                 style="grayButton"
                                 onClickFunction={clearSingleFilterFormValue}

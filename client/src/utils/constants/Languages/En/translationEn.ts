@@ -60,6 +60,8 @@ export const en = {
     Delete: 'Delete',
     Select: 'Select',
     'No items': 'No items',
+    Search: 'Search',
+    Clear: 'Clear',
     //List
     Name: 'Name',
     Email: 'Email',

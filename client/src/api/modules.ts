@@ -25,7 +25,7 @@ export const createModulesReqApi = (payload: ICreateModulePayload): Promise<IMod
 };
 export const editModulesReqApi = (payload: ICreateModulePayload): Promise<IModuleListData> => {
     const { name, moduleID, categories } = payload;
-    return api.post('/modules/', {
+    return api.put('/modules/', {
         name,
         moduleID,
         categories
