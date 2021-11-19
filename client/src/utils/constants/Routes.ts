@@ -71,7 +71,8 @@ export const protectedRoutes = [
     {
         path: ProtectedRoutes.MODULE_FIELDS,
         component: AllFields,
-        title: 'Module Fields'
+        title: 'Module Fields',
+        exact: true
     },
 
     {
@@ -79,6 +80,12 @@ export const protectedRoutes = [
         component: CreateField,
         title: 'Create Field Module'
     },
+    {
+        path: ProtectedRoutes.MODULE_FIELD_EDIT,
+        component: CreateField,
+        title: 'Edit Field Module'
+    },
+
     {
         path: ProtectedRoutes.GROUPS,
         component: Dashboard,

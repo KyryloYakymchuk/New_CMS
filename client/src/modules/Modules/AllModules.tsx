@@ -59,7 +59,7 @@ export const AllModules: FC = () => {
     };
     function moduleFieldClick<T extends IClickValue>(value: T) {
         return () => {
-            history.push(`/module/fields/${value.name}`);
+            history.push(`/module/${value.name}/fields/`);
             dispatch(
                 setEditDataModuleAction({
                     name: value.name,

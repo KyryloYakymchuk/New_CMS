@@ -13,7 +13,7 @@ export const textPromptField = (values: IFieldSettings) => {
     if (!values.name) {
         errors.name = i18n.t('name should not be empty');
     } else if (values.name && passwordSpacesRE.test(values.name)) {
-        errors.name = i18n.t('Password must not contain spaces');
+        errors.name = i18n.t("Name shouldn't have spaces!");
     } else if (values.name && !onlyLatin.test(values.name)) {
         errors.name = i18n.t('Only latin');
     } else if (values.name && values.name.length > 30) {
@@ -33,7 +33,7 @@ export const textboxField = (values: IFieldSettings) => {
     if (!values.name) {
         errors.name = i18n.t('name should not be empty');
     } else if (values.name && passwordSpacesRE.test(values.name)) {
-        errors.name = i18n.t('Password must not contain spaces');
+        errors.name = i18n.t("Name shouldn't have spaces!");
     } else if (values.name && !onlyLatin.test(values.name)) {
         errors.name = i18n.t('Only latin');
     } else if (values.name && values.name.length > 30) {
@@ -65,7 +65,7 @@ export const uploadField = (values: IFieldSettings) => {
     if (!values.name) {
         errors.name = i18n.t('name should not be empty');
     } else if (values.name && passwordSpacesRE.test(values.name)) {
-        errors.name = i18n.t('Password must not contain spaces');
+        errors.name = i18n.t("Name shouldn't have spaces!");
     } else if (values.name && !onlyLatin.test(values.name)) {
         errors.name = i18n.t('Only latin');
     } else if (values.name && values.name.length > 30) {
@@ -96,7 +96,7 @@ export const textAreaField = (values: IFieldSettings) => {
     if (!values.name) {
         errors.name = i18n.t('name should not be empty');
     } else if (values.name && passwordSpacesRE.test(values.name)) {
-        errors.name = i18n.t('Password must not contain spaces');
+        errors.name = i18n.t("Name shouldn't have spaces!");
     } else if (values.name && !onlyLatin.test(values.name)) {
         errors.name = i18n.t('Only latin');
     } else if (values.name && values.name.length > 30) {
@@ -118,7 +118,7 @@ export const mapField = (values: IFieldSettings) => {
     if (!values.name) {
         errors.name = i18n.t('name should not be empty');
     } else if (values.name && passwordSpacesRE.test(values.name)) {
-        errors.name = i18n.t('Password must not contain spaces');
+        errors.name = i18n.t("Name shouldn't have spaces!");
     } else if (values.name && !onlyLatin.test(values.name)) {
         errors.name = i18n.t('Only latin');
     } else if (values.name && values.name.length > 30) {
@@ -148,10 +148,10 @@ export const modulesField = (values: IFieldSettings) => {
     }
     if (!values.name) {
         errors.name = i18n.t('name should not be empty');
-    } else if (values.name && passwordSpacesRE.test(values.name)) {
-        errors.name = i18n.t('Password must not contain spaces');
     } else if (values.name && !onlyLatin.test(values.name)) {
         errors.name = i18n.t('Only latin');
+    } else if (values.name && passwordSpacesRE.test(values.name)) {
+        errors.name = i18n.t("Name shouldn't have spaces!");
     } else if (values.name && values.name.length > 30) {
         errors.name = i18n.t('Must have a maximum of 30 characters');
     }

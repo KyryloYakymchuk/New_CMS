@@ -2,9 +2,9 @@ import { FC, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 
-import { editableDataSelector } from '@redux/selectors/modules';
+import { editableDataSelector, editableFieldDataSelector } from '@redux/selectors/modules';
 import { errorAction } from '@redux/actions/error';
-import { createFieldModuleAction } from '@redux/actions/modules';
+import { createFieldModuleAction, editFieldModuleAction } from '@redux/actions/modules';
 
 import { initialfileds } from '@utils/constants/Modules/typeSelectData';
 import { useAppSelector } from '@utils/hooks/useAppSelector';
@@ -22,21 +22,28 @@ import { setModalStatusAction } from '@redux/actions/modal';
 
 export const CreateField: FC = () => {
     const [currentField, setCurrentField] = useState<IFieldProps>(initialfileds[0]);
+
     const history = useHistory();
-    const editData = useAppSelector(editableDataSelector);
     const message = useAppSelector(modalMessageSelector);
     const modalStatus = useAppSelector(modalStatusSelector);
+    const moduleEditData = useAppSelector(editableDataSelector);
+    const editedField = useAppSelector(editableFieldDataSelector);
 
     const dispatch = useDispatch();
 
     const onSubmit = (value: ICreateFieldProps) => {
-        const newFieldObj = {
+        let newFieldObj: ICreateFieldProps = {
+            moduleID: moduleEditData?.moduleID,
             settings: { ...value },
-            moduleID: editData?.moduleID,
             type: currentField?.fieldType,
             name: currentField?.type
         };
-        dispatch(createFieldModuleAction(newFieldObj));
+        if (editedField?.id) {
+            newFieldObj.id = editedField?.id;
+            dispatch(editFieldModuleAction(newFieldObj));
+        } else {
+            dispatch(createFieldModuleAction(newFieldObj));
+        }
     };
 
     const handleAccept = () => {
@@ -45,15 +52,20 @@ export const CreateField: FC = () => {
     };
 
     useEffect(() => {
-        if (!editData) {
-            history.push('/modules');
+        if (!moduleEditData) {
+            history.push('/modules/fields');
+        } else {
+            setCurrentField(
+                initialfileds?.find((field) => field.type === editedField?.name) || initialfileds[0]
+            );
         }
         dispatch(errorAction());
-    }, [editData]);
+    }, [moduleEditData]);
 
     return (
         <SelectContainer>
             <CreateFieldForm
+                editedField={editedField}
                 setCurrentField={setCurrentField}
                 onSubmit={onSubmit}
                 currentField={currentField}

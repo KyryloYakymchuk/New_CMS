@@ -42,3 +42,7 @@ export const deleteFieldModuleReqApi = (
 export const createFieldModuleReqApi = (payload: ICreateFieldProps): Promise<IModuleListData> => {
     return api.post('/modules/fields/', payload);
 };
+
+export const editFieldModuleReqApi = (payload: ICreateFieldProps): Promise<IModuleListData> => {
+    return api.put('/modules/fields/', payload);
+};

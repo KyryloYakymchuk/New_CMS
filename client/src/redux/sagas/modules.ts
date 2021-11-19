@@ -17,6 +17,7 @@ import {
     createModulesReqApi,
     deleteFieldModuleReqApi,
     deleteModulesReqApi,
+    editFieldModuleReqApi,
     editModulesReqApi,
     getModulesReqApi
 } from '@api/modules';
@@ -89,7 +90,20 @@ function* createFieldModuleReq(config: ICreateFieldModuleAction) {
         yield put(setFieldsResponseAction(data));
         yield put(setModalStatusAction(true));
         yield put(setModalMessageAction('Field created successfuly!'));
-    } catch (error: any) {
+    } catch (error) {
+        if (request.isAxiosError(error) && error.response) {
+            yield put(errorAction(error.response?.data as IError));
+        }
+    }
+}
+
+function* editFieldModuleReq(config: ICreateFieldModuleAction) {
+    try {
+        const { data } = yield call(editFieldModuleReqApi, config.payload);
+        yield put(setFieldsResponseAction(data));
+        yield put(setModalStatusAction(true));
+        yield put(setModalMessageAction('Field edit successfuly!'));
+    } catch (error) {
         if (request.isAxiosError(error) && error.response) {
             yield put(errorAction(error.response?.data as IError));
         }
@@ -103,4 +117,5 @@ export function* modulesWatcher() {
     yield takeEvery(ModulesActionTypes.EDIT_MODULE, editModulesReq);
     yield takeEvery(ModulesActionTypes.DELETE_FIELD_MODULE, deleteFieldModuleReq);
     yield takeEvery(ModulesActionTypes.CREATE_FIELD_MODULE, createFieldModuleReq);
+    yield takeEvery(ModulesActionTypes.EDIT_FIELD_MODULE, editFieldModuleReq);
 }

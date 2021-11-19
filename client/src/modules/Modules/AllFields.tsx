@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import { editableDataSelector } from '@redux/selectors/modules';
-import { deleteFieldModuleAction } from '@redux/actions/modules';
+import { deleteFieldModuleAction, setFieldDataAction } from '@redux/actions/modules';
 
 import { Buttons } from '@components/Button/Button';
 import { ListDD } from '@components/ListDD/ListDD';
@@ -36,8 +36,14 @@ export const AllFields: FC = () => {
 
     function editFieldClick<T extends IModuleField>(value: T) {
         return () => {
-            console.log(value);
-            //!for eslint
+            setFieldId(value.id);
+            if (constantFields.includes(value.id)) {
+                setModalMessage('Sorry, but these are сonstant field');
+                setModalStatus(true);
+            } else {
+                history.push(`/module/${allFieldsModule?.name}/fields/${value.title}/edit/`);
+                dispatch(setFieldDataAction(value));
+            }
         };
     }
     function deleteFieldClick<T extends IModuleField>(value: T) {
@@ -71,6 +77,7 @@ export const AllFields: FC = () => {
     ];
 
     useEffect(() => {
+        dispatch(setFieldDataAction());
         if (!allFieldsModule) {
             history.push('/modules/');
         }
