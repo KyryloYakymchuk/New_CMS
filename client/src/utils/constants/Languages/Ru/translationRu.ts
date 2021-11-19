@@ -59,6 +59,9 @@ export const ru = {
     Delete: 'Удалить',
     Select: 'Выбрать',
     'No items': 'Нет опций',
+    Search: 'Поиск',
+    Clear: 'Отчистить',
+
     //List
     Name: 'Имя',
     Email: 'Почта',

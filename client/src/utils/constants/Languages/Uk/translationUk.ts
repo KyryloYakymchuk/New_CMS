@@ -60,6 +60,9 @@ export const ua = {
     Delete: 'Видалити',
     Select: 'Обрати',
     'No items': 'немає опцiй',
+    Search: 'Пошук',
+    Clear: 'Відчистити',
+
     //List
     Name: 'Iм`я',
     Email: 'Пошта',

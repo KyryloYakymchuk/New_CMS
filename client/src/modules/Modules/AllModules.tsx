@@ -16,7 +16,12 @@ import { List } from '@components/List/List';
 import { Pagination } from '@components/Pagination/Pagination';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
 import { ModalButton } from '@components/Modal/ModalButton';
-import { ISortHandlerValue, ISortParams } from '@interfaces/types';
+import {
+    EventChangeType,
+    ISingleFilterFormValue,
+    ISortHandlerValue,
+    ISortParams
+} from '@interfaces/types';
 import { Icons } from '@utils/constants/icon';
 import { modulesListColumns } from '@utils/constants/ListsData/ListsData';
 import { handleListSort } from '@utils/functions/handleListSort';
@@ -24,6 +29,8 @@ import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { PageHeader, UserPageContainer } from '@modules/Users/styled';
 import { offsetGenerator } from '@utils/functions/offsetGenerator';
 import { modalMessageSelector } from '@redux/selectors/modal';
+import { DrawerFilterMenu } from '@components/DrawerFilterMenu/DrawerFilterMenu';
+import { SingleFilterForm } from '@components/Forms/SingleFilterForm/SingleFilterForm';
 
 const LIMIT = 10;
 interface IClickValue extends ISetModulePayload {
@@ -44,6 +51,9 @@ export const AllModules: FC = () => {
     const [modalStatus, setModalStatus] = useState(false);
     const [moduleId, setModuleId] = useState<string>();
     const [deleteRequestStatus, setDeleteRequestStatus] = useState(false);
+    const [drawerMenuOpenStatus, setDrawerMenuOpenStatus] = useState(false);
+    const [filterFormValue, setFilterFormValue] = useState('');
+    const [filterFormSearchStatus, setFilterFormSearchStatus] = useState(false);
 
     const handleSortClick = (sortField: string) => () => {
         const temp: ISortHandlerValue = handleListSort(
@@ -70,7 +80,6 @@ export const AllModules: FC = () => {
             );
         };
     }
-
     function editModuleClick<T extends IClickValue>(value: T) {
         return () => {
             history.push(`/module/edit/${value.name}`);
@@ -92,7 +101,6 @@ export const AllModules: FC = () => {
             setDeleteRequestStatus(true);
         };
     }
-
     const handleAccept = () => {
         const queryParams: IGetModulePayload = {
             ...sortParams,
@@ -111,6 +119,27 @@ export const AllModules: FC = () => {
     };
     const handleClose = () => {
         setModalStatus(false);
+    };
+    const onSubmitSingleFilterForm = (value: ISingleFilterFormValue) => {
+        if (filterFormValue !== '') {
+            setFilterFormSearchStatus(!filterFormSearchStatus);
+        }
+        setDrawerMenuOpenStatus(!drawerMenuOpenStatus);
+        setFilterFormValue(value.search);
+    };
+    const clearSingleFilterFormValue = () => {
+        if (filterFormValue !== '') {
+            setFilterFormSearchStatus(!filterFormSearchStatus);
+        }
+        setFilterFormValue('');
+        setDrawerMenuOpenStatus(!drawerMenuOpenStatus);
+    };
+    const onChangeFieldValue = (e: EventChangeType) => {
+        setFilterFormValue(e.target.value);
+    };
+
+    const toggleDrawerMenu = () => {
+        setDrawerMenuOpenStatus(!drawerMenuOpenStatus);
     };
 
     const actionsButtons = [
@@ -133,9 +162,12 @@ export const AllModules: FC = () => {
             ),
             limit: LIMIT
         };
+        if (filterFormValue) {
+            queryParams.search = filterFormValue;
+        }
         dispatch(setEditDataModuleAction({}));
         dispatch(getModulesAction(queryParams));
-    }, [dispatch, currentPage]);
+    }, [dispatch, currentPage, filterFormSearchStatus]);
 
     return (
         <UserPageContainer>
@@ -147,18 +179,17 @@ export const AllModules: FC = () => {
                     onClickFunction={createModuleClick}
                     icon={<Icons.AddIcon />}
                 />
-                {/* Future filter  */}
-                {/* <DrawerFilterMenu
-                toggleDrawerMenu={toggleDrawerMenu}
-                drawerMenuOpenStatus={drawerMenuOpenStatus}
-            >
-                <SingleFilterForm
-                    filterFormValue={filterFormValue}
-                    onSubmitSingleFilterForm={onSubmitSingleFilterForm}
-                    clearSingleFilterFormValue={clearSingleFilterFormValue}
-                    onChangeFieldValue={onChangeFieldValue}
-                />
-            </DrawerFilterMenu> */}
+                <DrawerFilterMenu
+                    toggleDrawerMenu={toggleDrawerMenu}
+                    drawerMenuOpenStatus={drawerMenuOpenStatus}
+                >
+                    <SingleFilterForm
+                        filterFormValue={filterFormValue}
+                        onSubmitSingleFilterForm={onSubmitSingleFilterForm}
+                        clearSingleFilterFormValue={clearSingleFilterFormValue}
+                        onChangeFieldValue={onChangeFieldValue}
+                    />
+                </DrawerFilterMenu>
             </PageHeader>
             <List
                 sortHandler={handleSortClick}
