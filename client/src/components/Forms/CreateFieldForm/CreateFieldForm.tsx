@@ -20,18 +20,24 @@ import { ICreateFieldProps, IFieldProps } from '@interfaces/types';
 
 import { Select } from '@modules/Settings/styled/styled';
 import { useStyles } from '@utils/styles/field';
+import { IModuleField } from '@redux/types/modules';
 
 interface IProps {
     currentField?: IFieldProps;
     onSubmit: (value: ICreateFieldProps) => void;
     setCurrentField: (value: IFieldProps) => void;
+    editedField?: IModuleField;
 }
 
-export const CreateFieldForm: FC<IProps> = ({ currentField, onSubmit, setCurrentField }) => {
+export const CreateFieldForm: FC<IProps> = ({
+    currentField,
+    onSubmit,
+    setCurrentField,
+    editedField
+}) => {
     const { t } = useTranslation();
     const errorMessage = useAppSelector(errorMessageSelector);
     const classes = useStyles();
-
     const handleChange =
         (form: FormApi<ICreateFieldProps, Partial<ICreateFieldProps>>) =>
         (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -40,10 +46,10 @@ export const CreateFieldForm: FC<IProps> = ({ currentField, onSubmit, setCurrent
             );
             form.reset();
         };
-
     return (
         <Form
             onSubmit={onSubmit}
+            initialValues={currentField?.type === editedField?.name && editedField?.settings}
             validate={currentField?.validate}
             render={({ handleSubmit, form }) => (
                 <FormContainer>
@@ -52,7 +58,11 @@ export const CreateFieldForm: FC<IProps> = ({ currentField, onSubmit, setCurrent
                         <div>
                             <Select onChange={handleChange(form)}>
                                 {initialfileds.map(({ type }, index) => (
-                                    <option key={index} value={type}>
+                                    <option
+                                        selected={editedField?.name === type}
+                                        key={index}
+                                        value={type}
+                                    >
                                         {type}
                                     </option>
                                 ))}

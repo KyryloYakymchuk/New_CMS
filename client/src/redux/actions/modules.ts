@@ -6,7 +6,8 @@ import {
     IDeleteModulePayload,
     ICreateModulePayload,
     IDeleteFieldModulePayload,
-    IFieldResponse
+    IFieldResponse,
+    IModuleField
 } from '@redux/types/modules';
 import { actionGenerator } from '@utils/functions/actionGenerator';
 
@@ -33,3 +34,9 @@ export const setFieldsResponseAction = actionGenerator<IFieldResponse>(
 export const createFieldModuleAction = actionGenerator<ICreateFieldProps>(
     ModulesActionTypes.CREATE_FIELD_MODULE
 );
+
+export const editFieldModuleAction = actionGenerator<ICreateFieldProps>(
+    ModulesActionTypes.EDIT_FIELD_MODULE
+);
+
+export const setFieldDataAction = actionGenerator<IModuleField>(ModulesActionTypes.SET_FIELD_DATA);

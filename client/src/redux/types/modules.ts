@@ -10,7 +10,9 @@ export enum ModulesActionTypes {
     EDIT_MODULE = 'EDIT_MODULE',
     DELETE_FIELD_MODULE = 'DELETE_FIELD_MODULE',
     SET_FIELD_RESPONSE = 'SET_FIELD_RESPONSE',
-    CREATE_FIELD_MODULE = 'CREATE_FIELD_MODULE'
+    CREATE_FIELD_MODULE = 'CREATE_FIELD_MODULE',
+    SET_FIELD_DATA = 'SET_FIELD_DATA',
+    EDIT_FIELD_MODULE = 'EDIT_FIELD_MODULE'
 }
 
 export interface ISetModulePayload {
@@ -53,9 +55,20 @@ export interface ICreateModulePayload {
     fields?: [];
 }
 
+export interface IModuleField {
+    id: string;
+    name: string;
+    title: string;
+    order: number;
+    module?: string;
+    settings: IModuleSettings;
+    type: string;
+}
+
 export interface IModules {
     modules?: IModuleListData;
     editableModule?: ICreateModulePayload;
+    editableField?: IModuleField;
 }
 
 export interface IDeleteModulePayload {
@@ -71,15 +84,6 @@ export interface IDeleteModuleAction {
 export interface IModuleSettings {
     required: string;
     textPrompt: string;
-}
-
-export interface IModuleField {
-    id: string;
-    name: string;
-    title: string;
-    order: number;
-    settings: IModuleSettings;
-    type: string;
 }
 
 export interface ICreateModuleAction {
@@ -119,6 +123,16 @@ export interface ICreateFieldModuleAction {
     payload: ICreateFieldProps;
 }
 
+export interface ISetFieldData {
+    type: ModulesActionTypes.SET_FIELD_DATA;
+    payload: IModuleField;
+}
+
+export interface IEditFieldModuleAction {
+    type: ModulesActionTypes.EDIT_FIELD_MODULE;
+    payload: ICreateFieldProps;
+}
+
 export type IModuleActions =
     | IGetModuleAction
     | ISetModuleAction
@@ -127,4 +141,5 @@ export type IModuleActions =
     | ISetEditDataModuleAction
     | ISetFieldResponseAction
     | IDeleteFieldModuleAction
-    | ICreateFieldModuleAction;
+    | ICreateFieldModuleAction
+    | ISetFieldData;

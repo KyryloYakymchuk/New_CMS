@@ -55,7 +55,7 @@ export interface IFieldSelectSettings {
 }
 
 export interface IFieldSettings {
-    id?: number;
+    id?: number | string;
     name?: string;
     type?: string;
     key?: string;
@@ -75,7 +75,7 @@ export interface IFieldSettings {
 
 export interface ICreateFieldProps {
     history?: History;
-    id?: number;
+    id?: number | string;
     name?: string;
     type?: string;
     key?: string;
@@ -85,7 +85,7 @@ export interface ICreateFieldProps {
 }
 
 export interface IFieldProps {
-    id?: number;
+    id?: number | string;
     name?: string;
     type?: string;
     key?: string;
