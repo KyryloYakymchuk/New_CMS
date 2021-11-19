@@ -641,11 +641,11 @@ export class ModulesService {
   ): Promise<Record<string, any>> {
     const file = join(__dirname, "..", "schemas", `${dto}.js`);
 
-    fs.access(file, async (err) => {
-      if (err) {
-        throw new HttpException("Schema not found!", HttpStatus.BAD_REQUEST);
-      }
-    });
+    if (!fs.existsSync(file))
+      throw new HttpException(
+        "Module schema is missing. You need create items first",
+        HttpStatus.BAD_REQUEST
+      );
 
     return this.getItemsList(String(dto), paginationDTO);
   }
