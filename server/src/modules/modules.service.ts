@@ -619,11 +619,11 @@ export class ModulesService {
     );
   }
 
-  async removeItemCategoryByID(userDTO: DeleteItemCategoryDTO) {
-    const { moduleName: itemID, categoryID } = userDTO;
+  async removeItemCategoryByID(dto: DeleteItemCategoryDTO) {
+    const { moduleName: itemID, categoryID } = dto;
 
     await mongoose.connect(process.env.MONGO_URI, options);
-    const Item = require(`../../schemas/${userDTO.moduleName}`);
+    const Item = require(`../../schemas/${dto.moduleName}`);
     const currentItem = await Item.findOne({ "itemData.itemID": itemID });
     const newCategories =
       currentItem?.categories?.length &&

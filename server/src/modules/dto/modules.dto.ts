@@ -1,3 +1,4 @@
+import { Transform } from "class-transformer";
 import { IsNotEmpty } from "class-validator";
 
 export class AddModuleDTO {
@@ -185,34 +186,22 @@ export class ResponseItemsDTO {
   status: string;
 }
 
-export class ResponseItemDto {
-  constructor(item: Record<any, any>) {
-    this.itemID = item.itemID;
-    this.name = item.name;
-    this.rating = item.rating;
-    this.description = item.description;
-    this.variants = item.variants;
-  }
-
-  itemID: string;
-  name: number;
-  rating: number;
-  description: string;
-  variants: Array<any>;
-}
-
 export class WishListDTO {
   itemId: string;
   moduleName: string;
 }
 
 export class PaginationDTO {
+  @Transform((offset) => Number(offset) || 0)
   offset?: number;
+  @Transform((limit) => Number(limit) || 10)
   limit?: number;
 }
 
 export class GetItemsDTO {
+  @Transform((offset) => Number(offset) || 0)
   offset?: number;
+  @Transform((limit) => Number(limit) || 10)
   limit?: number;
   name?: string;
   category?: string;

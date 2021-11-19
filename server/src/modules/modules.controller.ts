@@ -16,6 +16,8 @@ import {
   UploadedFiles,
   UseGuards,
   UseInterceptors,
+  UsePipes,
+  ValidationPipe,
 } from "@nestjs/common";
 import { AnyFilesInterceptor } from "@nestjs/platform-express";
 import { diskStorage } from "multer";
@@ -117,6 +119,7 @@ export class ModulesController {
   @Get("/items/:name")
   @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
+  @UsePipes(new ValidationPipe({ transform: true }))
   async getItems(
     @Param("name") dto: ModuleNameDTO,
     @Query() paginationDTO: GetItemsDTO,

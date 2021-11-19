@@ -13,8 +13,8 @@ const WebshopSchema = new mongoose.Schema(
     variants: Array,
     image: Array,
   },
-  { collection: "Webshop" }
+  { collection: "webshop" }
 );
 
 module.exports =
-  mongoose.models["Webshop"] || mongoose.model("Webshop", WebshopSchema);
+  mongoose.models["webshop"] || mongoose.model("webshop", WebshopSchema);
