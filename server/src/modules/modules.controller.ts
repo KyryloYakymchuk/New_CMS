@@ -135,7 +135,7 @@ export class ModulesController {
     if (!items)
       throw new HttpException("Items not found!", HttpStatus.NOT_FOUND);
 
-    if (!responseFields.fields) return items;
+    if (!responseFields?.fields) return items;
 
     const fields = responseFields?.fields.split(",");
 
