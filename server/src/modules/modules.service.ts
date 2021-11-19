@@ -901,6 +901,18 @@ export class ModulesService {
         HttpStatus.BAD_REQUEST
       );
 
+    if (name === "dropdown") {
+      if (settings["labels"] && settings["values"]) {
+        if (
+          settings["labels"].split(",").length !==
+          String(settings.values).split(",").length
+        )
+          throw new HttpException(
+            "Counts of labels and values are different",
+            HttpStatus.BAD_REQUEST
+          );
+      }
+    }
     const moduleFields = module.fields;
 
     const maxOrderObject =
