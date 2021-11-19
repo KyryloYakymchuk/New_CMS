@@ -203,7 +203,8 @@ export class ModulesService {
       "icon",
       "maxSize",
       "name",
-      'title'
+      "title",
+      "labels",
     ];
 
     fields.forEach((obj) => {
@@ -526,9 +527,7 @@ export class ModulesService {
         const fields = { itemID: "string" };
 
         module.fields.forEach((field) => {
-          fields[field.settings.name] = ModulesService.validateType(
-            field.type
-          );
+          fields[field.settings.name] = ModulesService.validateType(field.type);
         });
 
         await this.saveSchema(this.generateSchema(module), modelFile);
@@ -889,23 +888,14 @@ export class ModulesService {
     const module = await this.findModulesByID(moduleID);
     if (!module)
       throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
-console.log(module);
 
-    if (
-      module.fields.find(
-        (e) => e.settings.name === settings["name"]
-      )
-    )
+    if (module.fields.find((e) => e.settings.name === settings["name"]))
       throw new HttpException(
         "Field with same name already exists",
         HttpStatus.BAD_REQUEST
       );
 
-    if (
-      module.fields.find(
-        (e) => e.settings.name === settings["name"]
-      )
-    )
+    if (module.fields.find((e) => e.settings.name === settings["name"]))
       throw new HttpException(
         "Field with same name already exists",
         HttpStatus.BAD_REQUEST
