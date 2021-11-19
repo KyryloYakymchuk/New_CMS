@@ -15,8 +15,20 @@ export const initialfileds = [
         key: 'text',
         type: 'checkbox',
         fieldType: 'boolean',
-        validate: textPromptField,
-        settings: [{ id: 0, name: i18n.t('Name'), key: 'name' }]
+        validate: textAreaField,
+        settings: [
+            { id: 0, name: i18n.t('Name'), key: 'name' },
+            {
+                id: 1,
+                name: i18n.t('Required'),
+                key: 'required',
+                defaultValue: 'false',
+                select: [
+                    { id: 0, value: 'false', optionLabel: 'false' },
+                    { id: 1, value: 'true', optionLabel: 'true' }
+                ]
+            }
+        ]
     },
     {
         id: 1,
@@ -137,7 +149,7 @@ export const initialfileds = [
             {
                 id: 1,
                 name: i18n.t('Names (comma seperated)'),
-                key: 'names',
+                key: 'labels',
                 defaultValue: '',
                 input: ''
             },

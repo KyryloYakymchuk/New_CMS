@@ -204,6 +204,7 @@ export class ModulesService {
       "maxSize",
       "name",
       "title",
+      "labels",
     ];
 
     fields.forEach((obj) => {
