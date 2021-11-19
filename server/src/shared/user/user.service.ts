@@ -44,15 +44,17 @@ export class UserService {
 
     const group = await this.userModel.findOne({ name: "User" });
 
+    const userGroup = {
+      label: group.name,
+      value: group.groupID,
+    };
+    const newGroups = [userGroup];
+
+    if (userDTO["group"]) newGroups.concat(userDTO["group"]);
+
     const createdUser = new this.userModel({
       ...userDTO,
-      group: [
-        {
-          label: group.name,
-          value: group.groupID,
-        },
-        ...userDTO["group"],
-      ],
+      group: [],
     });
 
     await createdUser.save();
