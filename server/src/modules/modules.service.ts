@@ -650,11 +650,16 @@ export class ModulesService {
   }
 
   async deleteItem(
-    userDTO: DeleteItemDTO,
+    dto: DeleteItemDTO,
     paginationDTO: PaginationDTO
   ): Promise<Record<string, any>> {
-    const { itemID, moduleName } = userDTO;
+    const { itemID, moduleName } = dto;
 
+    const isItemExist = await this.getItemByID(moduleName, itemID);
+
+    if (!isItemExist) {
+      throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
+    }
     const file = join(__dirname, "..", "schemas", `${moduleName}.js`);
 
     fs.access(file, async (err) => {
@@ -663,11 +668,6 @@ export class ModulesService {
       }
     });
 
-    const isItemExist = await this.getItemByID(moduleName, itemID);
-
-    if (!isItemExist) {
-      throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
-    }
     await this.removeItemByID(moduleName, itemID);
     return this.getItemsList(moduleName, paginationDTO);
   }
