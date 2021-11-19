@@ -279,16 +279,18 @@ export class ModulesService {
     moduleName: string,
     paginationDTO?: PaginationDTO
   ): Promise<Record<any, any>> {
-    const { limit, offset } = paginationDTO;
+    const { limit = 10, offset = 0 } = paginationDTO;
+
     await mongoose.connect(process.env.MONGO_URI, options);
+
     const Item = require(`../../schemas/${moduleName}`);
 
-    const items = await Item.find()
-      .skip(!!offset ? +offset : "")
-      .limit(!!limit ? +limit : "");
+    const items = await Item.find().skip(offset).limit(limit);
+
     const fullItemsList = await Item.find();
 
     await mongoose.connection.close();
+
     return { count: fullItemsList.length, items };
   }
 
@@ -617,7 +619,7 @@ export class ModulesService {
   }
 
   async removeItemCategoryByID(userDTO: DeleteItemCategoryDTO) {
-    const { moduleName: /*userName,*/ itemID, categoryID } = userDTO;
+    const { moduleName: itemID, categoryID } = userDTO;
 
     await mongoose.connect(process.env.MONGO_URI, options);
     const Item = require(`../../schemas/${userDTO.moduleName}`);
@@ -633,16 +635,18 @@ export class ModulesService {
   }
 
   async getItems(
-    userDTO: ModuleNameDTO,
+    dto: ModuleNameDTO,
     paginationDTO: PaginationDTO
   ): Promise<Record<string, any>> {
-    const file = join(__dirname, "..", "schemas", `${userDTO}.js`);
+    const file = join(__dirname, "..", "schemas", `${dto}.js`);
+
     fs.access(file, async (err) => {
       if (err) {
         throw new HttpException("Schema not found!", HttpStatus.BAD_REQUEST);
       }
     });
-    return this.getItemsList(String(userDTO), paginationDTO);
+
+    return this.getItemsList(String(dto), paginationDTO);
   }
 
   async deleteItem(
