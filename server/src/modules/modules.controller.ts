@@ -369,10 +369,10 @@ export class ModulesController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
   async editItemsOrder(
-    @Body() userDTO: EditItemsOrderDTO,
+    @Body() dto: EditItemsOrderDTO,
     @Req() req: Request
   ): Promise<Record<string, any>> {
-    const result = await this.moduleService.editItemsOrder(userDTO);
+    const result = await this.moduleService.editItemsOrder(dto);
     await this.loggerGateway.logAction(req, module);
     return result;
   }
@@ -535,10 +535,10 @@ export class ModulesController {
   @UseGuards(AuthGuard("jwt"))
   @HttpCode(HttpStatus.OK)
   async editFieldsOrder(
-    @Body() userDTO: EditFieldsOrderDTO,
+    @Body() dto: EditFieldsOrderDTO,
     @Req() req: Request
   ): Promise<Record<string, any>> {
-    const result = await this.moduleService.editFieldsOrder(userDTO);
+    const result = await this.moduleService.editFieldsOrder(dto);
     await this.loggerGateway.logAction(req, module);
     return result;
   }
