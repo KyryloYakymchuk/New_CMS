@@ -44,7 +44,7 @@ export const en = {
     'Coordinates X': 'Coordinates X',
     'Coordinates Y': 'Coordinates Y',
     'Field created successfuly!': 'Field created successfuly!',
-    'Field edit successfuly!': 'Field edit successfuly!',
+    'Field edited successfuly!': 'Field edited successfuly!',
 
     // Settings
     Language: 'Language',

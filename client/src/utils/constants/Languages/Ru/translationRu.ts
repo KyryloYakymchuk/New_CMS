@@ -44,7 +44,7 @@ export const ru = {
     'Coordinates X': 'Координаты X',
     'Coordinates Y': 'Координаты Y',
     'Field created successfuly!': 'Поле удачно создано!',
-    'Field edit successfuly!': 'Поле удачно отредактировано!',
+    'Field edited successfuly!': 'Поле удачно отредактировано!',
 
     // Settings
     Language: 'Язык',

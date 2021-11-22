@@ -45,7 +45,7 @@ export const ua = {
     'Coordinates X': 'Координати X',
     'Coordinates Y': 'Координати Y',
     'Field created successfuly!': 'Поле вдало створено!',
-    'Field edit successfuly!': 'Поле успішно відредаговано!',
+    'Field edited successfuly!': 'Поле успішно відредаговано!',
 
     // Settings
     Language: 'Мова',

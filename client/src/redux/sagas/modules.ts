@@ -112,7 +112,7 @@ function* editFieldModuleReq(config: ICreateFieldModuleAction) {
         const { data } = yield call(editFieldModuleReqApi, config.payload);
         yield put(setFieldsResponseAction(data));
         yield put(setModalStatusAction(true));
-        yield put(setModalMessageAction('Field edit successfuly!'));
+        yield put(setModalMessageAction('Field edited successfuly!'));
     } catch (error) {
         if (request.isAxiosError(error) && error.response) {
             yield put(errorAction(error.response?.data as IError));
