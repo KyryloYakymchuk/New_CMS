@@ -298,6 +298,7 @@ export class ModulesController {
   @Delete("/item/:moduleName/:itemID")
   @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
+  @UsePipes(new ValidationPipe({ transform: true }))
   async deleteItem(
     @Req() req: Request,
     @Query() paginationDTO: PaginationDTO,
