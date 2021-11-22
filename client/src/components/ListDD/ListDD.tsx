@@ -4,7 +4,7 @@ import { ListTitle } from '@components/List/ListTitle/ListTitle';
 import { ListContainer } from '@components/List/styled';
 import { ListDDElement } from './ListElement/ListDDElement';
 import { formaterFieldListData } from '@utils/functions/formaterFieldListData';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import { getItemStyle } from '@utils/styles/dragListElement';
 import { useTranslation } from 'react-i18next';
 
@@ -21,7 +21,7 @@ interface IProps<T> {
     listData?: any;
     arrButton: IArrButton<T>[];
     sortColumn?: string;
-    onDragEnd: (result: any) => void;
+    onDragEnd: (result: DropResult) => void;
 }
 
 export function ListDD<T>({

@@ -23,9 +23,8 @@ import { moduleFieldsListColumns } from '@utils/constants/ListsData/ListsData';
 import { constantFields } from '@utils/constants/Modules/constantsFields';
 import { changeOrderList } from '@utils/functions/changeOrderList';
 
-import { IDragResult } from '@interfaces/types';
-
 import { PageHeader, UserPageContainer } from '@modules/Users/styled';
+import { DropResult } from 'react-beautiful-dnd';
 
 export const AllFields: FC = () => {
     const { t } = useTranslation();
@@ -70,7 +69,7 @@ export const AllFields: FC = () => {
         setModalStatus(false);
     };
 
-    const onDragEnd = (result: IDragResult) => {
+    const onDragEnd = (result: DropResult) => {
         const { source, destination } = result;
 
         if (!destination) {
