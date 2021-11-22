@@ -53,7 +53,6 @@ export const getModulesItemsReqApi = (
     payload: IGetModuleItemsPayload
 ): Promise<IModuleItemRequestData> => {
     const { moduleName, params } = payload;
-    console.log(payload);
     return api.get('/modules/items/' + moduleName, {
         params: params
     });
