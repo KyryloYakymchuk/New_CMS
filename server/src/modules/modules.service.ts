@@ -281,7 +281,6 @@ export class ModulesService {
     paginationDTO?: PaginationDTO
   ): Promise<Record<any, any>> {
     const { limit = 10, offset = 0 } = paginationDTO;
-
     await mongoose.connect(process.env.MONGO_URI, options);
 
     const Item = require(`../../schemas/${moduleName}`);
@@ -648,8 +647,8 @@ export class ModulesService {
     if (!isItemExist) {
       throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
     }
-    const file = join(__dirname, "..", "schemas", `${moduleName}.js`);
 
+    const file = join(__dirname, "..", "schemas", `${moduleName}.js`);
     fs.access(file, async (err) => {
       if (err) {
         throw new HttpException("Schema not found!", HttpStatus.NOT_FOUND);

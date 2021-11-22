@@ -304,6 +304,7 @@ export class ModulesController {
     @Query() paginationDTO: PaginationDTO,
     @Param() data: DeleteItemDTO
   ) {
+
     const result = await this.moduleService.deleteItem(data, paginationDTO);
 
     await this.loggerGateway.logAction(req, module);

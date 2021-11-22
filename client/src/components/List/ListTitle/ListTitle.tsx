@@ -10,13 +10,13 @@ interface IProps {
     listColumns: IListColumns[];
     sortColumn?: string;
 }
-export const ListTitle: FC<IProps> = ({ listColumns, sortType, sortColumn }) => {
+export const ListTitle: FC<IProps> = ({ listColumns, sortType, sortColumn, sortHandler }) => {
     const { t } = useTranslation();
 
     return (
         <ListTitleContainer>
             {listColumns.map(({ title, name }) => (
-                <div>
+                 <div onClick={sortHandler ? sortHandler(name) : undefined}>
                     {title}
                     {sortColumn === name && (
                         <SvgButton sortType={sortType}>{<Icons.ExpandMoreIcon />}</SvgButton>

@@ -12,7 +12,10 @@ export enum ModulesActionTypes {
     SET_FIELD_RESPONSE = 'SET_FIELD_RESPONSE',
     CREATE_FIELD_MODULE = 'CREATE_FIELD_MODULE',
     SET_FIELD_DATA = 'SET_FIELD_DATA',
-    EDIT_FIELD_MODULE = 'EDIT_FIELD_MODULE'
+    EDIT_FIELD_MODULE = 'EDIT_FIELD_MODULE',
+    GET_MODULES_ITEMS = 'GET_MODULES_ITEMS',
+    SET_MODULES_ITEMS = 'SET_MODULES_ITEMS',
+    DELETE_MODULE_ITEM = 'DELETE_MODULE_ITEM'
 }
 
 export interface ISetModulePayload {
@@ -21,18 +24,84 @@ export interface ISetModulePayload {
     name: string;
     moduleID: string;
 }
+interface IItemVariants {
+    variantID: string;
+    images: string[];
+    order: number;
+    name: string;
+    status: string;
+    code: string;
+    quantity: number;
+    werehouse: boolean;
+    price: number;
+    discount: number;
+    tax: number;
+}
+export interface IItemDataComments {
+    id: string;
+    rating: string;
+    title: string;
+    description: string;
+    name: string;
+    likes: number;
+    dislikes: number;
+    avatar: string;
+    date: string;
+    likedUsers: string[];
+}
+export interface IItemData {
+    publishDate: string;
+    archiveDate: string;
+    status: string;
+    name: string;
+    description: string;
+    order: number;
+    rating: number;
+    categoryID: string;
+    likedUsers: string[];
+    comments: IItemDataComments[];
+    itemID: string;
+    shape: string;
+    color: string;
+    mayLike: string[];
+}
+export interface IModuleItemData {
+    variants: IItemVariants[];
+    image: string[];
+    _id: string;
+    itemData: IItemData;
+    __v: number;
+    order: number;
+}
+export interface IModuleItemRequestData {
+    count: number;
+    items: IModuleItemData[];
+}
 
 export interface IModuleListData {
     count: number;
     modules: ISetModulePayload[];
 }
-
+export interface IModuleInfo {
+    moduleName: string;
+}
 export interface IGetModulePayload {
     limit: number;
     offset: number;
     search?: string;
 }
-
+export interface IRequestInfo {
+    moduleName?: string;
+    itemId?: string;
+}
+export interface IGetModuleItemsPayload {
+    params: { offset: number; limit: number };
+    moduleName?: string;
+}
+export interface IDeleteModuleItemsPayload {
+    params: { limit: number; offset?: number };
+    requestInfo: IRequestInfo;
+}
 export interface IQueryParams {
     queryParams: IGetModulePayload;
 }
@@ -42,6 +111,19 @@ export interface IGetModuleAction {
     payload: IQueryParams;
 }
 
+export interface IGetModuleItemsAction {
+    type: ModulesActionTypes.GET_MODULES_ITEMS;
+    payload: IGetModuleItemsPayload;
+}
+
+export interface ISetModuleItemsAction {
+    type: ModulesActionTypes.SET_MODULES_ITEMS;
+    payload: IModuleItemRequestData;
+}
+export interface IDeleteModulesItemsAction {
+    type: ModulesActionTypes.DELETE_MODULE_ITEM;
+    payload: IDeleteModuleItemsPayload;
+}
 export interface ISetModuleAction {
     type: ModulesActionTypes.SET_MODULES;
     payload: IModuleListData;
@@ -69,6 +151,10 @@ export interface IModules {
     modules?: IModuleListData;
     editableModule?: ICreateModulePayload;
     editableField?: IModuleField;
+    moduleItems?: {
+        count: number;
+        items: IModuleItemData[];
+    };
 }
 
 export interface IDeleteModulePayload {
@@ -142,4 +228,7 @@ export type IModuleActions =
     | ISetFieldResponseAction
     | IDeleteFieldModuleAction
     | ICreateFieldModuleAction
-    | ISetFieldData;
+    | ISetFieldData
+    | IGetModuleItemsAction
+    | ISetModuleItemsAction
+    | IDeleteModulesItemsAction;

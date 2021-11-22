@@ -50,9 +50,8 @@ export const UsersPage: FC = () => {
     const [filterFormSearchStatus, setFilterFormSearchStatus] = useState(false);
     const [drawerMenuOpenStatus, setDrawerMenuOpenStatus] = React.useState(false);
     const [sortingTypeIdx, setSortingTypeIdx] = useState(0);
-
     const allUsers = useAppSelector(userListDataSelector);
-
+    
     function deleteUserClick<T extends IUser>(user: T) {
         return () => {
             setUserID(user.userID);

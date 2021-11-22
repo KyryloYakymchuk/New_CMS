@@ -10,6 +10,7 @@ export enum ProtectedRoutes {
     MODULE_FIELDS = '/module/:name/fields/',
     MODULE_FIELDS_CREATE = '/module/:name/fields/create',
     MODULE_FIELD_EDIT = '/module/:name/fields/:title/edit/',
+    MODULE_ITEMS = '/:name/items',
     EDIT_MODULE = '/module/edit/:name',
     GROUPS = '/groups',
     NEWSLETTER = '/newsletter',

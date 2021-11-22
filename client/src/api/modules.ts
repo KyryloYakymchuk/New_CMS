@@ -3,8 +3,11 @@ import {
     IDeleteFieldModulePayload,
     ICreateModulePayload,
     IDeleteModulePayload,
-    IQueryParams
-} from './../redux/types/modules';
+    IQueryParams,
+    IGetModuleItemsPayload,
+    IDeleteModuleItemsPayload,
+    IModuleItemRequestData
+} from '@redux/types/modules';
 import { api } from '@services/api';
 import { ICreateFieldProps } from '@interfaces/types';
 
@@ -45,4 +48,20 @@ export const createFieldModuleReqApi = (payload: ICreateFieldProps): Promise<IMo
 
 export const editFieldModuleReqApi = (payload: ICreateFieldProps): Promise<IModuleListData> => {
     return api.put('/modules/fields/', payload);
+};
+export const getModulesItemsReqApi = (
+    payload: IGetModuleItemsPayload
+): Promise<IModuleItemRequestData> => {
+    const { moduleName, params } = payload;
+    return api.get('/modules/items/' + moduleName, {
+        params: params
+    });
+};
+export const deleteModulesItemsReqApi = (
+    payload: IDeleteModuleItemsPayload
+): Promise<IModuleItemRequestData> => {
+    const { requestInfo, params } = payload;
+    return api.delete('/modules/item/' + requestInfo.moduleName + requestInfo.itemId, {
+        params: params
+    });
 };

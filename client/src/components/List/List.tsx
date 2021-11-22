@@ -12,12 +12,13 @@ export interface IArrButton<T> {
 
 interface IProps<T> {
     sortType?: string;
-    sortHandler: (sortField: string) => MouseEventHandler<HTMLDivElement>;
+    sortHandler?: (sortField: string) => MouseEventHandler<HTMLDivElement>;
     listColumns: IListColumns[];
     //!Always diferent data
     listData?: any;
     arrButton?: IArrButton<T>[];
     sortColumn?: string;
+    onDoubleClick?: (data: T) => MouseEventHandler<HTMLDivElement>;
 }
 
 export function List<T>({
@@ -26,8 +27,9 @@ export function List<T>({
     arrButton,
     sortHandler,
     sortType,
-    sortColumn
-}: IProps<T>) {
+    sortColumn,
+    onDoubleClick
+}: IProps<T>) { 
     return (
         <ListContainer>
             <ListTitle
@@ -38,12 +40,14 @@ export function List<T>({
             />
             {/* Always diferent data */}
             {listData?.map((data: any, index: number) => (
-                <ListElement
-                    key={index}
-                    listColumns={listColumns}
-                    data={data}
-                    arrButton={arrButton}
-                />
+                <div onDoubleClick={onDoubleClick ? onDoubleClick(data) : undefined}>
+                    <ListElement
+                        key={index}
+                        listColumns={listColumns}
+                        data={data}
+                        arrButton={arrButton}
+                    />
+                </div>
             )) || <Loader />}
         </ListContainer>
     );

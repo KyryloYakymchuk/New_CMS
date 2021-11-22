@@ -80,6 +80,16 @@ export const AllModules: FC = () => {
             );
         };
     }
+    function moduleDoubleClick<T extends IClickValue>(value: T) {
+        return () => {
+            history.push(`/${value.name}/items/`);
+            dispatch(
+                setEditDataModuleAction({
+                    name: value.name
+                })
+            );
+        };
+    }
     function editModuleClick<T extends IClickValue>(value: T) {
         return () => {
             history.push(`/module/edit/${value.name}`);
@@ -196,6 +206,7 @@ export const AllModules: FC = () => {
                 listColumns={modulesListColumns}
                 listData={allModules?.modules}
                 arrButton={actionsButtons}
+                onDoubleClick={moduleDoubleClick}
             />
             <Pagination count={Number(allModules?.count)} limit={LIMIT} />
             <ModalConfirm
