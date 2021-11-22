@@ -14,6 +14,7 @@ import { AllModules } from '@modules/Modules/AllModules';
 import { CreateModule } from '@modules/Modules/CreateModule';
 import { AllFields } from '@modules/Modules/AllFields';
 import { CreateField } from '@modules/Modules/CreateField';
+import { AllItems } from '@modules/Modules/AllItems';
 
 // Main components
 export const protectedRoutes = [
@@ -56,7 +57,8 @@ export const protectedRoutes = [
     {
         path: ProtectedRoutes.MODULES,
         component: AllModules,
-        title: 'All Modules'
+        title: 'All Modules',
+        exact: true
     },
     {
         path: ProtectedRoutes.NEW_MODULE,
@@ -85,7 +87,11 @@ export const protectedRoutes = [
         component: CreateField,
         title: 'Edit Field Module'
     },
-
+    {
+        path: ProtectedRoutes.MODULE_ITEMS,
+        component: AllItems,
+        title: 'Module Items'
+    },
     {
         path: ProtectedRoutes.GROUPS,
         component: Dashboard,

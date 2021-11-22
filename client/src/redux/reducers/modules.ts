@@ -27,6 +27,11 @@ const modules = (state = initialState, action: IModuleActions): IModules => {
                 ...state,
                 editableField: action.payload
             };
+        case ModulesActionTypes.SET_MODULES_ITEMS:
+            return {
+                ...state,
+                moduleItems: action.payload
+            };
         default:
             return state;
     }

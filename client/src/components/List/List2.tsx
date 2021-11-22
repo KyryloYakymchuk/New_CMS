@@ -1,7 +1,6 @@
 import { MouseEventHandler } from 'react';
 import { IListColumns } from '@interfaces/types';
 import { Loader } from '@components/Loader/Loader';
-import { ListElement } from './ListElement/ListElement';
 import { ListTitle } from './ListTitle/ListTitle';
 import { ListContainer } from './styled';
 
@@ -19,17 +18,17 @@ interface IProps<T> {
     arrButton?: IArrButton<T>[];
     sortColumn?: string;
     onDoubleClick?: (data: T) => MouseEventHandler<HTMLDivElement>;
+    children: (data: T) =>  JSX.Element ;
 }
 
-export function List<T>({
+export function List2<T>({
     listColumns,
     listData,
-    arrButton,
     sortHandler,
     sortType,
     sortColumn,
-    onDoubleClick
-}: IProps<T>) { 
+    children
+}: IProps<T>) {
     return (
         <ListContainer>
             <ListTitle
@@ -40,14 +39,7 @@ export function List<T>({
             />
             {/* Always diferent data */}
             {listData?.map((data: any, index: number) => (
-                <div onDoubleClick={onDoubleClick ? onDoubleClick(data) : undefined}>
-                    <ListElement
-                        key={index}
-                        listColumns={listColumns}
-                        data={data}
-                        arrButton={arrButton}
-                    />
-                </div>
+                <div key={index}>{children(data)}</div>
             )) || <Loader />}
         </ListContainer>
     );

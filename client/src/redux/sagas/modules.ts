@@ -2,13 +2,19 @@ import request from 'axios';
 import { put, takeEvery, call } from '@redux-saga/core/effects';
 import { errorAction } from '@redux/actions/error';
 import { loaderAction } from '@redux/actions/loader';
-import { setFieldsResponseAction, setModulesAction } from '@redux/actions/modules';
+import {
+    setFieldsResponseAction,
+    setModulesAction,
+    setModulesItemsAction
+} from '@redux/actions/modules';
 import {
     ICreateFieldModuleAction,
     ICreateModuleAction,
     IDeleteFieldModuleAction,
     IDeleteModuleAction,
+    IDeleteModulesItemsAction,
     IGetModuleAction,
+    IGetModuleItemsAction,
     ModulesActionTypes
 } from '@redux/types/modules';
 
@@ -16,9 +22,11 @@ import {
     createFieldModuleReqApi,
     createModulesReqApi,
     deleteFieldModuleReqApi,
+    deleteModulesItemsReqApi,
     deleteModulesReqApi,
     editFieldModuleReqApi,
     editModulesReqApi,
+    getModulesItemsReqApi,
     getModulesReqApi
 } from '@api/modules';
 import { IError } from '@redux/types/error';
@@ -109,6 +117,28 @@ function* editFieldModuleReq(config: ICreateFieldModuleAction) {
         }
     }
 }
+function* getModulesItems(config: IGetModuleItemsAction) {
+    try {
+        const { data } = yield call(getModulesItemsReqApi, config.payload);
+        yield put(setModulesItemsAction(data));
+    } catch (error) {
+        if (request.isAxiosError(error) && error.response) {
+            yield put(errorAction(error.response?.data as IError));
+        }
+    }
+    yield put(loaderAction(false));
+}
+function* deleteModulesItems(config: IDeleteModulesItemsAction) {
+    try {
+        const { data } = yield call(deleteModulesItemsReqApi, config.payload);
+        yield put(setModulesItemsAction(data));
+    } catch (error) {
+        if (request.isAxiosError(error) && error.response) {
+            yield put(errorAction(error.response?.data as IError));
+        }
+    }
+    yield put(loaderAction(false));
+}
 
 export function* modulesWatcher() {
     yield takeEvery(ModulesActionTypes.GET_MODULES, getModulesReq);
@@ -118,4 +148,6 @@ export function* modulesWatcher() {
     yield takeEvery(ModulesActionTypes.DELETE_FIELD_MODULE, deleteFieldModuleReq);
     yield takeEvery(ModulesActionTypes.CREATE_FIELD_MODULE, createFieldModuleReq);
     yield takeEvery(ModulesActionTypes.EDIT_FIELD_MODULE, editFieldModuleReq);
+    yield takeEvery(ModulesActionTypes.GET_MODULES_ITEMS, getModulesItems);
+    yield takeEvery(ModulesActionTypes.DELETE_MODULE_ITEM, deleteModulesItems);
 }

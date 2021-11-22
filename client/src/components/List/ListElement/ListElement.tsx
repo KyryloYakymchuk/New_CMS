@@ -5,6 +5,7 @@ import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { loaderStatusSelector } from '@redux/selectors/loader';
 import { SkeletonLoader } from '@components/SkeletonLoader/SkeletonLoader';
 
+
 interface IProps<T> {
     listColumns: IListColumns[];
     //cant be fixed because type Idata not accepted by function onclickFunc
@@ -14,7 +15,6 @@ interface IProps<T> {
 
 export function ListElement<T>({ listColumns, data, arrButton }: IProps<T>) {
     const loaderStatus = useAppSelector(loaderStatusSelector);
-
     return (
         <ListElementContainer>
             {loaderStatus
