@@ -31,8 +31,8 @@ import { offsetGenerator } from '@utils/functions/offsetGenerator';
 import { modalMessageSelector } from '@redux/selectors/modal';
 import { DrawerFilterMenu } from '@components/DrawerFilterMenu/DrawerFilterMenu';
 import { SingleFilterForm } from '@components/Forms/SingleFilterForm/SingleFilterForm';
+import { LIMIT } from '@utils/constants/Limit';
 
-const LIMIT = 10;
 interface IClickValue extends ISetModulePayload {
     categories: boolean;
 }

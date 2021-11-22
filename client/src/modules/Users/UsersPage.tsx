@@ -26,13 +26,11 @@ import { redirectHandler } from '@utils/functions/redirectHandler';
 import { offsetGenerator } from '@utils/functions/offsetGenerator';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
 import { ModalButton } from '@components/Modal/ModalButton';
+import { LIMIT } from '@utils/constants/Limit';
 
 export interface IRouterParams {
     page: string;
 }
-
-const LIMIT = 10;
-
 export const UsersPage: FC = () => {
     const dispatch = useDispatch();
     const history = useHistory();

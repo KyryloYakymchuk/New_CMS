@@ -17,8 +17,8 @@ import { Pagination } from '@components/Pagination/Pagination';
 import { offsetGenerator } from '@utils/functions/offsetGenerator';
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
 import { ModalButton } from '@components/Modal/ModalButton';
+import { LIMIT } from '@utils/constants/Limit';
 
-const LIMIT = 10;
 interface IModuleItem extends IModuleItemData {
     name: string;
     status: string;
