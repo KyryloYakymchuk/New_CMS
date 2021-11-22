@@ -304,7 +304,6 @@ export class ModulesController {
     @Query() paginationDTO: PaginationDTO,
     @Param() data: DeleteItemDTO
   ) {
-
     const result = await this.moduleService.deleteItem(data, paginationDTO);
 
     await this.loggerGateway.logAction(req, module);
@@ -563,14 +562,16 @@ export class ModulesController {
   @UseGuards(AuthGuard("jwt"))
   @HttpCode(HttpStatus.OK)
   async deleteModule(
-    @Param("module") userDTO: DeleteModuleDTO,
+    @Param("module") dto: DeleteModuleDTO,
     @Req() req: Request
   ) {
-    const delModule = await this.moduleService.findModulesByID(userDTO);
+    const delModule = await this.moduleService.findModulesByID(dto);
     if (!delModule)
       throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
+
     await this.loggerGateway.logAction(req, module);
-    return await this.moduleService.deleteModule(userDTO);
+
+    return await this.moduleService.deleteModule(dto);
   }
 
   @Put("/news/mark")
