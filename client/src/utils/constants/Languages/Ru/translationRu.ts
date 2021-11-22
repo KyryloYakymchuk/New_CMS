@@ -43,6 +43,8 @@ export const ru = {
     'Values (comma seperated)': 'Значения (через запятую)',
     'Coordinates X': 'Координаты X',
     'Coordinates Y': 'Координаты Y',
+    'Field created successfuly!': 'Поле удачно создано!',
+    'Field edit successfuly!': 'Поле удачно отредактировано!',
 
     // Settings
     Language: 'Язык',
@@ -69,6 +71,8 @@ export const ru = {
     interact: 'Действие',
     Type: 'Тип',
     Module: 'Модуль',
+    'Hold to change the order': 'Зажмите чтобы изменить порядок',
+
     //Modal message
     'Are you sure you want to log out?': 'Вы уверенны что хотите покинуть сайт ?',
     'Are you sure you want to delete thit user?':
@@ -119,6 +123,8 @@ export const ru = {
     // Modules
     'This module is already exists!': 'Этот модуль уже существует!',
     'Sorry, but these are сonstant field': 'Извините, но это постоянное поле',
+    'Field with same name already exists': 'Поле с таким именем уже существует',
+
     //Fields
     Password: 'Пароль',
     'Confirm Password': 'Подтвердите пароль',

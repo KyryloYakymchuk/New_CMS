@@ -13,6 +13,7 @@ import {
     IDeleteFieldModuleAction,
     IDeleteModuleAction,
     IDeleteModulesItemsAction,
+    IEditFieldOrderAction,
     IGetModuleAction,
     IGetModuleItemsAction,
     ModulesActionTypes
@@ -27,6 +28,7 @@ import {
     editFieldModuleReqApi,
     editModulesReqApi,
     getModulesItemsReqApi,
+    editOrderFieldModuleReqApi,
     getModulesReqApi
 } from '@api/modules';
 import { IError } from '@redux/types/error';
@@ -140,6 +142,18 @@ function* deleteModulesItems(config: IDeleteModulesItemsAction) {
     yield put(loaderAction(false));
 }
 
+function* editOrderFieldModuleReq(config: IEditFieldOrderAction) {
+    try {
+        const { data } = yield call(editOrderFieldModuleReqApi, config.payload);
+        yield put(setFieldsResponseAction(data));
+    } catch (error) {
+        if (request.isAxiosError(error) && error.response) {
+            yield put(errorAction(error.response?.data as IError));
+        }
+    }
+    yield put(loaderAction(false));
+}
+
 export function* modulesWatcher() {
     yield takeEvery(ModulesActionTypes.GET_MODULES, getModulesReq);
     yield takeEvery(ModulesActionTypes.DELETE_MODULE, deleteModulesReq);
@@ -150,4 +164,5 @@ export function* modulesWatcher() {
     yield takeEvery(ModulesActionTypes.EDIT_FIELD_MODULE, editFieldModuleReq);
     yield takeEvery(ModulesActionTypes.GET_MODULES_ITEMS, getModulesItems);
     yield takeEvery(ModulesActionTypes.DELETE_MODULE_ITEM, deleteModulesItems);
+    yield takeEvery(ModulesActionTypes.EDIT_ORDER_FIELD_MODULE, editOrderFieldModuleReq);
 }

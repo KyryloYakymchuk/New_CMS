@@ -1,4 +1,4 @@
-import { ICreateFieldProps } from '@interfaces/types';
+import { ICreateFieldProps, IFieldProps } from '@interfaces/types';
 import { History } from 'history';
 
 export enum ModulesActionTypes {
@@ -15,7 +15,8 @@ export enum ModulesActionTypes {
     EDIT_FIELD_MODULE = 'EDIT_FIELD_MODULE',
     GET_MODULES_ITEMS = 'GET_MODULES_ITEMS',
     SET_MODULES_ITEMS = 'SET_MODULES_ITEMS',
-    DELETE_MODULE_ITEM = 'DELETE_MODULE_ITEM'
+    DELETE_MODULE_ITEM = 'DELETE_MODULE_ITEM',
+    EDIT_ORDER_FIELD_MODULE = 'EDIT_ORDER_FIELD_MODULE'
 }
 
 export interface ISetModulePayload {
@@ -219,6 +220,16 @@ export interface IEditFieldModuleAction {
     payload: ICreateFieldProps;
 }
 
+export interface IEditFieldOrderPayload {
+    moduleID: string;
+    fields: IFieldProps[];
+}
+
+export interface IEditFieldOrderAction {
+    type: ModulesActionTypes.EDIT_ORDER_FIELD_MODULE;
+    payload: IEditFieldOrderPayload;
+}
+
 export type IModuleActions =
     | IGetModuleAction
     | ISetModuleAction
@@ -231,4 +242,5 @@ export type IModuleActions =
     | ISetFieldData
     | IGetModuleItemsAction
     | ISetModuleItemsAction
-    | IDeleteModulesItemsAction;
+    | IDeleteModulesItemsAction
+    | IEditFieldOrderAction;

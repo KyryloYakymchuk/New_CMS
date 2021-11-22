@@ -4,7 +4,13 @@ import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import { editableDataSelector } from '@redux/selectors/modules';
-import { deleteFieldModuleAction, setFieldDataAction } from '@redux/actions/modules';
+import {
+    deleteFieldModuleAction,
+    editFieldOrderAction,
+    setFieldDataAction
+} from '@redux/actions/modules';
+import { IModuleField } from '@redux/types/modules';
+import { loaderAction } from '@redux/actions/loader';
 
 import { Buttons } from '@components/Button/Button';
 import { ListDD } from '@components/ListDD/ListDD';
@@ -15,9 +21,11 @@ import { Icons } from '@utils/constants/icon';
 import { useAppSelector } from '@utils/hooks/useAppSelector';
 import { moduleFieldsListColumns } from '@utils/constants/ListsData/ListsData';
 import { constantFields } from '@utils/constants/Modules/constantsFields';
+import { changeOrderList } from '@utils/functions/changeOrderList';
+
+import { IDragResult } from '@interfaces/types';
 
 import { PageHeader, UserPageContainer } from '@modules/Users/styled';
-import { IModuleField } from '@redux/types/modules';
 
 export const AllFields: FC = () => {
     const { t } = useTranslation();
@@ -27,13 +35,11 @@ export const AllFields: FC = () => {
 
     const [modalStatus, setModalStatus] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
-
     const [fieldId, setFieldId] = useState('');
 
     const createModuleClick = () => {
         history.push(`/module/${allFieldsModule?.name}/fields/create`);
     };
-
     function editFieldClick<T extends IModuleField>(value: T) {
         return () => {
             setFieldId(value.id);
@@ -64,14 +70,30 @@ export const AllFields: FC = () => {
         setModalStatus(false);
     };
 
-    function onDragClick<T extends IModuleField>(value: T) {
-        return () => {
-            console.log(value);
-        };
-    }
+    const onDragEnd = (result: IDragResult) => {
+        const { source, destination } = result;
+
+        if (!destination) {
+            return;
+        }
+        if (source.index !== destination.index) {
+            if (allFieldsModule?.moduleID) {
+                dispatch(
+                    editFieldOrderAction({
+                        moduleID: allFieldsModule.moduleID,
+                        fields: changeOrderList(
+                            allFieldsModule?.fields!,
+                            source.index,
+                            destination.index
+                        )
+                    })
+                );
+                dispatch(loaderAction(true));
+            }
+        }
+    };
 
     const actionsButtons = [
-        { item: <Icons.DragHandleIcon />, onClickFunc: onDragClick },
         { item: <Icons.EditIcon />, onClickFunc: editFieldClick },
         { item: <Icons.DeleteIcon />, onClickFunc: deleteFieldClick }
     ];
@@ -95,6 +117,7 @@ export const AllFields: FC = () => {
                 />
             </PageHeader>
             <ListDD
+                onDragEnd={onDragEnd}
                 listColumns={moduleFieldsListColumns}
                 listData={allFieldsModule?.fields}
                 arrButton={actionsButtons}

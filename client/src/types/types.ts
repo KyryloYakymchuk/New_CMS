@@ -95,6 +95,22 @@ export interface IFieldProps {
     validate?: (values: IFieldSettings) => IFieldSettings;
 }
 
+export interface IDragResult {
+    combine: number;
+    destination: {
+        droppableId: string;
+        index: number;
+    };
+    draggableId: string;
+    mode: string;
+    reason: string;
+    source: {
+        droppableId: string;
+        index: number;
+    };
+    type: string;
+}
+
 export type GetSelectDataType = (newValue: string, actionMeta?: InputActionMeta) => void;
 export type MultiValueType = IUserGroups[];
 export type MultiValueSelectType = MultiValue<IUserGroups>;
