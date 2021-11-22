@@ -300,6 +300,7 @@ export class ModulesService {
     itemID: string
   ): Promise<Record<any, any>> {
     await mongoose.connect(process.env.MONGO_URI, options);
+
     const Item = require(`../../schemas/${moduleName}`);
 
     return (
@@ -313,14 +314,18 @@ export class ModulesService {
     itemID: string
   ): Promise<Record<any, any>> {
     await mongoose.connect(process.env.MONGO_URI, options);
+
     const Item = require(`../../schemas/${moduleName}`);
-    let currentItem = await Item.findOneAndDelete({
+
+    let currentItem = await Item.deleteOne({
       "itemData.itemID": itemID,
     });
+
     if (!currentItem) {
-      currentItem = await Item.findOneAndDelete({ itemID });
+      currentItem = await Item.deleteOne({ itemID });
     }
     await mongoose.connection.close();
+
     return currentItem;
   }
 
@@ -358,29 +363,11 @@ export class ModulesService {
     await mongoose.connection.close();
   }
 
-  async changeFieldsOrder(
-    name: string,
-    fields: Record<string, any>,
-    moduleID: string
-  ) {
+  async changeFieldsOrder(fields: Record<string, any>, moduleID: string) {
     await mongoose.connect(process.env.MONGO_URI, options);
 
-    const module = await this.moduleModel.findOne({ moduleID });
-
-    for (let key in fields) {
-      if (fields.hasOwnProperty(key)) {
-        let fieldIndex = module.fields.findIndex((i) => i.id === key);
-        module.fields[fieldIndex].order = fields[key];
-      }
-    }
-
+    await this.moduleModel.updateOne({ moduleID }, { fields }, { new: true });
     await mongoose.connection.close();
-
-    return this.moduleModel.findOneAndUpdate(
-      { moduleID },
-      { $set: { fields: module.fields } },
-      { new: true }
-    );
   }
 
   async addVariantByItemID(
@@ -981,7 +968,7 @@ export class ModulesService {
     if (!module)
       throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
 
-    await this.changeFieldsOrder(module.name, fields, moduleID);
+    await this.changeFieldsOrder(fields, moduleID);
 
     return this.findModulesByID(moduleID);
   }
