@@ -136,7 +136,7 @@ export class ModulesController {
     const items = await this.moduleService.getItems(dto, paginationDTO);
 
     if (!items)
-      throw new HttpException("Items not found!", HttpStatus.NOT_FOUND);
+      throw new HttpException("Items not found!", HttpStatus.NO_CONTENT);
 
     if (!responseFields?.fields) return items;
 
