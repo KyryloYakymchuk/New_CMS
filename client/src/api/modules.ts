@@ -6,7 +6,8 @@ import {
     IQueryParams,
     IGetModuleItemsPayload,
     IDeleteModuleItemsPayload,
-    IModuleItemRequestData
+    IModuleItemRequestData,
+    IEditFieldOrderPayload
 } from '@redux/types/modules';
 import { api } from '@services/api';
 import { ICreateFieldProps } from '@interfaces/types';
@@ -64,4 +65,9 @@ export const deleteModulesItemsReqApi = (
     return api.delete('/modules/item/' + requestInfo.moduleName + requestInfo.itemId, {
         params: params
     });
+};
+export const editOrderFieldModuleReqApi = (
+    payload: IEditFieldOrderPayload
+): Promise<ICreateModulePayload> => {
+    return api.put('/modules/fields/order', payload);
 };

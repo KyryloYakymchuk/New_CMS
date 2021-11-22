@@ -10,7 +10,8 @@ import {
     IModuleField,
     IDeleteModuleItemsPayload,
     IModuleItemRequestData,
-    IGetModuleItemsPayload
+    IGetModuleItemsPayload,
+    IEditFieldOrderPayload
 } from '@redux/types/modules';
 import { actionGenerator } from '@utils/functions/actionGenerator';
 
@@ -41,6 +42,10 @@ export const createFieldModuleAction = actionGenerator<ICreateFieldProps>(
 export const editFieldModuleAction = actionGenerator<ICreateFieldProps>(
     ModulesActionTypes.EDIT_FIELD_MODULE
 );
+export const editFieldOrderAction = actionGenerator<IEditFieldOrderPayload>(
+    ModulesActionTypes.EDIT_ORDER_FIELD_MODULE
+);
+
 export const setFieldDataAction = actionGenerator<IModuleField>(ModulesActionTypes.SET_FIELD_DATA);
 export const getModulesItemsAction = actionGenerator<IGetModuleItemsPayload>(
     ModulesActionTypes.GET_MODULES_ITEMS

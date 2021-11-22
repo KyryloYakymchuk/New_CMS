@@ -364,7 +364,6 @@ export class ModulesService {
 
   async changeFieldsOrder(fields: Record<string, any>, moduleID: string) {
     await mongoose.connect(process.env.MONGO_URI, options);
-
     await this.moduleModel.updateOne({ moduleID }, { fields }, { new: true });
     await mongoose.connection.close();
   }

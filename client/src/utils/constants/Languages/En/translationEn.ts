@@ -43,6 +43,8 @@ export const en = {
     'Values (comma seperated)': 'Values (comma seperated)',
     'Coordinates X': 'Coordinates X',
     'Coordinates Y': 'Coordinates Y',
+    'Field created successfuly!': 'Field created successfuly!',
+    'Field edited successfuly!': 'Field edited successfuly!',
 
     // Settings
     Language: 'Language',
@@ -69,6 +71,7 @@ export const en = {
     interact: 'interact',
     Type: 'Type',
     Module: 'Module',
+    'Hold to change the order': 'Hold to change the order',
 
     //Modal message
     'Are you sure you want to log out?': 'Are you sure you want to log out?',
@@ -119,6 +122,7 @@ export const en = {
     // Modules
     'This module is already exists!': 'This module is already exists!',
     'Sorry, but these are сonstant field': 'Sorry, but these are сonstant field',
+    'Field with same name already exists': 'Field with same name already exists',
     //Fields Label
     Password: 'Password',
     'Confirm Password': 'Confirm Password',

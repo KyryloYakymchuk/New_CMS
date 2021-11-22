@@ -44,6 +44,8 @@ export const ua = {
     'Values (comma seperated)': 'Значення (через кому)',
     'Coordinates X': 'Координати X',
     'Coordinates Y': 'Координати Y',
+    'Field created successfuly!': 'Поле вдало створено!',
+    'Field edited successfuly!': 'Поле успішно відредаговано!',
 
     // Settings
     Language: 'Мова',
@@ -70,6 +72,8 @@ export const ua = {
     interact: 'Дiя',
     Type: 'Тип',
     Module: 'Модуль',
+    'Hold to change the order': 'Затисніть, щоб змінити порядок',
+
     //Modal message
     'Are you sure you want to log out?': 'Ви впевненi, що хочете покинути сайт ?',
     'Are you sure you want to delete thit user?':
@@ -112,7 +116,6 @@ export const ua = {
     'Wrong date': 'Неправильна дата',
     'name should not be empty': 'Ім`я не повинно бути порожнім!',
     "Name shouldn't have spaces!": 'Ім`я не повинно містити прогалин!',
-    'Sorry, but these are сonstant field': 'Вибачте, але це поле заборонено до видалення',
     'One letter, one number, only latin, and one special character':
         'Одна буква, одна цифра, лише латина та один спец. символ',
     'Only number': 'Тільки цифри',
@@ -120,6 +123,9 @@ export const ua = {
 
     // Modules
     'This module is already exists!': 'Цей модуль існує!',
+    'Sorry, but these are сonstant field': 'Вибачте, але це поле заборонено до видалення',
+    'Field with same name already exists': 'Поле з такою назвою вже існує',
+
     //Fields
     Password: 'Пароль',
     'Confirm Password': 'Підтвердіть пароль',
