@@ -1092,10 +1092,19 @@ export class ModulesService {
     return { message: "File uploaded successfully" };
   }
 
-  async deleteModule(userDTO: DeleteModuleDTO): Promise<Record<string, any>> {
-    const module = await this.findModulesByID(userDTO);
+  async deleteModule(dto: DeleteModuleDTO): Promise<Record<string, any>> {
+    const module = await this.findModulesByID(dto);
 
-    await this.moduleModel.findOneAndDelete({ moduleID: module.moduleID });
+    const isFieldsReffered = await this.moduleModel.findOne({
+      "fields.settings.module": module.name,
+    });
+    if (isFieldsReffered)
+      throw new HttpException(
+        "Some fields is reffered to this module",
+        HttpStatus.CONFLICT
+      );
+
+    await this.moduleModel.deleteOne({ moduleID: module.moduleID });
 
     const modulesCount = await this.moduleModel.find().countDocuments();
     const modules = await this.moduleModel.find().limit(10).skip(0);
