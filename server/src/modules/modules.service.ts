@@ -657,6 +657,7 @@ export class ModulesService {
     });
 
     await this.removeItemByID(moduleName, itemID);
+
     return this.getItemsList(moduleName, paginationDTO);
   }
 
