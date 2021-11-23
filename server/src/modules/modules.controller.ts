@@ -500,8 +500,8 @@ export class ModulesController {
   @Get("fields/:moduleName")
   @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
-  async getFields(@Param("moduleName") dto: ModuleNameDTO) {
-    return this.moduleService.getFields(dto);
+  async getFields(@Param("moduleName") name: string) {
+    return this.moduleService.getFields(name);
   }
 
   @Post("fields")

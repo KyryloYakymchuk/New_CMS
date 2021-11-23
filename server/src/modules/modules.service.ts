@@ -863,8 +863,8 @@ export class ModulesService {
     );
   }
 
-  async getFields(dto: ModuleNameDTO): Promise<Record<any, any>> {
-    const module = await this.findModulesByName(dto.name);
+  async getFields(name: string): Promise<Record<any, any>> {
+    const module = await this.findModulesByName(name);
 
     if (!module)
       throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
