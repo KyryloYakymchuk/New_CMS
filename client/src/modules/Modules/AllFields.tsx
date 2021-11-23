@@ -116,6 +116,7 @@ export const AllFields: FC = () => {
                 />
             </PageHeader>
             <ListDD
+                title={t('Hold to change the order')}
                 onDragEnd={onDragEnd}
                 listColumns={moduleFieldsListColumns}
                 listData={allFieldsModule?.fields}
