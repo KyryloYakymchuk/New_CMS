@@ -13,7 +13,7 @@ pipeline {
       steps {
         sh 'cd server && npm install'
         sh 'sudo su root && sudo pm2 restart 4'
-        sh 'service nginx reload'
+        sh 'sudo su root && sudo service nginx reload'
       }
     }
   }
