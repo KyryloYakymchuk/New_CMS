@@ -12,7 +12,7 @@ pipeline {
     stage('Back-end') {
       steps {
         sh 'cd server && npm install'
-        sh 'pm2 restart 4'
+        sh 'sudo su root && pm2 restart 4'
         sh 'service nginx reload'
       }
     }
