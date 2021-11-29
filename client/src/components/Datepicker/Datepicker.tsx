@@ -39,7 +39,7 @@ export interface IDatePickerProps {
     rangeDate?: IRangeDate;
 }
 
-export const Datepicker: FC<IDatePickerProps> = ({  rangeDate }) => {
+export const Datepicker: FC<IDatePickerProps> = ({ rangeDate }) => {
     const [monthData, setMonthData] = useState<IMonthData>({
         day: currDate.currDay,
         month: currDate.currMouth,
@@ -83,7 +83,7 @@ export const Datepicker: FC<IDatePickerProps> = ({  rangeDate }) => {
             label: dateLabel(monthData, pickedDate),
             dateFrom: value
         };
-//! Работаю над этим, рефакторю
+        //! Работаю над этим, рефакторю
         if (value > new Date()) {
             if (!datePickerValue?.dateFrom) {
                 if (formatedRangedDate) {
