@@ -131,5 +131,26 @@ export const en = {
     'Phone Number': 'Phone Number',
     Birthday: 'Birthday',
     'Module Name': 'Module Name',
-    Group: 'Group'
+    Group: 'Group',
+    //Datepicker
+    Date: 'Date',
+    January: 'January',
+    February: 'February',
+    March: 'March',
+    April: 'April',
+    May: 'May',
+    June: 'June',
+    July: 'July',
+    August: 'August',
+    September: 'September',
+    October: 'October',
+    November: 'November',
+    December: 'December',
+    Sun: 'Sun',
+    Mon: 'Mon',
+    Tue: 'Tue',
+    Wed: 'Wed',
+    Thu: 'Thu',
+    Fri: 'Fri',
+    Sat: 'Sat'
 };

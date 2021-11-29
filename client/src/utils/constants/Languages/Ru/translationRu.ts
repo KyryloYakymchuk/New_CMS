@@ -133,5 +133,26 @@ export const ru = {
     'Phone Number': 'Номер телефона',
     Birthday: 'Дата рождения',
     'Module Name': 'Имя модуля',
-    Group: 'Группa'
+    Group: 'Группa',
+    //Datepicker
+    Date: 'Дата',
+    January: 'Январь',
+    February: 'Февраль',
+    March: 'Март',
+    April: 'Апрель',
+    May: 'Май',
+    June: 'Июнь',
+    July: 'Июль',
+    August: 'Август',
+    September: 'Сентябрь',
+    October: 'Октябрь',
+    November: 'Ноябрь',
+    December: 'Декабрь',
+    Sun: 'Вс',
+    Mon: 'Пн',
+    Tue: 'Вт',
+    Wed: 'Ср',
+    Thu: 'Чт',
+    Fri: 'Пт',
+    Sat: 'Сб'
 };

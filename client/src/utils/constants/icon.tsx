@@ -26,6 +26,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import VerticalSplitIcon from '@mui/icons-material/VerticalSplit';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 export const Icons = {
     // Sidebar icons
     DashboardIcon,
@@ -57,5 +59,8 @@ export const Icons = {
     DeleteIcon,
     EditIcon,
     VerticalSplitIcon,
-    DragHandleIcon
+    DragHandleIcon,
+    //Action
+    ChevronLeftIcon,
+    ChevronRightIcon
 };
