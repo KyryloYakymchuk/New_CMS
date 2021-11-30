@@ -64,13 +64,11 @@ export const Day = styled.div<IStyledProps>`
     justify-content: center;
     user-select: none;
     ${({ yesrerday }) => yesrerday && 'color:lightgray;'}
-    ${({ datePickerValue, today, pickerPosition }) =>
-        pickerPosition !== '' &&
-        (datePickerValue || today) &&
-        'background-color:rgb(240, 50, 84);color:white;'}
-    ${({ hover, pickerPosition, today, datePickerValue }) =>
-        pickerPosition !== '' &&
-        hover &&
+    ${({ today, pickerPosition }) =>
+        pickerPosition && today && 'background-color:lightgray; color:white;'}
+    ${({ datePickerValue }) => datePickerValue && 'background-color:rgb(240, 50, 84);color:white;'}
+    ${({ pickerPosition, today, datePickerValue }) =>
+        pickerPosition &&
         !today &&
         !datePickerValue &&
         '&:hover{background-color: aliceblue; cursor: pointer;}'}

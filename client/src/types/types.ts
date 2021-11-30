@@ -95,21 +95,6 @@ export interface IFieldProps {
     validate?: (values: IFieldSettings) => IFieldSettings;
 }
 
-export interface IDaysArr {
-    key: number | '';
-    value: Date;
-}
-
-export interface IDatePickerValue {
-    label: string;
-    dateFrom: Date;
-    dateTo?: Date;
-}
-export interface IMonthData {
-    day: number;
-    month: number;
-    year: number;
-}
 
 export type GetSelectDataType = (newValue: string, actionMeta?: InputActionMeta) => void;
 export type MultiValueType = IUserGroups[];

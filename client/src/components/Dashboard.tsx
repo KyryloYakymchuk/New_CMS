@@ -4,9 +4,9 @@ import { Datepicker } from './Datepicker/Datepicker';
 export const Dashboard: FC = () => {
     return (
         <Datepicker
-            rangeDate={{ minDate: '1-12-2021', maxDate: '16-12-2021' }}
-            range={false}
-            startOnCurrent={true}
+            // minDate={new Date(2021, 11, 12)}
+            // maxDate={new Date(2021, 11, 16)}
+            range={true}
         />
     );
 };
