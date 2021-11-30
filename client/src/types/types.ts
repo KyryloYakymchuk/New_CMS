@@ -94,6 +94,8 @@ export interface IFieldProps {
     settings?: IFieldSettings[];
     validate?: (values: IFieldSettings) => IFieldSettings;
 }
+
+
 export type GetSelectDataType = (newValue: string, actionMeta?: InputActionMeta) => void;
 export type MultiValueType = IUserGroups[];
 export type MultiValueSelectType = MultiValue<IUserGroups>;
