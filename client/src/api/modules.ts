@@ -62,7 +62,7 @@ export const deleteModulesItemsReqApi = (
     payload: IDeleteModuleItemsPayload
 ): Promise<IModuleItemRequestData> => {
     const { requestInfo, params } = payload;
-    return api.delete('/modules/item/' + requestInfo.moduleName + requestInfo.itemId, {
+    return api.delete('/modules/item/' + `${requestInfo.moduleName}'/'${requestInfo.itemId}`, {
         params: params
     });
 };
@@ -70,4 +70,8 @@ export const editOrderFieldModuleReqApi = (
     payload: IEditFieldOrderPayload
 ): Promise<ICreateModulePayload> => {
     return api.put('/modules/fields/order', payload);
+};
+
+export const getModulesFieldsReqApi = (payload: { moduleName: string }): Promise<any> => {
+    return api.get('/modules/fields/' + payload.moduleName);
 };

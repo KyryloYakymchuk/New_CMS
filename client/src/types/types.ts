@@ -1,6 +1,6 @@
 import { IUserGroups } from '@redux/types/users';
 import { MouseEventHandler } from 'react';
-import { InputActionMeta, MultiValue } from 'react-select';
+import { InputActionMeta, MultiValue, SingleValue } from 'react-select';
 import { History } from 'history';
 
 export interface IAddress {
@@ -94,10 +94,17 @@ export interface IFieldProps {
     settings?: IFieldSettings[];
     validate?: (values: IFieldSettings) => IFieldSettings;
 }
+export interface IUploader {
+    file: File;
+    src: string;
+}
+
 export type GetSelectDataType = (newValue: string, actionMeta?: InputActionMeta) => void;
 export type MultiValueType = IUserGroups[];
-export type MultiValueSelectType = MultiValue<IUserGroups>;
+export type MultiValueSelectType = MultiValue<IOption>;
 export type OnChangeMultiValueType = (newValue: MultiValueType) => void;
 export type OnChangeMultiSelectType = (newValue: MultiValueSelectType) => void;
+export type OnChangeSingleValueType = (newValue: SingleValue<IOption>) => void;
+export type OnChangeSelectType = MultiValue<string | IOption> | SingleValue<string | IOption>;
 export type EventChangeType = React.ChangeEvent<HTMLInputElement>;
 export type OnChangeFieldValueType = (e: EventChangeType) => void;

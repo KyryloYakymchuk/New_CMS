@@ -15,6 +15,7 @@ import { CreateModule } from '@modules/Modules/CreateModule';
 import { AllFields } from '@modules/Modules/AllFields';
 import { CreateField } from '@modules/Modules/CreateField';
 import { AllItems } from '@modules/Modules/AllItems';
+import { CreateModuleItem } from '@components/CreateModuleItem/CreateModuleItem';
 
 // Main components
 export const protectedRoutes = [
@@ -80,7 +81,8 @@ export const protectedRoutes = [
     {
         path: ProtectedRoutes.MODULE_FIELDS_CREATE,
         component: CreateField,
-        title: 'Create Field Module'
+        title: 'Create Field Module',
+        exact: true
     },
     {
         path: ProtectedRoutes.MODULE_FIELD_EDIT,
@@ -90,7 +92,13 @@ export const protectedRoutes = [
     {
         path: ProtectedRoutes.MODULE_ITEMS,
         component: AllItems,
-        title: 'Module Items'
+        title: 'Module Items',
+        exact: true
+    },
+    {
+        path: ProtectedRoutes.MODULE_ITEM_CREATE,
+        component: CreateModuleItem,
+        title: 'Create Item'
     },
     {
         path: ProtectedRoutes.GROUPS,
@@ -105,7 +113,8 @@ export const protectedRoutes = [
     {
         path: ProtectedRoutes.WEBSHOP,
         component: Dashboard,
-        title: 'Webshop'
+        title: 'Webshop',
+        exact: true
     },
     {
         path: ProtectedRoutes.SETTINGS,

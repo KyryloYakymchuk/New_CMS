@@ -15,12 +15,11 @@ import { setModalStatusAction } from '@redux/actions/modal';
 import { useHistory } from 'react-router';
 import { modalMessageSelector, modalStatusSelector } from '@redux/selectors/modal';
 import { IUser, IUserGroups } from '@redux/types/users';
+import { LIMIT } from '@utils/constants/Limit';
 
 interface IOnSubmitValue extends IUser {
     confirmedPassword?: string;
 }
-
-const DEFAULT_LIMIT = 10;
 
 export const CreateUserPage: FC = () => {
     const dispatch = useDispatch();
@@ -58,7 +57,7 @@ export const CreateUserPage: FC = () => {
 
     useEffect(() => {
         const queryParams: IGetGroupsData = {
-            limit: DEFAULT_LIMIT
+            limit: LIMIT
         };
         if (debouncedSelectGroupName) {
             queryParams.search = String(debouncedSelectGroupName);

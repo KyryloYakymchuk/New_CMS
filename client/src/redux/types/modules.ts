@@ -16,7 +16,9 @@ export enum ModulesActionTypes {
     GET_MODULES_ITEMS = 'GET_MODULES_ITEMS',
     SET_MODULES_ITEMS = 'SET_MODULES_ITEMS',
     DELETE_MODULE_ITEM = 'DELETE_MODULE_ITEM',
-    EDIT_ORDER_FIELD_MODULE = 'EDIT_ORDER_FIELD_MODULE'
+    EDIT_ORDER_FIELD_MODULE = 'EDIT_ORDER_FIELD_MODULE',
+    GET_MODULES_FIELDS = 'GET_MODULES_FIELDS',
+    SET_MODULES_FIELDS = 'SET_MODULES_FIELDS'
 }
 
 export interface ISetModulePayload {
@@ -156,6 +158,7 @@ export interface IModules {
         count: number;
         items: IModuleItemData[];
     };
+    currentModuleFields?: IModuleFieldsPayload[];
 }
 
 export interface IDeleteModulePayload {
@@ -229,7 +232,34 @@ export interface IEditFieldOrderAction {
     type: ModulesActionTypes.EDIT_ORDER_FIELD_MODULE;
     payload: IEditFieldOrderPayload;
 }
-
+export interface IGetModulesFieldsReqAction {
+    type: ModulesActionTypes.GET_MODULES_FIELDS;
+    payload: { moduleName: string };
+}
+export interface IModuleFieldsPayload {
+    id?: string;
+    name?: string;
+    order?: number;
+    settings: {
+        module?: string;
+        name?: string;
+        title?: string;
+        fileTypes?: string;
+        maxSize?: string;
+        maxChars?: string;
+        defaultText?: string;
+        required?: string;
+        labels?: string;
+        values?: string;
+        coordinates_x?: number;
+        coordinates_y?: number;
+    };
+    type?: string;
+}
+export interface ISetModulesFieldsReqAction {
+    type: ModulesActionTypes.SET_MODULES_FIELDS;
+    payload: IModuleFieldsPayload[];
+}
 export type IModuleActions =
     | IGetModuleAction
     | ISetModuleAction
@@ -243,4 +273,5 @@ export type IModuleActions =
     | IGetModuleItemsAction
     | ISetModuleItemsAction
     | IDeleteModulesItemsAction
-    | IEditFieldOrderAction;
+    | IEditFieldOrderAction
+    | ISetModulesFieldsReqAction;

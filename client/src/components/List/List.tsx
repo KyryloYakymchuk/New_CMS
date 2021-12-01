@@ -4,6 +4,7 @@ import { Loader } from '@components/Loader/Loader';
 import { ListElement } from './ListElement/ListElement';
 import { ListTitle } from './ListTitle/ListTitle';
 import { ListContainer } from './styled';
+import Tooltip from '@mui/material/Tooltip';
 
 export interface IArrButton<T> {
     item: JSX.Element;
@@ -19,6 +20,7 @@ interface IProps<T> {
     arrButton?: IArrButton<T>[];
     sortColumn?: string;
     onDoubleClick?: (data: T) => MouseEventHandler<HTMLDivElement>;
+    title?: string;
 }
 
 export function List<T>({
@@ -28,8 +30,9 @@ export function List<T>({
     sortHandler,
     sortType,
     sortColumn,
-    onDoubleClick
-}: IProps<T>) { 
+    onDoubleClick,
+    title
+}: IProps<T>) {
     return (
         <ListContainer>
             <ListTitle
@@ -40,14 +43,16 @@ export function List<T>({
             />
             {/* Always diferent data */}
             {listData?.map((data: any, index: number) => (
-                <div onDoubleClick={onDoubleClick ? onDoubleClick(data) : undefined}>
-                    <ListElement
-                        key={index}
-                        listColumns={listColumns}
-                        data={data}
-                        arrButton={arrButton}
-                    />
-                </div>
+                <Tooltip placement="top" arrow title={title || ''}>
+                    <div onDoubleClick={onDoubleClick ? onDoubleClick(data) : undefined}>
+                        <ListElement
+                            key={index}
+                            listColumns={listColumns}
+                            data={data}
+                            arrButton={arrButton}
+                        />
+                    </div>
+                </Tooltip>
             )) || <Loader />}
         </ListContainer>
     );

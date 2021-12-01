@@ -207,8 +207,10 @@ export const AllModules: FC = () => {
                 listData={allModules?.modules}
                 arrButton={actionsButtons}
                 onDoubleClick={moduleDoubleClick}
+                title={'Double click for watch item list'}
             />
             <Pagination count={Number(allModules?.count)} limit={LIMIT} />
+
             <ModalConfirm
                 handleAccept={handleAccept}
                 handleClose={handleClose}
