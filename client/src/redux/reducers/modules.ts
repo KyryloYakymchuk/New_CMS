@@ -32,6 +32,11 @@ const modules = (state = initialState, action: IModuleActions): IModules => {
                 ...state,
                 moduleItems: action.payload
             };
+        case ModulesActionTypes.SET_MODULES_FIELDS:
+            return {
+                ...state,
+                currentModuleFields: action.payload
+            };
         default:
             return state;
     }

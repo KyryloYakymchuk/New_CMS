@@ -44,7 +44,8 @@ export const AllItems: FC = () => {
     function editModuleClick<T extends IModuleItem>(value: T) {
         return () => {
             //next task, log for eslint
-            console.log(value?.name);
+            history.push(`/${moduleName}/items/create`);
+             console.log(value?.name);
         };
     }
 

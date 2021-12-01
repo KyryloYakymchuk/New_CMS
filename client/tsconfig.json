@@ -7,6 +7,9 @@
       "dom.iterable",
       "esnext"
     ],
+    "typeRoots": [
+      "src/react-app-env.d.d.ts"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
