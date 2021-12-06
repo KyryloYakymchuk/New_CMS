@@ -1,14 +1,14 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import * as mongoose from "mongoose";
-import { Model } from "mongoose";
-import * as shortid from "shortid";
-import * as fs from "fs";
-import * as Client from "ssh2-sftp-client";
-import * as uniqid from "uniqid";
-import { join } from "path";
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import * as mongoose from 'mongoose';
+import { Model } from 'mongoose';
+import * as shortid from 'shortid';
+import * as fs from 'fs';
+import * as Client from 'ssh2-sftp-client';
+import * as uniqid from 'uniqid';
+import { join } from 'path';
 
-import { Module } from "../types/module";
+import { Module } from '../types/module';
 import {
   AddFieldsDTO,
   AddItemCategoryDTO,
@@ -33,14 +33,14 @@ import {
   PaginationDTO,
   SetVariantStockDTO,
   WishListDTO,
-} from "./dto/modules.dto";
-import { UploaderService } from "../shared/uploader/uploader.service";
-import { Category } from "src/types/category";
-import { QueryDTO } from "../shared/dto/shared.dto";
-import { FuserService } from "../shared/fuser/fuser.service";
-import { AddVariantDTO } from "./dto/modules.dto";
+} from './dto/modules.dto';
+import { UploaderService } from '../shared/uploader/uploader.service';
+import { Category } from 'src/types/category';
+import { QueryDTO } from '../shared/dto/shared.dto';
+import { FuserService } from '../shared/fuser/fuser.service';
+import { AddVariantDTO } from './dto/modules.dto';
 
-import { defFields } from "./constants";
+import { defFields } from './constants';
 
 export const options = {
   useNewUrlParser: true,
@@ -53,17 +53,17 @@ export const options = {
 @Injectable()
 export class ModulesService {
   constructor(
-    @InjectModel("Module") private moduleModel: Model<Module>,
-    @InjectModel("Category") private categoryModel: Model<Category>,
+    @InjectModel('Module') private moduleModel: Model<Module>,
+    @InjectModel('Category') private categoryModel: Model<Category>,
     private uploaderService: UploaderService,
     private userService: FuserService
   ) {}
 
   private static validateType(type: string): string {
-    const typesArr = ["string", "number", "boolean", "array", "date"];
+    const typesArr = ['string', 'number', 'boolean', 'array', 'date'];
 
     if (!typesArr.includes(type.toLowerCase())) {
-      throw new HttpException("Wrong type!", HttpStatus.NOT_ACCEPTABLE);
+      throw new HttpException('Wrong type!', HttpStatus.NOT_ACCEPTABLE);
     }
 
     return type.toLowerCase();
@@ -71,7 +71,7 @@ export class ModulesService {
 
   private generateSchema(module: Record<any, any>): string {
     const editedName =
-      module.name.charAt(0).toUpperCase() + module.name.slice(1) + "Schema";
+      module.name.charAt(0).toUpperCase() + module.name.slice(1) + 'Schema';
 
     return `
         const mongoose = require('mongoose')
@@ -98,7 +98,7 @@ export class ModulesService {
   }
 
   private async saveSchema(schema: string, path: string) {
-    fs.open(path, "w", (err, fd) => {
+    fs.open(path, 'w', (err, fd) => {
       if (err) throw new HttpException(err, HttpStatus.BAD_REQUEST);
       fs.appendFile(path, schema, (err) => {
         if (err) throw new HttpException(err, HttpStatus.BAD_REQUEST);
@@ -145,7 +145,7 @@ export class ModulesService {
 
     files.forEach((file) => {
       this.uploaderService.validateImgType(file);
-      const fieldID = file.fieldname.split("-")[0];
+      const fieldID = file.fieldname.split('-')[0];
       let fieldName: string;
 
       module.fields.forEach((field) => {
@@ -153,8 +153,8 @@ export class ModulesService {
       });
 
       if (filesObj[fieldName])
-        filesObj[fieldName].push(file.filename.split("_")[4]);
-      else filesObj[fieldName] = [file.filename.split("_")[4]];
+        filesObj[fieldName].push(file.filename.split('_')[4]);
+      else filesObj[fieldName] = [file.filename.split('_')[4]];
     });
 
     return filesObj;
@@ -175,55 +175,55 @@ export class ModulesService {
   }
 
   async validateFields(fields: any): Promise<any> {
-    const allowedNames = ["name", "type", "settings", "id", "order"];
+    const allowedNames = ['name', 'type', 'settings', 'id', 'order'];
     const allowedSettings = [
-      "checkbox",
-      "textbox",
-      "textarea",
-      "upload",
-      "module",
-      "dropdown",
-      "wysiwyg",
-      "map",
-      "id",
-      "textPrompt",
-      "maxChars",
-      "width",
-      "defaultText",
-      "required",
-      "height",
-      "maxItems",
-      "fileTypes",
-      "autoresize",
-      "specifications",
-      "names",
-      "values",
-      "coordinates_x",
-      "coordinates_y",
-      "icon",
-      "maxSize",
-      "name",
-      "title",
-      "labels",
+      'checkbox',
+      'textbox',
+      'textarea',
+      'upload',
+      'module',
+      'dropdown',
+      'wysiwyg',
+      'map',
+      'id',
+      'textPrompt',
+      'maxChars',
+      'width',
+      'defaultText',
+      'required',
+      'height',
+      'maxItems',
+      'fileTypes',
+      'autoresize',
+      'specifications',
+      'names',
+      'values',
+      'coordinates_x',
+      'coordinates_y',
+      'icon',
+      'maxSize',
+      'name',
+      'title',
+      'labels',
     ];
 
     fields.forEach((obj) => {
       Object.keys(obj).forEach((key) => {
         if (!allowedNames.includes(key)) {
-          throw new HttpException("Bad fields!", HttpStatus.BAD_REQUEST);
+          throw new HttpException('Bad fields!', HttpStatus.BAD_REQUEST);
         }
-        if (key === "settings") {
+        if (key === 'settings') {
           Object.keys(obj[key]).forEach((setting) => {
             if (!allowedSettings.includes(setting)) {
               throw new HttpException(
-                "Bad fields settings!",
+                'Bad fields settings!',
                 HttpStatus.BAD_REQUEST
               );
             }
           });
         }
-        if (!obj["id"]) {
-          obj["id"] = uniqid("f_");
+        if (!obj['id']) {
+          obj['id'] = uniqid('f_');
         }
       });
     });
@@ -235,17 +235,17 @@ export class ModulesService {
     const { search, limit, offset, sortField, sortParameter } = userDTO;
 
     const modules = await this.moduleModel
-      .find(!!search ? { name: { $regex: new RegExp(search, "i") } } : {})
+      .find(!!search ? { name: { $regex: new RegExp(search, 'i') } } : {})
       .sort({ [sortField]: sortParameter })
       .limit(!!limit ? +limit : 10)
       .skip(!!offset ? +offset : 0);
 
     const modulesCount = await this.moduleModel.find(
-      !!search ? { name: { $regex: new RegExp(search, "i") } } : {}
+      !!search ? { name: { $regex: new RegExp(search, 'i') } } : {}
     );
 
     if (modulesCount.length === 0) {
-      throw new HttpException("No items!", HttpStatus.NO_CONTENT);
+      throw new HttpException('No items!', HttpStatus.NO_CONTENT);
     }
 
     return { count: modulesCount.length, modules };
@@ -257,7 +257,7 @@ export class ModulesService {
 
     if (module) {
       throw new HttpException(
-        "This module is already exists!",
+        'This module is already exists!',
         HttpStatus.CONFLICT
       );
     }
@@ -273,7 +273,7 @@ export class ModulesService {
 
     await newModule.save();
 
-    return { message: "Module created successfully!" };
+    return { message: 'Module created successfully!' };
   }
 
   async getItemsList(
@@ -303,7 +303,7 @@ export class ModulesService {
     const Item = require(`../../schemas/${moduleName}`);
 
     return (
-      (await Item.findOne({ "itemData.itemID": itemID })) ||
+      (await Item.findOne({ 'itemData.itemID': itemID })) ||
       (await Item.findOne({ itemID }))
     );
   }
@@ -317,7 +317,7 @@ export class ModulesService {
     const Item = require(`../../schemas/${moduleName}`);
 
     let currentItem = await Item.deleteOne({
-      "itemData.itemID": itemID,
+      'itemData.itemID': itemID,
     });
 
     if (!currentItem) {
@@ -338,7 +338,7 @@ export class ModulesService {
     for (let item in items) {
       if (items.hasOwnProperty(item)) {
         await Item.findOneAndUpdate(
-          { "itemData.itemID": itemID },
+          { 'itemData.itemID': itemID },
           { [`${item}`]: items[item] }
         );
         await Item.findOneAndUpdate({ itemID }, { [`${item}`]: items[item] });
@@ -354,7 +354,7 @@ export class ModulesService {
     for (let key in items) {
       if (items.hasOwnProperty(key)) {
         await Item.findOneAndUpdate(
-          { "itemData.itemID": key },
+          { 'itemData.itemID': key },
           { order: items[key] }
         );
       }
@@ -377,8 +377,8 @@ export class ModulesService {
 
     const Item = require(`../../schemas/${name}`);
     const { variants: prevVariants } = await Item.findOne({
-      "itemData.itemID": itemID,
-    }).select("variants");
+      'itemData.itemID': itemID,
+    }).select('variants');
 
     const maxObject =
       prevVariants.length > 0 &&
@@ -390,7 +390,7 @@ export class ModulesService {
     variant.order = prevVariants.length === 0 ? 0 : maxObject.order + 1;
 
     await Item.findOneAndUpdate(
-      { "itemData.itemID": itemID },
+      { 'itemData.itemID': itemID },
       { variants: [...prevVariants, variant] }
     );
 
@@ -404,10 +404,10 @@ export class ModulesService {
   ): Promise<void> {
     await mongoose.connect(process.env.MONGO_URI, options);
     const Item = require(`../../schemas/${name}`);
-    const variant = await Item.findOne({ "variants.variantID": variantID });
+    const variant = await Item.findOne({ 'variants.variantID': variantID });
     if (variant)
       await Item.findOneAndUpdate(
-        { "variants.variantID": variantID },
+        { 'variants.variantID': variantID },
         { variants: variant.variants.filter((i) => i.variantID !== variantID) }
       );
     await mongoose.connection.close();
@@ -421,13 +421,13 @@ export class ModulesService {
     await mongoose.connect(process.env.MONGO_URI, options);
     const Item = require(`../../schemas/${name}`);
     const isVariantExist = await Item.findOne({
-      "variants.variantID": variantID,
+      'variants.variantID': variantID,
     });
 
     const { variants } = isVariantExist;
     const variantIndex = variants.findIndex((i) => i.variantID === variantID);
 
-    if (isVariantExist && variantIndex !== "-1") {
+    if (isVariantExist && variantIndex !== '-1') {
       for (let key in variant) {
         if (variant.hasOwnProperty(key)) {
           variants[variantIndex][key] = variant[key];
@@ -435,7 +435,7 @@ export class ModulesService {
       }
     }
     await Item.findOneAndUpdate(
-      { "variants.variantID": variantID },
+      { 'variants.variantID': variantID },
       { variants }
     );
     await mongoose.connection.close();
@@ -445,7 +445,7 @@ export class ModulesService {
     await mongoose.connect(process.env.MONGO_URI, options);
     const Item = require(`../../schemas/${name}`);
     const variantID = Object.keys(variants)[0];
-    const currentItem = await Item.findOne({ "variants.variantID": variantID });
+    const currentItem = await Item.findOne({ 'variants.variantID': variantID });
 
     for (let key in variants) {
       if (variants.hasOwnProperty(key)) {
@@ -457,7 +457,7 @@ export class ModulesService {
     }
 
     await Item.findOneAndUpdate(
-      { "variants.variantID": variantID },
+      { 'variants.variantID': variantID },
       { variants: currentItem.variants },
       { set: true }
     );
@@ -468,24 +468,24 @@ export class ModulesService {
   async addItem(
     dto: AddItemDTO,
     files: Record<any, any>,
-    body: any,
     paginationDTO: PaginationDTO
   ): Promise<any> {
-    const { data } = dto;
-    const parsedData = JSON.parse(data);
+    const { data: parsedData } = dto;
+    // console.log('DTO', parsedData, typeof parsedData);
+    // const parsedData = JSON.parse(data);
 
     const module = await this.findModulesByID(parsedData.moduleID);
 
     if (!module)
-      throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
+      throw new HttpException('Module not found!', HttpStatus.NOT_FOUND);
 
     if (!parsedData.fields.length)
-      throw new HttpException("Fields array is empty!", HttpStatus.BAD_REQUEST);
+      throw new HttpException('Fields array is empty!', HttpStatus.BAD_REQUEST);
 
-    const modelFile = join(__dirname, "..", "schemas", `${module.name}.js`);
+    const modelFile = join(__dirname, '..', 'schemas', `${module.name}.js`);
 
-    const newItemID = uniqid("i_");
-    const model = { itemData: { "itemData.itemID": newItemID } };
+    const newItemID = uniqid('i_');
+    const model = { itemData: { 'itemData.itemID': newItemID } };
 
     const generateModel = () => {
       module.fields.forEach((field) => {
@@ -511,7 +511,7 @@ export class ModulesService {
 
     fs.stat(modelFile, async (err) => {
       if (err) {
-        const fields = { itemID: "string" };
+        const fields = { itemID: 'string' };
 
         module.fields.forEach((field) => {
           fields[field.settings.name] = ModulesService.validateType(field.type);
@@ -546,7 +546,7 @@ export class ModulesService {
     );
 
     if (currentVariantIndex === -1) {
-      throw new HttpException("Variant not found!", HttpStatus.NOT_FOUND);
+      throw new HttpException('Variant not found!', HttpStatus.NOT_FOUND);
     }
 
     for (let key in storage) {
@@ -555,7 +555,7 @@ export class ModulesService {
       }
     }
     await Item.findOneAndUpdate(
-      { "itemData.itemID": itemID },
+      { 'itemData.itemID': itemID },
       { variants: item.variants }
     );
     await mongoose.connection.close();
@@ -571,10 +571,10 @@ export class ModulesService {
     const isCategoryAlreadyExist = categories.includes(categoryID);
 
     if (isCategoryAlreadyExist) {
-      throw new HttpException("Module not found!", HttpStatus.CONFLICT);
+      throw new HttpException('Module not found!', HttpStatus.CONFLICT);
     }
     categories.push(categoryID);
-    await Item.findOneAndUpdate({ "itemData.itemID": itemID }, { categories });
+    await Item.findOneAndUpdate({ 'itemData.itemID': itemID }, { categories });
     await mongoose.connection.close();
   }
 
@@ -585,7 +585,7 @@ export class ModulesService {
 
     await mongoose.connect(process.env.MONGO_URI, options);
     const Item = require(`../../schemas/${name}`);
-    const currentItem = await Item.findOne({ "itemData.itemID": itemID });
+    const currentItem = await Item.findOne({ 'itemData.itemID': itemID });
 
     const categories = await this.categoryModel.find({});
     await mongoose.connection.close();
@@ -609,12 +609,12 @@ export class ModulesService {
 
     await mongoose.connect(process.env.MONGO_URI, options);
     const Item = require(`../../schemas/${dto.moduleName}`);
-    const currentItem = await Item.findOne({ "itemData.itemID": itemID });
+    const currentItem = await Item.findOne({ 'itemData.itemID': itemID });
     const newCategories =
       currentItem?.categories?.length &&
       currentItem.categories.filter((i) => i !== categoryID);
     await Item.findOneAndUpdate(
-      { "itemData.itemID": itemID },
+      { 'itemData.itemID': itemID },
       { categories: newCategories }
     );
     await mongoose.connection.close();
@@ -624,11 +624,11 @@ export class ModulesService {
     dto: ModuleNameDTO,
     paginationDTO: PaginationDTO
   ): Promise<Record<string, any>> {
-    const file = join(__dirname, "..", "schemas", `${dto}.js`);
+    const file = join(__dirname, '..', 'schemas', `${dto}.js`);
 
     if (!fs.existsSync(file))
       throw new HttpException(
-        "Module schema is missing. You need create items first",
+        'Module schema is missing. You need create items first',
         HttpStatus.BAD_REQUEST
       );
 
@@ -644,13 +644,13 @@ export class ModulesService {
     const isItemExist = await this.getItemByID(moduleName, itemID);
 
     if (!isItemExist) {
-      throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
+      throw new HttpException('Item not found!', HttpStatus.NOT_FOUND);
     }
 
-    const file = join(__dirname, "..", "schemas", `${moduleName}.js`);
+    const file = join(__dirname, '..', 'schemas', `${moduleName}.js`);
     fs.access(file, async (err) => {
       if (err) {
-        throw new HttpException("Schema not found!", HttpStatus.NOT_FOUND);
+        throw new HttpException('Schema not found!', HttpStatus.NOT_FOUND);
       }
     });
 
@@ -671,7 +671,7 @@ export class ModulesService {
     const module = await this.findModulesByName(moduleName);
 
     if (!module)
-      throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
+      throw new HttpException('Module not found!', HttpStatus.NOT_FOUND);
 
     let itemsToEdit = {};
 
@@ -686,11 +686,11 @@ export class ModulesService {
       return itemsToEdit;
     };
 
-    const file = join(__dirname, "..", "schemas", `${module.name}.js`);
+    const file = join(__dirname, '..', 'schemas', `${module.name}.js`);
 
     fs.access(file, async (err) => {
       if (err) {
-        throw new HttpException("Schema not found!", HttpStatus.NOT_FOUND);
+        throw new HttpException('Schema not found!', HttpStatus.NOT_FOUND);
       }
     });
 
@@ -710,13 +710,13 @@ export class ModulesService {
     const module = await this.findModulesByName(moduleName);
 
     if (!module)
-      throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
+      throw new HttpException('Module not found!', HttpStatus.NOT_FOUND);
 
-    const file = join(__dirname, "..", "schemas", `${moduleName}.js`);
+    const file = join(__dirname, '..', 'schemas', `${moduleName}.js`);
 
     fs.access(file, async (err) => {
       if (err) {
-        throw new HttpException("Schema not found!", HttpStatus.NOT_FOUND);
+        throw new HttpException('Schema not found!', HttpStatus.NOT_FOUND);
       }
     });
 
@@ -730,18 +730,18 @@ export class ModulesService {
 
     const module = await this.findModulesByName(moduleName);
     if (!module)
-      throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
+      throw new HttpException('Module not found!', HttpStatus.NOT_FOUND);
 
-    const file = join(__dirname, "..", "schemas", `${moduleName}.js`);
+    const file = join(__dirname, '..', 'schemas', `${moduleName}.js`);
     fs.access(file, async (err) => {
       if (err) {
-        throw new HttpException("Schema not found!", HttpStatus.NOT_FOUND);
+        throw new HttpException('Schema not found!', HttpStatus.NOT_FOUND);
       }
     });
 
     const isItemExist = await this.getItemByID(moduleName, itemID);
     if (!isItemExist) {
-      throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
+      throw new HttpException('Item not found!', HttpStatus.NOT_FOUND);
     }
 
     const newVariant = {
@@ -760,13 +760,13 @@ export class ModulesService {
     const module = await this.findModulesByName(moduleName);
 
     if (!module)
-      throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
+      throw new HttpException('Module not found!', HttpStatus.NOT_FOUND);
 
-    const file = join(__dirname, "..", "schemas", `${moduleName}.js`);
+    const file = join(__dirname, '..', 'schemas', `${moduleName}.js`);
 
     fs.access(file, async (err) => {
       if (err) {
-        throw new HttpException("Schema not found!", HttpStatus.NOT_FOUND);
+        throw new HttpException('Schema not found!', HttpStatus.NOT_FOUND);
       }
     });
 
@@ -786,7 +786,7 @@ export class ModulesService {
     const Item = require(`../../schemas/${userDTO.moduleName}`);
 
     await Item.findOneAndUpdate(
-      { "itemData.itemID": itemID },
+      { 'itemData.itemID': itemID },
       { $set: { itemData: newItem } },
       { new: true }
     );
@@ -803,13 +803,13 @@ export class ModulesService {
 
     const module = await this.findModulesByName(moduleName);
     if (!module)
-      throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
+      throw new HttpException('Module not found!', HttpStatus.NOT_FOUND);
 
-    const file = join(__dirname, "..", "schemas", `${moduleName}.js`);
+    const file = join(__dirname, '..', 'schemas', `${moduleName}.js`);
 
     fs.access(file, async (err) => {
       if (err) {
-        throw new HttpException("Schema not found!", HttpStatus.NOT_FOUND);
+        throw new HttpException('Schema not found!', HttpStatus.NOT_FOUND);
       }
     });
 
@@ -821,13 +821,13 @@ export class ModulesService {
 
     const module = await this.findModulesByName(moduleName);
     if (!module)
-      throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
+      throw new HttpException('Module not found!', HttpStatus.NOT_FOUND);
 
-    const file = join(__dirname, "..", "schemas", `${moduleName}.js`);
+    const file = join(__dirname, '..', 'schemas', `${moduleName}.js`);
 
     fs.access(file, (err) => {
       if (err) {
-        throw new HttpException("Schema not found!", HttpStatus.NOT_FOUND);
+        throw new HttpException('Schema not found!', HttpStatus.NOT_FOUND);
       }
     });
     await this.changeVariantStock(moduleName, itemID, variantID, storage);
@@ -838,20 +838,20 @@ export class ModulesService {
 
     if (fields)
       throw new HttpException(
-        "You can`t edit fields using this request!",
+        'You can`t edit fields using this request!',
         HttpStatus.BAD_REQUEST
       );
 
     const module = await this.findModulesByID(moduleID);
     if (!module)
-      throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
+      throw new HttpException('Module not found!', HttpStatus.NOT_FOUND);
 
     if (name && module.name !== name) {
       const uniqueName = await this.findModulesByName(name);
 
       if (uniqueName)
         throw new HttpException(
-          "Module with this name is already exists!",
+          'Module with this name is already exists!',
           HttpStatus.CONFLICT
         );
     }
@@ -867,7 +867,7 @@ export class ModulesService {
     const module = await this.findModulesByName(name);
 
     if (!module)
-      throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
+      throw new HttpException('Module not found!', HttpStatus.NOT_FOUND);
 
     return module.fields;
   }
@@ -877,22 +877,22 @@ export class ModulesService {
 
     const module = await this.findModulesByID(moduleID);
     if (!module)
-      throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
+      throw new HttpException('Module not found!', HttpStatus.NOT_FOUND);
 
-    if (module.fields.find((e) => e.settings.name === settings["name"]))
+    if (module.fields.find((e) => e.settings.name === settings['name']))
       throw new HttpException(
-        "Field with same name already exists",
+        'Field with same name already exists',
         HttpStatus.BAD_REQUEST
       );
 
-    if (name === "dropdown") {
-      if (settings["labels"] && settings["values"]) {
+    if (name === 'dropdown') {
+      if (settings['labels'] && settings['values']) {
         if (
-          settings["labels"].split(",").length !==
-          String(settings.values).split(",").length
+          settings['labels'].split(',').length !==
+          String(settings.values).split(',').length
         )
           throw new HttpException(
-            "Counts of labels and values are different",
+            'Counts of labels and values are different',
             HttpStatus.BAD_REQUEST
           );
       }
@@ -910,7 +910,7 @@ export class ModulesService {
       name,
       type,
       settings,
-      id: uniqid("f_"),
+      id: uniqid('f_'),
       order: moduleFields === 0 ? 0 : maxOrderObject.order + 1,
     };
     const newFieldsArr = moduleFields.push(createdField);
@@ -929,11 +929,11 @@ export class ModulesService {
   async editField(dto: EditFieldsDTO): Promise<Record<string, any>> {
     const { id, name, type, settings } = dto;
 
-    const module = await this.moduleModel.findOne({ "fields.id": id });
+    const module = await this.moduleModel.findOne({ 'fields.id': id });
     const { fields } = module;
 
     if (!module)
-      throw new HttpException("Field not found!", HttpStatus.NOT_FOUND);
+      throw new HttpException('Field not found!', HttpStatus.NOT_FOUND);
 
     let idx: number;
 
@@ -965,7 +965,7 @@ export class ModulesService {
     const module = await this.findModulesByID(moduleID);
 
     if (!module)
-      throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
+      throw new HttpException('Module not found!', HttpStatus.NOT_FOUND);
 
     await this.changeFieldsOrder(fields, moduleID);
 
@@ -977,13 +977,13 @@ export class ModulesService {
 
     const module = await this.findModulesByName(moduleName);
     if (!module)
-      throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
+      throw new HttpException('Module not found!', HttpStatus.NOT_FOUND);
 
-    const file = join(__dirname, "..", "schemas", `${moduleName}.js`);
+    const file = join(__dirname, '..', 'schemas', `${moduleName}.js`);
 
     fs.access(file, (err) => {
       if (err) {
-        throw new HttpException("Schema not found!", HttpStatus.NOT_FOUND);
+        throw new HttpException('Schema not found!', HttpStatus.NOT_FOUND);
       }
     });
 
@@ -998,13 +998,13 @@ export class ModulesService {
 
     const module = await this.findModulesByName(moduleName);
     if (!module)
-      throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
+      throw new HttpException('Module not found!', HttpStatus.NOT_FOUND);
 
-    const file = join(__dirname, "..", "schemas", `${moduleName}.js`);
+    const file = join(__dirname, '..', 'schemas', `${moduleName}.js`);
 
     fs.access(file, (err) => {
       if (err) {
-        throw new HttpException("Schema not found!", HttpStatus.NOT_FOUND);
+        throw new HttpException('Schema not found!', HttpStatus.NOT_FOUND);
       }
     });
 
@@ -1014,10 +1014,10 @@ export class ModulesService {
   }
 
   async deleteField(dto: DeleteFieldsDTO) {
-    const module = await this.moduleModel.findOne({ "fields.id": dto });
+    const module = await this.moduleModel.findOne({ 'fields.id': dto });
     const { fields } = module;
     if (!module)
-      throw new HttpException("Module not found!", HttpStatus.NOT_FOUND);
+      throw new HttpException('Module not found!', HttpStatus.NOT_FOUND);
 
     let idx: number;
 
@@ -1028,7 +1028,7 @@ export class ModulesService {
     fields.splice(idx, 1);
 
     await this.moduleModel.findOneAndUpdate(
-      { "fields.id": dto },
+      { 'fields.id': dto },
       { $set: { fields } },
       { new: true }
     );
@@ -1043,17 +1043,17 @@ export class ModulesService {
     const { moduleID } = dto;
 
     const imgTypes = [
-      "png",
-      "jpeg",
-      "jpg,",
-      "gif",
-      "pdf",
-      "xls",
-      "xlsx",
-      "csv",
+      'png',
+      'jpeg',
+      'jpg,',
+      'gif',
+      'pdf',
+      'xls',
+      'xlsx',
+      'csv',
     ];
-    if (!imgTypes.includes(file.mimetype.split("/")[1]))
-      throw new HttpException("Wrong format of file!", HttpStatus.BAD_REQUEST);
+    if (!imgTypes.includes(file.mimetype.split('/')[1]))
+      throw new HttpException('Wrong format of file!', HttpStatus.BAD_REQUEST);
 
     const sftp = new Client();
 
@@ -1064,12 +1064,12 @@ export class ModulesService {
       password: `${process.env.SSH_PASS}`,
     };
 
-    const folder = "tempFiles/";
-    const remoteFolder = "/home/images/public_html/uploads/moduleFiles/";
+    const folder = 'tempFiles/';
+    const remoteFolder = '/home/images/public_html/uploads/moduleFiles/';
 
     await this.moduleModel.findOneAndUpdate(
       { moduleID },
-      { $set: { profileImg: file.filename.split("_")[2] } },
+      { $set: { profileImg: file.filename.split('_')[2] } },
       { new: true }
     );
 
@@ -1086,21 +1086,21 @@ export class ModulesService {
       });
 
     fs.unlink(file.path, () => {
-      console.log("Temp files was deleted!");
+      console.log('Temp files was deleted!');
     });
 
-    return { message: "File uploaded successfully" };
+    return { message: 'File uploaded successfully' };
   }
 
   async deleteModule(dto: DeleteModuleDTO): Promise<Record<string, any>> {
     const module = await this.findModulesByID(dto);
 
     const isFieldsReffered = await this.moduleModel.findOne({
-      "fields.settings.module": module.name,
+      'fields.settings.module': module.name,
     });
     if (isFieldsReffered)
       throw new HttpException(
-        "Some fields is reffered to this module",
+        'Some fields is reffered to this module',
         HttpStatus.CONFLICT
       );
 
@@ -1119,10 +1119,10 @@ export class ModulesService {
     const { moduleName, itemId } = dto;
 
     const user = await this.userService.findUserByUserID(userId);
-    if (!user) throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
+    if (!user) throw new HttpException('User not found!', HttpStatus.NOT_FOUND);
 
     const item = await this.getItemByID(moduleName, itemId);
-    if (!item) throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
+    if (!item) throw new HttpException('Item not found!', HttpStatus.NOT_FOUND);
 
     const sameItem = user.wishlist.find(
       (el) => el.itemData.itemID == item.itemData.itemID
@@ -1130,7 +1130,7 @@ export class ModulesService {
 
     if (sameItem)
       throw new HttpException(
-        "Same product is already exist in wishlist",
+        'Same product is already exist in wishlist',
         HttpStatus.BAD_REQUEST
       );
 
@@ -1145,28 +1145,28 @@ export class ModulesService {
     await mongoose.connect(process.env.MONGO_URI, options);
 
     const Item = require(`../../schemas/${moduleName}`);
-    await Item.findOneAndUpdate({ "itemData.itemID": itemId }, item);
+    await Item.findOneAndUpdate({ 'itemData.itemID': itemId }, item);
 
     const wishlist = user.wishlist;
     await this.userService.editUser({ userID: userId, wishlist });
 
-    return "Product successfully add to wishlist";
+    return 'Product successfully add to wishlist';
   }
 
   async addItemToViewed(userId: string, dto: WishListDTO) {
     const { moduleName, itemId } = dto;
 
     const user = await this.userService.findUserByUserID(userId);
-    if (!user) throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
+    if (!user) throw new HttpException('User not found!', HttpStatus.NOT_FOUND);
 
     const item = await this.getItemByID(moduleName, itemId);
-    if (!item) throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
+    if (!item) throw new HttpException('Item not found!', HttpStatus.NOT_FOUND);
 
     const sameItem = user.viewed.find(
       (el) => el.itemData.itemID == item.itemData.itemID
     );
 
-    if (sameItem) throw new HttpException("", HttpStatus.BAD_REQUEST);
+    if (sameItem) throw new HttpException('', HttpStatus.BAD_REQUEST);
 
     user.viewed.push(item);
     const viewed = user.viewed;
@@ -1178,17 +1178,17 @@ export class ModulesService {
     const { moduleName, itemId } = dto;
 
     const user = await this.userService.findUserByUserID(userId);
-    if (!user) throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
+    if (!user) throw new HttpException('User not found!', HttpStatus.NOT_FOUND);
 
     const item = await this.getItemByID(moduleName, itemId);
-    if (!item) throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
+    if (!item) throw new HttpException('Item not found!', HttpStatus.NOT_FOUND);
 
     const sameItem = user.wishlist.find(
       (el) => el.itemData.itemID == item.itemData.itemID
     );
     if (!sameItem)
       throw new HttpException(
-        "No such product in wishlist",
+        'No such product in wishlist',
         HttpStatus.BAD_REQUEST
       );
 
@@ -1216,17 +1216,17 @@ export class ModulesService {
 
   async markNews(userId: string, dto: MarkNewsDTO) {
     let user = await this.userService.findUserByUserID(userId);
-    if (!user) throw new HttpException("User not found!", HttpStatus.NOT_FOUND);
+    if (!user) throw new HttpException('User not found!', HttpStatus.NOT_FOUND);
 
     const { itemID, type } = dto;
 
-    let item = await this.getItemByID("news", itemID);
-    if (!item) throw new HttpException("Item not found!", HttpStatus.NOT_FOUND);
+    let item = await this.getItemByID('news', itemID);
+    if (!item) throw new HttpException('Item not found!', HttpStatus.NOT_FOUND);
 
     user = user.toObject();
     item = item.toObject();
 
-    if (type == "like") {
+    if (type == 'like') {
       user.likedNews?.includes(itemID)
         ? (user.likedNews = user.likedNews.filter((el) => el !== itemID))
         : user.likedNews.push(itemID);
@@ -1235,12 +1235,12 @@ export class ModulesService {
       item.like += Number(user.likedNews?.includes(itemID));
 
       await this.userService.updateUser(user);
-      await this.editItemByID("news", itemID, [item]);
+      await this.editItemByID('news', itemID, [item]);
 
       return { isLiked: user.likedNews?.includes(itemID), likes: item.like };
     }
 
-    if (type == "dislike") {
+    if (type == 'dislike') {
       user.dislikedNews?.includes(itemID)
         ? (user.dislikedNews = user.dislikedNews.filter((el) => el !== itemID))
         : user.dislikedNews.push(itemID);
@@ -1250,7 +1250,7 @@ export class ModulesService {
 
       await this.userService.updateUser(user);
 
-      await this.editItemByID("news", itemID, [item]);
+      await this.editItemByID('news', itemID, [item]);
 
       return {
         isDisliked: user.dislikedNews?.includes(itemID),
