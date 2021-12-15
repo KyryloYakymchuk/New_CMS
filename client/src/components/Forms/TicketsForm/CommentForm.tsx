@@ -1,13 +1,11 @@
 import { FC } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { Buttons } from '@components/Button/Button';
-
 import FormikTextField from '@components/FormField/FormikTextField';
 import { ICommentsForm } from '@interfaces/types';
 import { TextAreaFormik } from '@components/FormField/TextAreaFormik';
 import { initialValues, validationSchema } from '@utils/constants/Tickets/TicketInfoField';
 import { ButtonContainer, FormContainer } from './styled';
-//import { TextAreaFormik } from '@components/FormField/TextAreaFormik';
 
 interface IProps {
     onSubmit: (value: ICommentsForm) => void;

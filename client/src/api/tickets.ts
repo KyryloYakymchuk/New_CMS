@@ -7,7 +7,7 @@ import {
 } from '@redux/types/tickets';
 import { api } from '@services/api';
 
-export const getAllTicketsApi = (payload: IQueryParamsPayload): Promise<any> => {
+export const getAllTicketsApi = (payload: IQueryParamsPayload): Promise<ISetTicketsPayload[]> => {
     return api.get('/tickets', {
         params: payload
     });

@@ -66,9 +66,15 @@ export const MenuItem = [
         ]
     },
     {
+        name: 'Tickets',
+        path: ProtectedRoutes.TICKETS,
+        icon: <Icons.SettingsIcon />,
+        itemId: 8
+    },
+    {
         name: 'Settings',
         path: ProtectedRoutes.SETTINGS,
         icon: <Icons.SettingsIcon />,
-        itemId: 8
+        itemId: 9
     }
 ];

@@ -52,20 +52,7 @@ export const Tickets: FC = () => {
     }
 
     const createUserClick = () => {
-        //dispatch(clearCurrentUser());
         history.push(ProtectedRoutes.CREATE_TICKET);
-        // dispatch(
-        //     createTicketAction({
-        //         firstname: 'stri3цацаn2333g',
-        //         lastname: 'аацstring',
-        //         subject: 'stацацring',
-        //         email: 'olegbelinski12399@gmail.com',
-        //         destination: 'olegbelinski1399@gmail.com',
-        //         phone: 'strацацing',
-        //         fileName: 'string',
-        //         text: 'string'
-        //     })
-        // );
     };
 
     const arrUserListButton = [
