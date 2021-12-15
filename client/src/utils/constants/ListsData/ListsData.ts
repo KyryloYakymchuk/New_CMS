@@ -17,3 +17,9 @@ export const moduleFieldsItemColumns = [
     { title: i18n.t('Type'), name: 'status' },
     { title: i18n.t('Module'), name: 'publishDate' }
 ];
+
+export const tiketsListColumns = [
+    { title: i18n.t('Title'), name: 'name' },
+    { title: i18n.t('Type'), name: 'status' },
+    { title: i18n.t('Module'), name: 'publishDate' }
+];

@@ -6,6 +6,7 @@ import menuReducer from './menu';
 import users from './users';
 import groups from './groups';
 import modules from './modules';
+import tickets from './tickets';
 
 const rootReducer = combineReducers({
     menuReducer,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     modal,
     users,
     groups,
-    modules
+    modules, 
+    tickets
 });
 
 export default rootReducer;

@@ -15,6 +15,9 @@ import { CreateModule } from '@modules/Modules/CreateModule';
 import { AllFields } from '@modules/Modules/AllFields';
 import { CreateField } from '@modules/Modules/CreateField';
 import { AllItems } from '@modules/Modules/AllItems';
+import { Tickets } from '@modules/Tickets/Tickets';
+import { TicketPage } from '@modules/Tickets/TicketPage';
+import { CreateTicket } from '@modules/Tickets/CreateTicket';
 
 // Main components
 export const protectedRoutes = [
@@ -106,6 +109,24 @@ export const protectedRoutes = [
         path: ProtectedRoutes.WEBSHOP,
         component: Dashboard,
         title: 'Webshop'
+    },
+    {
+        path: ProtectedRoutes.TICKETS,
+        component: Tickets,
+        title: 'Tickets',
+        exact: true
+    },
+    {
+        path: ProtectedRoutes.TICKET,
+        component: TicketPage,
+        title: 'Ticket Information',
+        exact: true
+    },
+    {
+        path: ProtectedRoutes.CREATE_TICKET,
+        component: CreateTicket,
+        title: 'Create Ticket',
+        exact: true
     },
     {
         path: ProtectedRoutes.SETTINGS,

@@ -22,26 +22,29 @@ import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
 import { QueryDTO } from "../shared/dto/shared.dto";
 import { TicketsService } from "./tickets.service";
-import { AnswerDTO, CreateTicketDTO, IdDTO } from "./dto/tickets.dto";
+import {
+  AnswerDTO,
+  CreateTicketDTO,
+  EditTicketDTO,
+  IdDTO,
+} from "./dto/tickets.dto";
 
 @ApiTags("tickets")
 @ApiBearerAuth()
 @Controller("tickets")
 export class TicketsController {
   constructor(private TicketsService: TicketsService) {}
+  
+  @Get("/:ticketID")
+  @UseGuards(AuthGuard("jwt"))
+  async getTicket(@Param() userDTO: IdDTO,): Promise<any> {
+    return this.TicketsService.getById(userDTO);
+  }
 
   @Get()
   @UseGuards(AuthGuard("jwt"))
-  async getTickets(@Query() userDTO: QueryDTO): Promise<Record<string, any>> {
+  async getTickets(@Query() userDTO: QueryDTO): Promise<any> {    
     return this.TicketsService.getAll(userDTO);
-  }
-
-  @Get(":ticketID")
-  @UseGuards(AuthGuard("jwt"))
-  async getTicket(
-    @Param("ticketID") userDTO: IdDTO
-  ): Promise<Record<string, any>> {
-    return this.TicketsService.getById(userDTO);
   }
 
   @Post()
@@ -63,18 +66,17 @@ export class TicketsController {
   )
   async createTicket(
     @Body() userDTO: CreateTicketDTO,
-    @UploadedFile() file: Express.Multer.File,
-    @Query() queryDTO: QueryDTO
-  ): Promise<Record<string, any>> {
-    return this.TicketsService.createTicket(userDTO, queryDTO);
+    @UploadedFile() file: Express.Multer.File
+  ): Promise<any> {
+    return this.TicketsService.createTicket(userDTO);
   }
 
-  @Put("/:ticketID")
+  @Put()
   @UseGuards(AuthGuard("jwt"))
   async editStatus(
-    @Param() userDTO: IdDTO,
+    @Body() userDTO: EditTicketDTO,
     @Req() req: Request
-  ): Promise<Record<string, any>> {
+  ): Promise<any> {
     return this.TicketsService.editStatus(userDTO);
   }
 
@@ -82,9 +84,10 @@ export class TicketsController {
   @UseGuards(AuthGuard("jwt"))
   async deleteTicket(
     @Param() userDTO: IdDTO,
-    @Req() req: Request
-  ): Promise<string> {
-    return this.TicketsService.deleteTicket(userDTO);
+    @Req() req: Request,
+    @Query() queryDTO: QueryDTO
+  ): Promise<any> {
+    return this.TicketsService.deleteTicket(userDTO, queryDTO);
   }
 
   @Post("/answer")

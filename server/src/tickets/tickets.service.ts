@@ -6,7 +6,12 @@ import * as uniqid from "uniqid";
 import { MailService } from "../mail/mail.service";
 import { Ticket } from "../types/ticket";
 import { QueryDTO } from "../shared/dto/shared.dto";
-import { AnswerDTO, CreateTicketDTO, IdDTO } from "./dto/tickets.dto";
+import {
+  AnswerDTO,
+  CreateTicketDTO,
+  EditTicketDTO,
+  IdDTO,
+} from "./dto/tickets.dto";
 
 @Injectable()
 export class TicketsService {
@@ -15,14 +20,18 @@ export class TicketsService {
     private mailerService: MailService
   ) {}
 
-  async getAll(userDTO: QueryDTO): Promise<Record<string, any>> {
-    return this.ticketModel
+  async getAll(userDTO: QueryDTO): Promise<any> {
+    const data = await this.ticketModel
       .find()
       .skip(+userDTO.offset)
       .limit(+userDTO.limit);
+    const count = await this.ticketModel.find().count();
+    return { data, count };
   }
 
-  async getById(userDTO: IdDTO): Promise<Ticket> {
+  async getById(
+    userDTO: IdDTO
+  ): Promise<Ticket> {  
     const ticket = await this.ticketModel.findOneAndUpdate(
       { ticketID: userDTO.ticketID },
       { $set: { read: true } },
@@ -35,9 +44,8 @@ export class TicketsService {
   }
 
   async createTicket(
-    userDTO: CreateTicketDTO,
-    queryDTO: QueryDTO
-  ): Promise<Record<string, any>> {
+    userDTO: CreateTicketDTO
+  ): Promise<any> {
     const newTicket = userDTO;
     newTicket["ticketID"] = uniqid();
     await this.ticketModel.create(newTicket);
@@ -51,27 +59,29 @@ export class TicketsService {
         ticketID: newTicket["ticketID"],
       },
     });
+    const data = await this.ticketModel.find();
+    const count = await this.ticketModel.find().count();
+    return { data, count };
+  }
 
-    return this.ticketModel
+  async editStatus(userDTO: EditTicketDTO){
+    await this.ticketModel.findOneAndUpdate(
+      { ticketID: userDTO.ticketID },
+      { status: userDTO.ticketStatus } 
+    );
+  }
+
+  async deleteTicket(userDTO: IdDTO,queryDTO:QueryDTO): Promise<any> {
+    await this.ticketModel.findOneAndDelete({ ticketID: userDTO.ticketID });
+
+    const data = await this.ticketModel
       .find()
       .skip(+queryDTO.offset)
       .limit(+queryDTO.limit);
+    const count = await this.ticketModel.find().count();
+    return { data, count };
   }
-
-  async editStatus(userDTO: IdDTO): Promise<Record<string, any>> {
-    await this.ticketModel.findOneAndUpdate(
-      { ticketID: userDTO.ticketID },
-      { $set: { status: "closed" } }
-    );
-
-    return this.ticketModel.find();
-  }
-
-  async deleteTicket(userDTO: IdDTO): Promise<string> {
-    await this.ticketModel.findOneAndDelete({ ticketID: userDTO.ticketID });
-
-    return "Ticket deleted successfully";
-  }
+  
 
   async sendAnswer(userDTO: AnswerDTO): Promise<Record<string, any>> {
     const ticket = await this.ticketModel.findOne({
