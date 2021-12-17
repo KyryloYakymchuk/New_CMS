@@ -10,8 +10,8 @@ export const Textarea = styled.textarea`
     font-size: 14px;
 `;
 export const ErrorBlock = styled.div`
-color: red;
-font-weight: 200;
-font-size: 14px;
-margin-left: 5px;
+    color: red;
+    font-weight: 200;
+    font-size: 14px;
+    margin-left: 5px;
 `;

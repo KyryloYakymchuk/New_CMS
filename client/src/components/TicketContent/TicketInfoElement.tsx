@@ -1,8 +1,12 @@
 import { FC } from 'react';
 import { Content, LineTitle, TicketInfoElementBlock } from './styled';
 
+interface comments {
+    text: string;
+    subject: string;
+}
 interface IProps {
-    value: string | number | boolean | { text: string; subject: string }[];
+    value: string | number | boolean | comments[];
     label: string;
 }
 

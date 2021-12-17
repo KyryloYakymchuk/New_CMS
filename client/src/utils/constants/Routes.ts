@@ -8,8 +8,7 @@ import { AuthRoutes, ProtectedRoutes } from '@utils/enums/RoutesPath';
 import { Dashboard } from '@components/Dashboard';
 import { Settings } from '@modules/Settings/Settings';
 import { CreateUserPage } from '@components/CreateUserPage/CreateUserPage';
-//!@info Needs in future pagebuilder
-// import { NewPage } from '@modules/Pages/NewPage';
+
 import { AllModules } from '@modules/Modules/AllModules';
 import { CreateModule } from '@modules/Modules/CreateModule';
 import { AllFields } from '@modules/Modules/AllFields';
@@ -19,7 +18,6 @@ import { Tickets } from '@modules/Tickets/Tickets';
 import { TicketPage } from '@modules/Tickets/TicketPage';
 import { CreateTicket } from '@modules/Tickets/CreateTicket';
 
-// Main components
 export const protectedRoutes = [
     {
         path: ProtectedRoutes.DASHBOARD,
@@ -50,13 +48,6 @@ export const protectedRoutes = [
         component: Dashboard,
         title: 'Pages'
     },
-    //!@info Needs in future pagebuilder
-    // {
-    //     path: ProtectedRoutes.NEWPAGE,
-    //     component: NewPage,
-    //     title: 'New Page'
-    // },
-
     {
         path: ProtectedRoutes.MODULES,
         component: AllModules,
@@ -79,7 +70,6 @@ export const protectedRoutes = [
         title: 'Module Fields',
         exact: true
     },
-
     {
         path: ProtectedRoutes.MODULE_FIELDS_CREATE,
         component: CreateField,
@@ -135,7 +125,6 @@ export const protectedRoutes = [
     }
 ];
 
-// Auth components
 export const routes = [
     { path: AuthRoutes.LOGIN, component: Login },
     { path: AuthRoutes.LOGIN_CONFIRM_EMAIL, component: Login },

@@ -41,10 +41,8 @@ export const AllItems: FC = () => {
     const [deleteWatcher, setDeleteWatcher] = useState(false);
     const [deleteRequestStatus, setDeleteRequestStatus] = useState(false);
 
-    function editModuleClick<T extends IModuleItem>(value: T) {
+    function editModuleClick() {
         return () => {
-            //next task, log for eslint
-            console.log(value?.name);
         };
     }
 

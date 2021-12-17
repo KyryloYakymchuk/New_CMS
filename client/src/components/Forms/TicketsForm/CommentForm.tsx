@@ -9,10 +9,10 @@ import { ButtonContainer, FormContainer } from './styled';
 
 interface IProps {
     onSubmit: (value: ICommentsForm) => void;
-    setAnswerFormStatus: (value: boolean) => void;
+    setIsCommentFormVisible: (value: boolean) => void;
 }
 
-export const CommentForm: FC<IProps> = ({ onSubmit, setAnswerFormStatus }) => {
+export const CommentForm: FC<IProps> = ({ onSubmit, setIsCommentFormVisible }) => {
     const newCommentFormForm = useFormik({
         initialValues,
         enableReinitialize: true,
@@ -32,7 +32,7 @@ export const CommentForm: FC<IProps> = ({ onSubmit, setAnswerFormStatus }) => {
                             type="submit"
                             title="close"
                             style="grayButton"
-                            onClickFunction={() => setAnswerFormStatus(false)}
+                            onClickFunction={() => setIsCommentFormVisible(false)}
                         />
                     </ButtonContainer>
                 </FormContainer>

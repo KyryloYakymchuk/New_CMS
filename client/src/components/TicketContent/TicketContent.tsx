@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Comments, CommentsTitle, TicketContentBlock, TicketInfo } from './styled';
 import { ISetTicketsPayload } from '@redux/types/tickets';
+import { Loader } from '@components/Loader/Loader';
 import { tickeInfoLine } from '@utils/constants/Tickets/TicketInfoField';
 import { TicketInfoElement } from './TicketInfoElement';
 import { TicketComments } from './TicketComments';
@@ -17,16 +18,18 @@ interface IProps {
 
 export const TicketContent: FC<IProps> = ({
     currentTicket,
-    answerFormStatus,
-    setAnswerFormStatus
+    isCommentFormVisible,
+    setIsCommentFormVisible
 }) => {
     const dispatch = useDispatch();
     const onSubmit = (value: ICommentsForm) => {
-        value.destination = currentTicket.email;
-        value.ticketID = currentTicket.ticketID;
-        console.log(value);
-        setAnswerFormStatus(false);
-        dispatch(addNewComment(value));
+        const reqObj = {
+            ...value,
+            destination: currentTicket.email;
+            ticketID: currentTicket.ticketID;
+        }
+        setIsCommentFormVisible(false);
+        dispatch(addNewComment(reqObj));
     };
     return (
         <TicketContentBlock>
@@ -39,15 +42,15 @@ export const TicketContent: FC<IProps> = ({
                 ))}
             </TicketInfo>
             <Comments>
-                {currentTicket?.comments?.[0] ? (
+                {currentTicket?.comments?.lenght ? (
                     <CommentsTitle>Answer history</CommentsTitle>
                 ) : null}
                 {currentTicket?.comments?.map(({ text, subject }) => (
                     <TicketComments subject={subject} text={text} />
-                ))}
+                )) || <Loader/>}
             </Comments>
-            {answerFormStatus ? (
-                <CommentForm onSubmit={onSubmit} setAnswerFormStatus={setAnswerFormStatus} />
+            {isCommentFormVisible ? (
+                <CommentForm onSubmit={onSubmit} setAnswerFormStatus={setIsCommentFormVisible} />
             ) : null}
         </TicketContentBlock>
     );

@@ -3,6 +3,7 @@ import {
     IChangeTicketStatusPayload,
     IQueryParamsPayload,
     ISetTicketsPayload,
+    ICreateTicketActionPayload,
     TicketsActionsTypes
 } from '@redux/types/tickets';
 import { actionGenerator } from '@utils/functions/actionGenerator';
@@ -17,16 +18,7 @@ export const getAllTicketsAction = actionGenerator<IQueryParamsPayload>(
 export const deleteTicketAction = actionGenerator<{ ticketID: string; query: IQueryParamsPayload }>(
     TicketsActionsTypes.DELETE_TICKET
 );
-export const createTicketAction = actionGenerator<{
-    firstname: string;
-    lastname: string;
-    subject: string;
-    email: string;
-    destination: string;
-    phone: string;
-    fileName: string;
-    text: string;
-}>(TicketsActionsTypes.CREATE_TICKET);
+export const createTicketAction = actionGenerator<ICreateTicketActionPayload>(TicketsActionsTypes.CREATE_TICKET);
 export const changeTicketStatusAction = actionGenerator<IChangeTicketStatusPayload>(
     TicketsActionsTypes.CHANGE_TICKET_STATUS
 );

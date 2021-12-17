@@ -27,11 +27,8 @@ export const CreateTicketForm: FC<IProps> = ({ onSubmit }) => {
             <Form onSubmit={newCommentFormForm.handleSubmit}>
                 <FormContainer>
                     {createTicketField.map(({ value, label, img }) => (
-                        <FormikTextField name={value} label={label}>
-                            {img}
-                        </FormikTextField>
+                        <FormikTextField name={value} label={label}/>
                     ))}
-
                     <ButtonContainer>
                         <Buttons type="submit" title="submit" style="pinkButton" />
                         <Buttons

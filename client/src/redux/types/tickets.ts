@@ -9,11 +9,11 @@ export enum TicketsActionsTypes {
     ADD_NEW_COMMENT = 'ADD_NEW_COMMENT'
 }
 export interface ITickets {
-    allTickets?: { data: ISetTicketsPayload[]; count: number };
+    allTickets?: IAllTickets;
     ticket?: ISetTicketsPayload;
 }
 
-//LOGIN
+export interface IAllTickets { data: ISetTicketsPayload[]; count: number };
 
 export interface ISetTicketsPayload {
     status: string;
@@ -34,6 +34,10 @@ export interface IQueryParamsPayload {
     offset: number;
     limit: number;
 }
+export interface IDeleteTicketPayload {
+    ticketID: string;
+    query: IQueryParamsPayload;
+}
 export interface ICreateTicketActionPayload {
     firstname: string;
     lastname: string;
@@ -51,7 +55,7 @@ export interface IGetTickets {
 
 export interface ISetTikets {
     type: TicketsActionsTypes.SET_ALL_TICKETS;
-    payload: { data: ISetTicketsPayload[]; count: number };
+    payload: IDeleteTicketPayload;
 }
 export interface IDeleteTiket {
     type: TicketsActionsTypes.SET_ALL_TICKETS;

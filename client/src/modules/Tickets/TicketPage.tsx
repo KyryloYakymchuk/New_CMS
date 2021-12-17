@@ -1,13 +1,9 @@
 import { FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-
 import { Icons } from '@utils/constants/icon';
-
 import { Buttons } from '@components/Button/Button';
-
 import { ModalConfirm } from '@components/Modal/ModalConfirmSubmit/ModalConfirm';
 import { ModalButton } from '@components/Modal/ModalButton';
-
 import { PageHeader, UserPageContainer } from '@modules/Users/styled';
 import { useLocation } from 'react-router';
 import { changeTicketStatusAction, getTicketByIDAction } from '@redux/actions/tickets';
@@ -21,19 +17,17 @@ export interface IRouterParams {
 }
 export const TicketPage: FC = () => {
     const dispatch = useDispatch();
-    //const { t } = useTranslation();
     let { pathname } = useLocation();
     const ticketID: string = pathname.split('/')[2];
     const [modalStatus, setModalStatus] = useState<boolean>(false);
     const [modalMessage, setModalMessage] = useState('');
-    const [answerFormStatus, setAnswerFormStatus] = useState(false);
+    const [isCommentFormVisible, setIsCommentFormVisible] = useState(false);
     const currentTicketInfo = useAppSelector(currentTicketSelector)!;
 
-    function changeTicketStatus() {
+    const changeTicketStatus = () => {
         setModalStatus(true);
         setModalMessage('Are you sure you want to close this ticket');
-    }
-
+    };
     const handleAccept = () => {
         setModalStatus(false);
         dispatch(changeTicketStatusAction({ ticketID, ticketStatus: 'closed' }));
@@ -73,10 +67,9 @@ export const TicketPage: FC = () => {
             </PageHeader>
             <TicketContent
                 currentTicket={currentTicketInfo}
-                answerFormStatus={answerFormStatus}
-                setAnswerFormStatus={setAnswerFormStatus}
-            ></TicketContent>
-
+                isCommentFormVisible={isCommentFormVisible}
+                setIsCommentFormVisible={setIsCommentFormVisible}
+            />
             <ModalConfirm
                 handleAccept={handleAccept}
                 handleClose={handleClose}

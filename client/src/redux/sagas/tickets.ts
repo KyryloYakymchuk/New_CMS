@@ -8,6 +8,7 @@ import {
 } from '@api/tickets';
 import { put, takeEvery } from '@redux-saga/core/effects';
 import { call } from '@redux-saga/core/effects';
+import request from 'axios';
 import { setAllTicketsAction, setTicketByIDAction } from '@redux/actions/tickets';
 import {
     IAddNewCommentActions,
@@ -18,13 +19,17 @@ import {
     IGetTickets,
     TicketsActionsTypes
 } from '@redux/types/tickets';
+import {errorAction} from "@redux/actions/error";
+import {IError} from "@redux/types/error";
 
 function* getAllTickets(config: IGetTickets) {
     try {
         const { data } = yield call(getAllTicketsApi, config.payload);
         yield put(setAllTicketsAction(data));
     } catch (error) {
-        return error;
+        if (request.isAxiosError(error) && error.response) {
+            yield put(errorAction(error.response?.data as IError));
+        }
     }
 }
 function* deleteTicket(config: IDeleteTiket) {
@@ -32,7 +37,9 @@ function* deleteTicket(config: IDeleteTiket) {
         const { data } = yield call(deleteTicketApi, config.payload);
         yield put(setAllTicketsAction(data));
     } catch (error) {
-        return error;
+        if (request.isAxiosError(error) && error.response) {
+            yield put(errorAction(error.response?.data as IError));
+        }
     }
 }
 function* createTicket(config: ICreateTicketAction) {
@@ -40,37 +47,38 @@ function* createTicket(config: ICreateTicketAction) {
         const { data } = yield call(createTicketApi, config.payload);
         yield put(setAllTicketsAction(data));
     } catch (error) {
-        return error;
+        if (request.isAxiosError(error) && error.response) {
+            yield put(errorAction(error.response?.data as IError));
+        }
     }
 }
 function* changeTicketStatus(config: IChangeTicketStatus) {
     try {
         yield call(changeTicketStatusApi, config.payload);
     } catch (error) {
-        return error;
+        if (request.isAxiosError(error) && error.response) {
+            yield put(errorAction(error.response?.data as IError));
+        }
     }
 }
 function* getTicketByID(config: IGetTicketByIDStatus) {
     try {
-        console.log(config.payload);
-        
         const { data } = yield call(getTicketByIDApi, config.payload);
-        console.log(data);
-        
         yield put(setTicketByIDAction(data));
     } catch (error) {
-        return error;
+        if (request.isAxiosError(error) && error.response) {
+            yield put(errorAction(error.response?.data as IError));
+        }
     }
 }
 function* addNewComment(config: IAddNewCommentActions) {
     try {
-        console.log(config.payload);
-        
         const { data } = yield call(addNewCommentApi, config.payload);
-        
         yield put(setTicketByIDAction(data));
     } catch (error) {
-        return error;
+        if (request.isAxiosError(error) && error.response) {
+            yield put(errorAction(error.response?.data as IError));
+        }
     }
 }
 

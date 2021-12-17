@@ -25,9 +25,6 @@ export const Tickets: FC = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const { t } = useTranslation();
-    //let { search, pathname } = useLocation();
-    //const query = new URLSearchParams(search);
-    //const currentPage = Number(query.get('page'));
     const [modalStatus, setModalStatus] = useState<boolean>(false);
     const [modalMessage, setModalMessage] = useState('');
     const [deleteRequestStatus, setDeleteRequestStatus] = useState(false);
@@ -46,7 +43,6 @@ export const Tickets: FC = () => {
 
     function openTicketInfo<T extends ISetTicketsPayload>(value: T) {
         return () => {
-            console.log(value);
             history.push(`/ticket/${value.ticketID}`);
         };
     }
@@ -69,12 +65,17 @@ export const Tickets: FC = () => {
     };
 
     useEffect(() => {
+        const query = {
+            offset: 0,
+            //add getting offset from query params
+            limit: LIMIT
+        }
         if (deleteRequestStatus) {
             dispatch(
-                deleteTicketAction({ ticketID: deleteID, query: { offset: 0, limit: LIMIT } })
+                deleteTicketAction({ ticketID: deleteID, query })
             );
         } else {
-            dispatch(getAllTicketsAction({ offset: 0, limit: LIMIT }));
+            dispatch(getAllTicketsAction(query));
         }
     }, [dispatch, deleteWatcher]);
 
