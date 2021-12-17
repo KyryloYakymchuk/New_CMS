@@ -94,6 +94,12 @@ export interface IFieldProps {
     settings?: IFieldSettings[];
     validate?: (values: IFieldSettings) => IFieldSettings;
 }
+export interface ICommentsForm {
+    text: string;
+    subject: string;
+    destination?: string;
+    ticketID?:string;
+}
 export type GetSelectDataType = (newValue: string, actionMeta?: InputActionMeta) => void;
 export type MultiValueType = IUserGroups[];
 export type MultiValueSelectType = MultiValue<IUserGroups>;

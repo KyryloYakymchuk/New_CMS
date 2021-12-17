@@ -21,9 +21,9 @@ export const MenuItem = [
         itemId: 3,
         height: '180px',
         subItems: [
-            { subName: 'All Pages', subPath:ProtectedRoutes.DASHBOARD  },
-            { subName: 'New Page', subPath:ProtectedRoutes.NEWPAGE },
-            { subName: 'Edit Page', subPath:ProtectedRoutes.DASHBOARD }
+            { subName: 'All Pages', subPath: ProtectedRoutes.DASHBOARD },
+            { subName: 'New Page', subPath: ProtectedRoutes.NEWPAGE },
+            { subName: 'Edit Page', subPath: ProtectedRoutes.DASHBOARD }
         ]
     },
     {
@@ -32,8 +32,8 @@ export const MenuItem = [
         itemId: 4,
         height: '130px',
         subItems: [
-            { subName: 'All Modules', subPath:ProtectedRoutes.MODULES  },
-            { subName: 'New Module', subPath:ProtectedRoutes.NEW_MODULE }
+            { subName: 'All Modules', subPath: ProtectedRoutes.MODULES },
+            { subName: 'New Module', subPath: ProtectedRoutes.NEW_MODULE }
         ]
     },
     {
@@ -49,8 +49,8 @@ export const MenuItem = [
         itemId: 6,
         height: '130px',
         subItems: [
-            { subName: 'All Letter', subPath:ProtectedRoutes.DASHBOARD  },
-            { subName: 'All Jobs', subPath:ProtectedRoutes.DASHBOARD  }
+            { subName: 'All Letter', subPath: ProtectedRoutes.DASHBOARD },
+            { subName: 'All Jobs', subPath: ProtectedRoutes.DASHBOARD }
         ]
     },
     {
@@ -66,9 +66,15 @@ export const MenuItem = [
         ]
     },
     {
+        name: 'Tickets',
+        path: ProtectedRoutes.TICKETS,
+        icon: <Icons.SettingsIcon />,
+        itemId: 8
+    },
+    {
         name: 'Settings',
         path: ProtectedRoutes.SETTINGS,
         icon: <Icons.SettingsIcon />,
-        itemId: 8
+        itemId: 9
     }
 ];

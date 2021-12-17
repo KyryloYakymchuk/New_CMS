@@ -3,8 +3,9 @@ import { authWatcher } from './auth';
 import { usersWatcher } from './users';
 import { groupsWatcher } from './groups';
 import { modulesWatcher } from './modules';
+import { ticketsWatcher } from './tickets';
 function* rootSaga() {
-    yield all([authWatcher(), usersWatcher(), groupsWatcher(), modulesWatcher()]);
+    yield all([authWatcher(), usersWatcher(), groupsWatcher(), modulesWatcher(), ticketsWatcher()]);
 }
 
 export default rootSaga;

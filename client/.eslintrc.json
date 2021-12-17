@@ -14,6 +14,7 @@
         "@typescript-eslint/comma-dangle": ["error", "never"],
         "@typescript-eslint/indent": "off",
         "@typescript-eslint/no-redeclare": "off",
+     
         "@typescript-eslint/member-delimiter-style": [
             "error",
             {

@@ -15,6 +15,9 @@ export enum ProtectedRoutes {
     GROUPS = '/groups',
     NEWSLETTER = '/newsletter',
     WEBSHOP = '/webshop',
+    TICKETS = '/tickets',
+    TICKET = '/ticket/:id',
+    CREATE_TICKET = '/tickets/create',
     SETTINGS = '/settings'
 }
 

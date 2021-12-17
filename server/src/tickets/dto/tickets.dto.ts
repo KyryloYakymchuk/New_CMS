@@ -4,6 +4,11 @@ export class IdDTO {
   @IsNotEmpty()
   ticketID: string;
 }
+export class EditTicketDTO {
+  @IsNotEmpty()
+  ticketID: string;
+  ticketStatus: string;
+}
 
 export class CreateTicketDTO {
   @IsNotEmpty()
