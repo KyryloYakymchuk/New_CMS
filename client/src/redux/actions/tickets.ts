@@ -18,7 +18,9 @@ export const getAllTicketsAction = actionGenerator<IQueryParamsPayload>(
 export const deleteTicketAction = actionGenerator<{ ticketID: string; query: IQueryParamsPayload }>(
     TicketsActionsTypes.DELETE_TICKET
 );
-export const createTicketAction = actionGenerator<ICreateTicketActionPayload>(TicketsActionsTypes.CREATE_TICKET);
+export const createTicketAction = actionGenerator<ICreateTicketActionPayload>(
+    TicketsActionsTypes.CREATE_TICKET
+);
 export const changeTicketStatusAction = actionGenerator<IChangeTicketStatusPayload>(
     TicketsActionsTypes.CHANGE_TICKET_STATUS
 );
@@ -27,9 +29,7 @@ export const setTicketByIDAction = actionGenerator<ISetTicketsPayload>(
     TicketsActionsTypes.SET_TICKET
 );
 
-export const getTicketByIDAction = actionGenerator<string>(
-    TicketsActionsTypes.GET_TICKET_BY_ID
-);
+export const getTicketByIDAction = actionGenerator<string>(TicketsActionsTypes.GET_TICKET_BY_ID);
 
 export const addNewComment = actionGenerator<IAddNewCommentActionPayload>(
     TicketsActionsTypes.ADD_NEW_COMMENT

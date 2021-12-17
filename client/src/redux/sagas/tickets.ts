@@ -19,8 +19,8 @@ import {
     IGetTickets,
     TicketsActionsTypes
 } from '@redux/types/tickets';
-import {errorAction} from "@redux/actions/error";
-import {IError} from "@redux/types/error";
+import { errorAction } from '@redux/actions/error';
+import { IError } from '@redux/types/error';
 
 function* getAllTickets(config: IGetTickets) {
     try {

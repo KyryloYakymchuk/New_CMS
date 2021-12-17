@@ -12,8 +12,8 @@ import { addNewComment } from '@redux/actions/tickets';
 
 interface IProps {
     currentTicket: ISetTicketsPayload;
-    answerFormStatus: boolean;
-    setAnswerFormStatus: (value: boolean) => void;
+    isCommentFormVisible: boolean;
+    setIsCommentFormVisible: (value: boolean) => void;
 }
 
 export const TicketContent: FC<IProps> = ({
@@ -25,9 +25,9 @@ export const TicketContent: FC<IProps> = ({
     const onSubmit = (value: ICommentsForm) => {
         const reqObj = {
             ...value,
-            destination: currentTicket.email;
-            ticketID: currentTicket.ticketID;
-        }
+            destination: currentTicket.email,
+            ticketID: currentTicket.ticketID
+        };
         setIsCommentFormVisible(false);
         dispatch(addNewComment(reqObj));
     };
@@ -42,15 +42,18 @@ export const TicketContent: FC<IProps> = ({
                 ))}
             </TicketInfo>
             <Comments>
-                {currentTicket?.comments?.lenght ? (
+                {currentTicket?.comments?.length ? (
                     <CommentsTitle>Answer history</CommentsTitle>
                 ) : null}
                 {currentTicket?.comments?.map(({ text, subject }) => (
                     <TicketComments subject={subject} text={text} />
-                )) || <Loader/>}
+                )) || <Loader />}
             </Comments>
             {isCommentFormVisible ? (
-                <CommentForm onSubmit={onSubmit} setAnswerFormStatus={setIsCommentFormVisible} />
+                <CommentForm
+                    onSubmit={onSubmit}
+                    setIsCommentFormVisible={setIsCommentFormVisible}
+                />
             ) : null}
         </TicketContentBlock>
     );

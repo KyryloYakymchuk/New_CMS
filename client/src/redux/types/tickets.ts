@@ -13,7 +13,10 @@ export interface ITickets {
     ticket?: ISetTicketsPayload;
 }
 
-export interface IAllTickets { data: ISetTicketsPayload[]; count: number };
+export interface IAllTickets {
+    data: ISetTicketsPayload[];
+    count: number;
+}
 
 export interface ISetTicketsPayload {
     status: string;
@@ -55,11 +58,11 @@ export interface IGetTickets {
 
 export interface ISetTikets {
     type: TicketsActionsTypes.SET_ALL_TICKETS;
-    payload: IDeleteTicketPayload;
+    payload: IAllTickets;
 }
 export interface IDeleteTiket {
-    type: TicketsActionsTypes.SET_ALL_TICKETS;
-    payload: { ticketID: string; query: IQueryParamsPayload };
+    type: TicketsActionsTypes.DELETE_TICKET;
+    payload: IDeleteTicketPayload;
 }
 export interface ICreateTicketAction {
     type: TicketsActionsTypes.CREATE_TICKET;

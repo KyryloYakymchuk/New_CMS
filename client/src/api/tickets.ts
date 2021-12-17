@@ -4,16 +4,17 @@ import {
     ICreateTicketActionPayload,
     IQueryParamsPayload,
     ISetTicketsPayload,
-    IDeleteTicketPayload
+    IDeleteTicketPayload,
+    IAllTickets
 } from '@redux/types/tickets';
 import { api } from '@services/api';
 
-export const getAllTicketsApi = (params: IQueryParamsPayload): Promise<ISetTicketsPayload[]> => {
+export const getAllTicketsApi = (params: IQueryParamsPayload): Promise<IAllTickets> => {
     return api.get('/tickets', {
         params
     });
 };
-export const deleteTicketApi = (payload: IDeleteTicketPayload): Promise<ISetTicketsPayload[]> => {
+export const deleteTicketApi = (payload: IDeleteTicketPayload): Promise<IAllTickets> => {
     return api.delete('/tickets/' + payload.ticketID, {
         params: payload.query
     });

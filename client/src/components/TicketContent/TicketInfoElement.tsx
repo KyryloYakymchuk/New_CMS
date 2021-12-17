@@ -1,12 +1,12 @@
 import { FC } from 'react';
 import { Content, LineTitle, TicketInfoElementBlock } from './styled';
 
-interface comments {
+interface Сomments {
     text: string;
     subject: string;
 }
 interface IProps {
-    value: string | number | boolean | comments[];
+    value: string | number | boolean | Сomments[];
     label: string;
 }
 

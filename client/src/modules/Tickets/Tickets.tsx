@@ -51,9 +51,7 @@ export const Tickets: FC = () => {
         history.push(ProtectedRoutes.CREATE_TICKET);
     };
 
-    const arrUserListButton = [
-        { item: <Icons.DeleteIcon />, onClickFunc: deleteTicketClick }
-    ];
+    const arrUserListButton = [{ item: <Icons.DeleteIcon />, onClickFunc: deleteTicketClick }];
 
     const handleAccept = () => {
         setModalStatus(false);
@@ -69,11 +67,9 @@ export const Tickets: FC = () => {
             offset: 0,
             //add getting offset from query params
             limit: LIMIT
-        }
+        };
         if (deleteRequestStatus) {
-            dispatch(
-                deleteTicketAction({ ticketID: deleteID, query })
-            );
+            dispatch(deleteTicketAction({ ticketID: deleteID, query }));
         } else {
             dispatch(getAllTicketsAction(query));
         }

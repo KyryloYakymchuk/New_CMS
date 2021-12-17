@@ -14,8 +14,7 @@
         "@typescript-eslint/comma-dangle": ["error", "never"],
         "@typescript-eslint/indent": "off",
         "@typescript-eslint/no-redeclare": "off",
-        "import/no-extraneous-dependencies": ["error", {"devDependencies": false, "optionalDependencies": false, "peerDependencies": false}],
-
+     
         "@typescript-eslint/member-delimiter-style": [
             "error",
             {

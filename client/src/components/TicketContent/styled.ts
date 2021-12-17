@@ -35,4 +35,5 @@ export const CommentsSubject = styled.div`
     padding-bottom: 10px;
 `;
 export const CommentsText = styled.div`
-width: 100%`;
+    width: 100%;
+`;

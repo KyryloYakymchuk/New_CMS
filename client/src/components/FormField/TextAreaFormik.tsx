@@ -7,17 +7,11 @@ interface ITextAreaFormik {
 }
 export const TextAreaFormik: FC<ITextAreaFormik> = ({ name }) => {
     const [field, meta] = useField(name);
-    const {touched, error} = meta;
+    const { touched, error } = meta;
     return (
         <div>
-            <Textarea
-                {...field}
-                value={field.value}
-                onChange={field.onChange(field.name)}
-            />
-            {touched && error ? (
-                <ErrorBlock className="error">{error}</ErrorBlock>
-            ) : null}
+            <Textarea {...field} value={field.value} onChange={field.onChange(field.name)} />
+            {touched && error ? <ErrorBlock className="error">{error}</ErrorBlock> : null}
         </div>
     );
 };

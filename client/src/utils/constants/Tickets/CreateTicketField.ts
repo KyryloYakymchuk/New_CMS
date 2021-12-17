@@ -1,8 +1,8 @@
 import * as Yup from 'yup';
 
 export const createTicketField = [
-    { value: 'firstname', label: 'First name'},
-    { value: 'lastname', label: 'Last name'},
+    { value: 'firstname', label: 'First name' },
+    { value: 'lastname', label: 'Last name' },
     { value: 'subject', label: 'Subject' },
     { value: 'email', label: 'Email' },
     { value: 'destination', label: 'Destination' },

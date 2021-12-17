@@ -10,7 +10,7 @@ interface ITextFieldFormik {
 
 const FormikTextField: FC<ITextFieldFormik> = ({ name, children, ...rest }) => {
     const [field, meta] = useField(name);
-    const {touched, error} = meta;
+    const { touched, error } = meta;
     return (
         <TextField
             error={Boolean(touched && error)}

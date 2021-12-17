@@ -23,7 +23,6 @@ export const TicketPage: FC = () => {
     const [modalMessage, setModalMessage] = useState('');
     const [isCommentFormVisible, setIsCommentFormVisible] = useState(false);
     const currentTicketInfo = useAppSelector(currentTicketSelector)!;
-
     const changeTicketStatus = () => {
         setModalStatus(true);
         setModalMessage('Are you sure you want to close this ticket');
@@ -47,7 +46,7 @@ export const TicketPage: FC = () => {
                     title={'Add answer'}
                     type="button"
                     style="pinkButton"
-                    onClickFunction={()=>setAnswerFormStatus(true)}
+                    onClickFunction={()=>setIsCommentFormVisible(true)}
                     icon={<Icons.PersonIcon />}
                 />
                 <Buttons
